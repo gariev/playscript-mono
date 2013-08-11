@@ -2721,12 +2721,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="shell.as" />
     <Compile Include="as3\Definitions\Classes\ClassDef\PublicClass\PublicClass.as" />
     <Compile Include="as3\Definitions\Classes\ClassDef\PublicClass.as" />
     <Compile Include="as3\Expressions\isOperator\isOper\TestClassA.as" />
     <Compile Include="as3\Expressions\isOperator\isOper\TestClassB.as" />
     <Compile Include="as3\Expressions\isOperator\isOper\TestClassC.as" />
     <Compile Include="as3\Expressions\isOperator\isOper\TestInterface.as" />
+    <Compile Include="BaseTest.as" />
   </ItemGroup>
 </Project>

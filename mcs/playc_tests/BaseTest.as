@@ -34,10 +34,9 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
+
 /*
- * JavaScript shared functions file for running the tests in either
- * stand-alone JavaScript engine.  To run a test, first load this file,
- * then load the test script.
+ * Base class for all tests.
  */
 
 // import flash.system in order to determine what we are being run in
@@ -45,7 +44,7 @@ import flash.system.Capabilities;
 
 package {
 
-	public class Test {
+	public class BaseTest {
 
 		public static var playerType:String = Capabilities.playerType;
 
@@ -104,8 +103,8 @@ package {
 		//  argument.
 
 
-		public static function AddTestCase( description:String, expect:Object, actual:Object, skip:Boolean = false ):void {
-		    testcases[tc++] = new TestCase( SECTION, description, expect, actual, skip );
+		public static function AddTestCase( description:String, expect:Object, actual:Object ):void {
+			testcases[tc++] = new TestCase( SECTION, description, expect, actual, false );
 		}
 
 
@@ -1077,9 +1076,9 @@ public class TestCase {
 		//this.bugnumber	  =	BUGNUMBER;
 
 		if (!skip) {
-			this.passed	= Test.getTestCaseResult( this.expect, this.actual );
-			if ( Test.DEBUG ) {
-				Test.writeLineToLog(	"added " + this.description	);
+			this.passed	= BaseTest.getTestCaseResult( this.expect, this.actual );
+			if ( BaseTest.DEBUG ) {
+				BaseTest.writeLineToLog(	"added " + this.description	);
 			}
 		} else {
 			this.passed = "true";

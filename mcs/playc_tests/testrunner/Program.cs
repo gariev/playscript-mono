@@ -201,7 +201,7 @@ namespace TestRunner
 		public static int BuildTest(string path, string testName, string[] extraFiles, string outputPath) 
 		{
 			string testPath = Path.GetFullPath( Path.Combine (path, testName + ".as") );
-			string shellPath = Path.GetFullPath ("./shell.as");
+			string shellPath = Path.GetFullPath ("./BaseTest.as");
 			string mcsPath = Path.GetFullPath (McsPath);
 
 			int result = RunCommand (Path.GetFullPath(MonoPath), 

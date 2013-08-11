@@ -39,7 +39,7 @@ package {
 
 import PublicClassPackage.*;
 
-public class PublicClassTests extends Test {
+public class PublicClassTest extends BaseTest {
 public static function Main():int {
 
 SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
