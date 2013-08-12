@@ -38,14 +38,19 @@ def processComments(line, commentBlock):
 
 	# Handle starting new block comments.
 	if "/*" in line:
-		# We don't currently support single line block comments for the sake of
-		# implmentation ease. Can add support if necessary.
-		if "*/" in line:
-			raise Exception("Unsupported syntax")
-		if line[:2] == "/*":
-			return (True, True)
-		else:
-			return (False, True)
+		# Warning: this isn't correct, you could start a line with a comment
+		# block and then close it, followed by actual code. It should suffice
+		# for now, however.
+		isCommentLine = line[:2] == "/*"
+		isCommentOpen = False
+		index = line.find("/*")
+		while index >= 0:
+			isCommentOpen = not isCommentOpen
+			if isCommentOpen:
+				index = line.find("*/", index + 2)
+			else:
+				index = line.find("/*", index + 2)
+		return (isCommentLine, isCommentOpen)
 
 	return (False, False)
 
@@ -80,7 +85,7 @@ for file in files:
 			try:
 				isComment, isCommentBlock = processComments(line, isCommentBlock)
 			except:
-				skipReason = "it contains comment syntax that could not be parsed"
+				skipReason = "it contains comment syntax that could not be parsed - " + line
 				break
 
 			if not isComment and not line.isspace():
