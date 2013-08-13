@@ -34,22 +34,29 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-var CODE = 1092; //	XML parser failure: Unterminated XML declaration.
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-try {
-	var result = "no error";
-	var y = "<?xml version='1.0'?";
-	var z = new XML(y);
-} catch (err) {
-	result = err.toString();
-} finally {
-	AddTestCase("Runtime Error", TYPEERROR + CODE, typeError(result));
+package {
+	public class Error1092XmlUnterminatedXmlDeclTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1092; //	XML parser failure: Unterminated XML declaration.
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			try {
+				var result = "no error";
+				var y = "<?xml version='1.0'?";
+				var z = new XML(y);
+			} catch (err) {
+				result = err.toString();
+			} finally {
+				AddTestCase("Runtime Error", TYPEERROR + CODE, typeError(result));
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

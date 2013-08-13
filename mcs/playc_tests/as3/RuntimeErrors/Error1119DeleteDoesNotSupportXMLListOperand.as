@@ -34,26 +34,33 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-var CODE = 1119; //	Delete operator is not supported with operand of type _.
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-var expected = "Error #" + CODE;
-var result = "no error";
-try {
-	var books:XML =
-		<books>
-        	<book publisher="Adobe" name="Flash Player QA" />
-        </books>;
-	delete books.book.(@publisher == "Adobe");
-} catch (err) {
-	result = grabError(err, err.toString());
-} finally {
-	AddTestCase("Runtime Error", expected, result);
+package {
+	public class Error1119DeleteDoesNotSupportXMLListOperandTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1119; //	Delete operator is not supported with operand of type _.
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			var expected = "Error #" + CODE;
+			var result = "no error";
+			try {
+				var books:XML =
+					<books>
+			        	<book publisher="Adobe" name="Flash Player QA" />
+			        </books>;
+				delete books.book.(@publisher == "Adobe");
+			} catch (err) {
+				result = grabError(err, err.toString());
+			} finally {
+				AddTestCase("Runtime Error", expected, result);
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

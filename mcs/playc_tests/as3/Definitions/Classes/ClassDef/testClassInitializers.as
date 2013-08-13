@@ -37,21 +37,28 @@
  
  
 
-import testpublicClassInitializer.*;
-
-var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";                   // Version of JavaScript or ECMA
-var TITLE   = "Class Initializers";  // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-var testInit= new testClassInitializersWrap();
-//print(testInit.MyNumber1());
-//print(testInit.MyNumber2());
-//print();
-AddTestCase("Result from for loop",1,testInit.MyNumber1());
-AddTestCase("Result from if else stt",2,testInit.MyNumber2());
-AddTestCase("Result from do loop",2,testInit.MyNumber3());
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	import testpublicClassInitializer.*;
+	
+	public class testClassInitializersTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
+			var VERSION = "AS3";                   // Version of JavaScript or ECMA
+			var TITLE   = "Class Initializers";  // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			var testInit= new testClassInitializersWrap();
+			//print(testInit.MyNumber1());
+			//print(testInit.MyNumber2());
+			//print();
+			AddTestCase("Result from for loop",1,testInit.MyNumber1());
+			AddTestCase("Result from if else stt",2,testInit.MyNumber2());
+			AddTestCase("Result from do loop",2,testInit.MyNumber3());
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

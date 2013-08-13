@@ -48,44 +48,51 @@
    Updated:            dschaffe@adobe.com 1-Nov-2007
 */
 
-var SECTION = "";
-var VERSION = "ECMA_1";
-startTest();
-var TITLE   = "Vector.toString";
-
-writeHeaderToLog( SECTION + " "+ TITLE);
- 
-AddTestCase(
-	      "Vector.<int>.prototype.toString.length",  
-	      0,  
-	      Vector.<int>.prototype.toString.length );
-
-AddTestCase(
-	      "new Vector.<int>().toString()",     
-	      "",     
-	      new Vector.<int>().toString() );
-AddTestCase(
-	      "(new Vector.<int>(5)).toString()",    
-	      "0,0,0,0,0",    
-	      (new Vector.<int>(5)).toString() );
-AddTestCase(
-	      "(new Vector.<Boolean>(5)).toString()",    
-	      "null,null,null,null,null",    
-	      (new Vector.<Boolean>(5)).toString() );
-AddTestCase(
-	      "(new Vector.<String>(2)).toString()",    
-	      "null,null",    
-	      (new Vector.<String>(2)).toString() );
-
-AddTestCase(  
-	      "(new Vector.<int>(5,true)).toString()",  
-	      "0,0,0,0,0",  
-	      (new Vector.<int>(5,true)).toString() );
-
-var v1:Vector.<Number>=new Vector.<Number>;
-v1.push(1.1);v1.push(3.14);v1.push(99.99);
-AddTestCase(  
-	      "small vector toString",  
-	      "1.1,3.14,99.99",  
-	      v1.toString() );
-test();
+package {
+	public class tostringTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "";
+			var VERSION = "ECMA_1";
+			startTest();
+			var TITLE   = "Vector.toString";
+			
+			writeHeaderToLog( SECTION + " "+ TITLE);
+			 
+			AddTestCase(
+				      "Vector.<int>.prototype.toString.length",  
+				      0,  
+				      Vector.<int>.prototype.toString.length );
+			
+			AddTestCase(
+				      "new Vector.<int>().toString()",     
+				      "",     
+				      new Vector.<int>().toString() );
+			AddTestCase(
+				      "(new Vector.<int>(5)).toString()",    
+				      "0,0,0,0,0",    
+				      (new Vector.<int>(5)).toString() );
+			AddTestCase(
+				      "(new Vector.<Boolean>(5)).toString()",    
+				      "null,null,null,null,null",    
+				      (new Vector.<Boolean>(5)).toString() );
+			AddTestCase(
+				      "(new Vector.<String>(2)).toString()",    
+				      "null,null",    
+				      (new Vector.<String>(2)).toString() );
+			
+			AddTestCase(  
+				      "(new Vector.<int>(5,true)).toString()",  
+				      "0,0,0,0,0",  
+				      (new Vector.<int>(5,true)).toString() );
+			
+			var v1:Vector.<Number>=new Vector.<Number>;
+			v1.push(1.1);v1.push(3.14);v1.push(99.99);
+			AddTestCase(  
+				      "small vector toString",  
+				      "1.1,3.14,99.99",  
+				      v1.toString() );
+			test();
+			return results();
+		}
+	}
+}

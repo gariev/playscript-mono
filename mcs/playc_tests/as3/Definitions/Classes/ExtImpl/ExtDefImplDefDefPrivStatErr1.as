@@ -36,29 +36,36 @@
  * ***** END LICENSE BLOCK ***** */
 
 
-class DefaultClass {
-  private static function baseClass() {
-  }
+package {
+	public class ExtDefImplDefDefPrivStatErr1Test extends BaseTest {
+		public static function Main():int {
+			class DefaultClass {
+			  private static function baseClass() {
+			  }
+			}
+			
+			var SECTION = "RTE";
+			var VERSION = "AS3";
+			var TITLE = "accessing private static method outside of the class";
+			var BUGNUMBER = "";
+			
+			startTest();
+			
+			var out = new DefaultClass();
+			var error = "no error thrown";
+			
+			try {
+			  out.baseClass();
+			} catch (e) {
+			  error = e.toString();
+			}
+			
+			AddTestCase("accessing private static method outside of the class, RTE #1069",
+			  "ReferenceError: Error #1069",
+			  error.substr(0,27));
+			
+			test();
+			return results();
+		}
+	}
 }
-
-var SECTION = "RTE";
-var VERSION = "AS3";
-var TITLE = "accessing private static method outside of the class";
-var BUGNUMBER = "";
-
-startTest();
-
-var out = new DefaultClass();
-var error = "no error thrown";
-
-try {
-  out.baseClass();
-} catch (e) {
-  error = e.toString();
-}
-
-AddTestCase("accessing private static method outside of the class, RTE #1069",
-  "ReferenceError: Error #1069",
-  error.substr(0,27));
-
-test();

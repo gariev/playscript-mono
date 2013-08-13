@@ -34,20 +34,27 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-import ImplTwoInterfacesSameMethod.*;
-
-startTest();
-
-var OBJ = new C();
-
-AddTestCase( "Interface name does not disambiguate method definitions", 
-			 "{A,B} function sameName", 
-			 OBJ.A::sameName() );
-AddTestCase( "Interface name does not disambiguate method definitions", 
-			 "{A,B} function sameName",
-			 OBJ.B::sameName() );
-
-
-test();
-
-
+package {
+	import ImplTwoInterfacesSameMethod.*;
+	
+	public class ImplTwoInterfacesSameMethodTest extends BaseTest {
+		public static function Main():int {
+			startTest();
+			
+			var OBJ = new C();
+			
+			AddTestCase( "Interface name does not disambiguate method definitions", 
+						 "{A,B} function sameName", 
+						 OBJ.A::sameName() );
+			AddTestCase( "Interface name does not disambiguate method definitions", 
+						 "{A,B} function sameName",
+						 OBJ.B::sameName() );
+			
+			
+			test();
+			
+			
+			return results();
+		}
+	}
+}

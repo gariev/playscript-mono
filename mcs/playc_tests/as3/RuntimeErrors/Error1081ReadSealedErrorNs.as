@@ -34,43 +34,50 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-package
-{
-    public interface IClass
-    {
-    }
-    
-    public class ClassImpl implements IClass
-    {
-    }
-    
-    public class Main
-    {
-        function Main()
-        {
-            var a:IClass = new ClassImpl();
-            a.name;
-        }
-    }
+package {
+	public class Error1081ReadSealedErrorNsTest extends BaseTest {
+		public static function Main():int {
+			package
+			{
+			    public interface IClass
+			    {
+			    }
+			    
+			    public class ClassImpl implements IClass
+			    {
+			    }
+			    
+			    public class Main
+			    {
+			        function Main()
+			        {
+			            var a:IClass = new ClassImpl();
+			            a.name;
+			        }
+			    }
+			}
+			
+			
+			
+			import Main;
+			var CODE = 1081; //	Property name not found on name and there is no default value.
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			try {
+			    var m = new Main();
+			} catch (err) {
+				result = err.toString();
+			} finally {
+				AddTestCase("Reference Error", REFERENCEERROR + CODE, referenceError(result));
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-
-
-import Main;
-var CODE = 1081; //	Property name not found on name and there is no default value.
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-try {
-    var m = new Main();
-} catch (err) {
-	result = err.toString();
-} finally {
-	AddTestCase("Reference Error", REFERENCEERROR + CODE, referenceError(result));
-}
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

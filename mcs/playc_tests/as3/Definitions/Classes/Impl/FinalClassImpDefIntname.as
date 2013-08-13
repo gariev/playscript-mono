@@ -34,25 +34,32 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-import FinalClassImpDefIntname.*;
-var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
-var TITLE   = "Final class implements default interface";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-
-///////////////////////////////////////////////////////////////
-// add your tests here
-  
-var obj = new ClassGet();
-
-//Final class implements a default interface with an interface name method
-AddTestCase("Final class implements a default interface with an interface name method", "PASSED", obj.accdeffunc());
-
-
-////////////////////////////////////////////////////////////////
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	import FinalClassImpDefIntname.*;
+	public class FinalClassImpDefIntnameTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
+			var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
+			var TITLE   = "Final class implements default interface";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			
+			///////////////////////////////////////////////////////////////
+			// add your tests here
+			  
+			var obj = new ClassGet();
+			
+			//Final class implements a default interface with an interface name method
+			AddTestCase("Final class implements a default interface with an interface name method", "PASSED", obj.accdeffunc());
+			
+			
+			////////////////////////////////////////////////////////////////
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

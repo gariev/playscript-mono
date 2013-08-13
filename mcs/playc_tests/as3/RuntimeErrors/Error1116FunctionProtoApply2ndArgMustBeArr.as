@@ -34,21 +34,28 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-var CODE = 1116; //	second argument to Function.prototype.apply must be an array.
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-try {
-	var result = "no error";
-	Function.prototype.apply(1, 1);
-} catch (err) {
-	result = err.toString();
-} finally {
-	AddTestCase("Runtime Error", TYPEERROR + CODE, typeError(result));
+package {
+	public class Error1116FunctionProtoApply2ndArgMustBeArrTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1116; //	second argument to Function.prototype.apply must be an array.
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			try {
+				var result = "no error";
+				Function.prototype.apply(1, 1);
+			} catch (err) {
+				result = err.toString();
+			} finally {
+				AddTestCase("Runtime Error", TYPEERROR + CODE, typeError(result));
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

@@ -35,14 +35,21 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-startTest();                // leave this alone
-
-
-var o:Object = new Object();
-var a:uint = 0x1fffffff;
-
-AddTestCase( "o.a = 0x1fffffff, o.b = -1, (o.a == o.b)", false, (o.a = a, o.b = -1, o.a == o.b) );
-
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	public class UintHexTest extends BaseTest {
+		public static function Main():int {
+			startTest();                // leave this alone
+			
+			
+			var o:Object = new Object();
+			var a:uint = 0x1fffffff;
+			
+			AddTestCase( "o.a = 0x1fffffff, o.b = -1, (o.a == o.b)", false, (o.a = a, o.b = -1, o.a == o.b) );
+			
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

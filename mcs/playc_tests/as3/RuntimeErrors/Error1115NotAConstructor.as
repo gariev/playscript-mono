@@ -34,22 +34,29 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-var CODE = 1115; //	_ is not a constructor.
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-try {
-	var z = "no error";
-	var OBJECT = new Object();
-	var o = new OBJECT();
-} catch (err) {
-	z = err.toString();
-} finally {
-	AddTestCase("Runtime Error", "TypeError: Error #" + CODE, typeError(z));
+package {
+	public class Error1115NotAConstructorTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1115; //	_ is not a constructor.
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			try {
+				var z = "no error";
+				var OBJECT = new Object();
+				var o = new OBJECT();
+			} catch (err) {
+				z = err.toString();
+			} finally {
+				AddTestCase("Runtime Error", "TypeError: Error #" + CODE, typeError(z));
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

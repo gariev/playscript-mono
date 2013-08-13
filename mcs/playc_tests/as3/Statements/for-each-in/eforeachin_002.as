@@ -35,45 +35,52 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var SECTION = "Statements";       // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";  // Version of JavaScript or ECMA
-var TITLE   = "for each in";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
- 
- // XML Object
- 
- var i, s="";
- 
- obj1 = {};
- obj1.A = 1;
- 
- obj2 = {};
- obj2.A = 2;
- obj3 = {};
- obj3.A = 3;
- 
- x1 = {};
- x1.z = [obj1,obj2,obj3];
- 
-// var xmlDoc = "<L><z><A>1</A></z><z><A>2</A></z><z><A>3</A></z></L>";
-// var x1 = new XML(xmlDoc);
- 
- for each(var i in x1.z) {
-       s += i.A;
- }
- 
- AddTestCase( "for-each-in (var) :", true, (s=="123") );
- 
- s = 0;
- 
- for each ( i in x1.z )
- 	s += i.A;
- 
- AddTestCase( "for-each-in       :", true, (s==6) );
-
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	public class eforeachin_002Test extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Statements";       // provide a document reference (ie, ECMA section)
+			var VERSION = "AS3";  // Version of JavaScript or ECMA
+			var TITLE   = "for each in";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			 
+			 // XML Object
+			 
+			 var i, s="";
+			 
+			 obj1 = {};
+			 obj1.A = 1;
+			 
+			 obj2 = {};
+			 obj2.A = 2;
+			 obj3 = {};
+			 obj3.A = 3;
+			 
+			 x1 = {};
+			 x1.z = [obj1,obj2,obj3];
+			 
+			// var xmlDoc = "<L><z><A>1</A></z><z><A>2</A></z><z><A>3</A></z></L>";
+			// var x1 = new XML(xmlDoc);
+			 
+			 for each(var i in x1.z) {
+			       s += i.A;
+			 }
+			 
+			 AddTestCase( "for-each-in (var) :", true, (s=="123") );
+			 
+			 s = 0;
+			 
+			 for each ( i in x1.z )
+			 	s += i.A;
+			 
+			 AddTestCase( "for-each-in       :", true, (s==6) );
+			
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

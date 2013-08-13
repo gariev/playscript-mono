@@ -34,21 +34,28 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-var CODE = 1098; //	Illegal prefix '_' for 'no namespace'.
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-try {
-	var z = "no error";
-	ns = new Namespace ("prefix", "");
-} catch (err) {
-	z = err.toString();
-} finally {
-	AddTestCase("Runtime Error", "TypeError: Error #" + CODE, typeError(z));
+package {
+	public class Error1098XmlIllegalPrefixFoNoNamespaceTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1098; //	Illegal prefix '_' for 'no namespace'.
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			try {
+				var z = "no error";
+				ns = new Namespace ("prefix", "");
+			} catch (err) {
+				z = err.toString();
+			} finally {
+				AddTestCase("Runtime Error", "TypeError: Error #" + CODE, typeError(z));
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

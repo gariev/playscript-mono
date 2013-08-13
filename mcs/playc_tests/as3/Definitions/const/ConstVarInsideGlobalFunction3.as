@@ -35,22 +35,29 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-var TITLE   = "Initialize a local const in function with a global const";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();
-
-function const1Arg( arg1 ) {
-
- 	const localVar = arg1;
- 	return localVar;
+package {
+	public class ConstVarInsideGlobalFunction3Test extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE   = "Initialize a local const in function with a global const";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();
+			
+			function const1Arg( arg1 ) {
+			
+			 	const localVar = arg1;
+			 	return localVar;
+			}
+			
+			
+			const myConstVar:Number = -10;
+			
+			AddTestCase("Initialize global function local const with global const", -10, const1Arg( myConstVar ));
+			
+			test();
+			return results();
+		}
+	}
 }
-
-
-const myConstVar:Number = -10;
-
-AddTestCase("Initialize global function local const with global const", -10, const1Arg( myConstVar ));
-
-test();

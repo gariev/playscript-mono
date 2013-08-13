@@ -40,27 +40,34 @@
   * avmplus varsDef.abc simple.abc
  */
 
-var SECTION = " ";
-var VERSION = "AS3";
-var TITLE   = "import namespace defined from a varsDef.abc file";
-
-startTest();
-writeHeaderToLog( SECTION + " "+ TITLE);
-
-class A{
-use namespace Baseball;
-use namespace Basketball;
-
-Baseball var teamName = "Giants";
-Basketball var teamName = "Kings";
-foo var teamName = "Chargers";
+package {
+	public class useNSTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = " ";
+			var VERSION = "AS3";
+			var TITLE   = "import namespace defined from a varsDef.abc file";
+			
+			startTest();
+			writeHeaderToLog( SECTION + " "+ TITLE);
+			
+			class A{
+			use namespace Baseball;
+			use namespace Basketball;
+			
+			Baseball var teamName = "Giants";
+			Basketball var teamName = "Kings";
+			foo var teamName = "Chargers";
+			}
+			
+			var obj:A = new A()
+			AddTestCase( "use namespace 'Baseball' ", "Giants", obj.Baseball::teamName);
+			AddTestCase( "use namespace 'Basketball' ", "Kings", obj.Basketball::teamName);
+			AddTestCase( "use namespace 'Basketball' ", "Chargers", obj.foo::teamName);
+			
+			
+			
+			test();
+			return results();
+		}
+	}
 }
-
-var obj:A = new A()
-AddTestCase( "use namespace 'Baseball' ", "Giants", obj.Baseball::teamName);
-AddTestCase( "use namespace 'Basketball' ", "Kings", obj.Basketball::teamName);
-AddTestCase( "use namespace 'Basketball' ", "Chargers", obj.foo::teamName);
-
-
-
-test();

@@ -35,40 +35,47 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var SECTION = "Expressions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "Filter operator on non-XML object - runtime error";       // Provide ECMA section title or a description
-var BUGNUMBER = "144368";
-
-startTest();                // leave this alone
-
-
- 
-var employees = [{fname:"John",age:20},{fname:"Sue",age:30}]
-try {
-	var names = employees.(fname=="John");
-	result = "no exception";
-} catch(e1) {
-	result = typeError(e1.toString());
-	
+package {
+	public class FilterOperatorTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Expressions";       // provide a document reference (ie, Actionscript section)
+			var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
+			var TITLE   = "Filter operator on non-XML object - runtime error";       // Provide ECMA section title or a description
+			var BUGNUMBER = "144368";
+			
+			startTest();                // leave this alone
+			
+			
+			 
+			var employees = [{fname:"John",age:20},{fname:"Sue",age:30}]
+			try {
+				var names = employees.(fname=="John");
+				result = "no exception";
+			} catch(e1) {
+				result = typeError(e1.toString());
+				
+			}
+			
+			expected = "TypeError: Error #1123";
+			
+			AddTestCase("Use wildcard operator on an array", expected, result);
+			
+			var object = [{a:1, b:2, c:3}];
+			
+			try {
+				var names = object.(a==1);
+				result = "no exception";
+			} catch(e2) {
+				result = typeError(e2.toString());
+				
+			}
+			
+			expected = "TypeError: Error #1123";
+			
+			AddTestCase("Use wildcard operator on an object", expected, result);
+			 
+			 test();
+			return results();
+		}
+	}
 }
-
-expected = "TypeError: Error #1123";
-
-AddTestCase("Use wildcard operator on an array", expected, result);
-
-var object = [{a:1, b:2, c:3}];
-
-try {
-	var names = object.(a==1);
-	result = "no exception";
-} catch(e2) {
-	result = typeError(e2.toString());
-	
-}
-
-expected = "TypeError: Error #1123";
-
-AddTestCase("Use wildcard operator on an object", expected, result);
- 
- test();

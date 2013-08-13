@@ -47,62 +47,69 @@
 */
 
 
-var SECTION = "";
-var VERSION = "ECMA_1";
-startTest();
-var TITLE   = "Vector.sort(comparefn)";
-
-writeHeaderToLog( SECTION + " "+ TITLE);
-
-var errormsg="";
-try {
-  new<int>[4,92,1].sort()
-} catch (e) {
-  errormsg=e.toString();
-}
-AddTestCase(
-   "sort vector without setting compare function throws exception",
-   "TypeError: Error #1034",
-   parseError(errormsg,"TypeError: Error #1034".length));
-
-AddTestCase(
-    "sort vector",
-    "-12,2,17,56,999",
-    new<Number>[999,2,56,-12,17].sort(Compare).toString());
-
-
-test();
-
-function Sort( a ) {
-  for ( i = 0; i < a.length; i++ ) {
-    for ( j = i+1; j < a.length; j++ ) {
-      var lo = a[i];
-      var hi = a[j];
-      var c = Compare( lo, hi );
-      if ( c == 1 ) {
-	a[i] = hi;
-	a[j] = lo;
-      }
-    }
-  }
-  return a;
-}
-
-function Compare( x, y ) {
-  if ( x == void 0 && y == void 0  && typeof x == "undefined" && typeof y == "undefined" ) {
-    return +0;
-  }
-  if ( x == void 0  && typeof x == "undefined" ) {
-    return 1;
-  }
-  if ( y == void 0 && typeof y == "undefined" ) {
-    return -1;
-  }
-  if ( x < y ) {
-    return -1;
-  }
-  if ( x > y ) {
-    return 1;
-  }
-  return 0;
+package {
+	public class sortInitializersTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "";
+			var VERSION = "ECMA_1";
+			startTest();
+			var TITLE   = "Vector.sort(comparefn)";
+			
+			writeHeaderToLog( SECTION + " "+ TITLE);
+			
+			var errormsg="";
+			try {
+			  new<int>[4,92,1].sort()
+			} catch (e) {
+			  errormsg=e.toString();
+			}
+			AddTestCase(
+			   "sort vector without setting compare function throws exception",
+			   "TypeError: Error #1034",
+			   parseError(errormsg,"TypeError: Error #1034".length));
+			
+			AddTestCase(
+			    "sort vector",
+			    "-12,2,17,56,999",
+			    new<Number>[999,2,56,-12,17].sort(Compare).toString());
+			
+			
+			test();
+			
+			function Sort( a ) {
+			  for ( i = 0; i < a.length; i++ ) {
+			    for ( j = i+1; j < a.length; j++ ) {
+			      var lo = a[i];
+			      var hi = a[j];
+			      var c = Compare( lo, hi );
+			      if ( c == 1 ) {
+				a[i] = hi;
+				a[j] = lo;
+			      }
+			    }
+			  }
+			  return a;
+			}
+			
+			function Compare( x, y ) {
+			  if ( x == void 0 && y == void 0  && typeof x == "undefined" && typeof y == "undefined" ) {
+			    return +0;
+			  }
+			  if ( x == void 0  && typeof x == "undefined" ) {
+			    return 1;
+			  }
+			  if ( y == void 0 && typeof y == "undefined" ) {
+			    return -1;
+			  }
+			  if ( x < y ) {
+			    return -1;
+			  }
+			  if ( x > y ) {
+			    return 1;
+			  }
+			  return 0;
+			}
+			return results();
+		}
+	}
 }

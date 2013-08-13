@@ -35,34 +35,41 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-var TITLE   = "Initialize a local const inside a function after its initializer";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();
-
-function myConstArgs( arg1 ) {
-
- 	const n2;
- 	n2 = -( n1 / 30 );
- 	return n2;
+package {
+	public class ConstVarInsideGlobalFunction5_rtTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE   = "Initialize a local const inside a function after its initializer";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();
+			
+			function myConstArgs( arg1 ) {
+			
+			 	const n2;
+			 	n2 = -( n1 / 30 );
+			 	return n2;
+			}
+			
+			
+			var thisError:String = "no error";
+			
+			try
+			{
+			    myConstArgs( 10 );
+			}
+			catch(err)
+			{
+			    thisError = err.toString();
+			}
+			finally
+			{
+			    AddTestCase("Initialize a local const inside a function after its initializer", "Illegal write to local const n2", thisError);
+			}
+			
+			test();
+			return results();
+		}
+	}
 }
-
-
-var thisError:String = "no error";
-
-try
-{
-    myConstArgs( 10 );
-}
-catch(err)
-{
-    thisError = err.toString();
-}
-finally
-{
-    AddTestCase("Initialize a local const inside a function after its initializer", "Illegal write to local const n2", thisError);
-}
-
-test();

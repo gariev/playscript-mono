@@ -38,21 +38,28 @@
 1076	Math is not a constructor.
 */
 
-var CODE = 1076;
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-try {
-	var z = "no error";
-	new Math();
-} catch (err) {
-	z = err.toString();
-} finally {
-	AddTestCase("Runtime Error", "TypeError: Error #" + CODE, typeError(z));
+package {
+	public class Error1076MathNotAConstructorTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1076;
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			try {
+				var z = "no error";
+				new Math();
+			} catch (err) {
+				z = err.toString();
+			} finally {
+				AddTestCase("Runtime Error", "TypeError: Error #" + CODE, typeError(z));
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

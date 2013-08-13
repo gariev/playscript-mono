@@ -41,26 +41,33 @@
    method were invoiked for this object with no argument.
    */
 
-var SECTION = "15.4.4.3-1";
-var VERSION = "ECMA_1";
-startTest();
-
-writeHeaderToLog( SECTION + " Vector.join()-initializers");
-
-AddTestCase(	"join empty vector",
-		"",
-		new<int>[].join());
-
-AddTestCase(	"join vector 0-9",
-		"0,1,2,3,4,5,6,7,8,9",
-		new <int>[0,1,2,3,4,5,6,7,8,9].join());
-
-AddTestCase(	"join vector with 'and' separator",
-		"0 and 1 and 2 and 3 and 4 and 5 and 6 and 7 and 8 and 9",
-		new <int>[0,1,2,3,4,5,6,7,8,9].join(" and "));
-
-AddTestCase(	"join vector with '|' separator",
-		"0|1|2|3|4|5|6|7|8|9",
-		new <int>[0,1,2,3,4,5,6,7,8,9].join("|"));
-
-test();
+package {
+	public class joinInitializersTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "15.4.4.3-1";
+			var VERSION = "ECMA_1";
+			startTest();
+			
+			writeHeaderToLog( SECTION + " Vector.join()-initializers");
+			
+			AddTestCase(	"join empty vector",
+					"",
+					new<int>[].join());
+			
+			AddTestCase(	"join vector 0-9",
+					"0,1,2,3,4,5,6,7,8,9",
+					new <int>[0,1,2,3,4,5,6,7,8,9].join());
+			
+			AddTestCase(	"join vector with 'and' separator",
+					"0 and 1 and 2 and 3 and 4 and 5 and 6 and 7 and 8 and 9",
+					new <int>[0,1,2,3,4,5,6,7,8,9].join(" and "));
+			
+			AddTestCase(	"join vector with '|' separator",
+					"0|1|2|3|4|5|6|7|8|9",
+					new <int>[0,1,2,3,4,5,6,7,8,9].join("|"));
+			
+			test();
+			return results();
+		}
+	}
+}

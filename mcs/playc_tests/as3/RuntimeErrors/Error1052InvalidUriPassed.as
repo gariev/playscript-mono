@@ -34,23 +34,30 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-var CODE = 1052; //	Invalid URI passed to _ function.
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-var expected = "Error #" + CODE;
-var result = "no error";
-try {
-	var uri = String.fromCharCode(56320); //0xDC00
-	encodeURI(uri);
-} catch (err) {
-	result = grabError(err, err.toString());
-} finally {
-	AddTestCase("Runtime Error", expected, result);
+package {
+	public class Error1052InvalidUriPassedTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1052; //	Invalid URI passed to _ function.
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			var expected = "Error #" + CODE;
+			var result = "no error";
+			try {
+				var uri = String.fromCharCode(56320); //0xDC00
+				encodeURI(uri);
+			} catch (err) {
+				result = grabError(err, err.toString());
+			} finally {
+				AddTestCase("Runtime Error", expected, result);
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

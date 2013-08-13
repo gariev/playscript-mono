@@ -34,24 +34,31 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-var CODE = 1056; //	Cannot create property _ on _.
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-class C {}
-
-try {
-	var result = "no error";
-	var c:C = new C();
-	c.c = 0;
-} catch (err) {
-	result = err.toString();
-} finally {
-	AddTestCase("Runtime Error", REFERENCEERROR + CODE, referenceError(result));
+package {
+	public class Error1056CannotCreatePropInSealedClassTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1056; //	Cannot create property _ on _.
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			class C {}
+			
+			try {
+				var result = "no error";
+				var c:C = new C();
+				c.c = 0;
+			} catch (err) {
+				result = err.toString();
+			} finally {
+				AddTestCase("Runtime Error", REFERENCEERROR + CODE, referenceError(result));
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

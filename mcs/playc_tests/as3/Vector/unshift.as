@@ -43,62 +43,69 @@
      and the length property of object is updated.
    *
    */
-var SECTION="";
-var VERSION = "ECMA_1";
-
-startTest();
-
-writeHeaderToLog( " Vector.unshift()");
-
-var v1=new Vector.<int>();
-v1.unshift();
-AddTestCase(
-		"unshift empty vector with no items still empty",
-		"",
-		v1.toString());
-var v1=new Vector.<int>();
-v1.unshift(10);
-AddTestCase(
-		"unshift empty vector with single item",
-		"10",
-		v1.toString());
-
-var v1=new Vector.<int>();
-v1[0]=10;
-v1.unshift(11);
-AddTestCase(
-		"unshift single element vector with single item",
-		"11,10",
-		v1.toString());
-
-var v1=new Vector.<int>();
-for (var i=0;i<10;i++) v1[i]=i;
-v1.unshift(11);
-AddTestCase(
-		"unshift small vector with single item",
-		"11,0,1,2,3,4,5,6,7,8,9",
-		v1.toString());
-
-var v1=new Vector.<int>(3,true);
-v1[0]=10; v1[1]=11; v1[2]=12;
-var errormsg="";
-try {
-  v1.unshift(9);
-} catch (e) {
-  errormsg=e.toString();
+package {
+	public class unshiftTest extends BaseTest {
+		public static function Main():int {
+			var SECTION="";
+			var VERSION = "ECMA_1";
+			
+			startTest();
+			
+			writeHeaderToLog( " Vector.unshift()");
+			
+			var v1=new Vector.<int>();
+			v1.unshift();
+			AddTestCase(
+					"unshift empty vector with no items still empty",
+					"",
+					v1.toString());
+			var v1=new Vector.<int>();
+			v1.unshift(10);
+			AddTestCase(
+					"unshift empty vector with single item",
+					"10",
+					v1.toString());
+			
+			var v1=new Vector.<int>();
+			v1[0]=10;
+			v1.unshift(11);
+			AddTestCase(
+					"unshift single element vector with single item",
+					"11,10",
+					v1.toString());
+			
+			var v1=new Vector.<int>();
+			for (var i=0;i<10;i++) v1[i]=i;
+			v1.unshift(11);
+			AddTestCase(
+					"unshift small vector with single item",
+					"11,0,1,2,3,4,5,6,7,8,9",
+					v1.toString());
+			
+			var v1=new Vector.<int>(3,true);
+			v1[0]=10; v1[1]=11; v1[2]=12;
+			var errormsg="";
+			try {
+			  v1.unshift(9);
+			} catch (e) {
+			  errormsg=e.toString();
+			}
+			AddTestCase(
+					"unshift single element vector with single item",
+					"RangeError: Error #1126",
+					parseError(errormsg,"RangeError: Error #1126".length));
+			
+			// bug: https://bugzilla.mozilla.org/show_bug.cgi?id=469377
+			var strVector = new Vector.<String>;
+			strVector.push("Carol", "Justine");
+			strVector.unshift("Betty");
+			AddTestCase(
+			    "Vector.<String>.unshift()",
+			    "Betty,Carol,Justine",
+			    strVector.toString());
+			
+			test();
+			return results();
+		}
+	}
 }
-AddTestCase(
-		"unshift single element vector with single item",
-		"RangeError: Error #1126",
-		parseError(errormsg,"RangeError: Error #1126".length));
-
-// bug: https://bugzilla.mozilla.org/show_bug.cgi?id=469377
-var strVector = new Vector.<String>;
-strVector.push("Carol", "Justine");
-strVector.unshift("Betty");
-AddTestCase(
-    "Vector.<String>.unshift()",
-    "Betty,Carol,Justine",
-    strVector.toString());
-
-test();

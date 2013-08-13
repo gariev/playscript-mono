@@ -35,47 +35,54 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var SECTION = "Directives";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "namespace attributes";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-
-
-class A{
-namespace Baseball;
-
-// public namespace
-public var teamName="Public";
-Baseball var teamName="Giants" 
-
-public function a1(){
- return public::teamName
+package {
+	public class PublicNSVarAttrTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Directives";       // provide a document reference (ie, Actionscript section)
+			var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
+			var TITLE   = "namespace attributes";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			
+			
+			class A{
+			namespace Baseball;
+			
+			// public namespace
+			public var teamName="Public";
+			Baseball var teamName="Giants" 
+			
+			public function a1(){
+			 return public::teamName
+			}
+			
+			public function a2(){
+			 return Baseball::teamName
+			}
+			
+			public function a3(){
+			use namespace Baseball;
+			 return public::teamName
+			}
+			
+			public function a4(){
+			use namespace Baseball;
+			 return Baseball::teamName
+			}
+			}
+			
+			var obj:A = new A();
+			
+			AddTestCase( "public::teamName", "Public", obj.a1());
+			AddTestCase( "Baseball::teamName", "Giants", obj.a2());
+			
+			AddTestCase( "public::teamName", "Public", obj.a3());
+			AddTestCase( "Baseball::teamName", "Giants", obj.a4());
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
 }
-
-public function a2(){
- return Baseball::teamName
-}
-
-public function a3(){
-use namespace Baseball;
- return public::teamName
-}
-
-public function a4(){
-use namespace Baseball;
- return Baseball::teamName
-}
-}
-
-var obj:A = new A();
-
-AddTestCase( "public::teamName", "Public", obj.a1());
-AddTestCase( "Baseball::teamName", "Giants", obj.a2());
-
-AddTestCase( "public::teamName", "Public", obj.a3());
-AddTestCase( "Baseball::teamName", "Giants", obj.a4());
-test();       // leave this alone.  this executes the test cases and
-              // displays results.

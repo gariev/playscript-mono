@@ -35,21 +35,28 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-var TITLE   = "const & function arg with same name";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();
-
-const num1:Number = 1;
-const num2:Number = 3;
-
-function getNumber(num1:Number, num2:Number)
-{
-    return this.num1 + this.num2;
+package {
+	public class ConstAndFunctionArgWithSameName2Test extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE   = "const & function arg with same name";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();
+			
+			const num1:Number = 1;
+			const num2:Number = 3;
+			
+			function getNumber(num1:Number, num2:Number)
+			{
+			    return this.num1 + this.num2;
+			}
+			
+			AddTestCase("const and function arg share same name, access const with this.  should return the sum of the two const", 4, getNumber(1, 1));
+			
+			test();
+			return results();
+		}
+	}
 }
-
-AddTestCase("const and function arg share same name, access const with this.  should return the sum of the two const", 4, getNumber(1, 1));
-
-test();

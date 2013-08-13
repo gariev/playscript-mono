@@ -36,33 +36,40 @@
  * ***** END LICENSE BLOCK ***** */
 
 
-class DefaultClass {
-  public static function baseClass() {
-	 // print("base is invoked");
-  }
+package {
+	public class ExtDefImplDefDefPubStatErr1Test extends BaseTest {
+		public static function Main():int {
+			class DefaultClass {
+			  public static function baseClass() {
+				 // print("base is invoked");
+			  }
+			}
+			
+			var SECTION = "RTE";
+			var VERSION = "AS3";
+			var TITLE = "accessing public static method outside of the class";
+			var BUGNUMBER = "";
+			
+			startTest();
+			
+			var out = new DefaultClass();
+			
+			var error = "no error thrown";
+			
+			try {
+			  out.baseClass();
+			} catch (e) {
+			  error = e.toString();
+			}
+			
+			AddTestCase("accessing public static method outside of the class, RTE #1069",
+				"ReferenceError: Error #1069",
+				error.substr(0,27));
+				// print( "FAILED, should give run time error : accessing public static method outside of the class" );
+			
+			test();
+			
+			return results();
+		}
+	}
 }
-
-var SECTION = "RTE";
-var VERSION = "AS3";
-var TITLE = "accessing public static method outside of the class";
-var BUGNUMBER = "";
-
-startTest();
-
-var out = new DefaultClass();
-
-var error = "no error thrown";
-
-try {
-  out.baseClass();
-} catch (e) {
-  error = e.toString();
-}
-
-AddTestCase("accessing public static method outside of the class, RTE #1069",
-	"ReferenceError: Error #1069",
-	error.substr(0,27));
-	// print( "FAILED, should give run time error : accessing public static method outside of the class" );
-
-test();
-

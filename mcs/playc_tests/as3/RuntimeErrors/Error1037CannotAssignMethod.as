@@ -34,27 +34,34 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-var CODE = 1037; //	Cannot assign to a method _ on _.
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-class A {
-	function f() {}
+package {
+	public class Error1037CannotAssignMethodTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1037; //	Cannot assign to a method _ on _.
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			class A {
+				function f() {}
+			}
+			
+			var expected = "Error #" + CODE;
+			var result = "no error";
+			try {
+				var a = new A();
+				a.f = function () {}
+			} catch (err) {
+				result = grabError(err, err.toString());
+			} finally {
+				AddTestCase("Runtime Error", expected, result);
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-var expected = "Error #" + CODE;
-var result = "no error";
-try {
-	var a = new A();
-	a.f = function () {}
-} catch (err) {
-	result = grabError(err, err.toString());
-} finally {
-	AddTestCase("Runtime Error", expected, result);
-}
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

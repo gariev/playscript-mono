@@ -38,22 +38,29 @@
 1010	A term is undefined and has no properties.
 */
 
-var CODE = 1010;
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-try {
-	var z = "no error";
-	var obj:Object = new Object();
-	var a = obj.x.prop;
-} catch (err) {
-	z = err.toString();
-} finally {
-	AddTestCase("Runtime Error", "TypeError: Error #" + CODE, typeError(z));
+package {
+	public class Error1010UndefinedTermTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1010;
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			try {
+				var z = "no error";
+				var obj:Object = new Object();
+				var a = obj.x.prop;
+			} catch (err) {
+				z = err.toString();
+			} finally {
+				AddTestCase("Runtime Error", "TypeError: Error #" + CODE, typeError(z));
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

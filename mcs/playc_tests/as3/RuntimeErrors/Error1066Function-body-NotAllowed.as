@@ -34,21 +34,28 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-var CODE = 1066; //	The form function('function body') is not supported.
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-try {
-	var result = "no error";
-	var f = new Function( "a","b", "c", "return f.length");
-} catch (err) {
-	result = err.toString();
-} finally {
-	AddTestCase("Runtime Error", "EvalError: Error #" + CODE, typeError(result));
+package {
+	public class Error1066Function-body-NotAllowedTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1066; //	The form function('function body') is not supported.
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			try {
+				var result = "no error";
+				var f = new Function( "a","b", "c", "return f.length");
+			} catch (err) {
+				result = err.toString();
+			} finally {
+				AddTestCase("Runtime Error", "EvalError: Error #" + CODE, typeError(result));
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

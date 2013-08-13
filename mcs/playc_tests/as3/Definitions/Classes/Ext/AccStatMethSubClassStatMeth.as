@@ -36,49 +36,56 @@
  * ***** END LICENSE BLOCK ***** */
 
 
-var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-var VERSION = "AS 3.0";  // Version of JavaScript or ECMA
-var TITLE   = "Access static method of base class from subclass static method";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-/**
- * Calls to AddTestCase here. AddTestCase is a function that is defined
- * in shell.js and takes three arguments:
- * - a string representation of what is being tested
- * - the expected result
- * - the actual result
- *
- * For example, a test might look like this:
- *
- * var helloWorld = "Hello World";
- *
- * AddTestCase(
- * "var helloWorld = 'Hello World'",   // description of the test
- *  "Hello World",                     // expected result
- *  helloWorld );                      // actual result
- *
- */
-
-import StaticPropertyPackage.*;
-  
-
-// ********************************************
-// Access the static method via sub class, 
-// using unadorned "foo()"
-// ********************************************
-AddTestCase( "*** Access the static method via sub class using unadorned method call ***", 1, 1 );
-AddTestCase( "AccStatMethSubClassStatMeth.callEcho('world')", "world", AccStatMethSubClassStatMeth.callEcho("world") );
-
-// ********************************************
-// Access the static method via sub class, 
-// using "BaseClass.foo()"
-// ********************************************
-AddTestCase( "*** Access the static method via sub class using base class method call ***", 1, 1 );
-AddTestCase( "AccStatMethSubClassStatMeth.callBaseEcho('here')", "here", AccStatMethSubClassStatMeth.callBaseEcho("here") );
-
-
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	public class AccStatMethSubClassStatMethTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION = "AS 3.0";  // Version of JavaScript or ECMA
+			var TITLE   = "Access static method of base class from subclass static method";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			/**
+			 * Calls to AddTestCase here. AddTestCase is a function that is defined
+			 * in shell.js and takes three arguments:
+			 * - a string representation of what is being tested
+			 * - the expected result
+			 * - the actual result
+			 *
+			 * For example, a test might look like this:
+			 *
+			 * var helloWorld = "Hello World";
+			 *
+			 * AddTestCase(
+			 * "var helloWorld = 'Hello World'",   // description of the test
+			 *  "Hello World",                     // expected result
+			 *  helloWorld );                      // actual result
+			 *
+			 */
+			
+			import StaticPropertyPackage.*;
+			  
+			
+			// ********************************************
+			// Access the static method via sub class, 
+			// using unadorned "foo()"
+			// ********************************************
+			AddTestCase( "*** Access the static method via sub class using unadorned method call ***", 1, 1 );
+			AddTestCase( "AccStatMethSubClassStatMeth.callEcho('world')", "world", AccStatMethSubClassStatMeth.callEcho("world") );
+			
+			// ********************************************
+			// Access the static method via sub class, 
+			// using "BaseClass.foo()"
+			// ********************************************
+			AddTestCase( "*** Access the static method via sub class using base class method call ***", 1, 1 );
+			AddTestCase( "AccStatMethSubClassStatMeth.callBaseEcho('here')", "here", AccStatMethSubClassStatMeth.callBaseEcho("here") );
+			
+			
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

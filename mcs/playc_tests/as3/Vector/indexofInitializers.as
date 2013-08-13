@@ -44,40 +44,47 @@
    *
    */
 
-var SECTION = ""
-var VERSION = "ECMA_1";
-
-startTest();
-
-writeHeaderToLog( SECTION + " Vector.indexOf()");
-
-AddTestCase(	"indexOf empty vector",
-		-1,
-		new <int>[].indexOf(0));
-
-AddTestCase(	"indexOf object not found",
-		-1,
-		new <int>[0,1,2,3,4,5,6,7,8,9].indexOf(10));
-
-AddTestCase(	"indexOf single match found",
-		4,
-		new <int>[0,1,2,3,4,5,6,7,8,9].indexOf(4));
-
-AddTestCase(	"indexOf first match found",
-		4,
-		new <int>[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9].indexOf(4));
-
-AddTestCase(	"indexOf first match found setting start parameter",
-		4,
-		new <int>[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9].indexOf(4,2));
-
-AddTestCase(	"indexOf start parameter greater than vector length",
-		-1,
-		new <int>[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9].indexOf(4,100));
-
-AddTestCase(	"indexOf start parameter negative",
-		-1,
-		new <int>[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9].indexOf(4,-1));
-
-test();
-
+package {
+	public class indexofInitializersTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = ""
+			var VERSION = "ECMA_1";
+			
+			startTest();
+			
+			writeHeaderToLog( SECTION + " Vector.indexOf()");
+			
+			AddTestCase(	"indexOf empty vector",
+					-1,
+					new <int>[].indexOf(0));
+			
+			AddTestCase(	"indexOf object not found",
+					-1,
+					new <int>[0,1,2,3,4,5,6,7,8,9].indexOf(10));
+			
+			AddTestCase(	"indexOf single match found",
+					4,
+					new <int>[0,1,2,3,4,5,6,7,8,9].indexOf(4));
+			
+			AddTestCase(	"indexOf first match found",
+					4,
+					new <int>[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9].indexOf(4));
+			
+			AddTestCase(	"indexOf first match found setting start parameter",
+					4,
+					new <int>[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9].indexOf(4,2));
+			
+			AddTestCase(	"indexOf start parameter greater than vector length",
+					-1,
+					new <int>[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9].indexOf(4,100));
+			
+			AddTestCase(	"indexOf start parameter negative",
+					-1,
+					new <int>[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9].indexOf(4,-1));
+			
+			test();
+			
+			return results();
+		}
+	}
+}

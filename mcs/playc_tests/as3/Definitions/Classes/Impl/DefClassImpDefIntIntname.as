@@ -34,27 +34,34 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-import DefClassImpDefIntIntname.*;
-var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
-var TITLE   = "Default class implements two default interfaces";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-
-///////////////////////////////////////////////////////////////
-// add your tests here
-  
-
-var obj:DefaultClassAccesor = new DefaultClassAccesor(); 
-//Default class implements the first default interface with an interface name method
-AddTestCase("Default class implements the first default interface with an interface name method", "PASSED", obj.accdeffunc());
-//Default class implements the second default interface with an interface name method
-AddTestCase("Default class implements the second default interface with an interface name method", "PASSED", obj.accdeffunc_s());
-
-
-////////////////////////////////////////////////////////////////
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	import DefClassImpDefIntIntname.*;
+	public class DefClassImpDefIntIntnameTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
+			var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
+			var TITLE   = "Default class implements two default interfaces";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			
+			///////////////////////////////////////////////////////////////
+			// add your tests here
+			  
+			
+			var obj:DefaultClassAccesor = new DefaultClassAccesor(); 
+			//Default class implements the first default interface with an interface name method
+			AddTestCase("Default class implements the first default interface with an interface name method", "PASSED", obj.accdeffunc());
+			//Default class implements the second default interface with an interface name method
+			AddTestCase("Default class implements the second default interface with an interface name method", "PASSED", obj.accdeffunc_s());
+			
+			
+			////////////////////////////////////////////////////////////////
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

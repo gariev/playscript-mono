@@ -35,23 +35,30 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-import InternalClassPackage.*;
-
-
-var SECTION = "Definitions";       							// provide a document reference (ie, ECMA section)
-var VERSION = "AS 3.0";  								// Version of JavaScript or ECMA
-var TITLE   = "Override public function in public class extending internal class";    	// Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                							// leave this alone
-
-
-var CLASSDEFN = new PubExtInternalOverRidePublic();
-
-AddTestCase( "*** Default Methods and Default properites ***", 1, 1 );
-AddTestCase( "CLASSDEFN.setArray(['test']), CLASSDEFN.getArray()", ["override","worked","test"].toString(), ( CLASSDEFN.setArray(["test"]), CLASSDEFN.getArray().toString() ) );
-
-
-test();       		// Leave this function alone.
-			// This function is for executing the test case and then
-			// displaying the result on to the console or the LOG file.
+package {
+	import InternalClassPackage.*;
+	
+	
+	public class PubExtInternalOverRidePublicTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions";       							// provide a document reference (ie, ECMA section)
+			var VERSION = "AS 3.0";  								// Version of JavaScript or ECMA
+			var TITLE   = "Override public function in public class extending internal class";    	// Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                							// leave this alone
+			
+			
+			var CLASSDEFN = new PubExtInternalOverRidePublic();
+			
+			AddTestCase( "*** Default Methods and Default properites ***", 1, 1 );
+			AddTestCase( "CLASSDEFN.setArray(['test']), CLASSDEFN.getArray()", ["override","worked","test"].toString(), ( CLASSDEFN.setArray(["test"]), CLASSDEFN.getArray().toString() ) );
+			
+			
+			test();       		// Leave this function alone.
+						// This function is for executing the test case and then
+						// displaying the result on to the console or the LOG file.
+			return results();
+		}
+	}
+}

@@ -36,20 +36,27 @@
  * ***** END LICENSE BLOCK ***** */
 
 
-startTest();                // leave this alone
-
-
-
-function UintArgs(n1:uint , n2:uint):uint {
- 
-  
- return ((((n1 + n2) - 10) * 10) / 10);
-
+package {
+	public class UintVarOperationInFuncRetTest extends BaseTest {
+		public static function Main():int {
+			startTest();                // leave this alone
+			
+			
+			
+			function UintArgs(n1:uint , n2:uint):uint {
+			 
+			  
+			 return ((((n1 + n2) - 10) * 10) / 10);
+			
+			}
+			
+			
+			AddTestCase( "Calling function with 1 uint argument", 20 , UintArgs(20,10) );
+			
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
 }
-
-
-AddTestCase( "Calling function with 1 uint argument", 20 , UintArgs(20,10) );
-
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.

@@ -44,113 +44,120 @@
      returns a new vector object containing the elements that were collected in the order
      they were collected.
    */
-var SECTION="";
-var VERSION = "ECMA_1";
-
-startTest();
-
-writeHeaderToLog( " Vector.filter()");
-
-function EvenChecker(value,index,obj) {
-  if (value%2==0)
-    return true;
-  return false;
+package {
+	public class filterTest extends BaseTest {
+		public static function Main():int {
+			var SECTION="";
+			var VERSION = "ECMA_1";
+			
+			startTest();
+			
+			writeHeaderToLog( " Vector.filter()");
+			
+			function EvenChecker(value,index,obj) {
+			  if (value%2==0)
+			    return true;
+			  return false;
+			}
+			var invalidchecker="a string";
+			function ThisChecker(value,index,obj):Boolean {
+			  msg+=this.message;
+			  return true;
+			}
+			
+			var v1=new Vector.<int>();
+			var errormsg="";
+			try {
+			  var result=v1.filter();
+			} catch (e) {
+			  errormsg=e.toString();
+			}
+			AddTestCase(	"filter checker is undefined",
+					"ArgumentError: Error #1063",
+			    parseError(errormsg,"ArgumentError: Error #1063".length));
+			
+			var v1:Vector.<int>=new Vector.<int>(10);
+			for (var i=0;i<10;i++) v1[i]=i;
+			var errormsg="";
+			try {
+			  var result=v1.filter(invalidchecker);
+			} catch (e) {
+			  errormsg=e.toString();
+			}
+			AddTestCase(	"filter checker is not a function",
+					"TypeError: Error #1034",
+			              parseError(errormsg,"TypeError: Error #1034".length));
+			
+			var v1:Vector.<int>=new Vector.<int>();
+			var result=v1.filter(EvenChecker);
+			AddTestCase(	"filter empty vector",
+					"",
+					result.toString());
+			
+			var v1:Vector.<int>=new Vector.<int>();
+			for (var i=0;i<10;i++) v1[i]=i;
+			var result=v1.filter(EvenChecker);
+			AddTestCase(	"filter small vector",
+					"0,2,4,6,8",
+					result.toString());
+			
+			var v1:Vector.<int>=new Vector.<int>();
+			for (var i=0;i<3;i++) v1[i]=i;
+			var myobject=new Object();
+			myobject.message="message";
+			var msg="";
+			var result=v1.filter(ThisChecker,myobject);
+			AddTestCase(	"filter use thisobj",
+					"messagemessagemessage",
+					msg);
+			
+			// Bugzilla https://bugzilla.mozilla.org/show_bug.cgi?id=513095
+			var items:Vector.<String> = new Vector.<String>;
+			items.push("one");
+			items.push("two");
+			items.push("three");
+			
+			var filtered:Vector.<String> = items.filter(function(item:String, index:int,
+			                                                     source:Vector.<String>):Boolean
+			                                            {
+			                                                return item == "two";
+			                                            });
+			AddTestCase("Bug 513095: Type-check filter function",
+			            "two",
+			            filtered.toString()
+			            );
+			
+			class TestClass {
+			    private var myVal:Object;
+			    
+			    static public function over100(item:TestClass, index:int, vector:Vector.<TestClass>):Boolean {
+			        if (item.myVal > 100) 
+			            return true;
+			        return false;
+			    }
+			    
+			    public function TestClass(v:Object):void {
+			        myVal = v;
+			    }
+			    
+			    public function toString():String {
+			        return myVal.toString();
+			    }
+			    
+			    
+			}
+			
+			var v2 = new <TestClass> [new TestClass(150), new TestClass(40), new TestClass(-200), new TestClass(400)];
+			var v2filtered = v2.filter(TestClass.over100);
+			
+			AddTestCase("Filtered custom class",
+			            "150,400",
+			            v2filtered.toString()
+			            );
+			
+			
+			test();
+			return results();
+		}
+	}
 }
-var invalidchecker="a string";
-function ThisChecker(value,index,obj):Boolean {
-  msg+=this.message;
-  return true;
-}
-
-var v1=new Vector.<int>();
-var errormsg="";
-try {
-  var result=v1.filter();
-} catch (e) {
-  errormsg=e.toString();
-}
-AddTestCase(	"filter checker is undefined",
-		"ArgumentError: Error #1063",
-    parseError(errormsg,"ArgumentError: Error #1063".length));
-
-var v1:Vector.<int>=new Vector.<int>(10);
-for (var i=0;i<10;i++) v1[i]=i;
-var errormsg="";
-try {
-  var result=v1.filter(invalidchecker);
-} catch (e) {
-  errormsg=e.toString();
-}
-AddTestCase(	"filter checker is not a function",
-		"TypeError: Error #1034",
-              parseError(errormsg,"TypeError: Error #1034".length));
-
-var v1:Vector.<int>=new Vector.<int>();
-var result=v1.filter(EvenChecker);
-AddTestCase(	"filter empty vector",
-		"",
-		result.toString());
-
-var v1:Vector.<int>=new Vector.<int>();
-for (var i=0;i<10;i++) v1[i]=i;
-var result=v1.filter(EvenChecker);
-AddTestCase(	"filter small vector",
-		"0,2,4,6,8",
-		result.toString());
-
-var v1:Vector.<int>=new Vector.<int>();
-for (var i=0;i<3;i++) v1[i]=i;
-var myobject=new Object();
-myobject.message="message";
-var msg="";
-var result=v1.filter(ThisChecker,myobject);
-AddTestCase(	"filter use thisobj",
-		"messagemessagemessage",
-		msg);
-
-// Bugzilla https://bugzilla.mozilla.org/show_bug.cgi?id=513095
-var items:Vector.<String> = new Vector.<String>;
-items.push("one");
-items.push("two");
-items.push("three");
-
-var filtered:Vector.<String> = items.filter(function(item:String, index:int,
-                                                     source:Vector.<String>):Boolean
-                                            {
-                                                return item == "two";
-                                            });
-AddTestCase("Bug 513095: Type-check filter function",
-            "two",
-            filtered.toString()
-            );
-
-class TestClass {
-    private var myVal:Object;
-    
-    static public function over100(item:TestClass, index:int, vector:Vector.<TestClass>):Boolean {
-        if (item.myVal > 100) 
-            return true;
-        return false;
-    }
-    
-    public function TestClass(v:Object):void {
-        myVal = v;
-    }
-    
-    public function toString():String {
-        return myVal.toString();
-    }
-    
-    
-}
-
-var v2 = new <TestClass> [new TestClass(150), new TestClass(40), new TestClass(-200), new TestClass(400)];
-var v2filtered = v2.filter(TestClass.over100);
-
-AddTestCase("Filtered custom class",
-            "150,400",
-            v2filtered.toString()
-            );
-
-
-test();

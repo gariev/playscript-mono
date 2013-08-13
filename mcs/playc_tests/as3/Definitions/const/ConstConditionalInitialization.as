@@ -35,17 +35,24 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-var TITLE   = "conditional initialization of const globally";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-var cond:Boolean = true;
-
-const num1:Number = (cond)? 3 : 0;
-
-startTest();
-
-AddTestCase("Conditional initiailization of const", 3, num1);
-
-test();
+package {
+	public class ConstConditionalInitializationTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE   = "conditional initialization of const globally";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			var cond:Boolean = true;
+			
+			const num1:Number = (cond)? 3 : 0;
+			
+			startTest();
+			
+			AddTestCase("Conditional initiailization of const", 3, num1);
+			
+			test();
+			return results();
+		}
+	}
+}

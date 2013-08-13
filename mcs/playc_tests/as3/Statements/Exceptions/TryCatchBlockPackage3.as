@@ -37,20 +37,27 @@
 
 
 
-import TryCatchBlockPackage3.*;
-
-var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";                   // Version of JavaScript or ECMA
-var TITLE   = "Testing try block with multiple catch blocks";  // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-var trythrow:TryAndCatchBlockWithUserDefinedErrors = new TryAndCatchBlockWithUserDefinedErrors();
-trythrow.MyTryThrowCatchFunction();
-
-                               
-
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	import TryCatchBlockPackage3.*;
+	
+	public class TryCatchBlockPackage3Test extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
+			var VERSION = "AS3";                   // Version of JavaScript or ECMA
+			var TITLE   = "Testing try block with multiple catch blocks";  // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			var trythrow:TryAndCatchBlockWithUserDefinedErrors = new TryAndCatchBlockWithUserDefinedErrors();
+			trythrow.MyTryThrowCatchFunction();
+			
+			                               
+			
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

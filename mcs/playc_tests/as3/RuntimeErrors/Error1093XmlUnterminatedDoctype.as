@@ -34,22 +34,29 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-var CODE = 1093; //	XML parser failure: Unterminated DOCTYPE declaration.
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-try {
-	var result = "no error";
-	var y = "<!DOCTYPE greeting SYSTEM 'hello.dtd'";
-	var z = new XML(y);
-} catch (err) {
-	result = err.toString();
-} finally {
-	AddTestCase("Runtime Error", TYPEERROR + CODE, typeError(result));
+package {
+	public class Error1093XmlUnterminatedDoctypeTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1093; //	XML parser failure: Unterminated DOCTYPE declaration.
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			try {
+				var result = "no error";
+				var y = "<!DOCTYPE greeting SYSTEM 'hello.dtd'";
+				var z = new XML(y);
+			} catch (err) {
+				result = err.toString();
+			} finally {
+				AddTestCase("Runtime Error", TYPEERROR + CODE, typeError(result));
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

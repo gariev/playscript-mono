@@ -35,31 +35,38 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-var TITLE   = "Initialize a class static const globally";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();
-
-class myTestConst {
-
-	static const statConst;
-
+package {
+	public class StaticConstInitializationOutsideClass_rtTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE   = "Initialize a class static const globally";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();
+			
+			class myTestConst {
+			
+				static const statConst;
+			
+			}
+			
+			var thisError:String = "no error";
+			try
+			{
+			    myTestConst.statConst = -1;
+			}
+			catch(err)
+			{
+			    thisError = err.toString();
+			}
+			finally
+			{
+			    AddTestCase("Initialize a class static const globally", "ReferenceError: Error #1074" , referenceError(thisError));
+			}
+			
+			test();
+			return results();
+		}
+	}
 }
-
-var thisError:String = "no error";
-try
-{
-    myTestConst.statConst = -1;
-}
-catch(err)
-{
-    thisError = err.toString();
-}
-finally
-{
-    AddTestCase("Initialize a class static const globally", "ReferenceError: Error #1074" , referenceError(thisError));
-}
-
-test();

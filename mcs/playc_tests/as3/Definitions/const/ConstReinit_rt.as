@@ -35,28 +35,35 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-var TITLE   = "reinitialization of const";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-const string1:String = "abc";
-
-startTest();
-
-var thisError:String = "no error";
-
-try
-{
-    string1 = "def";
+package {
+	public class ConstReinit_rtTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE   = "reinitialization of const";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			const string1:String = "abc";
+			
+			startTest();
+			
+			var thisError:String = "no error";
+			
+			try
+			{
+			    string1 = "def";
+			}
+			catch(err)
+			{
+			    thisError = err.toString();
+			}
+			finally
+			{
+			    AddTestCase("Reinitialize const in global context", "ReferenceError: Error #1074", referenceError(thisError));
+			}
+			
+			test();
+			return results();
+		}
+	}
 }
-catch(err)
-{
-    thisError = err.toString();
-}
-finally
-{
-    AddTestCase("Reinitialize const in global context", "ReferenceError: Error #1074", referenceError(thisError));
-}
-
-test();

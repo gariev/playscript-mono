@@ -34,22 +34,29 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-var CODE = 1003; //	The radix argument must be between 2 and 36; got _.
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-try {
-	var result = "no error";
-	var n:Number = new Number(1);
-	n.toString(1);
-} catch (err) {
-	result = err.toString();
-} finally {
-	AddTestCase("Runtime Error", RANGEERROR + CODE, rangeError(result));
+package {
+	public class Error1003RadixArgOutOfRangeTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1003; //	The radix argument must be between 2 and 36; got _.
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			try {
+				var result = "no error";
+				var n:Number = new Number(1);
+				n.toString(1);
+			} catch (err) {
+				result = err.toString();
+			} finally {
+				AddTestCase("Runtime Error", RANGEERROR + CODE, rangeError(result));
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

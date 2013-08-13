@@ -35,36 +35,43 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-startTest();
-
-function myRest( ... rest ):int{
-	return rest.length;
-}
-
-AddTestCase ("myRest( ... rest) called with zero Args", 0, myRest() );
-AddTestCase ("myRest( ... rest) called with one Arg", 1, myRest(1) );
-AddTestCase ("myRest( ... rest) called with multiple Args", 4, myRest(1,2,3,4) );
-AddTestCase ("myRest( ... rest) called with multiple different Args", 4, myRest(1,"2",false,Number.NaN) );
-
-function foo(){}
-var resArray:Array = [foo, new Array().toString(),-1,2,"3",true,undefined,null,Number.NaN];
-function myRest2( a:Array, ... cust):Boolean {
-	if( cust.length > 0 ){
-		for( var i:int = 0; i < cust.length; i++ ){
-			AddTestCase( "myRest2( a:Array, ... cust)", resArray[i], cust[i] );
+package {
+	public class RestGlobalTest extends BaseTest {
+		public static function Main():int {
+			startTest();
+			
+			function myRest( ... rest ):int{
+				return rest.length;
+			}
+			
+			AddTestCase ("myRest( ... rest) called with zero Args", 0, myRest() );
+			AddTestCase ("myRest( ... rest) called with one Arg", 1, myRest(1) );
+			AddTestCase ("myRest( ... rest) called with multiple Args", 4, myRest(1,2,3,4) );
+			AddTestCase ("myRest( ... rest) called with multiple different Args", 4, myRest(1,"2",false,Number.NaN) );
+			
+			function foo(){}
+			var resArray:Array = [foo, new Array().toString(),-1,2,"3",true,undefined,null,Number.NaN];
+			function myRest2( a:Array, ... cust):Boolean {
+				if( cust.length > 0 ){
+					for( var i:int = 0; i < cust.length; i++ ){
+						AddTestCase( "myRest2( a:Array, ... cust)", resArray[i], cust[i] );
+					}
+					return true;
+				} else {
+					return false;
+				}
+			}
+			
+			if( !myRest2( new Array(),foo, new Array().toString(),-1,2,"3",true,undefined,null,Number.NaN )){
+				AddTestCase("ERROR", 0, 1);
+			}
+			
+			
+			test();
+			
+			
+			
+			return results();
 		}
-		return true;
-	} else {
-		return false;
 	}
 }
-
-if( !myRest2( new Array(),foo, new Array().toString(),-1,2,"3",true,undefined,null,Number.NaN )){
-	AddTestCase("ERROR", 0, 1);
-}
-
-
-test();
-
-
-

@@ -34,24 +34,31 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-import DynamicClassImpInternalInt.*;
-var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
-var TITLE   = "Dynamic class implements internal interface";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-
-///////////////////////////////////////////////////////////////
-// add your tests here
-  
-var obj = new DynamicClassAccessor();
-
-//Dynamic class implements an internal interface with a public method
-AddTestCase("Dynamic class implements an internal interface with a public method", "PASSED", obj.accdeffunc());
-
-////////////////////////////////////////////////////////////////
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	import DynamicClassImpInternalInt.*;
+	public class DynamicClassImpInternalIntTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
+			var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
+			var TITLE   = "Dynamic class implements internal interface";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			
+			///////////////////////////////////////////////////////////////
+			// add your tests here
+			  
+			var obj = new DynamicClassAccessor();
+			
+			//Dynamic class implements an internal interface with a public method
+			AddTestCase("Dynamic class implements an internal interface with a public method", "PASSED", obj.accdeffunc());
+			
+			////////////////////////////////////////////////////////////////
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

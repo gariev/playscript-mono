@@ -35,47 +35,54 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-import InternalClassImpDefInt.*;
-var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
-var TITLE   = "Internal class implements default interface";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-/**
- * Calls to AddTestCase here. AddTestCase is a function that is defined
- * in shell.js and takes three arguments:
- * - a string representation of what is being tested
- * - the expected result
- * - the actual result
- *
- * For example, a test might look like this:
- *
- * var helloWorld = "Hello World";
- *
- * AddTestCase(
- * "var helloWorld = 'Hello World'",   // description of the test
- *  "Hello World",                     // expected result
- *  helloWorld );                      // actual result
- *
- */
-
-///////////////////////////////////////////////////////////////
-// add your tests here
-  
-var obj = new PublicsubClass();
-
-//Public sub class extends Internal class implements a default interface with a default //method
-//AddTestCase("Public class extends Internal class implements a default interface with a default method", //"PASSED", obj.accdeffunc());
-
-//Public class extends Internal class implements a default interface with a public method
-AddTestCase("Public class extends Internal class implements a default interface with a public method", false, obj.pubFunc());
-
-//public class extends Internal class implements a default interface with a namespace method
-AddTestCase("Public class extends Internal class implements a default interface with a namespace method", 4, obj.accnsFunc());
-
-////////////////////////////////////////////////////////////////
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	import InternalClassImpDefInt.*;
+	public class PubSubExtIntClassImpDefaultIntTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
+			var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
+			var TITLE   = "Internal class implements default interface";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			/**
+			 * Calls to AddTestCase here. AddTestCase is a function that is defined
+			 * in shell.js and takes three arguments:
+			 * - a string representation of what is being tested
+			 * - the expected result
+			 * - the actual result
+			 *
+			 * For example, a test might look like this:
+			 *
+			 * var helloWorld = "Hello World";
+			 *
+			 * AddTestCase(
+			 * "var helloWorld = 'Hello World'",   // description of the test
+			 *  "Hello World",                     // expected result
+			 *  helloWorld );                      // actual result
+			 *
+			 */
+			
+			///////////////////////////////////////////////////////////////
+			// add your tests here
+			  
+			var obj = new PublicsubClass();
+			
+			//Public sub class extends Internal class implements a default interface with a default //method
+			//AddTestCase("Public class extends Internal class implements a default interface with a default method", //"PASSED", obj.accdeffunc());
+			
+			//Public class extends Internal class implements a default interface with a public method
+			AddTestCase("Public class extends Internal class implements a default interface with a public method", false, obj.pubFunc());
+			
+			//public class extends Internal class implements a default interface with a namespace method
+			AddTestCase("Public class extends Internal class implements a default interface with a namespace method", 4, obj.accnsFunc());
+			
+			////////////////////////////////////////////////////////////////
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

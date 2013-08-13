@@ -35,24 +35,31 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";  // Version of JavaScript or ECMA
-var TITLE   = "Interface Definition";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-//-----------------------------------------------------------------------------
-
-import ImplementByExtension.*;
-
-var eg = new ImplementTest();
-AddTestCase("implements by inheritance, variety 1", "A::f(),A::f(),A::f(),A::f(),A::f(),A::f()", eg.doCallAF());
-AddTestCase("implements by inheritance, variety 2", "A5::g(),A6::g()", eg.doCallAG());
-AddTestCase("implements by inheritance, variety 3", "B1::f(),B2::f(),B3::f()", eg.doCallBF());
-AddTestCase("implements by inheritance, variety 4", "B::g(),B::g(),B::g()", eg.doCallBG());
-AddTestCase("implements by inheritance, variety 5", "A::f(),A::f(),A::f(),A::f(),A::f(),A::f(),A::f(),A::f(),A::f()", eg.doCallCF());
-AddTestCase("implements by inheritance, variety 6", "C::g(),C::g(),C::g(),C::g(),C::g(),C::g(),C::g(),CY::g(),CY::g()", eg.doCallCG());
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	public class ImplementByExtensionTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION = "AS3";  // Version of JavaScript or ECMA
+			var TITLE   = "Interface Definition";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			//-----------------------------------------------------------------------------
+			
+			import ImplementByExtension.*;
+			
+			var eg = new ImplementTest();
+			AddTestCase("implements by inheritance, variety 1", "A::f(),A::f(),A::f(),A::f(),A::f(),A::f()", eg.doCallAF());
+			AddTestCase("implements by inheritance, variety 2", "A5::g(),A6::g()", eg.doCallAG());
+			AddTestCase("implements by inheritance, variety 3", "B1::f(),B2::f(),B3::f()", eg.doCallBF());
+			AddTestCase("implements by inheritance, variety 4", "B::g(),B::g(),B::g()", eg.doCallBG());
+			AddTestCase("implements by inheritance, variety 5", "A::f(),A::f(),A::f(),A::f(),A::f(),A::f(),A::f(),A::f(),A::f()", eg.doCallCF());
+			AddTestCase("implements by inheritance, variety 6", "C::g(),C::g(),C::g(),C::g(),C::g(),C::g(),C::g(),CY::g(),CY::g()", eg.doCallCG());
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

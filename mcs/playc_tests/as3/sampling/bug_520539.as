@@ -35,27 +35,34 @@
 *
 * ***** END LICENSE BLOCK ***** */
 
-import flash.sampler.*;
-
-var global_e2:Error;
-
-flash.sampler.startSampling();
-
-try {
-	throw new Error();
-} catch (e:Error) {
-	global_e2 = e; // save a reference to the error, so that the sampler will
-					// get a live reference when it is triggered
+package {
+	import flash.sampler.*;
+	
+	public class bug_520539Test extends BaseTest {
+		public static function Main():int {
+			var global_e2:Error;
+			
+			flash.sampler.startSampling();
+			
+			try {
+				throw new Error();
+			} catch (e:Error) {
+				global_e2 = e; // save a reference to the error, so that the sampler will
+								// get a live reference when it is triggered
+			}
+			
+			var s = flash.sampler.getSamples();
+			for each (var ss in s)
+			{
+				// nothing -- just iterate to force the samples to be generated
+				// print(ss);
+			}
+			
+			flash.sampler.stopSampling();
+			
+			// if we get here without crashing, we pass
+			print("test PASSED!");
+			return results();
+		}
+	}
 }
-
-var s = flash.sampler.getSamples();
-for each (var ss in s)
-{
-	// nothing -- just iterate to force the samples to be generated
-	// print(ss);
-}
-
-flash.sampler.stopSampling();
-
-// if we get here without crashing, we pass
-print("test PASSED!");

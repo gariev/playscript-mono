@@ -35,51 +35,58 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var SECTION = "Directives";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "namespace used in the case of same function is defined multiple defined";
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-
-
-namespace Football;
-class Game{
-
-    public namespace Baseball;
-    public namespace Football;
-
-    public function getTeam(){
-	    teamName = "Dummy";
-            return teamName;
-    } 
-
-    Football function getTeam(){
-	    var teamName = "Chargers";
-     	     return teamName;
-    } 
-
-   Baseball function getTeam(){
-	    var teamName = "Giants";
-            return teamName;
-   }
-
-   public function accgetTeam1(){
-	return Football::getTeam()
-   }
-   public function accgetTeam2(){
-	return Baseball::getTeam()
-   }
+package {
+	public class UNSFuncDiffAttrTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Directives";       // provide a document reference (ie, Actionscript section)
+			var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
+			var TITLE   = "namespace used in the case of same function is defined multiple defined";
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			
+			
+			namespace Football;
+			class Game{
+			
+			    public namespace Baseball;
+			    public namespace Football;
+			
+			    public function getTeam(){
+				    teamName = "Dummy";
+			            return teamName;
+			    } 
+			
+			    Football function getTeam(){
+				    var teamName = "Chargers";
+			     	     return teamName;
+			    } 
+			
+			   Baseball function getTeam(){
+				    var teamName = "Giants";
+			            return teamName;
+			   }
+			
+			   public function accgetTeam1(){
+				return Football::getTeam()
+			   }
+			   public function accgetTeam2(){
+				return Baseball::getTeam()
+			   }
+			}
+			
+			var obj:Game = new Game();
+			
+			AddTestCase( "function getTeam called", "Dummy", obj.getTeam());
+			AddTestCase( "function getTeam called", "Chargers", obj.accgetTeam1() );
+			AddTestCase( "function getTeam called", "Giants", obj.accgetTeam2() );
+			
+			
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
 }
-
-var obj:Game = new Game();
-
-AddTestCase( "function getTeam called", "Dummy", obj.getTeam());
-AddTestCase( "function getTeam called", "Chargers", obj.accgetTeam1() );
-AddTestCase( "function getTeam called", "Giants", obj.accgetTeam2() );
-
-
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.

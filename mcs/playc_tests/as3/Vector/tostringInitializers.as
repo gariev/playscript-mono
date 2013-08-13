@@ -48,33 +48,40 @@
    Updated:            dschaffe@adobe.com 1-Nov-2007
 */
 
-var SECTION = "";
-var VERSION = "ECMA_1";
-startTest();
-var TITLE   = "Vector.toString-initializers";
-
-writeHeaderToLog( SECTION + " "+ TITLE);
- 
-AddTestCase(
-	      "new <int>[].toString()",     
-	      "",     
-	      new <int>[].toString() );
-AddTestCase(
-	      "(new Vector.<Boolean>(5)).toString()",    
-	      "false,false,false,false,false",    
-	      (new <Boolean>[false,false,false,false,false,]).toString() );
-AddTestCase(
-	      "(new Vector.<String>(2)).toString()",    
-	      ",",    
-	      (new <String>["","",]).toString() );
-
-AddTestCase(  
-	      "small vector toString",  
-	      "1.1,3.14,99.99",  
-	      new<Number>[1.1,3.14,99.99].toString() );
-
-AddTestCase(  
-	      "default Number values",
-	      "NaN,NaN",
-	      new<Number>[NaN,NaN,].toString());
-test();
+package {
+	public class tostringInitializersTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "";
+			var VERSION = "ECMA_1";
+			startTest();
+			var TITLE   = "Vector.toString-initializers";
+			
+			writeHeaderToLog( SECTION + " "+ TITLE);
+			 
+			AddTestCase(
+				      "new <int>[].toString()",     
+				      "",     
+				      new <int>[].toString() );
+			AddTestCase(
+				      "(new Vector.<Boolean>(5)).toString()",    
+				      "false,false,false,false,false",    
+				      (new <Boolean>[false,false,false,false,false,]).toString() );
+			AddTestCase(
+				      "(new Vector.<String>(2)).toString()",    
+				      ",",    
+				      (new <String>["","",]).toString() );
+			
+			AddTestCase(  
+				      "small vector toString",  
+				      "1.1,3.14,99.99",  
+				      new<Number>[1.1,3.14,99.99].toString() );
+			
+			AddTestCase(  
+				      "default Number values",
+				      "NaN,NaN",
+				      new<Number>[NaN,NaN,].toString());
+			test();
+			return results();
+		}
+	}
+}

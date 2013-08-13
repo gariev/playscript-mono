@@ -39,15 +39,22 @@
   * Ensure the type annotation works while imported
  */
 
-var SECTION = " ";
-var VERSION = "AS3";
-var TITLE   = "import annoted type defined in .abc file";
-
-startTest();
-writeHeaderToLog( SECTION + " "+ TITLE);
-
-
-AddTestCase( "import the annoted type - number:Number", 50, number);
-AddTestCase( "import the annoted type - str1:String", "str1:String", str1);
-
-test();
+package {
+	public class typeAnnotationTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = " ";
+			var VERSION = "AS3";
+			var TITLE   = "import annoted type defined in .abc file";
+			
+			startTest();
+			writeHeaderToLog( SECTION + " "+ TITLE);
+			
+			
+			AddTestCase( "import the annoted type - number:Number", 50, number);
+			AddTestCase( "import the annoted type - str1:String", "str1:String", str1);
+			
+			test();
+			return results();
+		}
+	}
+}

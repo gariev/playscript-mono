@@ -40,17 +40,24 @@
   * Extend the class defined in varsDef.abc
  */
 
-var SECTION = " ";
-var VERSION = "AS3";
-var TITLE   = "import a class defined in .abc file";
-
-startTest();
-writeHeaderToLog( SECTION + " "+ TITLE);
-
-obj = new testClass();
-
-AddTestCase( "invoke the property 'testClassVar1' from the imported file", "Inside testClass", obj.testClassVar1);
-AddTestCase( "invoke the method 'func1()' from the imported file", "Inside func1()", obj.func1());
-AddTestCase( "invoke the method 'func2()' from the imported file", "Inside func2()", obj.func2());
-
-test();
+package {
+	public class impClassTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = " ";
+			var VERSION = "AS3";
+			var TITLE   = "import a class defined in .abc file";
+			
+			startTest();
+			writeHeaderToLog( SECTION + " "+ TITLE);
+			
+			obj = new testClass();
+			
+			AddTestCase( "invoke the property 'testClassVar1' from the imported file", "Inside testClass", obj.testClassVar1);
+			AddTestCase( "invoke the method 'func1()' from the imported file", "Inside func1()", obj.func1());
+			AddTestCase( "invoke the method 'func2()' from the imported file", "Inside func2()", obj.func2());
+			
+			test();
+			return results();
+		}
+	}
+}

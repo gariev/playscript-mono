@@ -34,27 +34,34 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-var CODE = 1118; //	Illegal cyclical loop between nodes.
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-var expected = "Error #" + CODE;
-var result = "no error";
-try {
-	var xml:XML =
-        <menu>
-            <item>burger</item>
-            <item>soda</item>
-        </menu>;
-	xml.insertChildAfter(xml.item[0], xml);
-} catch (err) {
-	result = grabError(err, err.toString());
-} finally {
-	AddTestCase("Runtime Error", expected, result);
+package {
+	public class Error1118IllegalCyclicalLoopTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1118; //	Illegal cyclical loop between nodes.
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			var expected = "Error #" + CODE;
+			var result = "no error";
+			try {
+				var xml:XML =
+			        <menu>
+			            <item>burger</item>
+			            <item>soda</item>
+			        </menu>;
+				xml.insertChildAfter(xml.item[0], xml);
+			} catch (err) {
+				result = grabError(err, err.toString());
+			} finally {
+				AddTestCase("Runtime Error", expected, result);
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

@@ -35,31 +35,38 @@
  *
  * ***** END LICENSE BLOCK ***** */
  
- import GetSetPropertyMixup.*;
- 
- 
- var SECTION = "FunctionAccessors";
- var VERSION = "AS3"; 
- var TITLE   = "Function Accessors";
- var BUGNUMBER = "";
- 
-
-startTest();
-
-
-w = new GetSetPropertyMixup();
-
-
-AddTestCase("Get foo which gets _loo", "loo", w.foo);
-w.foo = "foo new";
-
-AddTestCase("Set foo which sets foo, check _foo for real" , "foo new", w.fooForReal);
-AddTestCase("Set foo which sets foo, check _loo" , "loo", w.loo);
-
-AddTestCase("Get poo", "poo", w.poo);
-
-w.poo = "poo new";
-AddTestCase("Set poo which sets _boo, check _boo", "poo new", w.boo);
-AddTestCase("Set poo which sets _boo, check _poo", "poo", w.poo);
-
-test();
+package {
+	 import GetSetPropertyMixup.*;
+	 
+	 
+	public class GetSetPropertyMixupTest extends BaseTest {
+		public static function Main():int {
+			 var SECTION = "FunctionAccessors";
+			 var VERSION = "AS3"; 
+			 var TITLE   = "Function Accessors";
+			 var BUGNUMBER = "";
+			 
+			
+			startTest();
+			
+			
+			w = new GetSetPropertyMixup();
+			
+			
+			AddTestCase("Get foo which gets _loo", "loo", w.foo);
+			w.foo = "foo new";
+			
+			AddTestCase("Set foo which sets foo, check _foo for real" , "foo new", w.fooForReal);
+			AddTestCase("Set foo which sets foo, check _loo" , "loo", w.loo);
+			
+			AddTestCase("Get poo", "poo", w.poo);
+			
+			w.poo = "poo new";
+			AddTestCase("Set poo which sets _boo, check _boo", "poo new", w.boo);
+			AddTestCase("Set poo which sets _boo, check _poo", "poo", w.poo);
+			
+			test();
+			return results();
+		}
+	}
+}

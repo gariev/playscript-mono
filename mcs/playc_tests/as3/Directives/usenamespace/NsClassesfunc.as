@@ -34,38 +34,45 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-package{
-
- 
-var SECTION = "Directives";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "Namespace functions inside a class";       // Provide ECMA section title or a description
-
-
-startTest();                // leave this alone
-
-
-
-
- 
-     public namespace Football
-     public namespace Baseball
-
-     class Game{
-
-          Football function whoplay(){return "Joe"}
-          Baseball function whoplay(){return "Steve"}
-     }
-
-
-
-var game = new Game();
-
-AddTestCase( "Who is going to play = 'Joe'", "Joe", game.Football::whoplay());
-
-AddTestCase( "Who is going to play = 'Steve'", "Steve", game.Baseball::whoplay());
-
+package {
+	public class NsClassesfuncTest extends BaseTest {
+		public static function Main():int {
+			package{
+			
+			 
+			var SECTION = "Directives";       // provide a document reference (ie, Actionscript section)
+			var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
+			var TITLE   = "Namespace functions inside a class";       // Provide ECMA section title or a description
+			
+			
+			startTest();                // leave this alone
+			
+			
+			
+			
+			 
+			     public namespace Football
+			     public namespace Baseball
+			
+			     class Game{
+			
+			          Football function whoplay(){return "Joe"}
+			          Baseball function whoplay(){return "Steve"}
+			     }
+			
+			
+			
+			var game = new Game();
+			
+			AddTestCase( "Who is going to play = 'Joe'", "Joe", game.Football::whoplay());
+			
+			AddTestCase( "Who is going to play = 'Steve'", "Steve", game.Baseball::whoplay());
+			
+			}
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
 }
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.

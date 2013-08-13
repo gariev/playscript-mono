@@ -34,25 +34,32 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-import InternalClassImpDefInt.*;
-var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
-var TITLE   = "Internal class implements default interface";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-
-///////////////////////////////////////////////////////////////
-// add your tests here
-  
-var obj = new InternalClassAccesor();
-
-//Internal class implements a default interface with a public method
-AddTestCase("Internal class implements a default interface with a public method", "PASSED", obj.accdeffunc());
-
-
-////////////////////////////////////////////////////////////////
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	import InternalClassImpDefInt.*;
+	public class InternalClassImpDefIntTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
+			var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
+			var TITLE   = "Internal class implements default interface";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			
+			///////////////////////////////////////////////////////////////
+			// add your tests here
+			  
+			var obj = new InternalClassAccesor();
+			
+			//Internal class implements a default interface with a public method
+			AddTestCase("Internal class implements a default interface with a public method", "PASSED", obj.accdeffunc());
+			
+			
+			////////////////////////////////////////////////////////////////
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

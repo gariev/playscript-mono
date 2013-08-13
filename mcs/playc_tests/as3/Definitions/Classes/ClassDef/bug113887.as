@@ -35,20 +35,27 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";  // Version of JavaScript or ECMA
-var TITLE   = "Class Definition";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-//-----------------------------------------------------------------------------
-
-import bug113887.*;
-
-var eg = new BugTest();
-AddTestCase("static initialization of class directly", "yes", eg.doBasicTest());
-AddTestCase("static initialization of class via method", "yes", eg.doFunctionTest());
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	public class bug113887Test extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION = "AS3";  // Version of JavaScript or ECMA
+			var TITLE   = "Class Definition";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			//-----------------------------------------------------------------------------
+			
+			import bug113887.*;
+			
+			var eg = new BugTest();
+			AddTestCase("static initialization of class directly", "yes", eg.doBasicTest());
+			AddTestCase("static initialization of class via method", "yes", eg.doFunctionTest());
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

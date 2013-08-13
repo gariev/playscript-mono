@@ -44,46 +44,53 @@
      returns a new vector object containing the elements that were collected in the order they were
      collected.
    */
-var SECTION="";
-var VERSION = "ECMA_1";
-
-startTest();
-
-writeHeaderToLog( " Vector.forEach()");
-
-function eacher(value,index,obj) {
-  result+="("+value+":"+index+")";
+package {
+	public class foreachTest extends BaseTest {
+		public static function Main():int {
+			var SECTION="";
+			var VERSION = "ECMA_1";
+			
+			startTest();
+			
+			writeHeaderToLog( " Vector.forEach()");
+			
+			function eacher(value,index,obj) {
+			  result+="("+value+":"+index+")";
+			}
+			var bad_eacher="astring";
+			
+			var v1=new Vector.<int>();
+			var errormsg="";
+			try {
+			  var result=v1.forEach();
+			} catch (e) {
+			  errormsg=e.toString();
+			}
+			AddTestCase( 	"forEach eacher is undefined",
+					"ArgumentError: Error #1063",
+			    parseError(errormsg,"ArgumentError: Error #1063".length));
+			
+			var v1=new Vector.<int>();
+			for (var i=0;i<3;i++) v1[i]=i;
+			var errormsg="";
+			try {
+			  var result=v1.forEach(bad_eacher);
+			} catch (e) {
+			  errormsg=e.toString();
+			}
+			AddTestCase("forEach eacher is not a function",
+			         		"TypeError: Error #1034",
+			            parseError(errormsg,"TypeError: Error #1034".length));
+			
+			var v1=new Vector.<String>();
+			for (var i=0;i<3;i++) v1[i]="s"+i;
+			var result="";
+			v1.forEach(eacher);
+			AddTestCase(	"forEach simple vector",
+					"(s0:0)(s1:1)(s2:2)",
+					result);
+			test();
+			return results();
+		}
+	}
 }
-var bad_eacher="astring";
-
-var v1=new Vector.<int>();
-var errormsg="";
-try {
-  var result=v1.forEach();
-} catch (e) {
-  errormsg=e.toString();
-}
-AddTestCase( 	"forEach eacher is undefined",
-		"ArgumentError: Error #1063",
-    parseError(errormsg,"ArgumentError: Error #1063".length));
-
-var v1=new Vector.<int>();
-for (var i=0;i<3;i++) v1[i]=i;
-var errormsg="";
-try {
-  var result=v1.forEach(bad_eacher);
-} catch (e) {
-  errormsg=e.toString();
-}
-AddTestCase("forEach eacher is not a function",
-         		"TypeError: Error #1034",
-            parseError(errormsg,"TypeError: Error #1034".length));
-
-var v1=new Vector.<String>();
-for (var i=0;i<3;i++) v1[i]="s"+i;
-var result="";
-v1.forEach(eacher);
-AddTestCase(	"forEach simple vector",
-		"(s0:0)(s1:1)(s2:2)",
-		result);
-test();

@@ -36,30 +36,37 @@
  * ***** END LICENSE BLOCK ***** */
 
 
-var SECTION = "Directives\const";       				// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  					// Version of JavaScript or ECMA
-var TITLE   = "'const' outside a class access from inside the class";   // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-
-/*===========================================================================*/
-
-
-const myConst = 50;
-
-class ConstClass {
-	
-	var myConstAdd = 20 + myConst;
+package {
+	public class ConstAccessFromClassTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Directives\const";       				// provide a document reference (ie, ECMA section)
+			var VERSION = "ActionScript 3.0";  					// Version of JavaScript or ECMA
+			var TITLE   = "'const' outside a class access from inside the class";   // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			
+			/*===========================================================================*/
+			
+			
+			const myConst = 50;
+			
+			class ConstClass {
+				
+				var myConstAdd = 20 + myConst;
+			}
+			
+			var Obj = new ConstClass();
+			myObjConst = Obj.myConstAdd;
+			
+			AddTestCase( "Testing the 'const' keywords access from an object of a class: var myConstAdd = 20 + myConst;", 70, myObjConst );
+			
+			
+			test();       		// Leave this function alone.
+						// This function is for executing the test case and then
+						// displaying the result on to the console or the LOG file.
+			return results();
+		}
+	}
 }
-
-var Obj = new ConstClass();
-myObjConst = Obj.myConstAdd;
-
-AddTestCase( "Testing the 'const' keywords access from an object of a class: var myConstAdd = 20 + myConst;", 70, myObjConst );
-
-
-test();       		// Leave this function alone.
-			// This function is for executing the test case and then
-			// displaying the result on to the console or the LOG file.

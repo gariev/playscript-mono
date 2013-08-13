@@ -34,23 +34,30 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-var CODE = 1089; //	Assignment to lists with more than one item is not supported.
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-var expected = "Error #" + CODE;
-var result = "no error";
-try {
-	var x1 = new XMLList("<a>1</a><a>2</a><a>3</a>");
-	x1.length = 0;
-} catch (err) {
-	result = grabError(err, err.toString());
-} finally {
-	AddTestCase("Runtime Error", expected, result);
+package {
+	public class Error1089XmlAssignToMoreThanOneItemListTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1089; //	Assignment to lists with more than one item is not supported.
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			var expected = "Error #" + CODE;
+			var result = "no error";
+			try {
+				var x1 = new XMLList("<a>1</a><a>2</a><a>3</a>");
+				x1.length = 0;
+			} catch (err) {
+				result = grabError(err, err.toString());
+			} finally {
+				AddTestCase("Runtime Error", expected, result);
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

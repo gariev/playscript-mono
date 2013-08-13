@@ -35,15 +35,22 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-import UintVarAsClassProp.*;
-
-startTest();                // leave this alone
-
-
-var obj = new testuint();
-
-AddTestCase( "Uint public property", 1, obj.num1 );
-
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	import UintVarAsClassProp.*;
+	
+	public class UintVarAsClassPropTest extends BaseTest {
+		public static function Main():int {
+			startTest();                // leave this alone
+			
+			
+			var obj = new testuint();
+			
+			AddTestCase( "Uint public property", 1, obj.num1 );
+			
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

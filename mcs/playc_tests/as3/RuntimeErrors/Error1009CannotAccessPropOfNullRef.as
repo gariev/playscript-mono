@@ -38,21 +38,28 @@
 1009	Cannot access a property or method of a null object reference.
 */
 
-var CODE = 1009;
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-try {
-	var z = "no error";
-	var a = null.a;
-} catch (err) {
-	z = err.toString();
-} finally {
-	AddTestCase("Runtime Error", "TypeError: Error #" + CODE, typeError(z));
+package {
+	public class Error1009CannotAccessPropOfNullRefTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1009;
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			try {
+				var z = "no error";
+				var a = null.a;
+			} catch (err) {
+				z = err.toString();
+			} finally {
+				AddTestCase("Runtime Error", "TypeError: Error #" + CODE, typeError(z));
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

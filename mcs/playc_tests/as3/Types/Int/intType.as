@@ -34,46 +34,53 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-    var SECTION = "Types: int";
-    var VERSION = "as3";
-    startTest();
-    var TITLE   = "typeof an int";
-
-    writeHeaderToLog( SECTION + " "+ TITLE );
-
-    var testcases = getTestCases();
-    test();
-
-function getTestCases() {
-    var array = new Array();
-    var item = 0;
-
-	var i:int = 3;
-	var result;
-	try{
-		result = typeof i;
-	} catch (e) {
-		result = "exception thrown";
-	} finally {
-	    array[item++] = new TestCase(SECTION, "typeof i:int = 3",        "number",        result );
+package {
+	public class intTypeTest extends BaseTest {
+		public static function Main():int {
+			    var SECTION = "Types: int";
+			    var VERSION = "as3";
+			    startTest();
+			    var TITLE   = "typeof an int";
+			
+			    writeHeaderToLog( SECTION + " "+ TITLE );
+			
+			    var testcases = getTestCases();
+			    test();
+			
+			function getTestCases() {
+			    var array = new Array();
+			    var item = 0;
+			
+				var i:int = 3;
+				var result;
+				try{
+					result = typeof i;
+				} catch (e) {
+					result = "exception thrown";
+				} finally {
+				    array[item++] = new TestCase(SECTION, "typeof i:int = 3",        "number",        result );
+				}
+			
+				var ni:int = -1;
+				result = typeof ni;
+				array[item++] = new TestCase(SECTION, "typeof i:int = -1",        "number",        result );
+			
+			
+			    return ( array );
+			}
+			/*function test() {
+			    for ( tc = 0; tc < testcases.length; tc++ ) {
+			        testcases[tc].passed = writeTestCaseResult(
+			                            testcases[tc].expect,
+			                            testcases[tc].actual,
+			                            testcases[tc].description +" = "+ testcases[tc].actual );
+			
+			        testcases[tc].reason += ( testcases[tc].passed ) ? "" : "delete should not be allowed "
+			    }
+			    stopTest();
+			    return ( testcases );
+			}*/
+			return results();
+		}
 	}
-
-	var ni:int = -1;
-	result = typeof ni;
-	array[item++] = new TestCase(SECTION, "typeof i:int = -1",        "number",        result );
-
-
-    return ( array );
 }
-/*function test() {
-    for ( tc = 0; tc < testcases.length; tc++ ) {
-        testcases[tc].passed = writeTestCaseResult(
-                            testcases[tc].expect,
-                            testcases[tc].actual,
-                            testcases[tc].description +" = "+ testcases[tc].actual );
-
-        testcases[tc].reason += ( testcases[tc].passed ) ? "" : "delete should not be allowed "
-    }
-    stopTest();
-    return ( testcases );
-}*/

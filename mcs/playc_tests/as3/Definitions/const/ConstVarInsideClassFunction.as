@@ -35,24 +35,31 @@
  *
  * ***** END LICENSE BLOCK ***** */
  
-var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-var TITLE   = "local const inside a class function";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();
-
-class myClass {
-    function constMultiArgs(arg1, arg2, arg3) {
-        const localVar = arg1 + arg2 + arg3;
-        return localVar;
-    }
+package {
+	public class ConstVarInsideClassFunctionTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE   = "local const inside a class function";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();
+			
+			class myClass {
+			    function constMultiArgs(arg1, arg2, arg3) {
+			        const localVar = arg1 + arg2 + arg3;
+			        return localVar;
+			    }
+			}
+			
+			var myVar:Number = -20;
+			
+			var myObj = new myClass();
+			
+			AddTestCase( "Calling a class function which declares a local const variable", 20 , myObj.constMultiArgs( 10, myVar, 30) );
+			
+			test();
+			return results();
+		}
+	}
 }
-
-var myVar:Number = -20;
-
-var myObj = new myClass();
-
-AddTestCase( "Calling a class function which declares a local const variable", 20 , myObj.constMultiArgs( 10, myVar, 30) );
-
-test();

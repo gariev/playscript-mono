@@ -34,22 +34,29 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-var CODE = 1041; //	The right-hand side of operator must be a class.
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-try {
-	var result = "no error";
-    var obj:Object = new Object();
-    0 is obj;
-} catch (err) {
-	result = err.toString();
-} finally {
-	AddTestCase("Runtime Error", TYPEERROR + CODE, typeError(result));
+package {
+	public class Error1041RHSOfIsMustBeClassTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1041; //	The right-hand side of operator must be a class.
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			try {
+				var result = "no error";
+			    var obj:Object = new Object();
+			    0 is obj;
+			} catch (err) {
+				result = err.toString();
+			} finally {
+				AddTestCase("Runtime Error", TYPEERROR + CODE, typeError(result));
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

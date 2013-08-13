@@ -40,14 +40,21 @@
   * avmplus varsDef.abc simple.abc
  */
 
-var SECTION = " ";
-var VERSION = "AS3";
-var TITLE   = "import variables defined from a varsDef.abc file";
-
-startTest();
-writeHeaderToLog( SECTION + " "+ TITLE);
-
-AddTestCase( "importing 'str' ", "imported string", str);
-AddTestCase( "importing 'num'", 10, num);
-
-test();
+package {
+	public class simpleTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = " ";
+			var VERSION = "AS3";
+			var TITLE   = "import variables defined from a varsDef.abc file";
+			
+			startTest();
+			writeHeaderToLog( SECTION + " "+ TITLE);
+			
+			AddTestCase( "importing 'str' ", "imported string", str);
+			AddTestCase( "importing 'num'", 10, num);
+			
+			test();
+			return results();
+		}
+	}
+}

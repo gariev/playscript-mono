@@ -37,37 +37,44 @@
  
  
 
-import testInternalClassWithParamCons.*;
-
-var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";                   // Version of JavaScript or ECMA
-var TITLE   = "Constructors with parameters of a Dynamic class";  // Provide ECMA section                                                                   //title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-
-//var x = "test"; 
-//var y:Boolean = true;
-//var myArray:Array = new Array(4,6,5);
-//var pbClCons:publicClassCons = new publicClassCons();                   
-var WIntCWPC:wrapIntClassWithStrParamCons=new wrapIntClassWithStrParamCons();
-//print (dynWithStrParamCons.myString());
-//print(x);
-//print (dynWithStrParamCons.myBoolean());
-//print(y);
-//print (dynWithStrParamCons.myarray());
-//print (myArray);
-//print(dynWithStrParamCons.myAdd());
-
-AddTestCase("calling public Instance method","test",WIntCWPC.wrapmyString());
-AddTestCase("calling public Instance method", true,WIntCWPC.wrapmyBoolean());
-
-AddTestCase("Array", WIntCWPC.myArray1(),WIntCWPC.wrapmyarray());
-AddTestCase("Calling public Instance method Add",9,WIntCWPC.wrapmyAdd());
-
-
-
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	import testInternalClassWithParamCons.*;
+	
+	public class IntClassWithStrParamConsTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
+			var VERSION = "AS3";                   // Version of JavaScript or ECMA
+			var TITLE   = "Constructors with parameters of a Dynamic class";  // Provide ECMA section                                                                   //title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			
+			//var x = "test"; 
+			//var y:Boolean = true;
+			//var myArray:Array = new Array(4,6,5);
+			//var pbClCons:publicClassCons = new publicClassCons();                   
+			var WIntCWPC:wrapIntClassWithStrParamCons=new wrapIntClassWithStrParamCons();
+			//print (dynWithStrParamCons.myString());
+			//print(x);
+			//print (dynWithStrParamCons.myBoolean());
+			//print(y);
+			//print (dynWithStrParamCons.myarray());
+			//print (myArray);
+			//print(dynWithStrParamCons.myAdd());
+			
+			AddTestCase("calling public Instance method","test",WIntCWPC.wrapmyString());
+			AddTestCase("calling public Instance method", true,WIntCWPC.wrapmyBoolean());
+			
+			AddTestCase("Array", WIntCWPC.myArray1(),WIntCWPC.wrapmyarray());
+			AddTestCase("Calling public Instance method Add",9,WIntCWPC.wrapmyAdd());
+			
+			
+			
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

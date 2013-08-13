@@ -44,41 +44,48 @@
    *
    */
 
-var SECTION = ""
-var VERSION = "ECMA_1";
-
-startTest();
-
-writeHeaderToLog( SECTION + " Vector.lastIndexOf()-initializers");
-
-
-AddTestCase(	"lastIndexOf empty vector",
-		-1,
-		new <int>[].lastIndexOf(0));
-
-AddTestCase(	"lastIndexOf object not found",
-		-1,
-		new <int>[1,2,3,4,5].lastIndexOf(10));
-
-AddTestCase(	"lastIndexOf single match found",
-		4,
-		new<int>[0,1,2,3,4,5,6,7,8,9].lastIndexOf(4));
-
-AddTestCase(	"lastIndexOf first match found",
-		24,
-		new<int>[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9].lastIndexOf(4));
-
-AddTestCase(	"lastIndexOf first match found setting start parameter",
-		14,
-		[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9].lastIndexOf(4,20));
-
-AddTestCase(	"lastIndexOf start parameter greater than vector length",
-		24,
-		[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9].lastIndexOf(4,100));
-
-AddTestCase(	"lastIndexOf start parameter negative",
-		14,
-		[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9].lastIndexOf(4,-10));
-
-test();
-
+package {
+	public class lastindexofInitializersTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = ""
+			var VERSION = "ECMA_1";
+			
+			startTest();
+			
+			writeHeaderToLog( SECTION + " Vector.lastIndexOf()-initializers");
+			
+			
+			AddTestCase(	"lastIndexOf empty vector",
+					-1,
+					new <int>[].lastIndexOf(0));
+			
+			AddTestCase(	"lastIndexOf object not found",
+					-1,
+					new <int>[1,2,3,4,5].lastIndexOf(10));
+			
+			AddTestCase(	"lastIndexOf single match found",
+					4,
+					new<int>[0,1,2,3,4,5,6,7,8,9].lastIndexOf(4));
+			
+			AddTestCase(	"lastIndexOf first match found",
+					24,
+					new<int>[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9].lastIndexOf(4));
+			
+			AddTestCase(	"lastIndexOf first match found setting start parameter",
+					14,
+					[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9].lastIndexOf(4,20));
+			
+			AddTestCase(	"lastIndexOf start parameter greater than vector length",
+					24,
+					[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9].lastIndexOf(4,100));
+			
+			AddTestCase(	"lastIndexOf start parameter negative",
+					14,
+					[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9].lastIndexOf(4,-10));
+			
+			test();
+			
+			return results();
+		}
+	}
+}

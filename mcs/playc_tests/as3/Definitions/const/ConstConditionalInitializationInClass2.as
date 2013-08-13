@@ -35,35 +35,42 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-var TITLE   = "conditional initialization inside class constructor";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-class MagicBall
-{
-    const num1:Number;
-    
-    function MagicBall(cond:Boolean)
-    {
-        if (cond)
-        {
-            num1 = 6;
-        }
-        else
-        {
-            num1 = -8;
-        }
-    }
-    
-    function getNumber():Number
-    {
-        return num1;
-    }
+package {
+	public class ConstConditionalInitializationInClass2Test extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE   = "conditional initialization inside class constructor";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			class MagicBall
+			{
+			    const num1:Number;
+			    
+			    function MagicBall(cond:Boolean)
+			    {
+			        if (cond)
+			        {
+			            num1 = 6;
+			        }
+			        else
+			        {
+			            num1 = -8;
+			        }
+			    }
+			    
+			    function getNumber():Number
+			    {
+			        return num1;
+			    }
+			}
+			
+			startTest();
+			
+			AddTestCase("Conditional initiailization of const inside a class constructor", -8, new MagicBall(false).getNumber());
+			
+			test();
+			return results();
+		}
+	}
 }
-
-startTest();
-
-AddTestCase("Conditional initiailization of const inside a class constructor", -8, new MagicBall(false).getNumber());
-
-test();

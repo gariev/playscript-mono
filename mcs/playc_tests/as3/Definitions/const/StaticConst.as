@@ -34,19 +34,26 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-class Test {
-
-    public static const NAME:String = "name";
-
+package {
+	public class StaticConstTest extends BaseTest {
+		public static function Main():int {
+			class Test {
+			
+			    public static const NAME:String = "name";
+			
+			}
+			
+			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE   = "static const";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();
+			
+			AddTestCase("static const in class", "name", Test.NAME);
+			
+			test();
+			return results();
+		}
+	}
 }
-
-var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-var TITLE   = "static const";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();
-
-AddTestCase("static const in class", "name", Test.NAME);
-
-test();

@@ -37,27 +37,34 @@
  
  
 
-import testdynfinalClassWithMultiStringParamCons.*;
-
-var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";                   // Version of JavaScript or ECMA
-var TITLE   = "Constructors with parameters of a Dynamic class";  // Provide ECMA section                                                                   //title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-
-var x = "test";
-var y = "hello"+"world"; 
-var dynWithStrParamCons= new dynfinClassWithMultiStrParamCons(x);
-var g2=new dynfinClassWithMultiStrParamCons(x+y);
-//print(dynWithStrParamCons.myString());
-//print(dynWithStrParamCons.myString2());
-//print(g2.myString());
-AddTestCase("calling public Instance method for testing constructor with single string parameter","test",dynWithStrParamCons.myString());
-AddTestCase("calling public Instance method for testing constructor with concatenated string","helloworld",dynWithStrParamCons.myString2());
-AddTestCase("calling public Instance method for testing constructor with concatenated string","testhelloworld",g2.myString());
-
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	import testdynfinalClassWithMultiStringParamCons.*;
+	
+	public class dynfinClassWithMultiStrParamConsTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
+			var VERSION = "AS3";                   // Version of JavaScript or ECMA
+			var TITLE   = "Constructors with parameters of a Dynamic class";  // Provide ECMA section                                                                   //title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			
+			var x = "test";
+			var y = "hello"+"world"; 
+			var dynWithStrParamCons= new dynfinClassWithMultiStrParamCons(x);
+			var g2=new dynfinClassWithMultiStrParamCons(x+y);
+			//print(dynWithStrParamCons.myString());
+			//print(dynWithStrParamCons.myString2());
+			//print(g2.myString());
+			AddTestCase("calling public Instance method for testing constructor with single string parameter","test",dynWithStrParamCons.myString());
+			AddTestCase("calling public Instance method for testing constructor with concatenated string","helloworld",dynWithStrParamCons.myString2());
+			AddTestCase("calling public Instance method for testing constructor with concatenated string","testhelloworld",g2.myString());
+			
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

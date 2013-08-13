@@ -35,13 +35,20 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-import bug127174.*;
-
-startTest();
-
-var t:InterfaceCorceErrorTest = new InterfaceCorceErrorTest();
-var k:ITestInterface = new CoerceErrorForInterfaces();
-AddTestCase("regress for bug 127714", true, t.causeCoerceError(k));
-test();
-
-
+package {
+	import bug127174.*;
+	
+	public class bug127174Test extends BaseTest {
+		public static function Main():int {
+			startTest();
+			
+			var t:InterfaceCorceErrorTest = new InterfaceCorceErrorTest();
+			var k:ITestInterface = new CoerceErrorForInterfaces();
+			AddTestCase("regress for bug 127714", true, t.causeCoerceError(k));
+			test();
+			
+			
+			return results();
+		}
+	}
+}

@@ -34,24 +34,31 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-import PublicClassImpDefIntname.*;
-var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
-var TITLE   = "Public class implements default interface";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-
-///////////////////////////////////////////////////////////////
-// add your tests here
-
-var c:PublicClass = new PublicClass(); 
- 
-//Public class implements a default interface with an interface name method
-AddTestCase("Public class implements a default interface with an interface name method", "PASSED", c.accdeffunc());
-
-////////////////////////////////////////////////////////////////
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	import PublicClassImpDefIntname.*;
+	public class PublicClassImpDefIntnameTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
+			var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
+			var TITLE   = "Public class implements default interface";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			
+			///////////////////////////////////////////////////////////////
+			// add your tests here
+			
+			var c:PublicClass = new PublicClass(); 
+			 
+			//Public class implements a default interface with an interface name method
+			AddTestCase("Public class implements a default interface with an interface name method", "PASSED", c.accdeffunc());
+			
+			////////////////////////////////////////////////////////////////
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

@@ -38,27 +38,34 @@
 1070	Method _ not found on _
 */
 
-var CODE = 1070;
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-class A {}
-
-class B extends A {
-  function f() { super.f(); }
+package {
+	public class Error1070MethodNotFoundTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1070;
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			class A {}
+			
+			class B extends A {
+			  function f() { super.f(); }
+			}
+			
+			try {
+				var z = "no error";
+				new B().f();
+			} catch (err) {
+				z = err.toString();
+			} finally {
+				AddTestCase("Runtime Error", "ReferenceError: Error #" + CODE, referenceError(z));
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-try {
-	var z = "no error";
-	new B().f();
-} catch (err) {
-	z = err.toString();
-} finally {
-	AddTestCase("Runtime Error", "ReferenceError: Error #" + CODE, referenceError(z));
-}
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

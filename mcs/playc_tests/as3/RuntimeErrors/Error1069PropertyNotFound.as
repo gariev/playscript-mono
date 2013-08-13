@@ -38,24 +38,31 @@
 1069	Property _ not found on _ and there is no default value.
 */
 
-var CODE = 1069;
-
-//-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-class C {}
-
-try {
-	var z = "no error";
-	var c = new C();
-	c.d();
-} catch (err) {
-	z = err.toString();
-} finally {
-	AddTestCase("Runtime Error", "ReferenceError: Error #" + CODE, referenceError(z));
+package {
+	public class Error1069PropertyNotFoundTest extends BaseTest {
+		public static function Main():int {
+			var CODE = 1069;
+			
+			//-----------------------------------------------------------
+			startTest();
+			//-----------------------------------------------------------
+			
+			class C {}
+			
+			try {
+				var z = "no error";
+				var c = new C();
+				c.d();
+			} catch (err) {
+				z = err.toString();
+			} finally {
+				AddTestCase("Runtime Error", "ReferenceError: Error #" + CODE, referenceError(z));
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

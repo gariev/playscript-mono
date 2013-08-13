@@ -41,41 +41,48 @@
    instead of at compile time.
 */
 
-function getVector() { return Vector; }
-
-var CODE = 1007; //  Instantiation attempted on a non-constructor.
-
-startTest();
-var TITLE="Runtime specialization";
-writeHeaderToLog(TITLE);
-
-var x = getVector().<int>;
-y = new x();
-
-y.push(1);
-y.push(2);
-y.push(3);
-
-AddTestCase(    "Vector constructed via runtime specialization",
-                3,
-                y.length); 
-
-AddTestCase(    "Vector constructed via runtime specialization",
-                2,
-                y[1]);
-
-
-var neg_result = "Failed to catch invalid construct";
-
-try {
-   unspecialized = getVector();
-   var z = new unspecialized();
-} catch ( ex )
-{
-    neg_result = String(ex);
+package {
+	public class specializedAtRuntimeTest extends BaseTest {
+		public static function Main():int {
+			function getVector() { return Vector; }
+			
+			var CODE = 1007; //  Instantiation attempted on a non-constructor.
+			
+			startTest();
+			var TITLE="Runtime specialization";
+			writeHeaderToLog(TITLE);
+			
+			var x = getVector().<int>;
+			y = new x();
+			
+			y.push(1);
+			y.push(2);
+			y.push(3);
+			
+			AddTestCase(    "Vector constructed via runtime specialization",
+			                3,
+			                y.length); 
+			
+			AddTestCase(    "Vector constructed via runtime specialization",
+			                2,
+			                y[1]);
+			
+			
+			var neg_result = "Failed to catch invalid construct";
+			
+			try {
+			   unspecialized = getVector();
+			   var z = new unspecialized();
+			} catch ( ex )
+			{
+			    neg_result = String(ex);
+			}
+			
+			AddTestCase ( "Invalid use of unspecialized type in constructor", TYPEERROR + CODE,  typeError(neg_result));
+			
+			
+			test();
+			return results();
+		}
+	}
 }
-
-AddTestCase ( "Invalid use of unspecialized type in constructor", TYPEERROR + CODE,  typeError(neg_result));
-
-
-test();

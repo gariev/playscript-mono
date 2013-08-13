@@ -35,29 +35,36 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-var TITLE   = "initialization of const inside function";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();
-
-class Person {
-    const name:String;
-    
-    function Person(theName:String)
-    {
-        name = theName;
-    }
-    
-    function getName():String
-    {
-        return name;
-    }
+package {
+	public class ConstInitializationInsideConstructorTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE   = "initialization of const inside function";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();
+			
+			class Person {
+			    const name:String;
+			    
+			    function Person(theName:String)
+			    {
+			        name = theName;
+			    }
+			    
+			    function getName():String
+			    {
+			        return name;
+			    }
+			}
+			
+			var bob:Person = new Person("bob");
+			
+			AddTestCase("Initialize instance const inside constructor", "bob", bob.getName());
+			
+			test();
+			return results();
+		}
+	}
 }
-
-var bob:Person = new Person("bob");
-
-AddTestCase("Initialize instance const inside constructor", "bob", bob.getName());
-
-test();

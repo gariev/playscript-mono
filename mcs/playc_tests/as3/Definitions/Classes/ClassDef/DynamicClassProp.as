@@ -37,88 +37,95 @@
  
  
 
-import DynamicClassPropPackage.*;
-
-var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";                   // Version of JavaScript or ECMA
-var TITLE   = "Add Properties to Dynamic Class";  // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-
-
-var Obj = new DynamicClassProp();
-
-
-var arr = new Array(1,2,3);
-
-var d = new Date(0);
-
-var str = "Test";
-
-var ob = new Object();
-
-
-Obj.prop1 = 100;
-Obj.prop2 = "Test";
-Obj.prop3 = true;
-Obj.prop4 = arr;
-Obj.prop5 = d;
-Obj.prop6 = ob;
-
-
-// ********************************************
-// Access property of type Number
-//
-// ********************************************
-
-AddTestCase( "*** Access property of type Number ***", 1, 1 );
-AddTestCase( "Obj.prop1", 100, Obj.prop1 );
-
-
-// ********************************************
-// Access property of type String
-//
-// ********************************************
-
-AddTestCase( "*** Access property of type String ***", 1, 1 );
-AddTestCase( "Obj.prop2", "Test", Obj.prop2 );
-
-
-// ********************************************
-// Access property of type Boolean
-//
-// ********************************************
-
-AddTestCase( "*** Access property of type Boolean ***", 1, 1 );
-AddTestCase( "Obj.prop3", true, Obj.prop3 );
-
-
-// ********************************************
-// Access property of type Array
-//
-// ********************************************
-
-AddTestCase( "*** Access property of type Array ***", 1, 1 );
-AddTestCase( "Obj.prop4", arr, Obj.prop4 );
-
-// ********************************************
-// Access property of type Date
-// ********************************************
-
-AddTestCase( "*** Access property of type Date ***", 1, 1 );
-AddTestCase( "Obj.prop5", d, Obj.prop5 );
-
-
-// ********************************************
-// Access property of type Object
-// ********************************************
-
-AddTestCase( "*** Access property of type Object ***", 1, 1 );
-AddTestCase( "Obj.prop6", ob, Obj.prop6 );
-
-
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	import DynamicClassPropPackage.*;
+	
+	public class DynamicClassPropTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
+			var VERSION = "AS3";                   // Version of JavaScript or ECMA
+			var TITLE   = "Add Properties to Dynamic Class";  // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			
+			
+			var Obj = new DynamicClassProp();
+			
+			
+			var arr = new Array(1,2,3);
+			
+			var d = new Date(0);
+			
+			var str = "Test";
+			
+			var ob = new Object();
+			
+			
+			Obj.prop1 = 100;
+			Obj.prop2 = "Test";
+			Obj.prop3 = true;
+			Obj.prop4 = arr;
+			Obj.prop5 = d;
+			Obj.prop6 = ob;
+			
+			
+			// ********************************************
+			// Access property of type Number
+			//
+			// ********************************************
+			
+			AddTestCase( "*** Access property of type Number ***", 1, 1 );
+			AddTestCase( "Obj.prop1", 100, Obj.prop1 );
+			
+			
+			// ********************************************
+			// Access property of type String
+			//
+			// ********************************************
+			
+			AddTestCase( "*** Access property of type String ***", 1, 1 );
+			AddTestCase( "Obj.prop2", "Test", Obj.prop2 );
+			
+			
+			// ********************************************
+			// Access property of type Boolean
+			//
+			// ********************************************
+			
+			AddTestCase( "*** Access property of type Boolean ***", 1, 1 );
+			AddTestCase( "Obj.prop3", true, Obj.prop3 );
+			
+			
+			// ********************************************
+			// Access property of type Array
+			//
+			// ********************************************
+			
+			AddTestCase( "*** Access property of type Array ***", 1, 1 );
+			AddTestCase( "Obj.prop4", arr, Obj.prop4 );
+			
+			// ********************************************
+			// Access property of type Date
+			// ********************************************
+			
+			AddTestCase( "*** Access property of type Date ***", 1, 1 );
+			AddTestCase( "Obj.prop5", d, Obj.prop5 );
+			
+			
+			// ********************************************
+			// Access property of type Object
+			// ********************************************
+			
+			AddTestCase( "*** Access property of type Object ***", 1, 1 );
+			AddTestCase( "Obj.prop6", ob, Obj.prop6 );
+			
+			
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

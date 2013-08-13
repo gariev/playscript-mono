@@ -35,89 +35,96 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-import flash.sampler.*;
-import avmplus.*;
-
-var SECTION = "Sampling";
-var VERSION = "AS3";
-var TITLE   = "Sampling Basic Usage";
-
-var isdebugger=System.isDebugger();
-
-startTest();
-writeHeaderToLog("Sampling api");
-
-var objs:Array=new Array();
-class simpleobject {
-    var str:String;
-    function simpleobject(s:String) { 
-        this.str=s;
-    }
-}
-
-
-stopSampling();
-if (isdebugger) {
-    AddTestCase("StopBeforeStarted: call stopSampling() before startSampling is called",
-    0,
-    getSampleCount()
-    );
-} else {
-    AddTestCase("StopBeforeStarted: call stopSampling() before startSampling is called",
-    -1,
-    getSampleCount()
-    );
-}
-
-pauseSampling();
-if (isdebugger) {
-    AddTestCase("PauseBeforeStarted: call pauseSampling() before startSampling is called",
-    0,
-    getSampleCount()
-    );
-}
-sampleInternalAllocs(true);
-startSampling();
-startSampling();
-startSampling();
-startSampling();
-simpleLoop();
-pauseSampling();
-
-if (isdebugger) {
-    AddTestCase(
-      "StartSamplingMult:  call startSampling() multiple times in a row",
-      true,
-      getSampleCount()>50
-    );
-}
-clearSamples();
-clearSamples();
-
-if (isdebugger) {
-    AddTestCase(
-      "ClearSamplingTwice: call clearSampling() twice in a row",
-      0,
-      getSampleCount()
-    );
-}
-startSampling();
-simpleLoop();
-pauseSampling();
-pauseSampling();
-pauseSampling();
-
-if (isdebugger) {
-    AddTestCase(
-      "PauseSamplingTwice: call pauseSamples() twice in a row",
-      true,
-      getSampleCount()>50
-    );
-}
-test();
-
-function simpleLoop() {
-    for (var i:int=0;i<100;i++) {
-       objs.push(new simpleobject(""+i));
-    }
+package {
+	import flash.sampler.*;
+	import avmplus.*;
+	
+	public class StartSamplingErrorsTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Sampling";
+			var VERSION = "AS3";
+			var TITLE   = "Sampling Basic Usage";
+			
+			var isdebugger=System.isDebugger();
+			
+			startTest();
+			writeHeaderToLog("Sampling api");
+			
+			var objs:Array=new Array();
+			class simpleobject {
+			    var str:String;
+			    function simpleobject(s:String) { 
+			        this.str=s;
+			    }
+			}
+			
+			
+			stopSampling();
+			if (isdebugger) {
+			    AddTestCase("StopBeforeStarted: call stopSampling() before startSampling is called",
+			    0,
+			    getSampleCount()
+			    );
+			} else {
+			    AddTestCase("StopBeforeStarted: call stopSampling() before startSampling is called",
+			    -1,
+			    getSampleCount()
+			    );
+			}
+			
+			pauseSampling();
+			if (isdebugger) {
+			    AddTestCase("PauseBeforeStarted: call pauseSampling() before startSampling is called",
+			    0,
+			    getSampleCount()
+			    );
+			}
+			sampleInternalAllocs(true);
+			startSampling();
+			startSampling();
+			startSampling();
+			startSampling();
+			simpleLoop();
+			pauseSampling();
+			
+			if (isdebugger) {
+			    AddTestCase(
+			      "StartSamplingMult:  call startSampling() multiple times in a row",
+			      true,
+			      getSampleCount()>50
+			    );
+			}
+			clearSamples();
+			clearSamples();
+			
+			if (isdebugger) {
+			    AddTestCase(
+			      "ClearSamplingTwice: call clearSampling() twice in a row",
+			      0,
+			      getSampleCount()
+			    );
+			}
+			startSampling();
+			simpleLoop();
+			pauseSampling();
+			pauseSampling();
+			pauseSampling();
+			
+			if (isdebugger) {
+			    AddTestCase(
+			      "PauseSamplingTwice: call pauseSamples() twice in a row",
+			      true,
+			      getSampleCount()>50
+			    );
+			}
+			test();
+			
+			function simpleLoop() {
+			    for (var i:int=0;i<100;i++) {
+			       objs.push(new simpleobject(""+i));
+			    }
+			}
+			return results();
+		}
+	}
 }

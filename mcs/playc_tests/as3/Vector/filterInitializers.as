@@ -44,59 +44,66 @@
      returns a new vector object containing the elements that were collected in the order
      they were collected.
    */
-var SECTION="";
-var VERSION = "ECMA_1";
-
-startTest();
-
-writeHeaderToLog( " Vector.filter()-using-initializers");
-
-function EvenChecker(value,index,obj) {
-  if (value%2==0)
-    return true;
-  return false;
+package {
+	public class filterInitializersTest extends BaseTest {
+		public static function Main():int {
+			var SECTION="";
+			var VERSION = "ECMA_1";
+			
+			startTest();
+			
+			writeHeaderToLog( " Vector.filter()-using-initializers");
+			
+			function EvenChecker(value,index,obj) {
+			  if (value%2==0)
+			    return true;
+			  return false;
+			}
+			var invalidchecker="a string";
+			function ThisChecker(value,index,obj):Boolean {
+			  msg+=this.message;
+			  return true;
+			}
+			
+			var errormsg="";
+			try {
+			  var result=new <int>[].filter();
+			} catch (e) {
+			  errormsg=e.toString();
+			}
+			AddTestCase(	"filter checker is undefined",
+					"ArgumentError: Error #1063",
+			    parseError(errormsg,"ArgumentError: Error #1063".length));
+			
+			var errormsg="";
+			try {
+			  var result=new <int>[0,1,2,3,4,5,6,7,8,9].filter(invalidchecker);
+			} catch (e) {
+			  errormsg=e.toString();
+			}
+			AddTestCase(	"filter checker is not a function",
+					"TypeError: Error #1034",
+			              parseError(errormsg,"TypeError: Error #1034".length));
+			
+			var result=new <int>[].filter(EvenChecker);
+			AddTestCase(	"filter empty vector",
+					"",
+					result.toString());
+			
+			AddTestCase(	"filter small vector",
+					"0,2,4,6,8",
+					new <int>[0,1,2,3,4,5,6,7,8,9].filter(EvenChecker).toString());
+			
+			var myobject=new Object();
+			myobject.message="message";
+			var msg="";
+			var result=new <int>[0,1,2].filter(ThisChecker,myobject);
+			AddTestCase(	"filter use thisobj",
+					"messagemessagemessage",
+					msg);
+			
+			test();
+			return results();
+		}
+	}
 }
-var invalidchecker="a string";
-function ThisChecker(value,index,obj):Boolean {
-  msg+=this.message;
-  return true;
-}
-
-var errormsg="";
-try {
-  var result=new <int>[].filter();
-} catch (e) {
-  errormsg=e.toString();
-}
-AddTestCase(	"filter checker is undefined",
-		"ArgumentError: Error #1063",
-    parseError(errormsg,"ArgumentError: Error #1063".length));
-
-var errormsg="";
-try {
-  var result=new <int>[0,1,2,3,4,5,6,7,8,9].filter(invalidchecker);
-} catch (e) {
-  errormsg=e.toString();
-}
-AddTestCase(	"filter checker is not a function",
-		"TypeError: Error #1034",
-              parseError(errormsg,"TypeError: Error #1034".length));
-
-var result=new <int>[].filter(EvenChecker);
-AddTestCase(	"filter empty vector",
-		"",
-		result.toString());
-
-AddTestCase(	"filter small vector",
-		"0,2,4,6,8",
-		new <int>[0,1,2,3,4,5,6,7,8,9].filter(EvenChecker).toString());
-
-var myobject=new Object();
-myobject.message="message";
-var msg="";
-var result=new <int>[0,1,2].filter(ThisChecker,myobject);
-AddTestCase(	"filter use thisobj",
-		"messagemessagemessage",
-		msg);
-
-test();

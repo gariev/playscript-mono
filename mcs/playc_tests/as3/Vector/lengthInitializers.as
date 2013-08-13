@@ -41,26 +41,33 @@
    than the name of every property whose name is an array index.
 */
 
-var SECTION = "15.4.5.2-1";
-var VERSION = "ECMA_1";
-startTest();
-var TITLE   = "Vector.length - initializers";
-
-writeHeaderToLog( SECTION + " "+ TITLE);
-
-
-AddTestCase(	"length of empty vector",
-		0,
-		new <Object>[].length);
-
-AddTestCase(	"length of initialized vector of size 9",
-		9,
-		new <int>[1,2,3,4,5,6,7,8,9].length);
-
-AddTestCase(	"vector initializer is not-fixed size",
-		false,
-		new <int>[1,2,3,4,5,6,7,8,9].fixed);
-
-
-test();
-
+package {
+	public class lengthInitializersTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "15.4.5.2-1";
+			var VERSION = "ECMA_1";
+			startTest();
+			var TITLE   = "Vector.length - initializers";
+			
+			writeHeaderToLog( SECTION + " "+ TITLE);
+			
+			
+			AddTestCase(	"length of empty vector",
+					0,
+					new <Object>[].length);
+			
+			AddTestCase(	"length of initialized vector of size 9",
+					9,
+					new <int>[1,2,3,4,5,6,7,8,9].length);
+			
+			AddTestCase(	"vector initializer is not-fixed size",
+					false,
+					new <int>[1,2,3,4,5,6,7,8,9].fixed);
+			
+			
+			test();
+			
+			return results();
+		}
+	}
+}

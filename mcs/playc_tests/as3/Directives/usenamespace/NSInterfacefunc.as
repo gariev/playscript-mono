@@ -35,51 +35,58 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var SECTION = "Directives";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "Interface defined in a namespace";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-
-
-namespace English	// define public::English
-namespace French        // define public::French
-//use namespace French	// add public::French to the open namespaces
-
-
-interface IPod {
-	function playMusic() 
-	
-	function rewind()
-        
-        function forward() 
-	
+package {
+	public class NSInterfacefuncTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Directives";       // provide a document reference (ie, Actionscript section)
+			var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
+			var TITLE   = "Interface defined in a namespace";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			
+			
+			namespace English	// define public::English
+			namespace French        // define public::French
+			//use namespace French	// add public::French to the open namespaces
+			
+			
+			interface IPod {
+				function playMusic() 
+				
+				function rewind()
+			        
+			        function forward() 
+				
+			}
+			
+			class MP3Player implements IPod {
+			
+				public function playMusic() {
+					return "Dead Souls";
+				}
+				public function rewind() {
+					return "Monday Paracetamol";
+				}
+				public function forward() {
+					return "Dead Cities";
+				}
+			    
+			}
+			
+			var p = new MP3Player();
+			
+			AddTestCase("Public function in interface", "Dead Souls", p.playMusic() );
+			AddTestCase("Namespace function in interface", "Dead Cities", p.IPod::forward() );
+			
+			// NOTE //
+			// When this is running, add *Err test case to make sure you get the error message for 
+			// not defining a function included in the namespace interface.
+			//////////
+			
+			test();
+			return results();
+		}
+	}
 }
-
-class MP3Player implements IPod {
-
-	public function playMusic() {
-		return "Dead Souls";
-	}
-	public function rewind() {
-		return "Monday Paracetamol";
-	}
-	public function forward() {
-		return "Dead Cities";
-	}
-    
-}
-
-var p = new MP3Player();
-
-AddTestCase("Public function in interface", "Dead Souls", p.playMusic() );
-AddTestCase("Namespace function in interface", "Dead Cities", p.IPod::forward() );
-
-// NOTE //
-// When this is running, add *Err test case to make sure you get the error message for 
-// not defining a function included in the namespace interface.
-//////////
-
-test();

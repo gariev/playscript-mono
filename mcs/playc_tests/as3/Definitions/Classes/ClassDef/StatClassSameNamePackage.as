@@ -37,20 +37,27 @@
  
  
 
-import StatClassSameNamePackage.*;
-
-var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";                   // Version of JavaScript or ECMA
-var TITLE   = "Access Static Properties & Methods";  // Provide ECMA section title or a description
-var BUGNUMBER = "134955";
-
-startTest();                // leave this alone
-
-
-
-AddTestCase( "Access static property via package/class with same name", "x.x.a", StatClassSameNamePackage.StatClassSameNamePackage.aStatic );
-AddTestCase( "Call static method via package/class with same name", "x.x.f()", StatClassSameNamePackage.StatClassSameNamePackage.fStatic() );
-
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	import StatClassSameNamePackage.*;
+	
+	public class StatClassSameNamePackageTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
+			var VERSION = "AS3";                   // Version of JavaScript or ECMA
+			var TITLE   = "Access Static Properties & Methods";  // Provide ECMA section title or a description
+			var BUGNUMBER = "134955";
+			
+			startTest();                // leave this alone
+			
+			
+			
+			AddTestCase( "Access static property via package/class with same name", "x.x.a", StatClassSameNamePackage.StatClassSameNamePackage.aStatic );
+			AddTestCase( "Call static method via package/class with same name", "x.x.f()", StatClassSameNamePackage.StatClassSameNamePackage.fStatic() );
+			
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

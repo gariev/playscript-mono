@@ -39,25 +39,32 @@
 */
 
 //-----------------------------------------------------------
-startTest();
-//-----------------------------------------------------------
-
-class A {
-	function f() {}
+package {
+	public class Error1064CannotCallMethodAsConstructorTest extends BaseTest {
+		public static function Main():int {
+			startTest();
+			//-----------------------------------------------------------
+			
+			class A {
+				function f() {}
+			}
+			
+			var a = new A();
+			var b = a.f;
+			
+			try {
+				var z = "no error";
+				var c = new b();
+			} catch (err) {
+				z = err.toString();
+			} finally {
+				AddTestCase("Runtime Error", "TypeError: Error #1064", typeError(z));
+			}
+			
+			//-----------------------------------------------------------
+			test();
+			//-----------------------------------------------------------
+			return results();
+		}
+	}
 }
-
-var a = new A();
-var b = a.f;
-
-try {
-	var z = "no error";
-	var c = new b();
-} catch (err) {
-	z = err.toString();
-} finally {
-	AddTestCase("Runtime Error", "TypeError: Error #1064", typeError(z));
-}
-
-//-----------------------------------------------------------
-test();
-//-----------------------------------------------------------

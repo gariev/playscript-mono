@@ -36,63 +36,70 @@
  * ***** END LICENSE BLOCK ***** */
 
 
-var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-var VERSION = "AS 3.0";  // Version of JavaScript or ECMA
-var TITLE   = "Access static method of base class from subclass";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-/**
- * Calls to AddTestCase here. AddTestCase is a function that is defined
- * in shell.js and takes three arguments:
- * - a string representation of what is being tested
- * - the expected result
- * - the actual result
- *
- * For example, a test might look like this:
- *
- * var helloWorld = "Hello World";
- *
- * AddTestCase(
- * "var helloWorld = 'Hello World'",   // description of the test
- *  "Hello World",                     // expected result
- *  helloWorld );                      // actual result
- *
- */
-
-import StaticPropertyPackage.*;
-  
-var obj = new AccStatMethSubClassMeth();
-
-// ********************************************
-// Access the static method via BaseClass.foo()
-// ********************************************
-AddTestCase( "*** Access the static method via base class ***", 1, 1 );
-AddTestCase( "BaseClass.echo('hello')", "hello", BaseClass.echo("hello") );
-
-// ********************************************
-// Access the static method via sub class, 
-// using unadorned "foo()"
-// ********************************************
-AddTestCase( "*** Access the static method via sub class using unadorned method call ***", 1, 1 );
-AddTestCase( "obj.callEcho('world')", "world", obj.callEcho("world") );
-
-// ********************************************
-// Access the static method via sub class, 
-// using "BaseClass.foo()"
-// ********************************************
-AddTestCase( "*** Access the static method via sub class using base class method call ***", 1, 1 );
-AddTestCase( "obj.callBaseEcho('here')", "here", obj.callBaseEcho("here") );
-
-// ********************************************
-// Access the static method via sub class using 
-// subclass.foo() in a method
-// ********************************************
-// no longer legal as of d359
-//AddTestCase( "*** Access the static method via sub class using subclass.foo() in a method ***", 1, 1 );
-//AddTestCase( "obj.callSubEcho('there')", "there", obj.callSubEcho("there") );
-
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	public class AccStatMethSubClassMethTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION = "AS 3.0";  // Version of JavaScript or ECMA
+			var TITLE   = "Access static method of base class from subclass";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			/**
+			 * Calls to AddTestCase here. AddTestCase is a function that is defined
+			 * in shell.js and takes three arguments:
+			 * - a string representation of what is being tested
+			 * - the expected result
+			 * - the actual result
+			 *
+			 * For example, a test might look like this:
+			 *
+			 * var helloWorld = "Hello World";
+			 *
+			 * AddTestCase(
+			 * "var helloWorld = 'Hello World'",   // description of the test
+			 *  "Hello World",                     // expected result
+			 *  helloWorld );                      // actual result
+			 *
+			 */
+			
+			import StaticPropertyPackage.*;
+			  
+			var obj = new AccStatMethSubClassMeth();
+			
+			// ********************************************
+			// Access the static method via BaseClass.foo()
+			// ********************************************
+			AddTestCase( "*** Access the static method via base class ***", 1, 1 );
+			AddTestCase( "BaseClass.echo('hello')", "hello", BaseClass.echo("hello") );
+			
+			// ********************************************
+			// Access the static method via sub class, 
+			// using unadorned "foo()"
+			// ********************************************
+			AddTestCase( "*** Access the static method via sub class using unadorned method call ***", 1, 1 );
+			AddTestCase( "obj.callEcho('world')", "world", obj.callEcho("world") );
+			
+			// ********************************************
+			// Access the static method via sub class, 
+			// using "BaseClass.foo()"
+			// ********************************************
+			AddTestCase( "*** Access the static method via sub class using base class method call ***", 1, 1 );
+			AddTestCase( "obj.callBaseEcho('here')", "here", obj.callBaseEcho("here") );
+			
+			// ********************************************
+			// Access the static method via sub class using 
+			// subclass.foo() in a method
+			// ********************************************
+			// no longer legal as of d359
+			//AddTestCase( "*** Access the static method via sub class using subclass.foo() in a method ***", 1, 1 );
+			//AddTestCase( "obj.callSubEcho('there')", "there", obj.callSubEcho("there") );
+			
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

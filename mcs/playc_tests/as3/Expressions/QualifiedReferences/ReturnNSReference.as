@@ -35,23 +35,30 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var SECTION = "Expressions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "qualified references";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();                // leave this alone
-
-
- 
-import ns.*;
-
-var f:foo = new foo();
-
-AddTestCase( "function getTeam1(){return Baseball::teamName}", "Giants", f.getTeam1() );
-AddTestCase( "function getTeam2(){return Basketball::teamName}", "Kings", f.getTeam2() );
-AddTestCase( "function getTeam3(){return Hockey::teamName}", "Sharks", f.getTeam3() );
-
-
-test();       // leave this alone.  this executes the test cases and
-              // displays results.
+package {
+	public class ReturnNSReferenceTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Expressions";       // provide a document reference (ie, Actionscript section)
+			var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
+			var TITLE   = "qualified references";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();                // leave this alone
+			
+			
+			 
+			import ns.*;
+			
+			var f:foo = new foo();
+			
+			AddTestCase( "function getTeam1(){return Baseball::teamName}", "Giants", f.getTeam1() );
+			AddTestCase( "function getTeam2(){return Basketball::teamName}", "Kings", f.getTeam2() );
+			AddTestCase( "function getTeam3(){return Hockey::teamName}", "Sharks", f.getTeam3() );
+			
+			
+			test();       // leave this alone.  this executes the test cases and
+			              // displays results.
+			return results();
+		}
+	}
+}

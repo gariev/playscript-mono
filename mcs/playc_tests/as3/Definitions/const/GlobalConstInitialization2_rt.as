@@ -35,33 +35,40 @@
  *
  * ***** END LICENSE BLOCK ***** */
  
-var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-var TITLE   = "Initialize a global const after its initializer";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
-
-startTest();
-
-var myNum1:Number;
-var myNum2:Number;
-const myNum3:Number;
-
-
-myNum1 = -20;
-myNum2 = 100;
-
-var thisError:String = "no error";
-try
-{
-    myNum3 = myNum1 / myNum3;
+package {
+	public class GlobalConstInitialization2_rtTest extends BaseTest {
+		public static function Main():int {
+			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE   = "Initialize a global const after its initializer";       // Provide ECMA section title or a description
+			var BUGNUMBER = "";
+			
+			startTest();
+			
+			var myNum1:Number;
+			var myNum2:Number;
+			const myNum3:Number;
+			
+			
+			myNum1 = -20;
+			myNum2 = 100;
+			
+			var thisError:String = "no error";
+			try
+			{
+			    myNum3 = myNum1 / myNum3;
+			}
+			catch(err)
+			{
+			    thisError = err.toString();
+			}
+			finally
+			{
+			    AddTestCase("Initialize a global const after its initializer", "ReferenceError: Error #1074", referenceError(thisError));
+			}
+			
+			test();
+			return results();
+		}
+	}
 }
-catch(err)
-{
-    thisError = err.toString();
-}
-finally
-{
-    AddTestCase("Initialize a global const after its initializer", "ReferenceError: Error #1074", referenceError(thisError));
-}
-
-test();
