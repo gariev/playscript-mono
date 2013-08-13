@@ -207,6 +207,9 @@
     <Compile Include="..\PlayScript.Dynamic\PlayScript\DynamicRuntime\PSInvoke.cs">
       <Link>PlayScript\DynamicRuntime\PSInvoke.cs</Link>
     </Compile>
+    <Compile Include="..\PlayScript.Dynamic\PlayScript\StringPool.cs">
+      <Link>PlayScript\StringPool.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

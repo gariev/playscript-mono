@@ -13,6 +13,7 @@ AssemblyInfo.cs
 ./PlayScript/ExpressionType.cs
 ./PlayScript/ExtensionAttribute.cs
 ./PlayScript/Stats.cs
+./PlayScript/StringPool.cs
 ./PlayScript/Undefined.cs
 ./PlayScript/Expando/BindingRestrictionsEx.cs
 ./PlayScript/Expando/CacheDict.cs
