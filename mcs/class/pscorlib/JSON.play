@@ -18,12 +18,13 @@ package {
 	import System.Json.*;
 	import System.Collections.*;
 	import System.Collections.Generic.*;
+	import PlayScript.Expando.*;
 
 	public static class JSON {
 
-		private static function ConvertJsonObjectToDynamic(jv:JsonObject):Object {
+		private static function ConvertJsonObjectToDynamic(jv:JsonObject):ExpandoObject {
 			// convert all properties
-			var o:Object = new Object;
+			var o:ExpandoObject = new ExpandoObject;
 			for each (var key:String in jv.Keys) {
 				var element:Object = ConvertJsonValueToDynamic(jv[key]);
 				o[key] = element;
