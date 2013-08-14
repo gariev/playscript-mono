@@ -1440,75 +1440,26 @@ namespace PlayScript.Expando {
 		// Overtime we could also add short, ushort, Int64, Uint64, etc...
 		// We are not using TypeCode as it does not match with 16 values (4 bits), and for some types, we actually do not have much usage (DateTime for example)
 
-		/*
-		struct Key
-		{
-			public int StringID
-			{
-				get
-				{
-					return (int)(KeyAsStringID & StringIDMask);
-				}
-			}
-
-			public int ValueType
-			{
-				get
-				{
-					return (int)(KeyAsStringID >> ValueTypeShift);
-				}
-			}
-
-			public void SetKeyAndValueType(string key, int valueType)
-			{
-				int stringID;
-				string pooledString = StringPool.AddStringToPool(key, out stringID);
-				KeyAsString = pooledString;
-				KeyAsStringID = (uint)(stringID | (valueType << ValueTypeShift));
-			}
-
-			public string	KeyAsString;
-			public uint		KeyAsStringID;			// Top 4 bits has the value type as well.
-		}
-
 		[StructLayout(LayoutKind.Explicit)]
-		struct Value
-		{
-			[FieldOffset(0)]
-			public bool		ValueAsBool;
-			[FieldOffset(0)]
-			public int		ValueAsInt;
-			[FieldOffset(0)]
-			public uint		ValueAsUint;
-			[FieldOffset(0)]
-			public double	ValueAsDouble;
-			[FieldOffset(0)]
-			public object	ValueAsObject;			// This is probably going to work with Boehm GC, but what about SGen?
-			[FieldOffset(0)]
-			public string	ValueAsString;			// This is probably going to work with Boehm GC, but what about SGen?
-		}
-		*/
-
-		//[StructLayout(LayoutKind.Explicit)]
 		[DebuggerDisplay("{DebugData}")]
 		struct KeyValue
 		{
-			//[FieldOffset(0)]
+			[FieldOffset(0)]
 			public bool		ValueAsBool;
-			//[FieldOffset(0)]
+			[FieldOffset(0)]
 			public int		ValueAsInt;
-			//[FieldOffset(0)]
+			[FieldOffset(0)]
 			public uint		ValueAsUint;
-			//[FieldOffset(0)]
+			[FieldOffset(0)]
 			public double	ValueAsDouble;
-			//[FieldOffset(0)]
+			[FieldOffset(8)]
 			public object	ValueAsObject;			// This is probably going to work with Boehm GC, but what about SGen?
-			//[FieldOffset(0)]
+			[FieldOffset(8)]
 			public string	ValueAsString;			// This is probably going to work with Boehm GC, but what about SGen?
 
-			//[FieldOffset(8)]
+			[FieldOffset(12)]
 			public string	KeyAsString;
-			//[FieldOffset(12)]
+			[FieldOffset(16)]
 			public uint		KeyAsStringID;			// Top 4 bits has the value type as well.
 
 			public int StringID
@@ -1610,9 +1561,13 @@ namespace PlayScript.Expando {
 
 		private void CreateSpaceForKey(int index)
 		{
+			Stats.Increment(StatsCounter.Expando_AddKey);
+
 			int lastIndex = mNumberOfKeyValues++;
 			if (lastIndex == mKeyValues.Length)
 			{
+				Stats.Increment(StatsCounter.Expando_GrowExpando);
+
 				// We have to grow the array as it is now too small.
 				int newSize = lastIndex + (lastIndex >> 3) + 4;		// Increase size by 12.5% + 4
 				// +1 for the one we are just going to fill, +3 for next values
@@ -1623,6 +1578,8 @@ namespace PlayScript.Expando {
 				Debug.Assert(firstHalfSize >= 0);
 				if (firstHalfSize > 0)
 				{
+					Stats.Increment(StatsCounter.Expando_ArrayCopy);
+
 					Array.Copy(mKeyValues, 0, newKeyValues, 0, firstHalfSize);
 				}
 
@@ -1631,6 +1588,8 @@ namespace PlayScript.Expando {
 				Debug.Assert(secondHalfSize >= 0);
 				if (secondHalfSize > 0)
 				{
+					Stats.Increment(StatsCounter.Expando_ArrayCopy);
+
 					Array.Copy(mKeyValues, index, newKeyValues, index + 1, secondHalfSize);
 				}
 
@@ -1644,6 +1603,8 @@ namespace PlayScript.Expando {
 				Debug.Assert(secondHalfSize >= 0);
 				if (secondHalfSize > 0)
 				{
+					Stats.Increment(StatsCounter.Expando_ArrayCopy);
+
 					Array.Copy(mKeyValues, index, mKeyValues, index + 1, secondHalfSize);
 				}
 			}
@@ -1713,6 +1674,8 @@ namespace PlayScript.Expando {
 			// At that point, we know that mKeyValues is allocated
 			if (count <= 4)
 			{
+				Stats.Increment(StatsCounter.Expando_FastPathFind);
+
 				// Linear search if few elements,
 				// so we don't pay the stringID and binary search overhead (no insertion in this case)
 				for (int i = 0 ; i < count ; ++i)
@@ -1733,6 +1696,9 @@ namespace PlayScript.Expando {
 					// If it is not in the string pool, that means it is not in any expando
 					return -1;
 				}
+
+				Stats.Increment(StatsCounter.Expando_SlowPathFind);
+
 				while (startIndex <= endIndex)
 				{
 					int mid = (endIndex + startIndex) / 2;
@@ -1790,6 +1756,7 @@ namespace PlayScript.Expando {
 				if (stringIDAtIndex == hintStringID)
 				{
 					// We have the correct index in 3 comparisons and 1 lookup
+					Stats.Increment(StatsCounter.Expando_FastPathFind);
 					return true;
 				}
 
@@ -1802,6 +1769,7 @@ namespace PlayScript.Expando {
 					{
 						// There can't be any match, lesser is before startIndex
 						hintIndex = -1;
+						Stats.Increment(StatsCounter.Expando_FastPathFind);
 						return false;
 					}
 				}
@@ -1813,6 +1781,7 @@ namespace PlayScript.Expando {
 					{
 						// There can't be any match, lesser is the last index
 						hintIndex = endIndex;
+						Stats.Increment(StatsCounter.Expando_FastPathFind);
 						return false;
 					}
 				}
@@ -1832,6 +1801,8 @@ namespace PlayScript.Expando {
 				// Improve this so the usage counter does not get out of sync.
 				key = StringPool.AddStringToPool(key, out hintStringID);
 			}
+
+			Stats.Increment(StatsCounter.Expando_SlowPathFind);
 
 			int closestLesserIndex = -1;
 			while (startIndex <= endIndex)
@@ -1968,6 +1939,7 @@ namespace PlayScript.Expando {
 			int index = FindKey(key);
 			if (index >= 0)
 			{
+				Stats.Increment(StatsCounter.Expando_Remove);
 				Array.Copy(mKeyValues, index + 1, mKeyValues, index, mNumberOfKeyValues - index - 1);
 				--mNumberOfKeyValues;
 				CheckValidity();
@@ -1980,6 +1952,7 @@ namespace PlayScript.Expando {
 			int index = FindKey(key);
 			if (index >= 0)
 			{
+				Stats.Increment(StatsCounter.Expando_GetFromIDictionary);
 				value = mKeyValues[index].ValueAsObject;
 				return true;
 			}
@@ -2058,9 +2031,11 @@ namespace PlayScript.Expando {
 
 		object IDictionary.this [object key] {
 			get {
+				Stats.Increment(StatsCounter.Expando_GetFromIDictionary);
 				return this[KeyToString(key)];
 			}
 			set {
+				Stats.Increment(StatsCounter.Expando_GetFromIDictionary);
 				this[(string)key] = value;
 			}
 		}
@@ -2172,12 +2147,16 @@ namespace PlayScript.Expando {
 						case ValueTypeString:
 							return mExpando.mKeyValues[mIndex].ValueAsString;
 						case ValueTypeBool:
+							Stats.Increment(StatsCounter.Expando_Boxing);
 							return mExpando.mKeyValues[mIndex].ValueAsBool;
 						case ValueTypeInt:
+							Stats.Increment(StatsCounter.Expando_Boxing);
 							return mExpando.mKeyValues[mIndex].ValueAsInt;
 						case ValueTypeUint:
+							Stats.Increment(StatsCounter.Expando_Boxing);
 							return mExpando.mKeyValues[mIndex].ValueAsUint;
 						case ValueTypeDouble:
+							Stats.Increment(StatsCounter.Expando_Boxing);
 							return mExpando.mKeyValues[mIndex].ValueAsDouble;
 						default:
 							throw new NotImplementedException();
@@ -2264,8 +2243,10 @@ namespace PlayScript.Expando {
 					return mKeyValues[index].ValueAsBool ? 1 : 0;
 			case ValueTypeString:
 					// We probably should convert here...
+					Stats.Increment(StatsCounter.Expando_ParseFromString);
 					return int.Parse(mKeyValues[index].ValueAsString);
 			case ValueTypeObject:
+					Stats.Increment(StatsCounter.Expando_UnboxingAndConvert);
 					return Dynamic.ConvertValue<int>(mKeyValues[index].ValueAsObject);
 			default:
 				throw new NotSupportedException();
@@ -2292,8 +2273,10 @@ namespace PlayScript.Expando {
 					return mKeyValues[index].ValueAsBool ? 1u : 0u;
 			case ValueTypeString:
 					// We probably should convert here...
+					Stats.Increment(StatsCounter.Expando_ParseFromString);
 					return uint.Parse(mKeyValues[index].ValueAsString);
 			case ValueTypeObject:
+					Stats.Increment(StatsCounter.Expando_UnboxingAndConvert);
 					return Dynamic.ConvertValue<uint>(mKeyValues[index].ValueAsObject);
 			default:
 				throw new NotSupportedException();
@@ -2320,8 +2303,10 @@ namespace PlayScript.Expando {
 					return mKeyValues[index].ValueAsBool ? 1.0 : 0.0;
 			case ValueTypeString:
 					// We probably should convert here...
+					Stats.Increment(StatsCounter.Expando_ParseFromString);
 					return double.Parse(mKeyValues[index].ValueAsString);
 			case ValueTypeObject:
+					Stats.Increment(StatsCounter.Expando_UnboxingAndConvert);
 					return Dynamic.ConvertValue<double>(mKeyValues[index].ValueAsObject);
 			default:
 				throw new NotSupportedException();
@@ -2348,8 +2333,10 @@ namespace PlayScript.Expando {
 					return mKeyValues[index].ValueAsBool;
 			case ValueTypeString:
 					// We probably should convert here...
+					Stats.Increment(StatsCounter.Expando_ParseFromString);
 					return bool.Parse(mKeyValues[index].ValueAsString);
 			case ValueTypeObject:
+					Stats.Increment(StatsCounter.Expando_UnboxingAndConvert);
 					return Dynamic.ConvertValue<bool>(mKeyValues[index].ValueAsObject);
 			default:
 				throw new NotSupportedException();
@@ -2378,6 +2365,7 @@ namespace PlayScript.Expando {
 					// We probably should convert here...
 					return mKeyValues[index].ValueAsString;
 				case ValueTypeObject:
+					Stats.Increment(StatsCounter.Expando_ObjectToString);
 					return Dynamic.ConvertValue<string>(mKeyValues[index].ValueAsObject);
 				default:
 					throw new NotSupportedException();
@@ -2395,12 +2383,16 @@ namespace PlayScript.Expando {
 			switch (mKeyValues[index].ValueType)
 			{
 			case ValueTypeInt:
+					Stats.Increment(StatsCounter.Expando_Boxing);
 					return mKeyValues[index].ValueAsInt;
 			case ValueTypeUint:
+					Stats.Increment(StatsCounter.Expando_Boxing);
 					return mKeyValues[index].ValueAsUint;
 			case ValueTypeDouble:
+					Stats.Increment(StatsCounter.Expando_Boxing);
 					return mKeyValues[index].ValueAsDouble;
 			case ValueTypeBool:
+					Stats.Increment(StatsCounter.Expando_Boxing);
 					return mKeyValues[index].ValueAsBool;
 			case ValueTypeString:
 					// We probably should convert here...
@@ -2545,7 +2537,6 @@ namespace PlayScript.Expando {
 		void CheckValidity()
 		{
 			// Make sure that the transformations are correct
-			/*
 			int previousStringID = -1;
 			for (int i = 0 ; i < mNumberOfKeyValues ; ++i)
 			{
@@ -2562,7 +2553,6 @@ namespace PlayScript.Expando {
 				}
 				previousStringID = stringID;
 			}
-			*/
 		}
 
 

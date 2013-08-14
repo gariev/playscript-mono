@@ -69,9 +69,13 @@ namespace PlayScript
 
 		public static string AddStringToPool(string value, out int stringID)
 		{
+			Stats.Increment(StatsCounter.StringPool_Add);
+
 			StringInfo info;
 			if (sStringToInfo.TryGetValue(value, out info) == false)
 			{
+				Stats.Increment(StatsCounter.StringPool_AddFirst);
+
 				info = new StringInfo();
 				info.ID = sStringID++;
 				string internedString = string.IsInterned(value);
@@ -93,6 +97,8 @@ namespace PlayScript
 
 		public static void ReleaseStringFromPool(string value)
 		{
+			Stats.Increment(StatsCounter.StringPool_Remove);
+
 			StringInfo info;
 			if (sStringToInfo.TryGetValue(value, out info) == false)
 			{
@@ -106,6 +112,8 @@ namespace PlayScript
 			info.Usage--;
 			if (info.Usage == 0)
 			{
+				Stats.Increment(StatsCounter.StringPool_RemoveLast);
+
 				// That was the last reference, we can remove it from the pool
 				sStringToInfo.Remove(value);
 			}

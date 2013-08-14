@@ -82,6 +82,28 @@ namespace PlayScript
 		Runtime_CastArrayToVector,
 		Runtime_CastVectorToArray,
 
+		// Expando
+		Expando_ParseFromString,
+		Expando_Boxing,
+		Expando_Unboxing,
+		Expando_UnboxingAndConvert,
+		Expando_ObjectToString,
+		Expando_GetFromIDictionary,
+		Expando_SetFromIDictionary,
+		Expando_GetFromDictionary,
+		Expando_Remove,
+		Expando_ContainsKey,
+		Expando_FastPathFind,
+		Expando_SlowPathFind,
+		Expando_AddKey,
+		Expando_GrowExpando,
+		Expando_ArrayCopy,
+
+		StringPool_Add,
+		StringPool_Remove,
+		StringPool_AddFirst,
+		StringPool_RemoveLast,
+
 		Total
 	};
 
