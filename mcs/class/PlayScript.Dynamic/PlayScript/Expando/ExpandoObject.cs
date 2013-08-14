@@ -13,1441 +13,7 @@
  *
  * ***************************************************************************/
 
-#if DYNAMIC_SUPPORT
-
-using System.Linq.Expressions;
-
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Dynamic;
-using System.Dynamic.Utils;
-using System.Runtime.CompilerServices;
-using System;
-
-namespace PlayScript.Expando {
-
-    /// <summary>
-    /// Represents an object with members that can be dynamically added and removed at runtime.
-    /// </summary>
-    public sealed class ExpandoObject : IDynamicMetaObjectProvider, IDictionary<string, object>, INotifyPropertyChanged {
-        internal readonly object LockObject;                          // the readonly field is used for locking the Expando object
-        private ExpandoData _data;                                    // the data currently being held by the Expando object
-        private int _count;                                           // the count of available members
-
-        internal readonly static object Uninitialized = new object(); // A marker object used to identify that a value is uninitialized.
-
-        internal const int AmbiguousMatchFound = -2;        // The value is used to indicate there exists ambiguous match in the Expando object
-        internal const int NoMatch = -1;                    // The value is used to indicate there is no matching member
-
-        private PropertyChangedEventHandler _propertyChanged;
-
-        /// <summary>
-        /// Creates a new ExpandoObject with no members.
-        /// </summary>
-        public ExpandoObject() {
-            _data = ExpandoData.Empty;
-            LockObject = new object();
-        }
-
-        #region Get/Set/Delete Helpers
-
-        /// <summary>
-        /// Try to get the data stored for the specified class at the specified index.  If the
-        /// class has changed a full lookup for the slot will be performed and the correct
-        /// value will be retrieved.
-        /// </summary>
-        internal bool TryGetValue(object indexClass, int index, string name, bool ignoreCase, out object value) {
-            // read the data now.  The data is immutable so we get a consistent view.
-            // If there's a concurrent writer they will replace data and it just appears
-            // that we won the race
-            ExpandoData data = _data;
-            if (data.Class != indexClass || ignoreCase) {
-                /* Re-search for the index matching the name here if
-                 *  1) the class has changed, we need to get the correct index and return
-                 *  the value there.
-                 *  2) the search is case insensitive:
-                 *      a. the member specified by index may be deleted, but there might be other
-                 *      members matching the name if the binder is case insensitive.
-                 *      b. the member that exactly matches the name didn't exist before and exists now,
-                 *      need to find the exact match.
-                 */
-                index = data.Class.GetValueIndex(name, ignoreCase, this);
-                if (index == ExpandoObject.AmbiguousMatchFound) {
-                    throw Error.AmbiguousMatchInExpandoObject(name);
-                }
-            }
-
-            if (index == ExpandoObject.NoMatch) {
-                value = null;
-                return false;
-            }
-
-            // Capture the value into a temp, so it doesn't get mutated after we check
-            // for Uninitialized.
-            object temp = data[index];
-            if (temp == Uninitialized) {
-                value = null;
-                return false;
-            }
-
-            // index is now known to be correct
-            value = temp;
-            return true;
-        }
-        
-        /// <summary>
-        /// Sets the data for the specified class at the specified index.  If the class has
-        /// changed then a full look for the slot will be performed.  If the new class does
-        /// not have the provided slot then the Expando's class will change. Only case sensitive
-        /// setter is supported in ExpandoObject.
-        /// </summary>
-        internal void TrySetValue(object indexClass, int index, object value, string name, bool ignoreCase, bool add) {
-            ExpandoData data;
-            object oldValue;
-
-            lock (LockObject) {
-                data = _data;
-
-                if (data.Class != indexClass || ignoreCase) {
-                    // The class has changed or we are doing a case-insensitive search, 
-                    // we need to get the correct index and set the value there.  If we 
-                    // don't have the value then we need to promote the class - that 
-                    // should only happen when we have multiple concurrent writers.
-                    index = data.Class.GetValueIndex(name, ignoreCase, this);
-                    if (index == ExpandoObject.AmbiguousMatchFound) {
-                        throw Error.AmbiguousMatchInExpandoObject(name);
-                    }
-                    if (index == ExpandoObject.NoMatch) {
-                        // Before creating a new class with the new member, need to check 
-                        // if there is the exact same member but is deleted. We should reuse
-                        // the class if there is such a member.
-                        int exactMatch = ignoreCase ?
-                            data.Class.GetValueIndexCaseSensitive(name) :
-                            index;
-                        if (exactMatch != ExpandoObject.NoMatch) {
-                            Debug.Assert(data[exactMatch] == Uninitialized);
-                            index = exactMatch;
-                        } else {
-                            ExpandoClass newClass = data.Class.FindNewClass(name);
-                            data = PromoteClassCore(data.Class, newClass);
-                            // After the class promotion, there must be an exact match,
-                            // so we can do case-sensitive search here.
-                            index = data.Class.GetValueIndexCaseSensitive(name);
-                            Debug.Assert(index != ExpandoObject.NoMatch);
-                        }
-                    }
-                }
-
-                // Setting an uninitialized member increases the count of available members
-                oldValue = data[index];
-                if (oldValue == Uninitialized) {
-                    _count++;
-                } else if (add) {
-                    throw Error.SameKeyExistsInExpando(name);
-                }
-
-                data[index] = value;
-            }
-
-            // Notify property changed, outside of the lock.
-            var propertyChanged = _propertyChanged;
-            if (propertyChanged != null && value != oldValue) {
-                // Use the canonical case for the key.
-                propertyChanged(this, new PropertyChangedEventArgs(data.Class.Keys[index]));
-            }
-        }
-
-        /// <summary>
-        /// Provides the implementation of performing a get index operation.  Derived classes can
-        /// override this method to customize behavior.  When not overridden the call site requesting
-        /// the binder determines the behavior.
-        /// </summary>
-        /// <param name="binder">The binder provided by the call site.</param>
-        /// <param name="indexes">The index to be used.</param>
-        /// <param name="result">The result of the operation.</param>
-        /// <returns>true if the operation is complete, false if the call site should determine behavior.</returns>
-        internal bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result) {
-			var key = indexes[0] as String;
-			if (key != null) {
-	            TryGetValue(null, -1, key, false, out result);
-				return true;
-			}
-            result = null;
-            return false;
-        }
-
-        /// <summary>
-        /// Provides the implementation of performing a set index operation.  Derived classes can
-        /// override this method to custmize behavior.  When not overridden the call site requesting
-        /// the binder determines the behavior.
-        /// </summary>
-        /// <param name="binder">The binder provided by the call site.</param>
-        /// <param name="indexes">The index to be used.</param>
-        /// <param name="value">The value to set.</param>
-        /// <returns>true if the operation is complete, false if the call site should determine behavior.</returns>
-        internal bool TrySetIndex(SetIndexBinder binder, object[] indexes, object value) {
-			var key = indexes[0] as String;
-			if (key != null) {
-				TrySetValue(null, -1, value, key, false, true);
-				return true;
-			}
-            return false;
-        }
-
-        /// <summary>
-        /// Deletes the data stored for the specified class at the specified index.
-        /// </summary>
-        internal bool TryDeleteValue(object indexClass, int index, string name, bool ignoreCase, object deleteValue) {
-            ExpandoData data;
-            lock (LockObject) {
-                data = _data;
-
-                if (data.Class != indexClass || ignoreCase) {
-                    // the class has changed or we are doing a case-insensitive search,
-                    // we need to get the correct index.  If there is no associated index
-                    // we simply can't have the value and we return false.
-                    index = data.Class.GetValueIndex(name, ignoreCase, this);
-                    if (index == ExpandoObject.AmbiguousMatchFound) {
-                        throw Error.AmbiguousMatchInExpandoObject(name);
-                    }
-                }
-                if (index == ExpandoObject.NoMatch) {
-                    return false;
-                }
-
-                object oldValue = data[index];
-                if (oldValue == Uninitialized) {
-                    return false;
-                }
-
-                // Make sure the value matches, if requested.
-                //
-                // It's a shame we have to call Equals with the lock held but
-                // there doesn't seem to be a good way around that, and
-                // ConcurrentDictionary in mscorlib does the same thing.
-                if (deleteValue != Uninitialized && !object.Equals(oldValue, deleteValue)) {
-                    return false;
-                }
-
-                data[index] = Uninitialized;
-
-                // Deleting an available member decreases the count of available members
-                _count--;
-            }
-
-            // Notify property changed, outside of the lock.
-            var propertyChanged = _propertyChanged;
-            if (propertyChanged != null) {
-                // Use the canonical case for the key.
-                propertyChanged(this, new PropertyChangedEventArgs(data.Class.Keys[index]));
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Returns true if the member at the specified index has been deleted,
-        /// otherwise false. Call this function holding the lock.
-        /// </summary>
-        internal bool IsDeletedMember(int index) {
-            Debug.Assert(index >= 0 && index <= _data.Length);
-
-            if (index == _data.Length) {
-                // The member is a newly added by SetMemberBinder and not in data yet
-                return false;
-            }
-
-            return _data[index] == ExpandoObject.Uninitialized;
-        }
-
-        /// <summary>
-        /// Exposes the ExpandoClass which we've associated with this 
-        /// Expando object.  Used for type checks in rules.
-        /// </summary>
-        internal ExpandoClass Class {
-            get {
-                return _data.Class;
-            }
-        }
-
-        /// <summary>
-        /// Promotes the class from the old type to the new type and returns the new
-        /// ExpandoData object.
-        /// </summary>
-        private ExpandoData PromoteClassCore(ExpandoClass oldClass, ExpandoClass newClass) {
-            Debug.Assert(oldClass != newClass);
-
-            lock (LockObject) {
-                if (_data.Class == oldClass) {
-                    _data = _data.UpdateClass(newClass);
-                }
-                return _data;
-            }
-        }
-
-        /// <summary>
-        /// Internal helper to promote a class.  Called from our RuntimeOps helper.  This
-        /// version simply doesn't expose the ExpandoData object which is a private
-        /// data structure.
-        /// </summary>
-        internal void PromoteClass(object oldClass, object newClass) {
-            PromoteClassCore((ExpandoClass)oldClass, (ExpandoClass)newClass);
-        }
-
-        #endregion
-
-        #region IDynamicMetaObjectProvider Members
-
-        DynamicMetaObject IDynamicMetaObjectProvider.GetMetaObject(Expression parameter) {
-            return new MetaExpando(parameter, this);
-        }
-        #endregion
-
-        #region Helper methods
-        private void TryAddMember(string key, object value) {
-            ContractUtils.RequiresNotNull(key, "key");
-            // Pass null to the class, which forces lookup.
-            TrySetValue(null, -1, value, key, false, true);
-        }
-
-        private bool TryGetValueForKey(string key, out object value) {
-            // Pass null to the class, which forces lookup.
-            return TryGetValue(null, -1, key, false, out value);
-        }
-
-        private bool ExpandoContainsKey(string key) {
-            return _data.Class.GetValueIndexCaseSensitive(key) >= 0;
-        }
-
-        // We create a non-generic type for the debug view for each different collection type
-        // that uses DebuggerTypeProxy, instead of defining a generic debug view type and
-        // using different instantiations. The reason for this is that support for generics
-        // with using DebuggerTypeProxy is limited. For C#, DebuggerTypeProxy supports only
-        // open types (from MSDN http://msdn.microsoft.com/en-us/library/d8eyd8zc.aspx).
-        private sealed class KeyCollectionDebugView {
-            private ICollection<string> collection;
-            public KeyCollectionDebugView(ICollection<string> collection) {
-                Debug.Assert(collection != null);
-                this.collection = collection;
-            }
-
-            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            public string[] Items {
-                get {
-                    string[] items = new string[collection.Count];
-                    collection.CopyTo(items, 0);
-                    return items;
-                }
-            }
-        }
-
-        [DebuggerTypeProxy(typeof(KeyCollectionDebugView))]
-        [DebuggerDisplay("Count = {Count}")]
-        private class KeyCollection : ICollection<string> {
-            private readonly ExpandoObject _expando;
-            private readonly int _expandoVersion;
-            private readonly int _expandoCount;
-            private readonly ExpandoData _expandoData;
-
-            internal KeyCollection(ExpandoObject expando) {
-                lock (expando.LockObject) {
-                    _expando = expando;
-                    _expandoVersion = expando._data.Version;
-                    _expandoCount = expando._count;
-                    _expandoData = expando._data;
-                }
-            }
-
-            private void CheckVersion() {
-                if (_expando._data.Version != _expandoVersion || _expandoData != _expando._data) {
-                    //the underlying expando object has changed
-                    throw Error.CollectionModifiedWhileEnumerating();
-                }
-            }
-
-            #region ICollection<string> Members
-
-            public void Add(string item) {
-                throw Error.CollectionReadOnly();
-            }
-
-            public void Clear() {
-                throw Error.CollectionReadOnly();
-            }
-
-            public bool Contains(string item) {
-                lock (_expando.LockObject) {
-                    CheckVersion();
-                    return _expando.ExpandoContainsKey(item);
-                }
-            }
-
-            public void CopyTo(string[] array, int arrayIndex) {
-                ContractUtils.RequiresNotNull(array, "array");
-                ContractUtils.RequiresArrayRange(array, arrayIndex, _expandoCount, "arrayIndex", "Count");
-                lock (_expando.LockObject) {
-                    CheckVersion();
-                    ExpandoData data = _expando._data;
-                    for (int i = 0; i < data.Class.Keys.Length; i++) {
-                        if (data[i] != Uninitialized) {
-                            array[arrayIndex++] = data.Class.Keys[i];
-                        }
-                    }
-                }
-            }
-
-            public int Count {
-                get {
-                    CheckVersion();
-                    return _expandoCount;
-                }
-            }
-
-            public bool IsReadOnly {
-                get { return true; }
-            }
-
-            public bool Remove(string item) {
-                throw Error.CollectionReadOnly();
-            }
-
-            #endregion
-
-            #region IEnumerable<string> Members
-
-            public IEnumerator<string> GetEnumerator() {
-                for (int i = 0, n = _expandoData.Class.Keys.Length; i < n; i++) {
-                    CheckVersion();
-                    if (_expandoData[i] != Uninitialized) {
-                        yield return _expandoData.Class.Keys[i];
-                    }
-                }
-            }
-
-            #endregion
-
-            #region IEnumerable Members
-
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
-                return GetEnumerator();
-            }
-
-            #endregion
-        }
-
-        // We create a non-generic type for the debug view for each different collection type
-        // that uses DebuggerTypeProxy, instead of defining a generic debug view type and
-        // using different instantiations. The reason for this is that support for generics
-        // with using DebuggerTypeProxy is limited. For C#, DebuggerTypeProxy supports only
-        // open types (from MSDN http://msdn.microsoft.com/en-us/library/d8eyd8zc.aspx).
-        private sealed class ValueCollectionDebugView {
-            private ICollection<object> collection;
-            public ValueCollectionDebugView(ICollection<object> collection) {
-                Debug.Assert(collection != null);
-                this.collection = collection;
-            }
-
-            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            public object[] Items {
-                get {
-                    object[] items = new object[collection.Count];
-                    collection.CopyTo(items, 0);
-                    return items;
-                }
-            }
-        }
-
-        [DebuggerTypeProxy(typeof(ValueCollectionDebugView))]
-        [DebuggerDisplay("Count = {Count}")]
-        private class ValueCollection : ICollection<object> {
-            private readonly ExpandoObject _expando;
-            private readonly int _expandoVersion;
-            private readonly int _expandoCount;
-            private readonly ExpandoData _expandoData;
-
-            internal ValueCollection(ExpandoObject expando) {
-                lock (expando.LockObject) {
-                    _expando = expando;
-                    _expandoVersion = expando._data.Version;
-                    _expandoCount = expando._count;
-                    _expandoData = expando._data;
-                }
-            }
-
-            private void CheckVersion() {
-                if (_expando._data.Version != _expandoVersion || _expandoData != _expando._data) {
-                    //the underlying expando object has changed
-                    throw Error.CollectionModifiedWhileEnumerating();
-                }
-            }
-
-            #region ICollection<string> Members
-
-            public void Add(object item) {
-                throw Error.CollectionReadOnly();
-            }
-
-            public void Clear() {
-                throw Error.CollectionReadOnly();
-            }
-
-            public bool Contains(object item) {
-                lock (_expando.LockObject) {
-                    CheckVersion();
-
-                    ExpandoData data = _expando._data;
-                    for (int i = 0; i < data.Class.Keys.Length; i++) {
-
-                        // See comment in TryDeleteValue; it's okay to call
-                        // object.Equals with the lock held.
-                        if (object.Equals(data[i], item)) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-            }
-
-            public void CopyTo(object[] array, int arrayIndex) {
-                ContractUtils.RequiresNotNull(array, "array");
-                ContractUtils.RequiresArrayRange(array, arrayIndex, _expandoCount, "arrayIndex", "Count");
-                lock (_expando.LockObject) {
-                    CheckVersion();
-                    ExpandoData data = _expando._data;
-                    for (int i = 0; i < data.Class.Keys.Length; i++) {
-                        if (data[i] != Uninitialized) {
-                            array[arrayIndex++] = data[i];
-                        }
-                    }
-                }
-            }
-
-            public int Count {
-                get {
-                    CheckVersion();
-                    return _expandoCount;
-                }
-            }
-
-            public bool IsReadOnly {
-                get { return true; }
-            }
-
-            public bool Remove(object item) {
-                throw Error.CollectionReadOnly();
-            }
-
-            #endregion
-
-            #region IEnumerable<string> Members
-
-            public IEnumerator<object> GetEnumerator() {
-                ExpandoData data = _expando._data;
-                for (int i = 0; i < data.Class.Keys.Length; i++) {
-                    CheckVersion();
-                    // Capture the value into a temp so we don't inadvertently
-                    // return Uninitialized.
-                    object temp = data[i];
-                    if (temp != Uninitialized) {
-                        yield return temp;
-                    }
-                }
-            }
-
-            #endregion
-
-            #region IEnumerable Members
-
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
-                return GetEnumerator();
-            }
-
-            #endregion
-        }
-
-        #endregion
-
-        #region IDictionary<string, object> Members
-        ICollection<string> IDictionary<string, object>.Keys {
-            get {
-                return new KeyCollection(this);
-            }
-        }
-
-        ICollection<object> IDictionary<string, object>.Values {
-            get {
-                return new ValueCollection(this);
-            }
-        }
-
-        object IDictionary<string, object>.this[string key] {
-            get {
-                object value;
-                if (!TryGetValueForKey(key, out value)) {
-                    throw Error.KeyDoesNotExistInExpando(key);
-                }
-                return value;
-            }
-            set {
-                ContractUtils.RequiresNotNull(key, "key");
-                // Pass null to the class, which forces lookup.
-                TrySetValue(null, -1, value, key, false, false);
-            }
-        }
-
-        void IDictionary<string, object>.Add(string key, object value) {
-            this.TryAddMember(key, value);
-        }
-
-        bool IDictionary<string, object>.ContainsKey(string key) {
-            ContractUtils.RequiresNotNull(key, "key");
-
-            ExpandoData data = _data;
-            int index = data.Class.GetValueIndexCaseSensitive(key);
-            return index >= 0 && data[index] != Uninitialized;
-        }
-
-        bool IDictionary<string, object>.Remove(string key) {
-            ContractUtils.RequiresNotNull(key, "key");
-            // Pass null to the class, which forces lookup.
-            return TryDeleteValue(null, -1, key, false, Uninitialized);
-        }
-
-        bool IDictionary<string, object>.TryGetValue(string key, out object value) {
-            return TryGetValueForKey(key, out value);
-        }
-
-        #endregion
-
-        #region ICollection<KeyValuePair<string, object>> Members
-        int ICollection<KeyValuePair<string, object>>.Count {
-            get {
-                return _count;
-            }
-        }
-
-        bool ICollection<KeyValuePair<string, object>>.IsReadOnly {
-            get { return false; }
-        }
-
-        void ICollection<KeyValuePair<string, object>>.Add(KeyValuePair<string, object> item) {
-            TryAddMember(item.Key, item.Value);
-        }
-
-        void ICollection<KeyValuePair<string, object>>.Clear() {
-            // We remove both class and data!
-            ExpandoData data;
-            lock (LockObject) {
-                data = _data;
-                _data = ExpandoData.Empty;
-                _count = 0;
-            }
-
-            // Notify property changed for all properties.
-            var propertyChanged = _propertyChanged;
-            if (propertyChanged != null) {
-                for (int i = 0, n = data.Class.Keys.Length; i < n; i++) {
-                    if (data[i] != Uninitialized) {
-                        propertyChanged(this, new PropertyChangedEventArgs(data.Class.Keys[i]));
-                    }
-                }
-            }
-        }
-
-        bool ICollection<KeyValuePair<string, object>>.Contains(KeyValuePair<string, object> item) {
-            object value;
-            if (!TryGetValueForKey(item.Key, out value)) {
-                return false;
-            }
-
-            return object.Equals(value, item.Value);
-        }
-
-        void ICollection<KeyValuePair<string, object>>.CopyTo(KeyValuePair<string, object>[] array, int arrayIndex) {
-            ContractUtils.RequiresNotNull(array, "array");
-            ContractUtils.RequiresArrayRange(array, arrayIndex, _count, "arrayIndex", "Count");
-
-            // We want this to be atomic and not throw
-            lock (LockObject) {
-                foreach (KeyValuePair<string, object> item in this) {
-                    array[arrayIndex++] = item;
-                }
-            }
-        }
-
-        bool ICollection<KeyValuePair<string, object>>.Remove(KeyValuePair<string, object> item) {
-            return TryDeleteValue(null, -1, item.Key, false, item.Value);
-        }
-        #endregion
-
-        #region IEnumerable<KeyValuePair<string, object>> Member
-
-        IEnumerator<KeyValuePair<string, object>> IEnumerable<KeyValuePair<string, object>>.GetEnumerator() {
-            ExpandoData data = _data;
-            return GetExpandoEnumerator(data, data.Version);
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
-            ExpandoData data = _data;
-            return GetExpandoEnumerator(data, data.Version);
-        }
-
-        // Note: takes the data and version as parameters so they will be
-        // captured before the first call to MoveNext().
-        private IEnumerator<KeyValuePair<string, object>> GetExpandoEnumerator(ExpandoData data, int version) {
-            for (int i = 0; i < data.Class.Keys.Length; i++) {
-                if (_data.Version != version || data != _data) {
-                    // The underlying expando object has changed:
-                    // 1) the version of the expando data changed
-                    // 2) the data object is changed 
-                    throw Error.CollectionModifiedWhileEnumerating();
-                }
-                // Capture the value into a temp so we don't inadvertently
-                // return Uninitialized.
-                object temp = data[i];
-                if (temp != Uninitialized) {
-                    yield return new KeyValuePair<string,object>(data.Class.Keys[i], temp);
-                }
-            }
-        }
-        #endregion
-
-        #region MetaExpando
-
-        private class MetaExpando : DynamicMetaObject {
-            public MetaExpando(Expression expression, ExpandoObject value)
-                : base(expression, BindingRestrictions.Empty, value) {
-            }
-
-            private DynamicMetaObject BindGetOrInvokeMember(DynamicMetaObjectBinder binder, string name, bool ignoreCase, DynamicMetaObject fallback, Func<DynamicMetaObject, DynamicMetaObject> fallbackInvoke) {
-                ExpandoClass klass = Value.Class;
-
-                //try to find the member, including the deleted members
-                int index = klass.GetValueIndex(name, ignoreCase, Value);
-
-                ParameterExpression value = Expression.Parameter(typeof(object), "value");
-
-                Expression tryGetValue = Expression.Call(
-                    typeof(RuntimeOps).GetMethod("ExpandoTryGetValue"),
-                    GetLimitedSelf(),
-                    Expression.Constant(klass, typeof(object)),
-                    Expression.Constant(index),
-                    Expression.Constant(name),
-                    Expression.Constant(ignoreCase),
-                    value
-                );
-
-                var result = new DynamicMetaObject(value, BindingRestrictions.Empty);
-                if (fallbackInvoke != null) {
-					try {
-	                    result = fallbackInvoke(result);
-					} catch (Exception) {
-						result = null;
-					}
-                }
-
-                result = new DynamicMetaObject(
-                    Expression.Block(
-                        new[] { value },
-                        Expression.Condition(
-                            tryGetValue,
-                            result.Expression,
-                            Expression.Constant (null),
-                            typeof(object)
-                        )
-                    ),
-                    result.Restrictions
-                );
-
-                return AddDynamicTestAndDefer(binder, Value.Class, null, result);
-            }
-
-            public override DynamicMetaObject BindGetMember(GetMemberBinder binder) {
-                ContractUtils.RequiresNotNull(binder, "binder");
-                return BindGetOrInvokeMember(
-                    binder,
-                    binder.Name, 
-                    binder.IgnoreCase,
-                    null,
-                    null
-                );
-            }
-
-            public override DynamicMetaObject BindInvokeMember(InvokeMemberBinder binder, DynamicMetaObject[] args) {
-                ContractUtils.RequiresNotNull(binder, "binder");
-                return BindGetOrInvokeMember(
-                    binder,
-                    binder.Name, 
-                    binder.IgnoreCase,
-                    binder.FallbackInvokeMember(this, args),
-                    value => binder.FallbackInvoke(value, args, null)
-                );
-            }
-
-            public override DynamicMetaObject BindSetMember(SetMemberBinder binder, DynamicMetaObject value) {
-                ContractUtils.RequiresNotNull(binder, "binder");
-                ContractUtils.RequiresNotNull(value, "value");
-
-                ExpandoClass klass;
-                int index;
-
-                ExpandoClass originalClass = GetClassEnsureIndex(binder.Name, binder.IgnoreCase, Value, out klass, out index);
-
-                return AddDynamicTestAndDefer(
-                    binder,
-                    klass,
-                    originalClass,
-                    new DynamicMetaObject(
-                        Expression.Call(
-                            typeof(RuntimeOps).GetMethod("ExpandoTrySetValue"),
-                            GetLimitedSelf(),
-                            Expression.Constant(klass, typeof(object)),
-                            Expression.Constant(index),
-                            Expression.Convert(value.Expression, typeof(object)),
-                            Expression.Constant(binder.Name),
-                            Expression.Constant(binder.IgnoreCase)
-                        ),
-                        BindingRestrictions.Empty
-                    )
-                );
-            }
-
-            public override DynamicMetaObject BindDeleteMember(DeleteMemberBinder binder) {
-                ContractUtils.RequiresNotNull(binder, "binder");
-
-                int index = Value.Class.GetValueIndex(binder.Name, binder.IgnoreCase, Value);
-
-                Expression tryDelete = Expression.Call(
-                    typeof(RuntimeOps).GetMethod("ExpandoTryDeleteValue"),
-                    GetLimitedSelf(),
-                    Expression.Constant(Value.Class, typeof(object)),
-                    Expression.Constant(index),
-                    Expression.Constant(binder.Name),
-                    Expression.Constant(binder.IgnoreCase)
-                );
-                DynamicMetaObject fallback = binder.FallbackDeleteMember(this);
-
-                DynamicMetaObject target = new DynamicMetaObject(
-                    Expression.IfThen(Expression.Not(tryDelete), fallback.Expression),
-                    fallback.Restrictions
-                );
-
-                return AddDynamicTestAndDefer(binder, Value.Class, null, target);
-            }
-
-            public override DynamicMetaObject BindGetIndex (GetIndexBinder binder, DynamicMetaObject[] indexes)
-			{
-				if (indexes.Length == 1) {
-					var args = new Expression[] { indexes[0].Expression };
-					return CallMethodWithResult ("TryGetIndex", binder, args);
-				}
-
-				return base.BindGetIndex(binder, indexes);
-            }
-
-            public override DynamicMetaObject BindSetIndex (SetIndexBinder binder, DynamicMetaObject[] indexes, DynamicMetaObject value)
-			{
-				if (indexes.Length == 1) {
-					var args = new Expression[] { indexes[0].Expression };
-					return CallMethodReturnLast ("TrySetIndex", binder, args, value.Expression);
-				}
-
-				return base.BindSetIndex(binder, indexes, value);
-            }
-
-            public override IEnumerable<string> GetDynamicMemberNames() {
-                var expandoData = Value._data;
-                var klass = expandoData.Class;
-                for (int i = 0; i < klass.Keys.Length; i++) {
-                    object val = expandoData[i];
-                    if (val != ExpandoObject.Uninitialized) {
-                        yield return klass.Keys[i];
-                    }
-                }
-            }
-
-            /// <summary>
-            /// Adds a dynamic test which checks if the version has changed.  The test is only necessary for
-            /// performance as the methods will do the correct thing if called with an incorrect version.
-            /// </summary>
-            private DynamicMetaObject AddDynamicTestAndDefer(DynamicMetaObjectBinder binder, ExpandoClass klass, ExpandoClass originalClass, DynamicMetaObject succeeds) {
-
-                Expression ifTestSucceeds = succeeds.Expression;
-                if (originalClass != null) {
-                    // we are accessing a member which has not yet been defined on this class.
-                    // We force a class promotion after the type check.  If the class changes the 
-                    // promotion will fail and the set/delete will do a full lookup using the new
-                    // class to discover the name.
-                    Debug.Assert(originalClass != klass);
-
-                    ifTestSucceeds = Expression.Block(
-                        Expression.Call(
-                            null,
-                            typeof(RuntimeOps).GetMethod("ExpandoPromoteClass"),
-                            GetLimitedSelf(),
-                            Expression.Constant(originalClass, typeof(object)),
-                            Expression.Constant(klass, typeof(object))
-                        ),
-                        succeeds.Expression
-                    );
-                }
-
-                return new DynamicMetaObject(
-                    Expression.Condition(
-                        Expression.Call(
-                            null,
-                            typeof(RuntimeOps).GetMethod("ExpandoCheckVersion"),
-                            GetLimitedSelf(),
-                            Expression.Constant(originalClass ?? klass, typeof(object))
-                        ),
-                        ifTestSucceeds,
-                        binder.GetUpdateExpression(ifTestSucceeds.Type)
-                    ),
-                    GetRestrictions().Merge(succeeds.Restrictions)
-                );
-            }
-
-            /// <summary>
-            /// Gets the class and the index associated with the given name.  Does not update the expando object.  Instead
-            /// this returns both the original and desired new class.  A rule is created which includes the test for the
-            /// original class, the promotion to the new class, and the set/delete based on the class post-promotion.
-            /// </summary>
-            private ExpandoClass GetClassEnsureIndex(string name, bool caseInsensitive, ExpandoObject obj, out ExpandoClass klass, out int index) {
-                ExpandoClass originalClass = Value.Class;
-
-                index = originalClass.GetValueIndex(name, caseInsensitive, obj) ;
-                if (index == ExpandoObject.AmbiguousMatchFound) {
-                    klass = originalClass;
-                    return null;
-                }
-                if (index == ExpandoObject.NoMatch) {
-                    // go ahead and find a new class now...
-                    ExpandoClass newClass = originalClass.FindNewClass(name);
-
-                    klass = newClass;
-                    index = newClass.GetValueIndexCaseSensitive(name);
-
-                    Debug.Assert(index != ExpandoObject.NoMatch);
-                    return originalClass;
-                } else {
-                    klass = originalClass;
-                    return null;
-                }                
-            }
-
-            /// <summary>
-            /// Returns our Expression converted to our known LimitType
-            /// </summary>
-            private Expression GetLimitedSelf() {
-                if (TypeUtils.AreEquivalent(Expression.Type, LimitType)) {
-                    return Expression;
-                }
-                return Expression.Convert(Expression, LimitType);
-            }
-
-            /// <summary>
-            /// Returns a Restrictions object which includes our current restrictions merged
-            /// with a restriction limiting our type
-            /// </summary>
-            private BindingRestrictions GetRestrictions() {
-                Debug.Assert(Restrictions == BindingRestrictions.Empty, "We don't merge, restrictions are always empty");
-
-                return BindingRestrictionsEx.GetTypeRestriction(this);
-            }
-
-            public new ExpandoObject Value {
-                get {
-                    return (ExpandoObject)base.Value;
-                }
-            }
-
-            private delegate DynamicMetaObject Fallback(DynamicMetaObject errorSuggestion);
-
-            private readonly static Expression[] NoArgs = new Expression[0];
-
-            private static Expression[] GetConvertedArgs(params Expression[] args) {
-                ReadOnlyCollectionBuilder<Expression> paramArgs = new ReadOnlyCollectionBuilder<Expression>(args.Length);
-
-                for (int i = 0; i < args.Length; i++) {
-                    paramArgs.Add(Expression.Convert(args[i], typeof(object)));
-                }
-
-                return paramArgs.ToArray();
-            }
-
-            /// <summary>
-            /// Helper method for generating expressions that assign byRef call
-            /// parameters back to their original variables
-            /// </summary>
-            private static Expression ReferenceArgAssign(Expression callArgs, Expression[] args) {
-                ReadOnlyCollectionBuilder<Expression> block = null;
-
-                for (int i = 0; i < args.Length; i++) {
-                    ContractUtils.Requires(args[i] is ParameterExpression);
-                    if (((ParameterExpression)args[i]).IsByRef) {
-                        if (block == null)
-                            block = new ReadOnlyCollectionBuilder<Expression>();
-
-                        block.Add(
-                            Expression.Assign(
-                                args[i],
-                                Expression.Convert(
-                                    Expression.ArrayIndex(
-                                        callArgs,
-                                        Expression.Constant(i)
-                                    ),
-                                    args[i].Type
-                                )
-                            )
-                        );
-                    }
-                }
-
-                if (block != null)
-                    return Expression.Block(block);
-                else
-                    return Expression.Empty();
-            }
-
-            /// <summary>
-            /// Helper method for generating arguments for calling methods
-            /// on ExpandoObject.  parameters is either a list of ParameterExpressions
-            /// to be passed to the method as an object[], or NoArgs to signify that
-            /// the target method takes no object[] parameter.
-            /// </summary>
-            private static Expression[] BuildCallArgs(DynamicMetaObjectBinder binder, Expression[] parameters, Expression arg0, Expression arg1) {
-                if (!object.ReferenceEquals(parameters, NoArgs))
-                    return arg1 != null ? new Expression[] { Constant(binder), arg0, arg1 } : new Expression[] { Constant(binder), arg0 };
-                else
-                    return arg1 != null ? new Expression[] { Constant(binder), arg1 } : new Expression[] { Constant(binder) };
-            }
-
-            private static ConstantExpression Constant(DynamicMetaObjectBinder binder) {
-                Type t = binder.GetType();
-                while (!t.IsVisible) {
-                    t = t.BaseType;
-                }
-                return Expression.Constant(binder, t);
-            }
-
-            /// <summary>
-            /// Helper method for generating a MetaObject which calls a
-            /// specific method on Dynamic that returns a result
-            /// </summary>
-            private DynamicMetaObject CallMethodWithResult(string methodName, DynamicMetaObjectBinder binder, Expression[] args) {
-
-                //
-                // Build a new expression like:
-                // {
-                //   object result;
-                //   TryGetMember(payload, out result) ? fallbackInvoke(result) : fallbackResult
-                // }
-                //
-                var result = Expression.Parameter(typeof(object), null);
-                ParameterExpression callArgs = methodName != "TryBinaryOperation" ? Expression.Parameter(typeof(object[]), null) : Expression.Parameter(typeof(object), null);
-                var callArgsValue = GetConvertedArgs(args);
-
-                var resultMO = new DynamicMetaObject(result, BindingRestrictions.Empty);
-
-                // Need to add a conversion if calling TryConvert
-                if (binder.ReturnType != typeof(object)) {
-                    Debug.Assert(binder is ConvertBinder);
-
-                    var convert = Expression.Convert(resultMO.Expression, binder.ReturnType);
-                    // will always be a cast or unbox
-                    Debug.Assert(convert.Method == null);
-
-                    // Prepare a good exception message in case the convert will fail
-                    string convertFailed = "Convert failed";
-
-                    var checkedConvert = Expression.Condition(
-                        Expression.TypeIs(resultMO.Expression, binder.ReturnType),
-                        convert,
-                        Expression.Throw(
-                            Expression.New(typeof(InvalidCastException).GetConstructor(new Type[]{typeof(string)}),
-                                Expression.Call(
-                                    typeof(string).GetMethod("Format", new Type[] {typeof(string), typeof(object)}),
-                                    Expression.Constant(convertFailed),
-                                    Expression.Condition(
-                                        Expression.Equal(resultMO.Expression, Expression.Constant(null)),
-                                        Expression.Constant("null"),
-                                        Expression.Call(
-                                            resultMO.Expression,
-                                            typeof(object).GetMethod("GetType")
-                                        ),
-                                        typeof(object)
-                                    )
-                                )
-                            ),
-                            binder.ReturnType
-                        ),
-                        binder.ReturnType
-                    );
-
-                    resultMO = new DynamicMetaObject(checkedConvert, resultMO.Restrictions);
-                }
-
-				var method = typeof(ExpandoObject).GetMethod(methodName, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-
-                var callDynamic = new DynamicMetaObject(
-                    Expression.Block(
-                        new[] { result, callArgs },
-                        methodName != "TryBinaryOperation" ? Expression.Assign(callArgs, Expression.NewArrayInit(typeof(object), callArgsValue)) : Expression.Assign(callArgs, callArgsValue[0]),
-                        Expression.Condition(
-                            Expression.Call(
-                                GetLimitedSelf(),
-                                method,
-                                BuildCallArgs(
-                                    binder,
-                                    args,
-                                    callArgs,
-                                    result
-                                )
-                            ),
-                            Expression.Block(
-                                methodName != "TryBinaryOperation" ? ReferenceArgAssign(callArgs, args) : Expression.Empty(),
-                                resultMO.Expression
-                            ),
-                            Expression.Block(
-                                resultMO.Expression
-                            ),
-                            binder.ReturnType
-                        )
-                    ),
-                    GetRestrictions().Merge(resultMO.Restrictions)
-                );
-
-                return callDynamic;
-            }
-
-
-            /// <summary>
-            /// Helper method for generating a MetaObject which calls a
-            /// specific method on Dynamic, but uses one of the arguments for
-            /// the result.
-            /// 
-            /// args is either an array of arguments to be passed
-            /// to the method as an object[] or NoArgs to signify that
-            /// the target method takes no parameters.
-            /// </summary>
-            private DynamicMetaObject CallMethodReturnLast(string methodName, DynamicMetaObjectBinder binder, Expression[] args, Expression value) {
-
-                //
-                // Build a new expression like:
-                // {
-                //   object result;
-                //   TrySetMember(payload, result = value) ? result;
-                // }
-                //
-
-                var result = Expression.Parameter(typeof(object), null);
-                var callArgs = Expression.Parameter(typeof(object[]), null);
-                var callArgsValue = GetConvertedArgs(args);
-
-				var method = typeof(ExpandoObject).GetMethod(methodName, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-
-                var callDynamic = new DynamicMetaObject(
-                    Expression.Block(
-                        new[] { result, callArgs },
-                        Expression.Assign(callArgs, Expression.NewArrayInit(typeof(object), callArgsValue)),
-                        Expression.Condition(
-                            Expression.Call(
-                                GetLimitedSelf(),
-                                method,
-                                BuildCallArgs(
-                                    binder,
-                                    args,
-                                    callArgs,
-                                    Expression.Assign(result, Expression.Convert(value, typeof(object)))
-                                )
-                            ),
-                            Expression.Block(
-                                ReferenceArgAssign(callArgs, args),
-                                result
-                            ),
-                            Expression.Block(
-                                result
-                            ),
-                            typeof(object)
-                        )
-                    ),
-                    GetRestrictions()
-                );
-
-                return callDynamic;
-            }
-
-
-            /// <summary>
-            /// Helper method for generating a MetaObject which calls a
-            /// specific method on Dynamic, but uses one of the arguments for
-            /// the result.
-            /// 
-            /// args is either an array of arguments to be passed
-            /// to the method as an object[] or NoArgs to signify that
-            /// the target method takes no parameters.
-            /// </summary>
-            private DynamicMetaObject CallMethodNoResult(string methodName, DynamicMetaObjectBinder binder, Expression[] args) {
-                //
-                // First, call fallback to do default binding
-                // This produces either an error or a call to a .NET member
-                //
-                var callArgs = Expression.Parameter(typeof(object[]), null);
-                var callArgsValue = GetConvertedArgs(args);
-
-				var method = typeof(ExpandoObject).GetMethod(methodName, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-
-                //
-                // Build a new expression like:
-                //   if (TryDeleteMember(payload)) { } else { }
-                //
-                var callDynamic = new DynamicMetaObject(
-                    Expression.Block(
-                        new[] { callArgs },
-                        Expression.Assign(callArgs, Expression.NewArrayInit(typeof(object), callArgsValue)),
-                        Expression.Condition(
-                            Expression.Call(
-                                GetLimitedSelf(),
-                                method,
-                                BuildCallArgs(
-                                    binder,
-                                    args,
-                                    callArgs,
-                                    null
-                                )
-                            ),
-                            Expression.Block(
-                                ReferenceArgAssign(callArgs, args),
-                                Expression.Empty()
-                            ),
-							Expression.Empty(),
-                            typeof(void)
-                        )
-                    ),
-                    GetRestrictions()
-                );
-
-                return callDynamic;
-            }
-
-            /// <summary>
-            /// Checks if the derived type has overridden the specified method.  If there is no
-            /// implementation for the method provided then Dynamic falls back to the base class
-            /// behavior which lets the call site determine how the binder is performed.
-            /// </summary>
-            private bool IsOverridden(string method) {
-				return true;
-            }
-
-            // It is okay to throw NotSupported from this binder. This object
-            // is only used by ExpandoObject.GetMember--it is not expected to
-            // (and cannot) implement binding semantics. It is just so the DO
-            // can use the Name and IgnoreCase properties.
-            private sealed class GetBinderAdapter : GetMemberBinder {
-                internal GetBinderAdapter(InvokeMemberBinder binder)
-                    : base(binder.Name, binder.IgnoreCase) {
-                }
-
-                public override DynamicMetaObject FallbackGetMember(DynamicMetaObject target, DynamicMetaObject errorSuggestion) {
-                    throw new NotSupportedException();
-                }
-            }
-
-        }
-
-        #endregion
-
-        #region ExpandoData
-        
-        /// <summary>
-        /// Stores the class and the data associated with the class as one atomic
-        /// pair.  This enables us to do a class check in a thread safe manner w/o
-        /// requiring locks.
-        /// </summary>
-        private class ExpandoData {
-            internal static ExpandoData Empty = new ExpandoData();
-
-            /// <summary>
-            /// the dynamically assigned class associated with the Expando object
-            /// </summary>
-            internal readonly ExpandoClass Class;
-
-            /// <summary>
-            /// data stored in the expando object, key names are stored in the class.
-            /// 
-            /// Expando._data must be locked when mutating the value.  Otherwise a copy of it 
-            /// could be made and lose values.
-            /// </summary>
-            private readonly object[] _dataArray;
-
-            /// <summary>
-            /// Indexer for getting/setting the data
-            /// </summary>
-            internal object this[int index] {
-                get {
-                    return _dataArray[index];
-                }
-                set {
-                    //when the array is updated, version increases, even the new value is the same
-                    //as previous. Dictionary type has the same behavior.
-                    _version++;
-                    _dataArray[index] = value;
-                }
-            }
-
-            internal int Version {
-                get { return _version; }
-            }
-
-            internal int Length {
-                get { return _dataArray.Length; }
-            }
-
-            /// <summary>
-            /// Constructs an empty ExpandoData object with the empty class and no data.
-            /// </summary>
-            private ExpandoData() {
-                Class = ExpandoClass.Empty;
-                _dataArray = new object[0];
-            }
-
-            /// <summary>
-            /// the version of the ExpandoObject that tracks set and delete operations
-            /// </summary>
-            private int _version;
-
-            /// <summary>
-            /// Constructs a new ExpandoData object with the specified class and data.
-            /// </summary>
-            internal ExpandoData(ExpandoClass klass, object[] data, int version) {
-                Class = klass;
-                _dataArray = data;
-                _version = version;
-            }
-
-            /// <summary>
-            /// Update the associated class and increases the storage for the data array if needed.
-            /// </summary>
-            /// <returns></returns>
-            internal ExpandoData UpdateClass(ExpandoClass newClass) {
-                if (_dataArray.Length >= newClass.Keys.Length) {
-                    // we have extra space in our buffer, just initialize it to Uninitialized.
-                    this[newClass.Keys.Length - 1] = ExpandoObject.Uninitialized;
-                    return new ExpandoData(newClass, this._dataArray, this._version);
-                } else {
-                    // we've grown too much - we need a new object array
-                    int oldLength = _dataArray.Length;
-                    object[] arr = new object[GetAlignedSize(newClass.Keys.Length)];
-                    Array.Copy(_dataArray, arr, _dataArray.Length);
-                    ExpandoData newData = new ExpandoData(newClass, arr, this._version);
-                    newData[oldLength] = ExpandoObject.Uninitialized;
-                    return newData;
-                }
-            }
-
-            private static int GetAlignedSize(int len) {
-                // the alignment of the array for storage of values (must be a power of two)
-                const int DataArrayAlignment = 8;
-
-                // round up and then mask off lower bits
-                return (len + (DataArrayAlignment - 1)) & (~(DataArrayAlignment - 1));
-            }
-        }
-
-        #endregion            
-    
-        #region INotifyPropertyChanged Members
-
-        event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged {
-            add { _propertyChanged += value; }
-            remove { _propertyChanged -= value; }
-        }
-
-        #endregion
-    }
-}
-
-namespace PlayScript.Expando {
-
-    //
-    // Note: these helpers are kept as simple wrappers so they have a better 
-    // chance of being inlined.
-    //
-    public static partial class RuntimeOps {
-
-        /// <summary>
-        /// Gets the value of an item in an expando object.
-        /// </summary>
-        /// <param name="expando">The expando object.</param>
-        /// <param name="indexClass">The class of the expando object.</param>
-        /// <param name="index">The index of the member.</param>
-        /// <param name="name">The name of the member.</param>
-        /// <param name="ignoreCase">true if the name should be matched ignoring case; false otherwise.</param>
-        /// <param name="value">The out parameter containing the value of the member.</param>
-        /// <returns>True if the member exists in the expando object, otherwise false.</returns>
-        [Obsolete("do not use this method", true), EditorBrowsable(EditorBrowsableState.Never)]
-        public static bool ExpandoTryGetValue(ExpandoObject expando, object indexClass, int index, string name, bool ignoreCase, out object value) {
-            return expando.TryGetValue(indexClass, index, name, ignoreCase, out value);
-        }
-
-        /// <summary>
-        /// Sets the value of an item in an expando object.
-        /// </summary>
-        /// <param name="expando">The expando object.</param>
-        /// <param name="indexClass">The class of the expando object.</param>
-        /// <param name="index">The index of the member.</param>
-        /// <param name="value">The value of the member.</param>
-        /// <param name="name">The name of the member.</param>
-        /// <param name="ignoreCase">true if the name should be matched ignoring case; false otherwise.</param>
-        /// <returns>
-        /// Returns the index for the set member.
-        /// </returns>
-        [Obsolete("do not use this method", true), EditorBrowsable(EditorBrowsableState.Never)]
-        public static object ExpandoTrySetValue(ExpandoObject expando, object indexClass, int index, object value, string name, bool ignoreCase) {
-            expando.TrySetValue(indexClass, index, value, name, ignoreCase, false);
-            return value;
-        }
-
-        /// <summary>
-        /// Deletes the value of an item in an expando object.
-        /// </summary>
-        /// <param name="expando">The expando object.</param>
-        /// <param name="indexClass">The class of the expando object.</param>
-        /// <param name="index">The index of the member.</param>
-        /// <param name="name">The name of the member.</param>
-        /// <param name="ignoreCase">true if the name should be matched ignoring case; false otherwise.</param>
-        /// <returns>true if the item was successfully removed; otherwise, false.</returns>
-        [Obsolete("do not use this method", true), EditorBrowsable(EditorBrowsableState.Never)]
-        public static bool ExpandoTryDeleteValue(ExpandoObject expando, object indexClass, int index, string name, bool ignoreCase) {
-            return expando.TryDeleteValue(indexClass, index, name, ignoreCase, ExpandoObject.Uninitialized);
-        }
-
-        /// <summary>
-        /// Checks the version of the expando object.
-        /// </summary>
-        /// <param name="expando">The expando object.</param>
-        /// <param name="version">The version to check.</param>
-        /// <returns>true if the version is equal; otherwise, false.</returns>
-        [Obsolete("do not use this method", true), EditorBrowsable(EditorBrowsableState.Never)]
-        public static bool ExpandoCheckVersion(ExpandoObject expando, object version) {
-            return expando.Class == version;
-        }
-
-        /// <summary>
-        /// Promotes an expando object from one class to a new class.
-        /// </summary>
-        /// <param name="expando">The expando object.</param>
-        /// <param name="oldClass">The old class of the expando object.</param>
-        /// <param name="newClass">The new class of the expando object.</param>
-        [Obsolete("do not use this method", true), EditorBrowsable(EditorBrowsableState.Never)]
-        public static void ExpandoPromoteClass(ExpandoObject expando, object oldClass, object newClass) {
-            expando.PromoteClass(oldClass, newClass);
-        }
-    }
-}
-
-#else
+#define USE_NEW_EXPANDO
 
 using System;
 using System.Collections;
@@ -1459,6 +25,32 @@ using System.Diagnostics;
 using PlayScript;
 
 namespace PlayScript.Expando {
+
+	interface IFastDictionaryLookup<T>
+	{
+		/// <summary>
+		/// Gets the value for a key.
+		/// </summary>
+		/// <returns>The value that was associated with the key.</returns>
+		/// <param name="key">The key that we are looking for.</param>
+		/// <param name="stringID">The string ID matching the key - Used as a hint. -1 if not known (in and out).</param>
+		/// <param name="expandoIndex">The expando index matching the key - Used as a hint. -1 if not known (in and out).</param>
+		T GetValue(string key, ref int hintStringID, ref int hintExpandoIndex);
+
+		/// <summary>
+		/// Sets the value for a key.
+		/// </summary>
+		/// <param name="key">The key that we are looking for.</param>
+		/// <param name="value">The string ID matching the key - Used as a hint. -1 if not known (in and out).</param>
+		/// <param name="stringID">String I.</param>
+		/// <param name="expandoIndex">The expando index matching the key - Used as a hint. -1 if not known (in and out).</param>
+		void SetValue(string key, T value, ref int hintStringID, ref int hintExpandoIndex);
+	}
+
+
+
+#if !USE_NEW_EXPANDO
+
 
 	/* 
 	 * Declare this outside the main class so it doesn't have to be inflated for each
@@ -1473,7 +65,8 @@ namespace PlayScript.Expando {
 	[Serializable]
 	[DebuggerDisplay ("Count = {Count}")]
 	[DebuggerTypeProxy (typeof (ExpandoDebugView))]
-	public class ExpandoObject : IDictionary<string, object>, IDictionary, ISerializable, IDeserializationCallback, IDynamicClass, IKeyEnumerable
+	public class ExpandoObject : IDictionary<string, object>, IDictionary, ISerializable, IDeserializationCallback, IDynamicClass, IKeyEnumerable,
+		IFastDictionaryLookup<int>, IFastDictionaryLookup<uint>, IFastDictionaryLookup<double>, IFastDictionaryLookup<bool>, IFastDictionaryLookup<string>, IFastDictionaryLookup<object>
 #if NET_4_5
 		, IReadOnlyDictionary<string, object>
 #endif
@@ -1773,17 +366,12 @@ namespace PlayScript.Expando {
 				if ((src.IsPrimitive || tgt.IsPrimitive) && !tgt.IsAssignableFrom (src))
 					throw new Exception (); // we don't care.  it'll get transformed to an ArgumentException below
 				
-#if BOOTSTRAP_BASIC
-				// BOOTSTRAP: gmcs 2.4.x seems to have trouble compiling the alternative
-				throw new Exception ();
-#else
 				object[] dest = (object[])array;
 				for (int i = 0; i < touchedSlots; i++) {
 					if ((linkSlots [i].HashCode & HASH_FLAG) != 0)
 						dest [index++] = transform (keySlots [i], valueSlots [i]);
 				}
-#endif
-				
+
 			} catch (Exception e) {
 				throw new ArgumentException ("Cannot copy source collection elements to destination array", "array", e);
 			}
@@ -2707,7 +1295,1311 @@ namespace PlayScript.Expando {
 			return this.Keys;
 		}
 		#endregion
+
+
+		#region IFastDictionaryLookup<int> implementation
+		int IFastDictionaryLookup<int>.GetValue(string key, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			object result = this[key];
+			return Convert<int>.FromObject(result);
+		}
+
+		void IFastDictionaryLookup<int>.SetValue(string key, int value, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			this[key] = value;
+		}
+		#endregion
+
+		#region IFastDictionaryLookup<uint> implementation
+		uint IFastDictionaryLookup<uint>.GetValue(string key, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			object result = this[key];
+			return Convert<uint>.FromObject(result);
+		}
+
+		void IFastDictionaryLookup<uint>.SetValue(string key, uint value, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			this[key] = value;
+		}
+		#endregion
+
+		#region IFastDictionaryLookup<double> implementation
+		double IFastDictionaryLookup<double>.GetValue(string key, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			object result = this[key];
+			return Convert<double>.FromObject(result);
+		}
+
+		void IFastDictionaryLookup<double>.SetValue(string key, double value, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			this[key] = value;
+		}
+		#endregion
+
+		#region IFastDictionaryLookup<bool> implementation
+		bool IFastDictionaryLookup<bool>.GetValue(string key, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			object result = this[key];
+			return Convert<bool>.FromObject(result);
+		}
+
+		void IFastDictionaryLookup<bool>.SetValue(string key, bool value, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			this[key] = value;
+		}
+		#endregion
+
+		#region IFastDictionaryLookup<string> implementation
+		string IFastDictionaryLookup<string>.GetValue(string key, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			object result = this[key];
+			return Convert<string>.FromObject(result);
+		}
+
+		void IFastDictionaryLookup<string>.SetValue(string key, string value, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			this[key] = value;
+		}
+		#endregion
+
+		#region IFastDictionaryLookup<object> implementation
+		object IFastDictionaryLookup<object>.GetValue(string key, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			return this[key];
+		}
+
+		void IFastDictionaryLookup<object>.SetValue(string key, object value, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			this[key] = value;
+		}
+		#endregion
 	}
-}
+
+#else
+
+	/// <summary>
+	/// Expando implementation that is used as an actionscript Object.
+	/// 
+	/// There are few things that are different from the default Expando implementation:
+	///		- Keys are defined by String and IDs. This is designed in a way to make the lookup very fast if the information is cached.
+	///		- Values are split in arrays to avoid boxing booleans, integers, doubles, etc... Objects, strings and other typesare still allocated on the heap.
+	/// 		Note that even when they are stored as values, strings are coming from the StringPool.
+	/// 	- To take advantage of StringIDs and caching, the expando is actually sorted by key IDs, and it is sorted only at the first lookup
+	/// 		(so creation adds the element to the array quickly and we do only a single sort).
+	/// 	- We are also measuring the memory usage of potential various implementations to figure out if one is much better than the others.
+	/// 		Classes and strings are not measured as they would be the same for all implementations (assuming we use the string pool for each).
+	/// </summary>
+	[DebuggerDisplay("count = {Count}")]
+//	[DebuggerTypeProxy(typeof(ArrayDebugView))]
+	public class ExpandoObject : IDictionary<string, object>, IDictionary, /*ISerializable, IDeserializationCallback,*/ IDynamicClass, IKeyEnumerable,
+		IFastDictionaryLookup<int>, IFastDictionaryLookup<uint>, IFastDictionaryLookup<double>, IFastDictionaryLookup<bool>, IFastDictionaryLookup<string>, IFastDictionaryLookup<object>
+#if NET_4_5
+		, IReadOnlyDictionary<string, object>
+#endif
+	{
+		/// <summary>
+		/// This is the old mode, everything is boxed.
+		/// Calculation assumes that boxing a structure costs 8 bytes (might be actually more), aligned with 4 bytes.
+		/// Then 16 bytes per KeyValuePair (Link, Key, Value) *1.10 for the load factor + 3*16 bytes for the three arrays.
+		/// </summary>
+		private static int	MemoryUsageModeA;
+
+		/// <summary>
+		/// This is a new mode, one array for booleans, one array for integers, one array for unsigned integers, one array for doubles,
+		/// and one array for classes and strings.
+		/// Note that this mode also has support for StringID, so the cost per key is 8 bytes (StringID, String pointer) per key.
+		/// Then 16 bytes for the value type array + N bytes.
+		/// And per value is per array type: 16 bytes + N * sizeof(T). The array is only allocated if there is at least one value of the type.
+		/// There would be also an array for classes and strings.
+		/// And we should add 10% to N for the load factor.
+		/// </summary>
+		private static int	MemoryUsageModeB;
+
+		/// <summary>
+		/// This is a new mode, one single array for the value types.
+		/// Note that this mode also has support for StringID, so the cost per key is 8 bytes (StringID, String pointer) per key.
+		/// Then 16 bytes for the value type array + N bytes.
+		/// Then an array that contains doubles (16 bytes + N * sizeof(double)). Doubles can easily contain boolean, int, uint, int64, uint64, bool.
+		/// Then a simlar array for classes and strings.
+		/// And we should add 10% to N for the load factor.
+		/// </summary>
+		private static int	MemoryUsageModeC;
+
+		// Note that by making sure StringID does not grow too much, we should be able to combine it with the value type (28 bits for StringIDs, 4 bits for value type).
+
+		const uint			StringIDMask =	0x0fffffff;
+		const uint			ValueTypeMask =		0xf0000000;
+		const int			ValueTypeShift = 32 - 4;
+
+		const int			ValueTypeObject =	0;
+		const int			ValueTypeString =	1;
+		const int			ValueTypeBool =		2;
+		const int			ValueTypeInt =		3;
+		const int			ValueTypeUint =		4;
+		const int			ValueTypeDouble =	5;
+		// Overtime we could also add short, ushort, Int64, Uint64, etc...
+		// We are not using TypeCode as it does not match with 16 values (4 bits), and for some types, we actually do not have much usage (DateTime for example)
+
+		/*
+		struct Key
+		{
+			public int StringID
+			{
+				get
+				{
+					return (int)(KeyAsStringID & StringIDMask);
+				}
+			}
+
+			public int ValueType
+			{
+				get
+				{
+					return (int)(KeyAsStringID >> ValueTypeShift);
+				}
+			}
+
+			public void SetKeyAndValueType(string key, int valueType)
+			{
+				int stringID;
+				string pooledString = StringPool.AddStringToPool(key, out stringID);
+				KeyAsString = pooledString;
+				KeyAsStringID = (uint)(stringID | (valueType << ValueTypeShift));
+			}
+
+			public string	KeyAsString;
+			public uint		KeyAsStringID;			// Top 4 bits has the value type as well.
+		}
+
+		[StructLayout(LayoutKind.Explicit)]
+		struct Value
+		{
+			[FieldOffset(0)]
+			public bool		ValueAsBool;
+			[FieldOffset(0)]
+			public int		ValueAsInt;
+			[FieldOffset(0)]
+			public uint		ValueAsUint;
+			[FieldOffset(0)]
+			public double	ValueAsDouble;
+			[FieldOffset(0)]
+			public object	ValueAsObject;			// This is probably going to work with Boehm GC, but what about SGen?
+			[FieldOffset(0)]
+			public string	ValueAsString;			// This is probably going to work with Boehm GC, but what about SGen?
+		}
+		*/
+
+		//[StructLayout(LayoutKind.Explicit)]
+		[DebuggerDisplay("{DebugData}")]
+		struct KeyValue
+		{
+			//[FieldOffset(0)]
+			public bool		ValueAsBool;
+			//[FieldOffset(0)]
+			public int		ValueAsInt;
+			//[FieldOffset(0)]
+			public uint		ValueAsUint;
+			//[FieldOffset(0)]
+			public double	ValueAsDouble;
+			//[FieldOffset(0)]
+			public object	ValueAsObject;			// This is probably going to work with Boehm GC, but what about SGen?
+			//[FieldOffset(0)]
+			public string	ValueAsString;			// This is probably going to work with Boehm GC, but what about SGen?
+
+			//[FieldOffset(8)]
+			public string	KeyAsString;
+			//[FieldOffset(12)]
+			public uint		KeyAsStringID;			// Top 4 bits has the value type as well.
+
+			public int StringID
+			{
+				get
+				{
+					return (int)(KeyAsStringID & StringIDMask);
+				}
+			}
+
+			public int ValueType
+			{
+				get
+				{
+					return (int)(KeyAsStringID >> ValueTypeShift);
+				}
+			}
+
+			public void SetKeyAndValueType(string key, int valueType)
+			{
+				int stringID;
+				string pooledKey = StringPool.AddStringToPool(key, out stringID);
+				KeyAsString = pooledKey;
+				KeyAsStringID = (uint)(stringID | (valueType << ValueTypeShift));
+			}
+
+			public void SetKeyAndValueType(string pooledKey, int stringID, int valueType)
+			{
+				KeyAsString = pooledKey;
+				KeyAsStringID = (uint)(stringID | (valueType << ValueTypeShift));
+			}
+
+			public void SetKey(string pooledKey, int stringID)
+			{
+				KeyAsString = pooledKey;
+				KeyAsStringID &= ValueTypeMask;
+				KeyAsStringID |= (uint)stringID;
+			}
+
+			public void SetValueType(int valueType)
+			{
+				KeyAsStringID &= StringIDMask;
+				KeyAsStringID |= (uint)(valueType << ValueTypeShift);
+			}
+
+			public override string ToString ()
+			{
+				switch (ValueType)
+				{
+					case ValueTypeObject:
+						return string.Format("{0} = object: {1}", KeyAsString, ValueAsObject);
+					case ValueTypeString:
+						return string.Format("{0} = string: {1}", KeyAsString, ValueAsString);
+					case ValueTypeBool:
+						return string.Format("{0} = bool:   {1}", KeyAsString, ValueAsBool);
+					case ValueTypeInt:
+						return string.Format("{0} = int:    {1}", KeyAsString, ValueAsInt);
+					case ValueTypeUint:
+						return string.Format("{0} = uint:   {1}", KeyAsString, ValueAsUint);
+					case ValueTypeDouble:
+						return string.Format("{0} = double: {1}", KeyAsString, ValueAsDouble);
+					default:
+						return string.Format("ValueType {0} not supported");
+				}
+			}
+
+			internal string DebugData
+			{
+				get
+				{
+					return ToString();
+				}
+			}
+		}
+
+		/// <summary>
+		/// When we allocate an expando, it has at minimum 4 key values.
+		/// </summary>
+		const int			MinimumN = 4;
+
+		KeyValue[]			mKeyValues;
+		int					mNumberOfKeyValues;
+
+		// The number of changes made to this expando. Used by enumerators
+		// to detect changes and invalidate themselves.
+		private int generation;
+
+		public int Generation { get { return generation; } }
+
+		public ExpandoObject()
+		{
+			AddToMemoryUsage();
+		}
+
+		~ExpandoObject()
+		{
+			RemoveFromMemoryUsage();
+		}
+
+		private void CreateSpaceForKey(int index)
+		{
+			int lastIndex = mNumberOfKeyValues++;
+			if (lastIndex == mKeyValues.Length)
+			{
+				// We have to grow the array as it is now too small.
+				int newSize = lastIndex + (lastIndex >> 3) + 4;		// Increase size by 12.5% + 4
+				// +1 for the one we are just going to fill, +3 for next values
+				KeyValue[] newKeyValues = new KeyValue[newSize];
+
+				// Copy the first half
+				int firstHalfSize = index;
+				Debug.Assert(firstHalfSize >= 0);
+				if (firstHalfSize > 0)
+				{
+					Array.Copy(mKeyValues, 0, newKeyValues, 0, firstHalfSize);
+				}
+
+				// Copy the second half, leaving the index position not copied
+				int secondHalfSize = lastIndex - index;
+				Debug.Assert(secondHalfSize >= 0);
+				if (secondHalfSize > 0)
+				{
+					Array.Copy(mKeyValues, index, newKeyValues, index + 1, secondHalfSize);
+				}
+
+				// Now that all data has been copied (with an empty space where index is, we can swap them
+				mKeyValues = newKeyValues;
+			}
+			else
+			{
+				// Move the second half of the array
+				int secondHalfSize = lastIndex - index;
+				Debug.Assert(secondHalfSize >= 0);
+				if (secondHalfSize > 0)
+				{
+					Array.Copy(mKeyValues, index, mKeyValues, index + 1, secondHalfSize);
+				}
+			}
+		}
+
+		private int FindOrCreateSpaceForKey(string pooledKey, int stringID, out bool newKey)
+		{
+			// Let's make sure that the caller passed the right information
+			Debug.Assert(StringPool.IsThisStringInPool(pooledKey, stringID));
+			CheckValidity();
+
+			if (mKeyValues != null)
+			{
+				int index = -1;
+				bool found = FindLessOrEqualKey(pooledKey, false, ref stringID, ref index);
+				if (found)
+				{
+					newKey = false;
+					return index;
+				}
+
+				++index;	// Insert after the lesser ID
+				CreateSpaceForKey(index);
+				newKey = true;
+				return index;
+			}
+			else
+			{
+				mKeyValues = new KeyValue[MinimumN];
+				mNumberOfKeyValues = 1;
+				newKey = true;
+				return 0;
+			}
+		}
+
+		private bool FindOrInsertKey(string key, ref int hintStringID, ref int hintIndex)
+		{
+			// In this case, the key might or might not be already in the pool
+
+			if (mKeyValues != null)
+			{
+				bool found = FindLessOrEqualKey(key, false, ref hintStringID, ref hintIndex);
+				if (found)
+				{
+					return false;
+				}
+
+				// Not found, we have to insert after the one before it
+				++hintIndex;
+				CreateSpaceForKey(hintIndex);
+			}
+			else
+			{
+				mKeyValues = new KeyValue[MinimumN];
+				mNumberOfKeyValues = 1;
+				hintIndex = 0;
+			}
+			// In this case, we want to make sure we insert the pooled string - We should be able to optimize this further (to not do a second lookup)
+			string pooledKey = StringPool.AddStringToPool(key, out hintStringID);
+			mKeyValues[hintIndex].SetKey(pooledKey, hintStringID);
+			return true;
+		}
+
+		private int FindKey(string key)
+		{
+			int count = mNumberOfKeyValues;
+			// At that point, we know that mKeyValues is allocated
+			if (count <= 4)
+			{
+				// Linear search if few elements,
+				// so we don't pay the stringID and binary search overhead (no insertion in this case)
+				for (int i = 0 ; i < count ; ++i)
+				{
+					if (mKeyValues[i].KeyAsString == key)
+					{
+						return i;
+					}
+				}
+			}
+			else
+			{
+				int startIndex = 0;
+				int endIndex = count - 1;
+				int stringID = StringPool.GetStringID(key);
+				if (stringID < 0)
+				{
+					// If it is not in the string pool, that means it is not in any expando
+					return -1;
+				}
+				while (startIndex <= endIndex)
+				{
+					int mid = (endIndex + startIndex) / 2;
+					int midStringID = mKeyValues[mid].StringID;
+					if (midStringID > stringID)
+					{
+						endIndex = mid - 1;
+					}
+					else if (midStringID < stringID)
+					{
+						startIndex = mid + 1;
+					}
+					else
+					{
+						// Found it, update the hint index too
+						return mid;
+					}
+				}
+			}
+			return -1;
+		}
+
+		/// <summary>
+		/// Finds the key or the closest smaller key.
+		/// 
+		/// For optimization reasons, we might want to have different implementations depending of the 
+		/// value of exactOnly, or if we have / need hintIndex, hindStringID, etc...
+		/// </summary>
+		/// <returns><c>true</c>, if less or equal key was found, <c>false</c> otherwise.</returns>
+		/// <param name="key">Key.</param>
+		/// <param name="exactOnly">If set to <c>true</c> exact only.</param>
+		/// <param name="hintStringID">Hint string I.</param>
+		/// <param name="hintIndex">Hint index.</param>
+		private bool FindLessOrEqualKey(string key, bool exactOnly, ref int hintStringID, ref int hintIndex)
+		{
+			if (mNumberOfKeyValues == 0)
+			{
+				return false;
+			}
+
+#if DEBUG
+			if (hintIndex >= 0)
+			{
+				// If there is an index, it means that we had a string ID too.
+				Debug.Assert(hintStringID >= 0);
+			}
+#endif
+
+			int startIndex, endIndex;
+
+			if ((hintIndex >= 0) && (hintIndex < mNumberOfKeyValues))
+			{
+				// We have a potentially valid hint index, let's see if it matches
+				int stringIDAtIndex = mKeyValues[hintIndex].StringID;
+				if (stringIDAtIndex == hintStringID)
+				{
+					// We have the correct index in 3 comparisons and 1 lookup
+					return true;
+				}
+
+				// Index does not match, use the first lookup to initiate the binary seach
+				if (stringIDAtIndex > hintStringID)
+				{
+					startIndex = 0;
+					endIndex = hintIndex - 1;
+					if (startIndex > endIndex)
+					{
+						// There can't be any match, lesser is before startIndex
+						hintIndex = -1;
+						return false;
+					}
+				}
+				else
+				{
+					startIndex = hintIndex + 1;
+					endIndex = mNumberOfKeyValues - 1;
+					if (startIndex > endIndex)
+					{
+						// There can't be any match, lesser is the last index
+						hintIndex = endIndex;
+						return false;
+					}
+				}
+			}
+			else
+			{
+				// hintIndex is out of range, rescan everything
+				startIndex = 0;
+				endIndex = mNumberOfKeyValues - 1;
+			}
+
+			// Because we want to update the hintStringID, and doing the first lookup
+			// we can directly do the binary search here.
+			if (hintStringID < 0)
+			{
+				// The usage is going to be incremented here, even if the key arleady exists
+				// Improve this so the usage counter does not get out of sync.
+				key = StringPool.AddStringToPool(key, out hintStringID);
+			}
+
+			int closestLesserIndex = -1;
+			while (startIndex <= endIndex)
+			{
+				int midIndex = (endIndex + startIndex) / 2;
+				int midStringID = mKeyValues[midIndex].StringID;
+				if (midStringID > hintStringID)
+				{
+					endIndex = midIndex - 1;
+				}
+				else if (midStringID < hintStringID)
+				{
+					startIndex = midIndex + 1;
+					closestLesserIndex = midIndex;
+				}
+				else
+				{
+					// Found it, update the hint index too
+					hintIndex = midIndex;
+					return true;
+				}
+			}
+
+			if (exactOnly)
+			{
+				// We still keep the hintIndex, in case another object has the proper hintIndex
+			}
+			else
+			{
+				hintIndex = closestLesserIndex;
+			}
+			return false;
+		}
+
+		private string KeyToString(object key)
+		{
+			string keyAsString = key as string;
+			if (keyAsString != null)
+			{
+				return keyAsString;
+			}
+			if (key == null)
+			{
+				// We do not allow null keys
+				throw new ArgumentNullException();
+			}
+			return key.ToString();
+		}
+
+		public ICollection<string> Keys
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+		public ICollection<object> Values
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+		//
+		// Indexer
+		//
+		public dynamic this [string key]
+		{
+			get
+			{
+				int index = FindKey(key);
+				if (index >= 0)
+				{
+					return mKeyValues[index].ValueAsObject;
+				}
+				// We probably should return undefined instead of null
+				return null;
+			}
+			set
+			{
+				bool newKey;
+				int stringID;
+				string pooledKey = StringPool.AddStringToPool(key, out stringID);
+				int index = FindOrCreateSpaceForKey(pooledKey, stringID, out newKey);
+				if (newKey)
+				{
+					mKeyValues[index].SetKeyAndValueType(pooledKey, stringID, ValueTypeObject);
+				}
+				else
+				{
+					// Not a new string, key string has already been pooled,
+					// And with the current implementation, only object is being used, so type has already being set
+					// We only have to set the new value, do not use StringPool yet for the value
+				}
+				mKeyValues[index].ValueAsObject = value;
+				CheckValidity();
+				++generation;
+			}
+		}
+
+		public int Count
+		{
+			get
+			{
+				return mNumberOfKeyValues;
+			}
+		}
+		public bool IsReadOnly
+		{
+			get
+			{
+				return false;
+			}
+		}
+
+		//
+		// Methods
+		//
+		public void Add (string key, object value)
+		{
+			throw new NotImplementedException();
+		}
+		public bool ContainsKey (string key)
+		{
+			if (key == null)
+			{
+				return false;
+			}
+			return FindKey(key) >= 0;
+		}
+		public bool Remove (string key)
+		{
+			// Remove is relatively rare, we can afford to have a slower code path by shifting the values
+			int index = FindKey(key);
+			if (index >= 0)
+			{
+				Array.Copy(mKeyValues, index + 1, mKeyValues, index, mNumberOfKeyValues - index - 1);
+				--mNumberOfKeyValues;
+				CheckValidity();
+				return true;
+			}
+			return false;
+		}
+		public bool TryGetValue (string key, out object value)
+		{
+			int index = FindKey(key);
+			if (index >= 0)
+			{
+				value = mKeyValues[index].ValueAsObject;
+				return true;
+			}
+			else
+			{
+				value = null;
+				return false;
+			}
+		}
+
+		public void Add (KeyValuePair<string, object> item)
+		{
+			throw new NotImplementedException();
+		}
+		public void Clear ()
+		{
+			throw new NotImplementedException();
+		}
+		public bool Contains (KeyValuePair<string, object> item)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void CopyTo (KeyValuePair<string, object>[] array, int arrayIndex)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool Remove (KeyValuePair<string, object> item)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IEnumerator<KeyValuePair<string, object>> GetEnumerator ()
+		{
+			throw new NotImplementedException();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator ()
+		{
+			return new ValueEnumerator(this);
+		}
+
+		IEnumerator IKeyEnumerable.GetKeyEnumerator()
+		{
+			return new KeyEnumerator(this);
+		}
+
+		#region IDictionary implementation
+
+		void IDictionary.Add (object key, object value)
+		{
+			throw new NotImplementedException ();
+		}
+
+		bool IDictionary.Contains (object key)
+		{
+			throw new NotImplementedException ();
+		}
+
+		IDictionaryEnumerator IDictionary.GetEnumerator ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		void IDictionary.Remove (object key)
+		{
+			throw new NotImplementedException ();
+		}
+
+		bool IDictionary.IsFixedSize {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		object IDictionary.this [object key] {
+			get {
+				return this[KeyToString(key)];
+			}
+			set {
+				this[(string)key] = value;
+			}
+		}
+
+		ICollection IDictionary.Keys {
+			get {
+				return new KeyCollection(this);
+			}
+		}
+
+		ICollection IDictionary.Values {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		#endregion
+
+		#region ICollection implementation
+
+		void ICollection.CopyTo (Array array, int index)
+		{
+			throw new NotImplementedException ();
+		}
+
+		bool ICollection.IsSynchronized {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		object ICollection.SyncRoot {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		#endregion
+
+		class KeyEnumerator : IEnumerator
+		{
+			private ExpandoObject mExpando;
+			private int mIndex;
+			private int mGeneration;
+
+			public KeyEnumerator(ExpandoObject expando)
+			{
+				mExpando = expando;
+				Reset();
+			}
+
+			public bool MoveNext ()
+			{
+				mIndex++;
+				return mIndex < mExpando.Count;							// Continue as long as we did not reach the end
+			}
+
+			public void Reset ()
+			{
+				mIndex = -1;
+				mGeneration = mExpando.Generation;
+			}
+
+			public object Current {
+				get {
+					if (mGeneration != mExpando.Generation)
+					{
+						throw new InvalidOperationException();			// Collection has been modified during enumeration
+					}
+					return mExpando.mKeyValues[mIndex].KeyAsString;
+				}
+			}
+		}
+
+		class ValueEnumerator : IEnumerator
+		{
+			private ExpandoObject mExpando;
+			private int mIndex;
+			private int mGeneration;
+
+			public ValueEnumerator(ExpandoObject expando)
+			{
+				mExpando = expando;
+				Reset();
+			}
+
+			public bool MoveNext ()
+			{
+				mIndex++;
+				return mIndex < mExpando.Count;							// Continue as long as we did not reach the end
+			}
+
+			public void Reset ()
+			{
+				mIndex = -1;
+				mGeneration = mExpando.Generation;
+			}
+
+			public object Current {
+				get {
+					if (mGeneration != mExpando.Generation)
+					{
+						throw new InvalidOperationException();			// Collection has been modified during enumeration
+					}
+					switch (mExpando.mKeyValues[mIndex].ValueType)
+					{
+						case ValueTypeObject:
+							return mExpando.mKeyValues[mIndex].ValueAsObject;
+						case ValueTypeString:
+							return mExpando.mKeyValues[mIndex].ValueAsString;
+						case ValueTypeBool:
+							return mExpando.mKeyValues[mIndex].ValueAsBool;
+						case ValueTypeInt:
+							return mExpando.mKeyValues[mIndex].ValueAsInt;
+						case ValueTypeUint:
+							return mExpando.mKeyValues[mIndex].ValueAsUint;
+						case ValueTypeDouble:
+							return mExpando.mKeyValues[mIndex].ValueAsDouble;
+						default:
+							throw new NotImplementedException();
+					}
+				}
+			}
+		}
+
+		class KeyCollection : ICollection
+		{
+			ExpandoObject mExpandoObject;
+			public KeyCollection(ExpandoObject expandoObject)
+			{
+				mExpandoObject = expandoObject;
+			}
+
+			public void CopyTo (Array array, int index)
+			{
+				throw new NotImplementedException ();
+			}
+
+			public int Count {
+				get {
+					return mExpandoObject.Count;
+				}
+			}
+
+			public bool IsSynchronized {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+
+			public object SyncRoot {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+
+			public IEnumerator GetEnumerator ()
+			{
+				return new KeyEnumerator(mExpandoObject);
+			}
+		}
+
+		#region IDynamicClass implementation
+		dynamic IDynamicClass.__GetDynamicValue(string name)
+		{
+			return this[name];
+		}
+		bool IDynamicClass.__TryGetDynamicValue(string name, out object value)
+		{
+			return this.TryGetValue(name, out value);
+		}
+		void IDynamicClass.__SetDynamicValue(string name, object value)
+		{
+			this[name] = value;
+		}
+		bool IDynamicClass.__DeleteDynamicValue(object name)
+		{
+			return this.Remove((string)name);
+		}
+		bool IDynamicClass.__HasDynamicValue(string name)
+		{
+			return this.ContainsKey(name);
+		}
+		IEnumerable IDynamicClass.__GetDynamicNames()
+		{
+			return this.Keys;
+		}
+		#endregion
+
+		int ConvertValueToInt(int index)
+		{
+			switch (mKeyValues[index].ValueType)
+			{
+			case ValueTypeInt:
+					return mKeyValues[index].ValueAsInt;
+			case ValueTypeUint:
+					return (int)mKeyValues[index].ValueAsUint;
+			case ValueTypeDouble:
+					return (int)mKeyValues[index].ValueAsDouble;
+			case ValueTypeBool:
+					return mKeyValues[index].ValueAsBool ? 1 : 0;
+			case ValueTypeString:
+					// We probably should convert here...
+					return int.Parse(mKeyValues[index].ValueAsString);
+			case ValueTypeObject:
+					return Dynamic.ConvertValue<int>(mKeyValues[index].ValueAsObject);
+			default:
+				throw new NotSupportedException();
+			}
+		}
+
+		void SetValueToInt(int index, int value)
+		{
+			mKeyValues[index].SetValueType(ValueTypeInt);
+			mKeyValues[index].ValueAsInt = value;
+		}
+
+		uint ConvertValueToUint(int index)
+		{
+			switch (mKeyValues[index].ValueType)
+			{
+			case ValueTypeInt:
+					return (uint)mKeyValues[index].ValueAsInt;
+			case ValueTypeUint:
+					return mKeyValues[index].ValueAsUint;
+			case ValueTypeDouble:
+					return (uint)mKeyValues[index].ValueAsDouble;
+			case ValueTypeBool:
+					return mKeyValues[index].ValueAsBool ? 1u : 0u;
+			case ValueTypeString:
+					// We probably should convert here...
+					return uint.Parse(mKeyValues[index].ValueAsString);
+			case ValueTypeObject:
+					return Dynamic.ConvertValue<uint>(mKeyValues[index].ValueAsObject);
+			default:
+				throw new NotSupportedException();
+			}
+		}
+
+		void SetValueToUint(int index, uint value)
+		{
+			mKeyValues[index].SetValueType(ValueTypeUint);
+			mKeyValues[index].ValueAsUint = value;
+		}
+
+		double ConvertValueToDouble(int index)
+		{
+			switch (mKeyValues[index].ValueType)
+			{
+			case ValueTypeInt:
+					return (double)mKeyValues[index].ValueAsInt;
+			case ValueTypeUint:
+					return (double)mKeyValues[index].ValueAsUint;
+			case ValueTypeDouble:
+					return mKeyValues[index].ValueAsDouble;
+			case ValueTypeBool:
+					return mKeyValues[index].ValueAsBool ? 1.0 : 0.0;
+			case ValueTypeString:
+					// We probably should convert here...
+					return double.Parse(mKeyValues[index].ValueAsString);
+			case ValueTypeObject:
+					return Dynamic.ConvertValue<double>(mKeyValues[index].ValueAsObject);
+			default:
+				throw new NotSupportedException();
+			}
+		}
+
+		void SetValueToDouble(int index, double value)
+		{
+			mKeyValues[index].SetValueType(ValueTypeDouble);
+			mKeyValues[index].ValueAsDouble = value;
+		}
+
+		bool ConvertValueToBool(int index)
+		{
+			switch (mKeyValues[index].ValueType)
+			{
+			case ValueTypeInt:
+					return (mKeyValues[index].ValueAsInt != 0);
+			case ValueTypeUint:
+					return (mKeyValues[index].ValueAsUint != 0);
+			case ValueTypeDouble:
+					return (mKeyValues[index].ValueAsDouble != 0.0);
+			case ValueTypeBool:
+					return mKeyValues[index].ValueAsBool;
+			case ValueTypeString:
+					// We probably should convert here...
+					return bool.Parse(mKeyValues[index].ValueAsString);
+			case ValueTypeObject:
+					return Dynamic.ConvertValue<bool>(mKeyValues[index].ValueAsObject);
+			default:
+				throw new NotSupportedException();
+			}
+		}
+
+		void SetValueToBool(int index, bool value)
+		{
+			mKeyValues[index].SetValueType(ValueTypeBool);
+			mKeyValues[index].ValueAsBool = value;
+		}
+
+		string ConvertValueToString(int index)
+		{
+			switch (mKeyValues[index].ValueType)
+			{
+				case ValueTypeInt:
+					return mKeyValues[index].ValueAsInt.ToString();
+				case ValueTypeUint:
+					return mKeyValues[index].ValueAsUint.ToString();
+				case ValueTypeDouble:
+					return mKeyValues[index].ValueAsDouble.ToString();
+				case ValueTypeBool:
+					return mKeyValues[index].ValueAsBool.ToString();
+				case ValueTypeString:
+					// We probably should convert here...
+					return mKeyValues[index].ValueAsString;
+				case ValueTypeObject:
+					return Dynamic.ConvertValue<string>(mKeyValues[index].ValueAsObject);
+				default:
+					throw new NotSupportedException();
+			}
+		}
+
+		void SetValueToString(int index, string value)
+		{
+			mKeyValues[index].SetValueType(ValueTypeString);
+			mKeyValues[index].ValueAsString = value;
+		}
+
+		object ConvertValueToObject(int index)
+		{
+			switch (mKeyValues[index].ValueType)
+			{
+			case ValueTypeInt:
+					return mKeyValues[index].ValueAsInt;
+			case ValueTypeUint:
+					return mKeyValues[index].ValueAsUint;
+			case ValueTypeDouble:
+					return mKeyValues[index].ValueAsDouble;
+			case ValueTypeBool:
+					return mKeyValues[index].ValueAsBool;
+			case ValueTypeString:
+					// We probably should convert here...
+					return mKeyValues[index].ValueAsString;
+			case ValueTypeObject:
+					return mKeyValues[index].ValueAsObject;
+			default:
+				throw new NotSupportedException();
+			}
+		}
+
+		void SetValueToObject(int index, object value)
+		{
+			mKeyValues[index].SetValueType(ValueTypeObject);
+			mKeyValues[index].ValueAsObject = value;
+			CheckValidity();
+		}
+
+		#region IFastDictionaryLookup<int> implementation
+		int IFastDictionaryLookup<int>.GetValue(string key, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			CheckValidity();
+			if (FindLessOrEqualKey(key, true, ref hintStringID, ref hintExpandoIndex) == false)
+			{
+				return 0;
+			}
+			return ConvertValueToInt(hintExpandoIndex);
+		}
+
+		void IFastDictionaryLookup<int>.SetValue(string key, int value, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			FindOrInsertKey(key, ref hintStringID, ref hintExpandoIndex);
+			SetValueToInt(hintExpandoIndex, value);
+			CheckValidity();
+		}
+		#endregion
+
+		#region IFastDictionaryLookup<uint> implementation
+		uint IFastDictionaryLookup<uint>.GetValue(string key, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			CheckValidity();
+			if (FindLessOrEqualKey(key, true, ref hintStringID, ref hintExpandoIndex) == false)
+			{
+				return 0;
+			}
+			return ConvertValueToUint(hintExpandoIndex);
+		}
+
+		void IFastDictionaryLookup<uint>.SetValue(string key, uint value, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			FindOrInsertKey(key, ref hintStringID, ref hintExpandoIndex);
+			SetValueToUint(hintExpandoIndex, value);
+			CheckValidity();
+		}
+		#endregion
+
+		#region IFastDictionaryLookup<double> implementation
+		double IFastDictionaryLookup<double>.GetValue(string key, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			CheckValidity();
+			if (FindLessOrEqualKey(key, true, ref hintStringID, ref hintExpandoIndex) == false)
+			{
+				return 0.0;
+			}
+			return ConvertValueToDouble(hintExpandoIndex);
+		}
+
+		void IFastDictionaryLookup<double>.SetValue(string key, double value, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			FindOrInsertKey(key, ref hintStringID, ref hintExpandoIndex);
+			SetValueToDouble(hintExpandoIndex, value);
+			CheckValidity();
+		}
+		#endregion
+
+		#region IFastDictionaryLookup<bool> implementation
+		bool IFastDictionaryLookup<bool>.GetValue(string key, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			CheckValidity();
+			if (FindLessOrEqualKey(key, true, ref hintStringID, ref hintExpandoIndex) == false)
+			{
+				return false;
+			}
+			return ConvertValueToBool(hintExpandoIndex);
+		}
+
+		void IFastDictionaryLookup<bool>.SetValue(string key, bool value, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			FindOrInsertKey(key, ref hintStringID, ref hintExpandoIndex);
+			SetValueToBool(hintExpandoIndex, value);
+			CheckValidity();
+		}
+		#endregion
+
+		#region IFastDictionaryLookup<string> implementation
+		string IFastDictionaryLookup<string>.GetValue(string key, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			CheckValidity();
+			if (FindLessOrEqualKey(key, true, ref hintStringID, ref hintExpandoIndex) == false)
+			{
+				return null;
+			}
+			return ConvertValueToString(hintExpandoIndex);
+		}
+
+		void IFastDictionaryLookup<string>.SetValue(string key, string value, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			FindOrInsertKey(key, ref hintStringID, ref hintExpandoIndex);
+			SetValueToString(hintExpandoIndex, value);
+			CheckValidity();
+		}
+		#endregion
+
+		#region IFastDictionaryLookup<object> implementation
+		object IFastDictionaryLookup<object>.GetValue(string key, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			CheckValidity();
+			if (FindLessOrEqualKey(key, true, ref hintStringID, ref hintExpandoIndex) == false)
+			{
+				return null;		// We probably should return undefined here
+			}
+			return ConvertValueToObject(hintExpandoIndex);
+		}
+
+		void IFastDictionaryLookup<object>.SetValue(string key, object value, ref int hintStringID, ref int hintExpandoIndex)
+		{
+			FindOrInsertKey(key, ref hintStringID, ref hintExpandoIndex);
+			string valueAsString = value as string;
+			if (valueAsString != null)
+			{
+				SetValueToString(hintExpandoIndex, valueAsString);
+			}
+			else
+			{
+				SetValueToObject(hintExpandoIndex, value);
+			}
+			CheckValidity();
+		}
+		#endregion
+
+		[Conditional("DEBUG")]
+		void CheckValidity()
+		{
+			// Make sure that the transformations are correct
+			/*
+			int previousStringID = -1;
+			for (int i = 0 ; i < mNumberOfKeyValues ; ++i)
+			{
+				int stringID = mKeyValues[i].StringID;
+				if (StringPool.IsThisStringInPool(mKeyValues[i].KeyAsString, stringID) == false)
+				{
+					// Only pooled string should be stored for keys
+					throw new InvalidOperationException();
+				}
+
+				if (stringID <= previousStringID)
+				{
+					throw new InvalidOperationException();
+				}
+				previousStringID = stringID;
+			}
+			*/
+		}
+
+
+		[Conditional("DEBUG")]
+		void AddToMemoryUsage()
+		{
+			MemoryUsageModeA += GetMemoryUsageModeA();
+			MemoryUsageModeB += GetMemoryUsageModeB();
+			MemoryUsageModeC += GetMemoryUsageModeC();
+		}
+
+		[Conditional("DEBUG")]
+		void RemoveFromMemoryUsage()
+		{
+			MemoryUsageModeA -= GetMemoryUsageModeA();
+			MemoryUsageModeB -= GetMemoryUsageModeB();
+			MemoryUsageModeC -= GetMemoryUsageModeC();
+		}
+
+		int GetMemoryUsageModeA()
+		{
+			return 0;
+		}
+
+		int GetMemoryUsageModeB()
+		{
+			return 0;
+		}
+
+		int GetMemoryUsageModeC()
+		{
+			return 0;
+		}
+	}
+
+
 
 #endif
+}
+

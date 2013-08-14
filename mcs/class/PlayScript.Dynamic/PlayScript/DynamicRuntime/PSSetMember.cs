@@ -19,6 +19,7 @@
 using System;
 using System.Reflection;
 using System.Collections;
+using PlayScript.Expando;
 
 namespace PlayScript.DynamicRuntime
 {
@@ -49,6 +50,22 @@ namespace PlayScript.DynamicRuntime
 		public T SetMember<T>(object o, T value, bool valueTypeIsConstant = false)
 		{
 			Stats.Increment(StatsCounter.SetMemberBinderInvoked);
+
+			// First let's look if we can cast to a specific primitive
+			IFastDictionaryLookup<T> fastLookupT = o as IFastDictionaryLookup<T>;
+			if (fastLookupT != null)
+			{
+				fastLookupT.SetValue(mName, value, ref mHintDictionaryStringID, ref mHintDictionaryIndex);
+				return value;
+			}
+
+			// If not, T is not a primitive (or object), thus it is probably a class, so use the IFastDictionaryLookup<object> version.
+			IFastDictionaryLookup<object> fastLookupObject = o as IFastDictionaryLookup<object>;
+			if (fastLookupObject != null)
+			{
+				fastLookupObject.SetValue(mName, value, ref mHintDictionaryStringID, ref mHintDictionaryIndex);
+				return value;
+			}
 
 			// resolve as dictionary 
 			var dict = o as IDictionary;
@@ -175,8 +192,10 @@ namespace PlayScript.DynamicRuntime
 		private FieldInfo		mField;
 		private MethodInfo		mPropertySetter;
 		private object[]		mArgs = new object[1];
-		object					mPreviousTarget;
-		object					mPreviousAction;
+		private object			mPreviousTarget;
+		private object			mPreviousAction;
+		private int				mHintDictionaryStringID = -1;
+		private int				mHintDictionaryIndex = -1;
 	};
 }
 #endif

@@ -46,6 +46,17 @@ namespace PlayScript
 			return sStringToInfo.ContainsKey(value);
 		}
 
+		public static bool IsThisStringInPool(string value, int stringID)
+		{
+			StringInfo info;
+			if (sStringToInfo.TryGetValue(value, out info))
+			{
+				Debug.Assert(stringID == info.ID);		// Make sure the ID is valid too
+				return object.ReferenceEquals(info.PooledString, value);
+			}
+			return false;
+		}
+
 		public static int GetStringID(string value)
 		{
 			StringInfo info;

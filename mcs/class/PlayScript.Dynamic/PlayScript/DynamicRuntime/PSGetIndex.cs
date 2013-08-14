@@ -21,12 +21,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using PlayScript;
+using PlayScript.Expando;
 
 namespace PlayScript.DynamicRuntime
 {
 	public class PSGetIndex 
 	{
-		private PSGetMember			  mGetMember;
+		private PSGetMember	mGetMember;
+		private int			mHintDictionaryStringID = -1;
+		private int			mHintDictionaryIndex = -1;
 
 		public T GetIndexAs<T> (object o, int index)
 		{
@@ -86,6 +89,25 @@ namespace PlayScript.DynamicRuntime
 			Stats.Increment(StatsCounter.GetIndexBinderInvoked);
 			Stats.Increment(StatsCounter.GetIndexBinder_Key_Invoked);
 
+			// First let's look if we can cast to a specific primitive
+/*
+			IFastDictionaryLookup<T> fastLookupT = o as IFastDictionaryLookup<T>;
+			if (fastLookupT != null)
+			{
+				return fastLookupT.GetValue(key, ref mHintDictionaryStringID, ref mHintDictionaryIndex);
+			}
+
+			// If not, T is not a primitive (or object), thus it is probably a class, so use the IFastDictionaryLookup<object> version.
+			IFastDictionaryLookup<object> fastLookupObject = o as IFastDictionaryLookup<object>;
+			if (fastLookupObject != null)
+			{
+				object value = fastLookupObject.GetValue(key, ref mHintDictionaryStringID, ref mHintDictionaryIndex);
+				if (value is T)
+					return (T)value;
+				else
+					return PlayScript.Dynamic.ConvertValue<T>(value);
+			}
+*/
 			// handle dictionaries
 			var dict = o as IDictionary;
 			if (dict != null) {
