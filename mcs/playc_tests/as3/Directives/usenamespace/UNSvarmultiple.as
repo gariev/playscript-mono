@@ -59,23 +59,23 @@ package {
 			Hockey var teamName:* = "Sharks";
 			Hockey var teamColor:* = "yellow";
 			
-			public function a1(){
+			public function a1():*{
 			  use namespace Baseball;
 			  return Baseball::teamName
 			}
-			public function a2(){
+			public function a2():*{
 			  use namespace Football;
 			  return Football::teamName
 			}
-			public function a3(){
+			public function a3():*{
 			  use namespace Basketball;
 			  return Basketball::teamName
 			}
-			public function a4(){
+			public function a4():*{
 			  use namespace Hockey;
 			  return Hockey::teamName
 			}
-			public function a5(){
+			public function a5():*{
 			  use namespace Hockey;
 			  return Hockey::teamColor
 			}

@@ -50,13 +50,13 @@ package {
 			writeHeaderToLog( SECTION + " "+ TITLE);
 			
 			class impClass implements inInterface {
-				public function intFunc1() {
+				public function intFunc1():* {
 					return "Inside func1()";
 				}
-				public function intFunc2() {
+				public function intFunc2():* {
 					return "Inside func2()";
 				}
-				function intFunc3() {
+				function intFunc3():* {
 					return "Inside func3()";
 				}
 			}

@@ -52,7 +52,7 @@ package {
 			var myClassB:TestClassB = new TestClassB();	// class TestClassB extends TestClassA {}
 			var myClassC:TestClassC = new TestClassC();	// class TestClassC extends TestClassB implements TestInterface {}
 														// interface TestInterface {}
-			function emptyFunction() {};
+			function emptyFunction():* {};
 			var emptyObject:Object = new Object();
 			var myDate:Date = new Date(1977,8,24);
 			
@@ -73,7 +73,7 @@ package {
 			
 			
 			
-			function returnArg(arg) {return arg;}
+			function returnArg(arg):* {return arg;}
 			
 			var funcArr:Array = new Array();
 			
@@ -115,7 +115,7 @@ package {
 			test();       // leave this alone.  this executes the test cases and
 			              // displays results.
 			
-			function populateResults() {
+			function populateResults():* {
 			var x:*=0;
 			resultArr[x++] = true; // funcArr[0]({}) - return type: String
 			resultArr[x++] = true; // funcArr[0]("string") - return type: String

@@ -42,7 +42,7 @@ package testfinalClassDefCons{
 
                                         
 
-                                         public function Add(){
+                                         public function Add():*{
                                                               var z:* = x+y;
                                                               return z;
                                                               }

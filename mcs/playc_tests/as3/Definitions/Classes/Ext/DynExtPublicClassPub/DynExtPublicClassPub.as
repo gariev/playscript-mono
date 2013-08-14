@@ -49,7 +49,7 @@ package PublicClass {
 	    // ************************************
 
 	    function subGetArray() : Array { return this.getPubArray(); }
-	    function subSetArray(a:Array)  { this.setPubArray(a); }
+	    function subSetArray(a:Array):*  { this.setPubArray(a); }
 	    // function to test above from test scripts
 	    public function testSubArray(a:Array) : Array {
 		this.subSetArray(a);
@@ -62,7 +62,7 @@ package PublicClass {
 	    // ************************************
 
 	    public function pubSubGetArray() : Array { return this.getPubArray(); }
-	    public function pubSubSetArray(a:Array) { this.setPubArray(a); }
+	    public function pubSubSetArray(a:Array):* { this.setPubArray(a); }
 
 	    // ************************************
 	    // access public method of parent
@@ -70,7 +70,7 @@ package PublicClass {
 	    // ************************************
 
 	    private function privSubGetArray() : Array { return this.getPubArray(); }
-	    private function privSubSetArray(a:Array) { this.setPubArray(a); }
+	    private function privSubSetArray(a:Array):* { this.setPubArray(a); }
 
 	    // function to test above from test scripts
 	    public function testPrivSubArray(a:Array) : Array {
@@ -84,7 +84,7 @@ package PublicClass {
 	    // ************************************
 
 	    final function finSubGetArray() : Array { return this.getPubArray(); }
-	    final function finSubSetArray(a:Array)  { this.setPubArray(a); }
+	    final function finSubSetArray(a:Array):*  { this.setPubArray(a); }
 	    // function to test above from test scripts
 	    public function testFinSubArray(a:Array) : Array {
 		this.finSubSetArray(a);
@@ -99,7 +99,7 @@ package PublicClass {
 	    // ***************************************
 
 	    function subGetDPArray() : Array { return pubArray; }
-	    function subSetDPArray(a:Array) { pubArray = a; }
+	    function subSetDPArray(a:Array):* { pubArray = a; }
 	    // function to test above from test scripts
 	    public function testSubDPArray(a:Array) : Array {
 		this.subSetDPArray(a);
@@ -112,7 +112,7 @@ package PublicClass {
 	    // ***************************************
 
 	    public function pubSubGetDPArray() : Array { return this.pubArray; }
-	    public function pubSubSetDPArray(a:Array) { this.pubArray = a; }
+	    public function pubSubSetDPArray(a:Array):* { this.pubArray = a; }
 
 	    // ***************************************
 	    // access public property from
@@ -120,7 +120,7 @@ package PublicClass {
 	    // ***************************************
 
 	    private function privSubGetDPArray() : Array { return this.pubArray; }
-	    private function privSubSetDPArray(a:Array) { this.pubArray = a; }
+	    private function privSubSetDPArray(a:Array):* { this.pubArray = a; }
 	    // function to test above from test scripts
 	    public function testPrivSubDPArray(a:Array) : Array {
 		this.privSubSetDPArray(a);
@@ -133,7 +133,7 @@ package PublicClass {
 	    // ***************************************
 
 	    final function finSubGetDPArray() : Array { return this.pubArray; }
-	    final function finSubSetDPArray(a:Array) { this.pubArray = a; }
+	    final function finSubSetDPArray(a:Array):* { this.pubArray = a; }
 	    // function to test above from test scripts
 	    public function testFinSubDPArray(a:Array) : Array {
 		this.finSubSetDPArray(a);
@@ -145,12 +145,12 @@ package PublicClass {
 	    // overload default method of parent class
 	    // ******************************************
 	    /*
-	    override function overLoad() { return "This is the sub class"; }
-	    override function pubOverLoad() { return "This is the sub class"; }
-	    override function privOverLoad() { return "This is the sub class"; }
-	    override function statOverLoad() { return "This is the sub class"; }
-	    override function pubStatOverLoad() { return "This is the sub class"; }
-	    override function privStatOverLoad() { return "This is the sub class"; }
+	    override function overLoad():* { return "This is the sub class"; }
+	    override function pubOverLoad():* { return "This is the sub class"; }
+	    override function privOverLoad():* { return "This is the sub class"; }
+	    override function statOverLoad():* { return "This is the sub class"; }
+	    override function pubStatOverLoad():* { return "This is the sub class"; }
+	    override function privStatOverLoad():* { return "This is the sub class"; }
 	    */
 
 	}

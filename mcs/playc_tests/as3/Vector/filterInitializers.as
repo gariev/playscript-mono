@@ -54,7 +54,7 @@ package {
 			
 			writeHeaderToLog( " Vector.filter()-using-initializers");
 			
-			function EvenChecker(value,index,obj) {
+			function EvenChecker(value,index,obj):* {
 			  if (value%2==0)
 			    return true;
 			  return false;

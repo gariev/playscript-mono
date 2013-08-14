@@ -43,7 +43,7 @@ package NamespaceFunctionName {
     	function TestNameObj() {}
 
     	// not the constructor but looks like it
-    	testns function testNameObj() { return "not the constructor"; }
+    	testns function testNameObj():* { return "not the constructor"; }
 
     	testns function a1 () { return "a1"; }
     	testns function a_1 () { return "a_1"; }

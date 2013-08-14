@@ -41,7 +41,7 @@ package foo {
 	}
 
 	public class erwin implements fletch { 
-		public function lives(){return 'PASSED';}
+		public function lives():*{return 'PASSED';}
 	}
 }
 import foo.*;

@@ -48,7 +48,7 @@ package DynamicClass {
     // ************************************
 
     function subGetArray() : Array { return this.getArray(); }
-    function subSetArray(a:Array) { this.setArray(a); }
+    function subSetArray(a:Array):* { this.setArray(a); }
 
     public function testSubSetArray(a:Array) : Array {
         this.subSetArray(a);
@@ -62,7 +62,7 @@ package DynamicClass {
     // ************************************
 
     public function pubSubGetArray() : Array { return this.getArray(); }
-    public function pubSubSetArray(a:Array) { this.setArray(a); }
+    public function pubSubSetArray(a:Array):* { this.setArray(a); }
 
     // ************************************
     // access default method of parent
@@ -70,7 +70,7 @@ package DynamicClass {
     // ************************************
 
     private function privSubGetArray() : Array { return this.getArray(); }
-    private function privSubSetArray(a:Array) { this.setArray(a); }
+    private function privSubSetArray(a:Array):* { this.setArray(a); }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -84,7 +84,7 @@ package DynamicClass {
     // ***************************************
 
     function subGetDPArray() : Array { return array; }
-    function subSetDPArray(a:Array) { array = a; }
+    function subSetDPArray(a:Array):* { array = a; }
 
     public function testSubSetDPArray(a:Array) : Array {
         this.subSetDPArray(a);
@@ -98,7 +98,7 @@ package DynamicClass {
     // ***************************************
 
     public function pubSubGetDPArray() : Array { return this.array; }
-    public function pubSubSetDPArray(a:Array) { this.array = a; }
+    public function pubSubSetDPArray(a:Array):* { this.array = a; }
 
     // ***************************************
     // access default property from
@@ -106,7 +106,7 @@ package DynamicClass {
     // ***************************************
  
     private function privSubGetDPArray() : Array { return this.array; }
-    private function privSubSetDPArray(a:Array) { this.array = a; }
+    private function privSubSetDPArray(a:Array):* { this.array = a; }
 
     public function testPrivSubSetDPArray(a:Array) : Array {
         this.privSubSetDPArray(a);

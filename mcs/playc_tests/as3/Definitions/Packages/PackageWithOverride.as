@@ -39,7 +39,7 @@ package P
 {
 class A
 {
-public function f() { return "original f"}
+public function f():* { return "original f"}
 }
 }
 
@@ -47,7 +47,7 @@ package P
 {
 public class B extends A
 {
-override public function f() { return "override f"}
+override public function f():* { return "override f"}
 }
 }
 

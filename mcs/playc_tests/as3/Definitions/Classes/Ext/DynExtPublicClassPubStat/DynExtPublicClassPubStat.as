@@ -48,7 +48,7 @@ package PublicClass {
 	    // ************************************
 
 	    function subGetArray() : Array { return getPubStatArray(); }
-	    function subSetArray(a:Array)  { setPubStatArray(a); }
+	    function subSetArray(a:Array):*  { setPubStatArray(a); }
 	    // function to test above from test scripts
 	    public function testSubArray(a:Array) : Array {
 		this.subSetArray(a);
@@ -61,7 +61,7 @@ package PublicClass {
 	    // ************************************
 
 	    public function pubSubGetArray() : Array { return getPubStatArray(); }
-	    public function pubSubSetArray(a:Array) { setPubStatArray(a); }
+	    public function pubSubSetArray(a:Array):* { setPubStatArray(a); }
 
 	    // ************************************
 	    // access public static method of parent
@@ -69,7 +69,7 @@ package PublicClass {
 	    // ************************************
 
 	    private function privSubGetArray() : Array { return getPubStatArray(); }
-	    private function privSubSetArray(a:Array) { setPubStatArray(a); }
+	    private function privSubSetArray(a:Array):* { setPubStatArray(a); }
 
 	    // function to test above from test scripts
 	    public function testPrivSubArray(a:Array) : Array {
@@ -83,7 +83,7 @@ package PublicClass {
 	    // ***************************************
 
 	    static function statSubGetArray() : Array { return getPubStatArray(); }
-	    static function statSubSetArray(a:Array) { setPubStatArray(a); }
+	    static function statSubSetArray(a:Array):* { setPubStatArray(a); }
 
 	    // ***************************************
 	    // access public static method of parent
@@ -91,7 +91,7 @@ package PublicClass {
 	    // ***************************************
 
 	    public static function pubStatSubGetArray() : Array { return getPubStatArray(); }
-	    public static function pubStatSubSetArray(a:Array) { setPubStatArray(a); }
+	    public static function pubStatSubSetArray(a:Array):* { setPubStatArray(a); }
 
 	    // ***************************************
 	    // access public static method of parent
@@ -99,7 +99,7 @@ package PublicClass {
 	    // ***************************************
 
 	    private static function privStatSubGetArray() : Array { return getPubStatArray(); }
-	    private static function privStatSubSetArray(a:Array) { setPubStatArray(a); }
+	    private static function privStatSubSetArray(a:Array):* { setPubStatArray(a); }
 
 	    // public accessor to test asrt
 	    public function testPrivStatSubArray(a:Array) : Array {
@@ -113,7 +113,7 @@ package PublicClass {
 	    // ***************************************
 
 	    final function finSubGetArray() : Array { return getPubStatArray(); }
-	    final function finSubSetArray(a:Array) { setPubStatArray(a); }
+	    final function finSubSetArray(a:Array):* { setPubStatArray(a); }
 	    // public accessor to test asrt
 	    public function testFinSubArray(a:Array) : Array {
 		finSubSetArray(a);
@@ -127,7 +127,7 @@ package PublicClass {
 	    // ***************************************
 
 	    function subGetDPArray() : Array { return pubStatArray; }
-	    function subSetDPArray(a:Array) { pubStatArray = a; }
+	    function subSetDPArray(a:Array):* { pubStatArray = a; }
 
 	    // ***************************************
 	    // access public static property from
@@ -135,7 +135,7 @@ package PublicClass {
 	    // ***************************************
 
 	    public function pubSubGetDPArray() : Array { return pubStatArray; }
-	    public function pubSubSetDPArray(a:Array) { pubStatArray = a; }
+	    public function pubSubSetDPArray(a:Array):* { pubStatArray = a; }
 
 	    // ***************************************
 	    // access public static property from
@@ -143,7 +143,7 @@ package PublicClass {
 	    // ***************************************
 
 	    private function privSubGetDPArray() : Array { return pubStatArray; }
-	    private function privSubSetDPArray(a:Array) { pubStatArray = a; }
+	    private function privSubSetDPArray(a:Array):* { pubStatArray = a; }
 
 	    // ***************************************
 	    // access public static property from
@@ -151,7 +151,7 @@ package PublicClass {
 	    // ***************************************
 
 	    public static function pubStatSubGetSPArray() : Array { return pubStatArray; }
-	    public static function pubStatSubSetSPArray(a:Array) { pubStatArray = a; }
+	    public static function pubStatSubSetSPArray(a:Array):* { pubStatArray = a; }
 
 	    // ***************************************
 	    // access public static property from
@@ -159,7 +159,7 @@ package PublicClass {
 	    // ***************************************
 
 	    private static function privStatSubGetSPArray() : Array { return pubStatArray; }
-	    private static function privStatSubSetSPArray(a:Array) { pubStatArray = a; }
+	    private static function privStatSubSetSPArray(a:Array):* { pubStatArray = a; }
 
 	    // public accessor for asrt
 	    public function testPrivStatSubPArray(a:Array) : Array {
@@ -173,7 +173,7 @@ package PublicClass {
 	    // ***************************************
 
 	    final function finSubGetDPArray() : Array { return pubStatArray; }
-	    final function finSubSetDPArray(a:Array) { pubStatArray = a; }
+	    final function finSubSetDPArray(a:Array):* { pubStatArray = a; }
 
 
 	}
@@ -182,10 +182,10 @@ package PublicClass {
     // public static methods
     // **************************
 
-    public static function setPubStatArray(a:Array) { PublicClass.setPubStatArray(a); }
-    public static function setPubStatBoolean( b:Boolean ) { PublicClass.setPubStatBoolean(b); }
+    public static function setPubStatArray(a:Array):* { PublicClass.setPubStatArray(a); }
+    public static function setPubStatBoolean( b:Boolean ):* { PublicClass.setPubStatBoolean(b); }
 
-    public static function getPubStatArray() { return PublicClass.getPubStatArray(); }
+    public static function getPubStatArray():* { return PublicClass.getPubStatArray(); }
 
 	    // ***************************************
 	    // access public static property from
@@ -193,7 +193,7 @@ package PublicClass {
 	    // ***************************************
 
 	    public static function pubStatSubGetSPArray() : Array { return DynExtPublicClassPubStatInner.pubStatSubGetSPArray(); }
-	    public static function pubStatSubSetSPArray(a:Array) { DynExtPublicClassPubStatInner.pubStatSubSetSPArray(a); }
+	    public static function pubStatSubSetSPArray(a:Array):* { DynExtPublicClassPubStatInner.pubStatSubSetSPArray(a); }
 
 	    // ***************************************
 	    // access public static method of parent
@@ -201,7 +201,7 @@ package PublicClass {
 	    // ***************************************
 
 	    public static function pubStatSubGetArray() : Array { return DynExtPublicClassPubStatInner.pubStatSubGetArray(); }
-	    public static function pubStatSubSetArray(a:Array) { DynExtPublicClassPubStatInner.pubStatSubSetArray(a); }
+	    public static function pubStatSubSetArray(a:Array):* { DynExtPublicClassPubStatInner.pubStatSubSetArray(a); }
 
 	}
 }

@@ -70,22 +70,22 @@ package DefaultProtClass {
     // constructor
     // ****************
 
-    function DefaultClassProt() {
+    function DefaultClassProt():* {
     }
 
     // *******************
     // protected methods
     // *******************
 
-    protected function setProtArray( a:Array ) { protArray = a; }
-    protected function setProtBoolean( b:Boolean ) { protBoolean = b; }
-    protected function setProtDate( d:Date ) { protDate = d; }
-    protected function setProtFunction( f:Function ) { protFunction = f; }
-    protected function setProtMath( m:Math ) { protMath = m; }
-    protected function setProtNumber( n:Number ) { protNumber = n; }
-    protected function setProtObject( o:Object ) { protObject = o; }
-    protected function setProtString( s:String ) { protString = s; }
-    //protected function setProtSimple( s:Simple ) { protSimple = s; }
+    protected function setProtArray( a:Array ):* { protArray = a; }
+    protected function setProtBoolean( b:Boolean ):* { protBoolean = b; }
+    protected function setProtDate( d:Date ):* { protDate = d; }
+    protected function setProtFunction( f:Function ):* { protFunction = f; }
+    protected function setProtMath( m:Math ):* { protMath = m; }
+    protected function setProtNumber( n:Number ):* { protNumber = n; }
+    protected function setProtObject( o:Object ):* { protObject = o; }
+    protected function setProtString( s:String ):* { protString = s; }
+    //protected function setProtSimple( s:Simple ):* { protSimple = s; }
 
     protected function getProtArray() : Array { return this.protArray; }
     protected function getProtBoolean() : Boolean { return this.protBoolean; }
@@ -101,17 +101,17 @@ package DefaultProtClass {
     // protected static methods
     // **************************
 
-    protected static function setProtStatArray(a:Array) { protStatArray=a; }
-    protected static function setProtStatBoolean( b:Boolean ) { protStatBoolean = b; }
+    protected static function setProtStatArray(a:Array):* { protStatArray=a; }
+    protected static function setProtStatBoolean( b:Boolean ):* { protStatBoolean = b; }
 
-    protected static function getProtStatArray() { return protStatArray; }
+    protected static function getProtStatArray():* { return protStatArray; }
 
     // ***************************
     // to be overloaded
     // ***************************
 
-    protected function protOverLoad() { return "This is the parent class"; }
-    protected static function protStatOverLoad() { return "This is the parent class"; }
+    protected function protOverLoad():* { return "This is the parent class"; }
+    protected static function protStatOverLoad():* { return "This is the parent class"; }
   }
 
   public class DefaultProtClass extends DefaultProtClassInner { }

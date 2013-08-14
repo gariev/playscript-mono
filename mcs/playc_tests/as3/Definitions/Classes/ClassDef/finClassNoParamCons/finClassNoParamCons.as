@@ -43,7 +43,7 @@ package testfinalClassNoParamCons{
                                          public function finClassNoParamCons(){
                                          }
 
-                                         public function Add(){
+                                         public function Add():*{
                                                               var z:* = x+y;
                                                               return z;
                                                               }

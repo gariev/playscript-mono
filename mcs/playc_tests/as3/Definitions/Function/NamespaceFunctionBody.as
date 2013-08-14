@@ -42,9 +42,9 @@ package {
 			// inside class, outside package
 			class NamespaceFunctionBodyClass {
 				function NamespaceFunctionBodyClass() {}
-			    testns function noReturnNoParams() { return "noReturnNoParams"; }
-				testns function noReturnParams(s:String, b:Boolean) { return s; }
-				testns function noReturnCustomParam(c:Custom) { return new Custom(); }
+			    testns function noReturnNoParams():* { return "noReturnNoParams"; }
+				testns function noReturnParams(s:String, b:Boolean):* { return s; }
+				testns function noReturnCustomParam(c:Custom):* { return new Custom(); }
 				testns function returnNoParams():String { return "returnNoParams"; }
 				testns function returnParams(s:String, b:Boolean):String { return s; }
 				testns function returnCustomNoParams():Custom { return new Custom(); }

@@ -39,7 +39,7 @@ package ns {
 	public class A {
 	    private namespace Key
 	    private var friends:* = [ B ]
-	    function beMyFriend( suitor ) {
+	    function beMyFriend( suitor ):* {
 		for each( friend in friends )
 		{
 		    if( suitor is friend ) return Key

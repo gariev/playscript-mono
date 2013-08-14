@@ -56,7 +56,7 @@ class simpleobject {
         this.str=s;
     }
 }
-function simpleLoop() {
+function simpleLoop():* {
     for (var i:int=0;i<10;i++) {
        objs.push(new simpleobject(""+i));
     }

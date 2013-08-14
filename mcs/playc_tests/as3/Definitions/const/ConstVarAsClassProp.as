@@ -55,7 +55,7 @@ package {
 				private const num2:* = 2;
 			
 			
-				function privatenum2() {
+				function privatenum2():* {
 					
 				 	return num2;
 				}

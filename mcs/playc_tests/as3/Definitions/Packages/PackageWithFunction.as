@@ -36,7 +36,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 package foo{
-	public function fletch(){ return 'PASSED'; }
+	public function fletch():*{ return 'PASSED'; }
 }
 import foo.*;
 

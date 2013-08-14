@@ -47,7 +47,7 @@ interface fletch {
 }
 
 class erwin implements fletch { 
-	public function lives(){return 'outside of package';}
+	public function lives():*{return 'outside of package';}
 }
 
 var SECTION:* = "Definitions";       // provide a document reference (ie, Actionscript section)

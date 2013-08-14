@@ -59,40 +59,40 @@ package {
 			use namespace Baseball;
 			
 			
-			Football function getTeam(){
+			Football function getTeam():*{
 			
 			    use namespace Football;
 			    return Football::teamName;
 			} 
 			
-			Baseball function getTeam() {
+			Baseball function getTeam():* {
 				return teamName;
 			}
 			
-			public function callNSFunction() {
+			public function callNSFunction():* {
 				return Football::getTeam();
 			}
 			
-			public function getNSVariable() {
+			public function getNSVariable():* {
 				return Football::teamName;
 			}
 			
-			public function a1(){
+			public function a1():*{
 			return Football::getTeam()
 			}
-			public function a2(){
+			public function a2():*{
 			return Baseball::getTeam()
 			}
-			public function a3(){
+			public function a3():*{
 			return teamName
 			}
 			
 			
-			HelloKitty function sayHello(who) {
+			HelloKitty function sayHello(who):* {
 			return "Hello " + who;
 			}
 			
-			public function a4(){
+			public function a4():*{
 			return HelloKitty::sayHello("Odi")
 			}
 			

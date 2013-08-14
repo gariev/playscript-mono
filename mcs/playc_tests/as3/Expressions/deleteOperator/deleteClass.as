@@ -47,7 +47,7 @@ package {
 			
 			class Account {
 				var name:* = "Jon";
-				function func() { return "Account.func"; }
+				function func():* { return "Account.func"; }
 			}
 			
 			// delete a class

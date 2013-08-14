@@ -46,7 +46,7 @@ package DefaultClass {
 		// with a default method in subclass
 		// *********************************
 
-		override function setArray( newArray:Array) {
+		override function setArray( newArray:Array):* {
 			a = ["override","worked"];
 			a.push(newArray);
 		}

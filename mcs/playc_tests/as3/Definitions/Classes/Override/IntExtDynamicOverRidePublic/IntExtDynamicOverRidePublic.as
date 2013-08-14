@@ -47,7 +47,7 @@ package DynamicClassPackage {
 			orGet = true;
 			return date; 
 		}
-		override public function setDate( d:Date ) { 
+		override public function setDate( d:Date ):* { 
 			orSet = true;
 			date = d; 
 		}

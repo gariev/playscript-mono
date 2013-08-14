@@ -61,10 +61,10 @@ class A{
     N1 var x:Number = 4;
     N2 var x:Number = 6;
 
-public function a1(){
+public function a1():*{
   return N1::x
 }
-public function a2(){
+public function a2():*{
   return N2::x
 }
 }

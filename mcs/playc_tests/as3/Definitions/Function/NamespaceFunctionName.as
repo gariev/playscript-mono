@@ -42,7 +42,7 @@ class NamespaceFunctionNameClass {
     	function NamespaceFunctionNameClass() {}
 
     	// not the constructor but looks like it
-    	function namespaceFunctionNameClass() { return "not the constructor"; }
+    	function namespaceFunctionNameClass():* { return "not the constructor"; }
 
     	function a1 () { return "a1"; }
     	function a_1 () { return "a_1"; }

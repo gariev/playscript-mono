@@ -94,7 +94,7 @@ package {
 			    }
 			}
 			
-			function testClassReverseSort(x:TestClass, y:TestClass) {
+			function testClassReverseSort(x:TestClass, y:TestClass):* {
 			    if (x.val < y.val)
 			        return 1
 			    if (x.val == y.val)
@@ -136,7 +136,7 @@ package {
 			
 			test();
 			
-			function CheckItems( A, E, desc) {
+			function CheckItems( A, E, desc):* {
 			  AddTestCase(
 					  desc+" after sort, compare lengths",
 					  E.length,
@@ -147,7 +147,7 @@ package {
 			      A.toString());
 			
 			}
-			function Sort( a ) {
+			function Sort( a ):* {
 			  for ( i = 0; i < a.length; i++ ) {
 			    for ( j = i+1; j < a.length; j++ ) {
 			      var lo:* = a[i];
@@ -161,7 +161,7 @@ package {
 			  }
 			  return a;
 			}
-			function Compare( x, y ) {
+			function Compare( x, y ):* {
 			  if ( x == void 0 && y == void 0  && typeof x == "undefined" && typeof y == "undefined" ) {
 			    return +0;
 			  }

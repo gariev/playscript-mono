@@ -71,39 +71,39 @@ package GetSetProtected{
 		protected function set noType(nt):void { _nt=nt; }
 	
 		
-		public function getBoolean() {
+		public function getBoolean():* {
 			return boolean;
 		}
-		public function setBoolean(b:Boolean) {
+		public function setBoolean(b:Boolean):* {
 			boolean = b;
 			return boolean;
 		}
 		
-		public function getArray() {
+		public function getArray():* {
 			return x;
 		}
-		public function setArray(a:Array) {
+		public function setArray(a:Array):* {
 			x = a;
 			return x;
 		}
-		public function getUint() {
+		public function getUint():* {
 			return u;
 		}
-		public function setUint(u:uint) {
+		public function setUint(u:uint):* {
 			u = u;
 			return u;
 		}
-		public function getString() {
+		public function getString():* {
 			return string;
 		}
-		public function setString(s:String) {
+		public function setString(s:String):* {
 			string = s;
 			return string;
 		}
-		public function getNoType() {
+		public function getNoType():* {
 			return noType;
 		}
-		public function setNoType(nt) {
+		public function setNoType(nt):* {
 			noType = nt;
 			return noType;
 		}

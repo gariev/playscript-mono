@@ -37,7 +37,7 @@
 
 package foo {
 	public class fletch{ 
-		public function lives(){return 'PASSED';}
+		public function lives():*{return 'PASSED';}
 	}
 }
 import foo.*

@@ -63,7 +63,7 @@ public class PubExtDefaultImplDefPub extends DefaultClass implements DefaultIntD
     // ************************************
 
     function subGetArray() : Array { return this.getPubArray(); }
-    function subSetArray(a:Array) { this.setPubArray(a); }
+    function subSetArray(a:Array):* { this.setPubArray(a); }
 
     public function testGetSubArray(a:Array) : Array {
         this.subSetArray(a);
@@ -77,7 +77,7 @@ public class PubExtDefaultImplDefPub extends DefaultClass implements DefaultIntD
     // ************************************
 
     public function pubSubGetArray() : Array { return this.getPubArray(); }
-    public function pubSubSetArray(a:Array) { this.setPubArray(a); }
+    public function pubSubSetArray(a:Array):* { this.setPubArray(a); }
 
     // ************************************
     // access public method of parent
@@ -85,7 +85,7 @@ public class PubExtDefaultImplDefPub extends DefaultClass implements DefaultIntD
     // ************************************
 
     private function privSubGetArray() : Array { return this.getPubArray(); }
-    private function privSubSetArray(a:Array) { this.setPubArray(a); }
+    private function privSubSetArray(a:Array):* { this.setPubArray(a); }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -100,7 +100,7 @@ public class PubExtDefaultImplDefPub extends DefaultClass implements DefaultIntD
     // ************************************
 
     final function finSubGetArray() : Array { return this.getPubArray(); }
-    final function finSubSetArray(a:Array) { this.setPubArray(a); }
+    final function finSubSetArray(a:Array):* { this.setPubArray(a); }
 
     // function to test above from test scripts
     public function testFinSubArray(a:Array) : Array {

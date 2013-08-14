@@ -63,7 +63,7 @@ package {
         if (m>0 && n==0) return ackermann(m-1,1);
         return ackermann(m-1,ackermann(m,n-1));
     }
-    function samplecallback() {
+    function samplecallback():* {
         var time:*=getTimer();
         samplescount+=getSampleCount();
         clearSamples();

@@ -41,14 +41,14 @@ package {
 	public class MultiOptArgFunctionTest extends BaseTest {
 		public static function Main():int {
 			class MultiOptArgFunctionClass {
-			 	function returnArguments(s:String = "Str3", b:Boolean = true, n:Number = 30) {
+			 	function returnArguments(s:String = "Str3", b:Boolean = true, n:Number = 30):* {
 			 		str = s;
 			 		bool = b;
 			 	  	num = n;
 			 	}
 			}
 			
-			function returnArgumentsNoPackage(s:String = "Str4", b:Boolean = false, n:Number = 40) {
+			function returnArgumentsNoPackage(s:String = "Str4", b:Boolean = false, n:Number = 40):* {
 				str = s;
 				bool = b;
 				num = n;

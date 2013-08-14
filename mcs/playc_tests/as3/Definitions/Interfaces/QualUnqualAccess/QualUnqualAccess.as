@@ -48,46 +48,46 @@ package QualUnqualAccess {
 	}
 
 	class A implements T {
-		public function f() {
+		public function f():* {
 			return "a.T::f()";
 		}
 	}
 	class B implements U {
-		public function f() {
+		public function f():* {
 			return "b.T::f()";
 		}
-		public function g() {
+		public function g():* {
 			return "b.U::g()";
 		}
 	}
 	class C implements T, V {
-		public function f() {
+		public function f():* {
 			return "c.T::f()";
 		}
 		
-		public function h() {
+		public function h():* {
 			return "c.V::h()";
 		}
 	}
 	class D implements U, V {
-		public function f() {
+		public function f():* {
 			return "d.T::f()";
 		}
 		
-		public function g() {
+		public function g():* {
 			return "d.U::g()";
 		}
-		public function h() {
+		public function h():* {
 			return "d.V::h()";
 		}
 	}
 	class E extends B {
-		public function h() {
+		public function h():* {
 			return "e.E::h()";
 		}
        	}
 	class F extends B implements V {
-		public function h() {
+		public function h():* {
 			return "f.V::h()";
 		}
 	}

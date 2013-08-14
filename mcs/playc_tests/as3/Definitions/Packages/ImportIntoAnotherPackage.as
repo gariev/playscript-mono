@@ -61,7 +61,7 @@ package ImportIntoAnotherPackage {
 	import foo.*;
 	
 	public var newS:String = s;
-	public function newFunc() {
+	public function newFunc():* {
 		var f:* = publicFunc(5);
 		return f;
 	}
@@ -91,7 +91,7 @@ package ImportIntoAnotherPackage {
 			return [1,2,3];
 		}
 
-		public function callNSFunc() {
+		public function callNSFunc():* {
 			var k:Array = Kitty::returnArray();
 			return k;
 		}

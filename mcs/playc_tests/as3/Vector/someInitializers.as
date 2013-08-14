@@ -96,7 +96,7 @@ package {
 			    true,
 			    new<int>[-3000,2,3,22,4,5,-1,9, 10, 3].some(greaterThanTen));
 			    
-			function noReturnValue(item, index, vec) {
+			function noReturnValue(item, index, vec):* {
 			    // do nothing
 			}
 			

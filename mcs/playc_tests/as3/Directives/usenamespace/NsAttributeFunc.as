@@ -48,14 +48,14 @@ package P {
 
            protected namespace nsProtected        
            private namespace nsPrivate
-             nsPublic function whoplay(){return "Steve"}  //public namespace
-	     nsPrivate function whoplay(){return "Joe"}   //private namespace
-             nsInternal function whoplay(){return "Luis"}   //internal namespace
-  	     nsProtected function whoplay(){return "Peter"}   //protected namespace
+             nsPublic function whoplay():*{return "Steve"}  //public namespace
+	     nsPrivate function whoplay():*{return "Joe"}   //private namespace
+             nsInternal function whoplay():*{return "Luis"}   //internal namespace
+  	     nsProtected function whoplay():*{return "Peter"}   //protected namespace
 
-             public function accprivwhoplay(){return nsPrivate::whoplay()} //public function to access nsPrivate function
-             public function accintwhoplay(){return nsInternal::whoplay()} //public function to access nsInternal function
-             public function accprotwhoplay(){return nsProtected::whoplay()} //public function to access nsProtected function
+             public function accprivwhoplay():*{return nsPrivate::whoplay()} //public function to access nsPrivate function
+             public function accintwhoplay():*{return nsInternal::whoplay()} //public function to access nsInternal function
+             public function accprotwhoplay():*{return nsProtected::whoplay()} //public function to access nsProtected function
         
      }
  }

@@ -62,22 +62,22 @@ package {
 				N2 var n3
 				N3 var v1:* = 5;
 			
-				function a1() {
+				function a1():* {
 				     N1::v3=v1+v2;
 				     return N1::v3;
 				}
-				function a2() {
+				function a2():* {
 				     N2::n2 = a1();
 				     return N2::n2;
 				}
-				function a3() {
+				function a3():* {
 				     N2::n2 = v3;
 				     return N2::n2;
 				}
-				function a4() {
+				function a4():* {
 				      return N4::v1;
 				}
-				function a5() {
+				function a5():* {
 					try {
 						N1::v1=5;
 						result = "no exception";
@@ -86,7 +86,7 @@ package {
 					}
 					return result;
 				}
-				function a6() {
+				function a6():* {
 					N1::['v3']=4;
 					return N1::['v3'];
 				}

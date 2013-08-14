@@ -51,7 +51,7 @@ package testimportpackage{
 
 // function defintion
 package testfunctiondefinition{
-	public function testfunction() {return 'this is a function in the package';}
+	public function testfunction():* {return 'this is a function in the package';}
 }
 
 // interface definition
@@ -60,14 +60,14 @@ package testinterfacedefinition{
 		function testinterfacefunc();
 	}
 	public class testinterface {
-		public function testinterfacefunc() { return "this is an interface definition";}
+		public function testinterfacefunc():* { return "this is an interface definition";}
 	}
 }
 
 // class definition
 package testclassdefinition{
 	public class testclass{
-		public function testclassfunc() { return 'this is a class definition';}
+		public function testclassfunc():* { return 'this is a class definition';}
 	}
 }
 
@@ -77,7 +77,7 @@ package testnamespacedefinition{
 		public namespace testnamespace;
 		use namespace testnamespace;
 		testnamespace var macaroni:* = "cheese";
-		public function getCheese() {
+		public function getCheese():* {
 			return testnamespace::macaroni;
 		}
 	}

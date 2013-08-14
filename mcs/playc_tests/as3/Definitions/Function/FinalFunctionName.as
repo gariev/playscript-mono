@@ -39,10 +39,10 @@ import FinalFunctionName.*;
 
 class FinalFunctionNameClass {
 	// constructor
-	function TestNameObjNoPackage() { res = "EmptyName"; }
+	function TestNameObjNoPackage():* { res = "EmptyName"; }
 
 	// not the constructor but looks like it
-	function testNameObjNoPackage() { return "not the constructor" }
+	function testNameObjNoPackage():* { return "not the constructor" }
 
 	final function a1 () { return "a1"; }
 	final function a_1 () { return "a_1"; }

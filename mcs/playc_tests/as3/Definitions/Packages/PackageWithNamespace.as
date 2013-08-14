@@ -42,7 +42,7 @@ package foo {
 	public class A {
 
 		fletch var lives:* = 'PASSED';
-		public function getFletch() {
+		public function getFletch():* {
 			return fletch::lives;
 		}
 	}

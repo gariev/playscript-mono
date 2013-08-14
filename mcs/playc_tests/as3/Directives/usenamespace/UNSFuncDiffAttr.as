@@ -53,25 +53,25 @@ package {
 			    public namespace Baseball;
 			    public namespace Football;
 			
-			    public function getTeam(){
+			    public function getTeam():*{
 				    teamName = "Dummy";
 			            return teamName;
 			    } 
 			
-			    Football function getTeam(){
+			    Football function getTeam():*{
 				    var teamName:* = "Chargers";
 			     	     return teamName;
 			    } 
 			
-			   Baseball function getTeam(){
+			   Baseball function getTeam():*{
 				    var teamName:* = "Giants";
 			            return teamName;
 			   }
 			
-			   public function accgetTeam1(){
+			   public function accgetTeam1():*{
 				return Football::getTeam()
 			   }
-			   public function accgetTeam2(){
+			   public function accgetTeam2():*{
 				return Baseball::getTeam()
 			   }
 			}

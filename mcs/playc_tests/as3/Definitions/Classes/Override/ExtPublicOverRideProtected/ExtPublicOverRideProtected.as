@@ -48,7 +48,7 @@ package PublicClassPackage {
 		// override a protected method
 		// *********************************
 
-		override protected function setBoolean( b:Boolean ) {
+		override protected function setBoolean( b:Boolean ):* {
 			orSet = true;
 			this.boolean = b;
 		}

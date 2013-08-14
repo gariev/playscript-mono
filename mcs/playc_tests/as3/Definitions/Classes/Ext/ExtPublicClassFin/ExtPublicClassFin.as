@@ -48,7 +48,7 @@ package PublicClass {
     // ************************************
 
     function subGetArray() : Array { return this.getFinArray(); }
-    function subSetArray(a:Array) { this.setFinArray(a); }
+    function subSetArray(a:Array):* { this.setFinArray(a); }
 
 	public function testSubGetArray(arr:Array):Array { 
 		this.subSetArray(arr);
@@ -61,7 +61,7 @@ package PublicClass {
     // ************************************
 
     public function pubSubGetArray() : Array { return this.getFinArray(); }
-    public function pubSubSetArray(a:Array) { this.setFinArray(a); }
+    public function pubSubSetArray(a:Array):* { this.setFinArray(a); }
 
     // ************************************
     // access final method of parent
@@ -69,7 +69,7 @@ package PublicClass {
     // ************************************
 
     private function privSubGetArray() : Array { return this.getFinArray(); }
-    private function privSubSetArray(a:Array) { this.setFinArray(a); }
+    private function privSubSetArray(a:Array):* { this.setFinArray(a); }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -83,7 +83,7 @@ package PublicClass {
     // ************************************
 
     final function finSubGetArray() : Array { return this.getFinArray(); }
-    final function finSubSetArray(a:Array) { this.setFinArray(a); }
+    final function finSubSetArray(a:Array):* { this.setFinArray(a); }
 
 	public function testFinSubArray(a:Array):Array {
 		this.finSubSetArray(a);
@@ -103,7 +103,7 @@ package PublicClass {
     // ***************************************
 
     function subGetDPArray() : Array { return finArray; }
-    function subSetDPArray(a:Array) { finArray = a; }
+    function subSetDPArray(a:Array):* { finArray = a; }
 
 	public function testSubDPArray(a:Array):Array {
 		this.subSetDPArray(a);
@@ -116,7 +116,7 @@ package PublicClass {
     // ***************************************
 
     public function pubSubGetDPArray() : Array { return this.finArray; }
-    public function pubSubSetDPArray(a:Array) { this.finArray = a; }
+    public function pubSubSetDPArray(a:Array):* { this.finArray = a; }
 
     // ***************************************
     // access final property from
@@ -124,7 +124,7 @@ package PublicClass {
     // ***************************************
  
     private function privSubGetDPArray() : Array { return this.finArray; }
-    private function privSubSetDPArray(a:Array) { this.finArray = a; }
+    private function privSubSetDPArray(a:Array):* { this.finArray = a; }
 
     // ***************************************
     // access final property from 
@@ -132,7 +132,7 @@ package PublicClass {
     // ***************************************
 
     public final function finSubGetDPArray() : Array { return pubFinArray; }
-    public final function finSubSetDPArray(a:Array) { pubFinArray = a; }
+    public final function finSubSetDPArray(a:Array):* { pubFinArray = a; }
 
 	// access final property from public static method
 	public static function pubStatSubGetFPArray():Array { return finArray; }

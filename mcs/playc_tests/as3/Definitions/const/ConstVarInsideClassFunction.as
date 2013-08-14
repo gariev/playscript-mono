@@ -46,7 +46,7 @@ package {
 			startTest();
 			
 			class myClass {
-			    function constMultiArgs(arg1, arg2, arg3) {
+			    function constMultiArgs(arg1, arg2, arg3):* {
 			        const localVar:* = arg1 + arg2 + arg3;
 			        return localVar;
 			    }

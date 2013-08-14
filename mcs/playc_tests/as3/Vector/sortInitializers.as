@@ -76,7 +76,7 @@ package {
 			
 			test();
 			
-			function Sort( a ) {
+			function Sort( a ):* {
 			  for ( i = 0; i < a.length; i++ ) {
 			    for ( j = i+1; j < a.length; j++ ) {
 			      var lo:* = a[i];
@@ -91,7 +91,7 @@ package {
 			  return a;
 			}
 			
-			function Compare( x, y ) {
+			function Compare( x, y ):* {
 			  if ( x == void 0 && y == void 0  && typeof x == "undefined" && typeof y == "undefined" ) {
 			    return +0;
 			  }

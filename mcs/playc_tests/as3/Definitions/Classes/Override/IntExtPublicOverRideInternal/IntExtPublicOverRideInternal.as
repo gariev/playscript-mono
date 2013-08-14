@@ -47,7 +47,7 @@ package PublicClassPackage {
 			orGet = true;
 			return date; 
 		}
-		override internal function setDate( d:Date ) { 
+		override internal function setDate( d:Date ):* { 
 			orSet = true;
 			date = d; 
 		}

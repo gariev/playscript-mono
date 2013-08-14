@@ -44,7 +44,7 @@ package InternalClassPackage {
 		// *********************************
 		// override a internal method
 		// *********************************
-		override public function setArray( a:Array ) {
+		override public function setArray( a:Array ):* {
 			array = ["override","worked"];
 			array.push(a);
 		}

@@ -88,7 +88,7 @@ package GetSetDiffScope {
 			_s2 = s;
 		}
 
-		private function blah() {};
+		private function blah():* {};
 
 	}
 	public class testclass

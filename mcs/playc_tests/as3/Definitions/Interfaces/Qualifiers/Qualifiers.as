@@ -57,33 +57,33 @@ package Qualifiers {
 	}
 	
 	class defImplDefIntByInt implements defInt {
-		public function defFunc() {
+		public function defFunc():* {
 			return "defFunc()";
 		}
 	}
 	class defImplDefIntByPub implements defInt {
-		public function defFunc() {
+		public function defFunc():* {
 			return "defFunc()";
 		}
 	}
 	class defImplIntIntByInt implements intInt {
-		public function defFunc() {
+		public function defFunc():* {
 			return "defFunc()";
 		}
 	}
 	class defImplIntIntByPub implements intInt {
-		public function defFunc() {
+		public function defFunc():* {
 			return "defFunc()";
 		}
 	}
 	
 	class defImplPubIntByInt implements pubInt {
-		public function defFunc() {
+		public function defFunc():* {
 			return "defFunc()";
 		}
 	}
 	class defImplPubIntByPub implements pubInt {
-		public function defFunc() {
+		public function defFunc():* {
 			return "defFunc()";
 		}
 	}

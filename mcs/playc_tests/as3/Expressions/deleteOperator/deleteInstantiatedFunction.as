@@ -51,7 +51,7 @@ package {
 			// create function
 			account.func = function () { return "account.func"; };
 			
-			AddTestCase("object's function", "function Function() {}", account.func.toString());
+			AddTestCase("object's function", "function Function():* {}", account.func.toString());
 			AddTestCase("call object's function", "account.func", account.func());
 			AddTestCase("delete instantiated object's function", true, delete account.func);
 			AddTestCase("account.func", undefined, account.func);

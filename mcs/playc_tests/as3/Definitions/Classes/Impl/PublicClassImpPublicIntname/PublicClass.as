@@ -47,7 +47,7 @@ package PublicClassImpPublicIntname{
 		public function deffunc():String{  
 			return"PASSED";
 		}
-		public function accdeffunc(){return PublicInt::deffunc();}
+		public function accdeffunc():*{return PublicInt::deffunc();}
 
        } 	
 }  

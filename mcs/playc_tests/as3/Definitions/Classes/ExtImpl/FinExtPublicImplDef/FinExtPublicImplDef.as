@@ -98,7 +98,7 @@ final class FinExtPublicImplDef extends PublicClass implements DefaultIntDef {
     // ************************************
 
     function subGetArray() : Array { return this.getArray(); }
-    function subSetArray(a:Array) { this.setArray(a); }
+    function subSetArray(a:Array):* { this.setArray(a); }
 
     public function testGetSubArray(a:Array) : Array {
         this.subSetArray(a);
@@ -112,7 +112,7 @@ final class FinExtPublicImplDef extends PublicClass implements DefaultIntDef {
     // ************************************
 
     public function pubSubGetArray() : Array { return this.getArray(); }
-    public function pubSubSetArray(a:Array) { this.setArray(a); }
+    public function pubSubSetArray(a:Array):* { this.setArray(a); }
 
     // ************************************
     // access default method of parent
@@ -120,7 +120,7 @@ final class FinExtPublicImplDef extends PublicClass implements DefaultIntDef {
     // ************************************
 
     private function privSubGetArray() : Array { return this.getArray(); }
-    private function privSubSetArray(a:Array) { this.setArray(a); }
+    private function privSubSetArray(a:Array):* { this.setArray(a); }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -134,7 +134,7 @@ final class FinExtPublicImplDef extends PublicClass implements DefaultIntDef {
     // ************************************
 
     final function finSubGetArray() : Array { return this.getArray(); }
-    final function finSubSetArray(a:Array) { this.setArray(a); }
+    final function finSubSetArray(a:Array):* { this.setArray(a); }
 
     // function to test above from test scripts
     public function testFinSubArray(a:Array) : Array {
@@ -150,7 +150,7 @@ final class FinExtPublicImplDef extends PublicClass implements DefaultIntDef {
     // ***************************************
 
     function subGetDPArray() : Array { return array; }
-    function subSetDPArray(a:Array) { array = a; }
+    function subSetDPArray(a:Array):* { array = a; }
 
     public function testSubGetDPArray(a:Array) : Array {
         this.subSetDPArray(a);
@@ -164,7 +164,7 @@ final class FinExtPublicImplDef extends PublicClass implements DefaultIntDef {
     // ***************************************
 
     public function pubSubGetDPArray() : Array { return this.array; }
-    public function pubSubSetDPArray(a:Array) { this.array = a; }
+    public function pubSubSetDPArray(a:Array):* { this.array = a; }
 
     // ***************************************
     // access default property from
@@ -172,7 +172,7 @@ final class FinExtPublicImplDef extends PublicClass implements DefaultIntDef {
     // ***************************************
 
     private function privSubGetDPArray() : Array { return this.array; }
-    private function privSubSetDPArray(a:Array) { this.array = a; }
+    private function privSubSetDPArray(a:Array):* { this.array = a; }
 
     public function testPrivSubGetDPArray(a:Array) : Array {
         this.privSubSetDPArray(a);
@@ -190,23 +190,23 @@ final class FinExtPublicImplDef extends PublicClass implements DefaultIntDef {
   	// outside of the class definition.
 
   	// The default method of the sub class.
-  	public function setPubArray( a:Array )  { return FINEXTDCLASS.setPubArray( a ); }
-  	public function setPubBoolean( a:Boolean )  { return FINEXTDCLASS.setPubBoolean( a ); }
-  	public function setPubDate( a:Date )  { return FINEXTDCLASS.setPubDate( a ); }
-  	public function setPubFunction( a:Function )  { return FINEXTDCLASS.setPubFunction( a ); }
-  	public function setPubNumber( a:Number )  { return FINEXTDCLASS.setPubNumber( a ); }
-  	public function setPubString( a:String )  { return FINEXTDCLASS.setPubString( a ); }
-  	public function setPubObject( a:Object )  { return FINEXTDCLASS.setPubObject( a ); }
+  	public function setPubArray( a:Array ):*  { return FINEXTDCLASS.setPubArray( a ); }
+  	public function setPubBoolean( a:Boolean ):*  { return FINEXTDCLASS.setPubBoolean( a ); }
+  	public function setPubDate( a:Date ):*  { return FINEXTDCLASS.setPubDate( a ); }
+  	public function setPubFunction( a:Function ):*  { return FINEXTDCLASS.setPubFunction( a ); }
+  	public function setPubNumber( a:Number ):*  { return FINEXTDCLASS.setPubNumber( a ); }
+  	public function setPubString( a:String ):*  { return FINEXTDCLASS.setPubString( a ); }
+  	public function setPubObject( a:Object ):*  { return FINEXTDCLASS.setPubObject( a ); }
 
   	// The dynamic method of the sub class.
-  	public function testGetSetBoolean( a:Array )  { FINEXTDCLASS.testGetSetBoolean( a ); }
-  	public function testPubGetSetBoolean( a:Array )  { FINEXTDCLASS.testPubGetSetBoolean( a ); }
+  	public function testGetSetBoolean( a:Array ):*  { FINEXTDCLASS.testGetSetBoolean( a ); }
+  	public function testPubGetSetBoolean( a:Array ):*  { FINEXTDCLASS.testPubGetSetBoolean( a ); }
 
 
   	// The public method of the sub class.
-  	public function testGetSubArray( a:Array )  { return FINEXTDCLASS.testGetSubArray( a ); }
-  	public function pubSubSetArray( a:Array )  { return FINEXTDCLASS.pubSubSetArray( a ); }
-  	public function pubSubGetArray()  { return FINEXTDCLASS.pubSubGetArray(  ); }
+  	public function testGetSubArray( a:Array ):*  { return FINEXTDCLASS.testGetSubArray( a ); }
+  	public function pubSubSetArray( a:Array ):*  { return FINEXTDCLASS.pubSubSetArray( a ); }
+  	public function pubSubGetArray():*  { return FINEXTDCLASS.pubSubGetArray(  ); }
 
   	// The private method of the sub class. Only one is used as we need to call only the
   	// test function, which in turn calls the actual private methods, as within the class
@@ -215,7 +215,7 @@ final class FinExtPublicImplDef extends PublicClass implements DefaultIntDef {
 
   	// The default property being accessed by the different method attributes.
   	// The default method attribute.
-  	public function pubSubSetDPArray( a:Array ) { return FINEXTDCLASS.pubSubSetDPArray(a); }
+  	public function pubSubSetDPArray( a:Array ):* { return FINEXTDCLASS.pubSubSetDPArray(a); }
   	public function testSubGetDPArray(a:Array) : Array { return FINEXTDCLASS.testSubGetDPArray(a); }
 
 

@@ -54,14 +54,14 @@ package {
 			
 			writeHeaderToLog( " Vector.map()-initializers");
 			
-			function mapper1(value,index,obj) {
+			function mapper1(value,index,obj):* {
 			   return "("+value+":"+index+")";
 			}
 			var mapper2:*="a string";
-			function mapper3(value,index,obj) {
+			function mapper3(value,index,obj):* {
 			   return "("+this.message+")";
 			}
-			function mapper4(value,index,obj) {
+			function mapper4(value,index,obj):* {
 			   return value*value;
 			}
 			

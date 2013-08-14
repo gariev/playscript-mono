@@ -62,7 +62,7 @@ class PublicClass implements Publicinterface{
     var array:Array;
     public var pubArray:Array; 
 
-    public function setPubArray( a:Array ) { pubArray = a;}
+    public function setPubArray( a:Array ):* { pubArray = a;}
 }
 
 import mypackage.*;

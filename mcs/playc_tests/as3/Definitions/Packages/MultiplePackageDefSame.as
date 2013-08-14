@@ -39,7 +39,7 @@
 package foo{
 	public var a:* = "This is var a";
 
-	public function func1(){ return "This is func1"; }
+	public function func1():*{ return "This is func1"; }
 
 	interface IntA{
 		function testInt();
@@ -49,10 +49,10 @@ package foo{
 		
 		v1 var ns:* = "This is namespace v1";
 		v2 var ns:* = "This is namespace v2";
-		public function test(){ return "This is test in ClassA"; }
-		public function testInt() { return "This is testInt in ClassA"; }
-		public function testNS() {return v1::ns; }
-		public function testNS2() {return v2::ns; }
+		public function test():*{ return "This is test in ClassA"; }
+		public function testInt():* { return "This is testInt in ClassA"; }
+		public function testNS():* {return v1::ns; }
+		public function testNS2():* {return v2::ns; }
 	}
 	
 	
@@ -64,31 +64,31 @@ package foo{
 package foo{
 	public var b:* = "This is var b";
 
-	public function func2(){ return "This is func2"; }
+	public function func2():*{ return "This is func2"; }
 
 	interface IntB{
 		function testInt();
 	}
 
 	public class ClassB implements IntB {
-		public function test(){ return "This is test in ClassB"; }
-		public function testInt() { return "This is testInt in ClassB"; }
+		public function test():*{ return "This is test in ClassB"; }
+		public function testInt():* { return "This is testInt in ClassB"; }
 	}
 
 	// use the definitions from the first package foo
 	public var c:* = a;
-	public function func3(){ return func1(); }
+	public function func3():*{ return func1(); }
 
 	public var classC:* = new ClassA();
 
 	public class ClassD implements IntA {
-		public function testInt() { return "This is testInt from ClassD"; }
+		public function testInt():* { return "This is testInt from ClassD"; }
 	}
 
 	public class ClassN {
 		use namespace v1;
 		v1 var ns2:* = "This is namespace v1";
-		public function getNSVar() {
+		public function getNSVar():* {
 			return v1::ns2;
 		}
 	}

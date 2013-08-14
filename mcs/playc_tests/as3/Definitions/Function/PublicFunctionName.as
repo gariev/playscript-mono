@@ -43,7 +43,7 @@ class PublicFunctionNameClass {
     function PublicFunctionNameClass() { res = "EmptyName"; }
 
     // not the constructor but looks like it
-    function publicFunctionNameClass() { return "not the constructor" }
+    function publicFunctionNameClass():* { return "not the constructor" }
 
     public function a1 () { return "a1"; }
     public function a_1 () { return "a_1"; }

@@ -44,9 +44,9 @@ package P {
      public class Game{
           
 	  use namespace Football;
-          Football function whoplay(){return "Joe"}
+          Football function whoplay():*{return "Joe"}
           use namespace Baseball;
-          Baseball function whoplay(){return "Steve"}
+          Baseball function whoplay():*{return "Steve"}
      }
  }
 

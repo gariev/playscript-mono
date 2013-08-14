@@ -54,7 +54,7 @@ package InternalClassPackage {
 			return this.boolean;
 		}
 
-		override public function setBoolean( b:Boolean ) {
+		override public function setBoolean( b:Boolean ):* {
 			orSet = true;
 			this.boolean = b;
 		}

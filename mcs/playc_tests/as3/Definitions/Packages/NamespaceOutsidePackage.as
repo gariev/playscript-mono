@@ -42,7 +42,7 @@ package foo {
 
 		fletch var lives:* = 'PASSED';
 		use namespace fletch;
-		public function returnLives() {
+		public function returnLives():* {
 			return fletch::lives;
 		}
 	}
@@ -53,7 +53,7 @@ class goo {
 	fletch var lives:* = 'ns variable outside package';
 
 	use namespace fletch;
-	public function returnLives() {
+	public function returnLives():* {
 		return fletch::lives;
 	}
 }

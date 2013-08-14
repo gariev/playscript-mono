@@ -54,7 +54,7 @@ package {
 			
 			Baseball var teamName:* = "Giants";
 			
-			public function a1(){
+			public function a1():*{
 			use namespace Baseball;
 			return teamName
 			}

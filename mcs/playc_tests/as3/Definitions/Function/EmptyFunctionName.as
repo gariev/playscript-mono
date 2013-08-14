@@ -42,7 +42,7 @@ class EmptyFunctionNameClass {
     	function EmptyFunctionNameClass() { res = "EmptyName"; }
 
     	// not the constructor but looks like it
-    	function emptyFunctionNameClass() { return "not the constructor" }
+    	function emptyFunctionNameClass():* { return "not the constructor" }
 
     	function a1 () { return "a1"; }
     	function a_1 () { return "a_1"; }

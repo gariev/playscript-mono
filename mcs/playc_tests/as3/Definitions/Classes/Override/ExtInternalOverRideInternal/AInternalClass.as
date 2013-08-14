@@ -62,14 +62,14 @@ package InternalClassPackage {
 		internal function getObject() : Object { return object; }
 		internal function getString() : String { return string; }
 
-		internal function setArray( a:Array ) { array = a; }
-		internal function setBoolean( b:Boolean ) { boolean = b; }
-		internal function setDate( d:Date ) { date = d; }
-		internal function setFunction( f:Function ) { myFunction = f; }
-		internal function setMath( m:Math ) { math = m; }
-		internal function setNumber( n:Number ) { number = n; }
-		internal function setObject( o:Object ) { object = o; }
-		internal function setString( s:String ) { string = s; }
+		internal function setArray( a:Array ):* { array = a; }
+		internal function setBoolean( b:Boolean ):* { boolean = b; }
+		internal function setDate( d:Date ):* { date = d; }
+		internal function setFunction( f:Function ):* { myFunction = f; }
+		internal function setMath( m:Math ):* { math = m; }
+		internal function setNumber( n:Number ):* { number = n; }
+		internal function setObject( o:Object ):* { object = o; }
+		internal function setString( s:String ):* { string = s; }
 
 	}
 

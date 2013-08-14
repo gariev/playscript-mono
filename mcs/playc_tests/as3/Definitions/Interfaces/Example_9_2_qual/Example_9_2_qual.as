@@ -42,7 +42,7 @@ package Example_9_2_qual {
 	}
 	
 	class A implements I {
-		public function m() {
+		public function m():* {
 			return "a.I::m()";
 		}
 	}

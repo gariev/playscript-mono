@@ -46,15 +46,15 @@ package ns {
 		Basketball var teamName:* = "Kings";
 		Hockey var teamName:* = "Sharks";
 
-		public function getTeam1(){
+		public function getTeam1():*{
 	  	  return Baseball::teamName;
 		} 
 
-		public function getTeam2(){
+		public function getTeam2():*{
 	   	 return Basketball::teamName;
 		} 
 
-		public function getTeam3(){
+		public function getTeam3():*{
 	   	 return Hockey::teamName;
 		}
 	}

@@ -54,7 +54,7 @@ package DynamicClass {
 			return this.boolean;
 		}
 
-		override public function setPubBoolean( b:Boolean ) {
+		override public function setPubBoolean( b:Boolean ):* {
 			orSet = true;
 			this.boolean = b;
 		}

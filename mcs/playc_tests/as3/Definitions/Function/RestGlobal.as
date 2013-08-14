@@ -49,7 +49,7 @@ package {
 			AddTestCase ("myRest( ... rest) called with multiple Args", 4, myRest(1,2,3,4) );
 			AddTestCase ("myRest( ... rest) called with multiple different Args", 4, myRest(1,"2",false,Number.NaN) );
 			
-			function foo(){}
+			function foo():*{}
 			var resArray:Array = [foo, new Array().toString(),-1,2,"3",true,undefined,null,Number.NaN];
 			function myRest2( a:Array, ... cust):Boolean {
 				if( cust.length > 0 ){

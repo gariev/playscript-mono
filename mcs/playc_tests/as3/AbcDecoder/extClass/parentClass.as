@@ -36,7 +36,7 @@
  * ***** END LICENSE BLOCK ***** */
 package extClass{
 	public class parentClass{
-		public function test(){
+		public function test():*{
 			return true;
 		}
 	}

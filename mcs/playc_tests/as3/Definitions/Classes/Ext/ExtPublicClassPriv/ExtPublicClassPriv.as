@@ -49,7 +49,7 @@ package PublicClass {
     // ************************************
 
     function subGetArray() : Array { return this.getPrivArray(); }
-    function subSetArray(a:Array) { this.setPrivArray(a); }
+    function subSetArray(a:Array):* { this.setPrivArray(a); }
 
 	public function testSubGetSetArray(a:Array) : Array {
 		this.subSetArray(a);
@@ -63,7 +63,7 @@ package PublicClass {
     // ************************************
 
     public function pubSubGetArray() : Array { return this.getPrivArray(); }
-    public function pubSubSetArray(a:Array) { this.setPrivArray(a); }
+    public function pubSubSetArray(a:Array):* { this.setPrivArray(a); }
 
     // ************************************
     // access private method of parent
@@ -71,7 +71,7 @@ package PublicClass {
     // ************************************
 
     private function privSubGetArray() : Array { return this.getPrivArray(); }
-    private function privSubSetArray(a:Array) { this.setPrivArray(a); }
+    private function privSubSetArray(a:Array):* { this.setPrivArray(a); }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -85,7 +85,7 @@ package PublicClass {
     // ***************************************
 
     function subGetDPArray() : Array { return this.privArray; }
-    function subSetDPArray(a:Array) { this.privArray = a; }
+    function subSetDPArray(a:Array):* { this.privArray = a; }
 
 	public function testSubGetSetDPArray(a:Array) : Array {
 		//this.subSetDPArray(a);
@@ -99,7 +99,7 @@ package PublicClass {
     // ***************************************
 
     public function pubSubGetDPArray() : Array { return this.privArray; }
-    public function pubSubSetDPArray(a:Array) { this.privArray = a; }
+    public function pubSubSetDPArray(a:Array):* { this.privArray = a; }
 
     // ***************************************
     // access private property from
@@ -107,7 +107,7 @@ package PublicClass {
     // ***************************************
  
     private function privSubGetDPArray() : Array { return this.privArray; }
-    private function privSubSetDPArray(a:Array) { this.privArray = a; }
+    private function privSubSetDPArray(a:Array):* { this.privArray = a; }
 
 	public function testPrivSubDPArray(a:Array) : Array {
 		this.privSubSetDPArray(a);
@@ -117,7 +117,7 @@ package PublicClass {
     // ***************************************
 	// access private property from public static sub method
     // ***************************************
-	public static function pubStatSubGetDPArray() { return privArray; }
+	public static function pubStatSubGetDPArray():* { return privArray; }
 
   }
 

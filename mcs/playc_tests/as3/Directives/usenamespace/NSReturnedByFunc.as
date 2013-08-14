@@ -41,11 +41,11 @@ package P {
      	namespace ns2 = "flowershop.com";
      	ns2 var flower:* = "Gerbera Daisy";
      	
-     	function defineNamespace() {
+     	function defineNamespace():* {
      		namespace Flowershop = "flowershop.com";
      		return Flowershop;
      	}
-     	public function getFlower() {
+     	public function getFlower():* {
      		ns = defineNamespace();
      		return ns::flower;
      	}

@@ -131,15 +131,15 @@ package DefaultClass {
     function getString() : String { return string; }
     //function getSimple() : Simple { return simple; }
 
-    function setArray( a:Array ) { array = a; }
-    function setBoolean( b:Boolean ) { boolean = b; }
-    function setDate( d:Date ) { date = d; }
-    function setFunction( f:Function ) { myFunction = f; }
-    function setMath( m:Math ) { math = m; }
-    function setNumber( n:Number ) { number = n; }
-    function setObject( o:Object ) { object = o; }
-    function setString( s:String ) { string = s; }
-    //function setSimple( s:Simple ) { simple = s; }
+    function setArray( a:Array ):* { array = a; }
+    function setBoolean( b:Boolean ):* { boolean = b; }
+    function setDate( d:Date ):* { date = d; }
+    function setFunction( f:Function ):* { myFunction = f; }
+    function setMath( m:Math ):* { math = m; }
+    function setNumber( n:Number ):* { number = n; }
+    function setObject( o:Object ):* { object = o; }
+    function setString( s:String ):* { string = s; }
+    //function setSimple( s:Simple ):* { simple = s; }
 
     function setAll( a:Array,
                      b:Boolean,
@@ -173,14 +173,14 @@ package DefaultClass {
     virtual function getVirtualNumber() : Number { return number; }
    	virtual function getVirtualObject() : Object { return object; }
     virtual function getVirtualString() : String { return string; }
-    virtual function setVirtualArray( a:Array ) { array = a; }
-    virtual function setVirtualBoolean( b:Boolean ) { boolean = b; }
-    virtual function setVirtualDate( d:Date ) { date = d; }
-    virtual function setVirtualFunction( f:Function ) { myFunction = f; }
-    virtual function setVirtualMath( m:Math ) { math = m; }
-    virtual function setVirtualNumber( n:Number ) { number = n; }
-    virtual function setVirtualObject( o:Object ) { object = o; }
-    virtual function setVirtualString( s:String ) { string = s; }
+    virtual function setVirtualArray( a:Array ):* { array = a; }
+    virtual function setVirtualBoolean( b:Boolean ):* { boolean = b; }
+    virtual function setVirtualDate( d:Date ):* { date = d; }
+    virtual function setVirtualFunction( f:Function ):* { myFunction = f; }
+    virtual function setVirtualMath( m:Math ):* { math = m; }
+    virtual function setVirtualNumber( n:Number ):* { number = n; }
+    virtual function setVirtualObject( o:Object ):* { object = o; }
+    virtual function setVirtualString( s:String ):* { string = s; }
 
     virtual function setVirtualAll( a:Array,
                      b:Boolean,
@@ -205,15 +205,15 @@ package DefaultClass {
     // public methods
     // *******************
 
-    public function setPubArray( a:Array ) { pubArray = a; }
-    public function setPubBoolean( b:Boolean ) { pubBoolean = b; }
-    public function setPubDate( d:Date ) { pubDate = d; }
-    public function setPubFunction( f:Function ) { pubFunction = f; }
-    public function setPubMath( m:Math ) { pubMath = m; }
-    public function setPubNumber( n:Number ) { pubNumber = n; }
-    public function setPubObject( o:Object ) { pubObject = o; }
-    public function setPubString( s:String ) { pubString = s; }
-    //public function setPubSimple( s:Simple ) { pubSimple = s; }
+    public function setPubArray( a:Array ):* { pubArray = a; }
+    public function setPubBoolean( b:Boolean ):* { pubBoolean = b; }
+    public function setPubDate( d:Date ):* { pubDate = d; }
+    public function setPubFunction( f:Function ):* { pubFunction = f; }
+    public function setPubMath( m:Math ):* { pubMath = m; }
+    public function setPubNumber( n:Number ):* { pubNumber = n; }
+    public function setPubObject( o:Object ):* { pubObject = o; }
+    public function setPubString( s:String ):* { pubString = s; }
+    //public function setPubSimple( s:Simple ):* { pubSimple = s; }
 
     public function getPubArray() : Array { return this.pubArray; }
     public function getPubBoolean() : Boolean { return this.pubBoolean; }
@@ -239,54 +239,54 @@ package DefaultClass {
     private function getPrivString() : String { return privString; }
     //private function getPrivSimple() : Simple { return privSimple; }
 
-    private function setPrivArray( a:Array ) { privArray = a; }
-    private function setPrivBoolean( b:Boolean ) { privBoolean = b; }
-    private function setPrivDate( d:Date ) { privDate = d; }
-    private function setPrivFunction( f:Function ) { privFunction = f; }
-    private function setPrivMath( m:Math ) { privMath = m; }
-    private function setPrivNumber( n:Number ) { privNumber = n; }
-    private function setPrivObject( o:Object ) { privObject = o; }
-    private function setPrivString( s:String ) { privString = s; }
-    //private function setPrivSimple( s:Simple ) { privSimple = s; }
+    private function setPrivArray( a:Array ):* { privArray = a; }
+    private function setPrivBoolean( b:Boolean ):* { privBoolean = b; }
+    private function setPrivDate( d:Date ):* { privDate = d; }
+    private function setPrivFunction( f:Function ):* { privFunction = f; }
+    private function setPrivMath( m:Math ):* { privMath = m; }
+    private function setPrivNumber( n:Number ):* { privNumber = n; }
+    private function setPrivObject( o:Object ):* { privObject = o; }
+    private function setPrivString( s:String ):* { privString = s; }
+    //private function setPrivSimple( s:Simple ):* { privSimple = s; }
 
     // *******************
     // static methods
     // *******************
 
-    static function setStatArray(a:Array) { statArray=a; }
-    static function setStatBoolean( b:Boolean ) { statBoolean = b; }
+    static function setStatArray(a:Array):* { statArray=a; }
+    static function setStatBoolean( b:Boolean ):* { statBoolean = b; }
 
-    static function getStatArray() { return statArray; }
+    static function getStatArray():* { return statArray; }
 
 
     // **************************
     // public static methods
     // **************************
 
-    public static function setPubStatArray(a:Array) { pubStatArray=a; }
-    public static function setPubStatBoolean( b:Boolean ) { pubStatBoolean = b; }
+    public static function setPubStatArray(a:Array):* { pubStatArray=a; }
+    public static function setPubStatBoolean( b:Boolean ):* { pubStatBoolean = b; }
 
-    public static function getPubStatArray() { return pubStatArray; }
+    public static function getPubStatArray():* { return pubStatArray; }
 
     // **************************
     // private static methods
     // **************************
 
-    private static function setPrivStatArray(a:Array) { privStatArray=a; }
-    private static function setPrivStatBoolean( b:Boolean ) { privStatBoolean = b; }
+    private static function setPrivStatArray(a:Array):* { privStatArray=a; }
+    private static function setPrivStatBoolean( b:Boolean ):* { privStatBoolean = b; }
 
-    private static function getPrivStatArray() { return privStatArray; }
+    private static function getPrivStatArray():* { return privStatArray; }
 
     // ***************************
     // to be overloaded
     // ***************************
 
-    function overLoad() { return "This is the parent class"; }
-    public function pubOverLoad() { return "This is the parent class"; }
-    private function privOverLoad() { return "This is the parent class"; }
-    static function statOverLoad() { return "This is the parent class"; }
-    public static function pubStatOverLoad() { return "This is the parent class"; }
-    private static function privStatOverLoad() { return "This is the parent class"; }
+    function overLoad():* { return "This is the parent class"; }
+    public function pubOverLoad():* { return "This is the parent class"; }
+    private function privOverLoad():* { return "This is the parent class"; }
+    static function statOverLoad():* { return "This is the parent class"; }
+    public static function pubStatOverLoad():* { return "This is the parent class"; }
+    private static function privStatOverLoad():* { return "This is the parent class"; }
   }
 
 }

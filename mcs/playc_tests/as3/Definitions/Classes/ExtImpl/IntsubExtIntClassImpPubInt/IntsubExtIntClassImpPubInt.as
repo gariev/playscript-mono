@@ -81,7 +81,7 @@ namespace ns;
 
                 
         	
-		public function accnsFunc(a="test"){return ns::nsFunc(a);}
+		public function accnsFunc(a="test"):*{return ns::nsFunc(a);}
 		// access default function nsFunc
        } 	
 	 	

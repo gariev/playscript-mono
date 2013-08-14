@@ -50,7 +50,7 @@ package PublicClassImpInternalIntname{
 		}
 
 
-	        public function accdeffunc(){return InternalInt::deffunc();}
+	        public function accdeffunc():*{return InternalInt::deffunc();}
 			
        } 	
 }  

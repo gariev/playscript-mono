@@ -54,7 +54,7 @@ package DefaultClass {
 			return this.string+"_override";
 		}
 
-		override public function setPubString(s:String) {
+		override public function setPubString(s:String):* {
                         
 			    string = "override_"+s;
                         

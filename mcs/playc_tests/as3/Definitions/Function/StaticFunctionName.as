@@ -42,7 +42,7 @@ class TestNameObjNoPackage {
     function TestNameObjNoPackage() { res = "EmptyName"; }
 
     // not the constructor but looks like it
-    function testNameObjNoPackage() { return "not the constructor" }
+    function testNameObjNoPackage():* { return "not the constructor" }
 
     static function a1 () { return "a1"; }
     static function a_1 () { return "a_1"; }

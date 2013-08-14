@@ -65,7 +65,7 @@ dynamic class DynExtDefImplDefPubStatInner extends DefaultClass implements Defau
     // ************************************
 
     function subGetArray() : Array { return getPubStatArray(); }
-    function subSetArray(a:Array) { setPubStatArray(a); }
+    function subSetArray(a:Array):* { setPubStatArray(a); }
     
     // function to test above from test scripts
     public function testDefSubArray(a:Array) : Array {
@@ -80,7 +80,7 @@ dynamic class DynExtDefImplDefPubStatInner extends DefaultClass implements Defau
     // ************************************
 
     public function pubSubGetArray() : Array { return getPubStatArray(); }
-    public function pubSubSetArray(a:Array) { setPubStatArray(a); }
+    public function pubSubSetArray(a:Array):* { setPubStatArray(a); }
 
     // ************************************
     // access public static method of parent
@@ -88,7 +88,7 @@ dynamic class DynExtDefImplDefPubStatInner extends DefaultClass implements Defau
     // ************************************
 
     private function privSubGetArray() : Array { return getPubStatArray(); }
-    private function privSubSetArray(a:Array) { setPubStatArray(a); }
+    private function privSubSetArray(a:Array):* { setPubStatArray(a); }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -102,7 +102,7 @@ dynamic class DynExtDefImplDefPubStatInner extends DefaultClass implements Defau
     // ************************************
 
     final function finSubGetArray() : Array { return getPubStatArray(); }
-    final function finSubSetArray(a:Array) { setPubStatArray(a); }
+    final function finSubSetArray(a:Array):* { setPubStatArray(a); }
     
     // function to test above from test scripts
     public function testFinSubArray(a:Array) : Array {
@@ -116,7 +116,7 @@ dynamic class DynExtDefImplDefPubStatInner extends DefaultClass implements Defau
     // ***************************************
 
     static function statSubGetArray() : Array { return getPubStatArray(); }
-    static function statSubSetArray(a:Array) { setPubStatArray(a); }
+    static function statSubSetArray(a:Array):* { setPubStatArray(a); }
     
     // function to test above from test scripts
     public function testStatSubArray(a:Array) : Array {
@@ -130,7 +130,7 @@ dynamic class DynExtDefImplDefPubStatInner extends DefaultClass implements Defau
     // ***************************************
 
     public static function pubStatSubGetArray() : Array { return getPubStatArray(); }
-    public static function pubStatSubSetArray(a:Array) { setPubStatArray(a); }
+    public static function pubStatSubSetArray(a:Array):* { setPubStatArray(a); }
 
     // ***************************************
     // access public static method of parent
@@ -138,7 +138,7 @@ dynamic class DynExtDefImplDefPubStatInner extends DefaultClass implements Defau
     // ***************************************
 
     private static function privStatSubGetArray() : Array { return getPubStatArray(); }
-    private static function privStatSubSetArray(a:Array) { setPubStatArray(a); }
+    private static function privStatSubSetArray(a:Array):* { setPubStatArray(a); }
 
     // public accessor to test asrt
     public function testPrivStatSubArray(a:Array) : Array {
@@ -152,7 +152,7 @@ dynamic class DynExtDefImplDefPubStatInner extends DefaultClass implements Defau
     // ***************************************
 
     function subGetDPArray() : Array { return pubStatArray; }
-    function subSetDPArray(a:Array) { pubStatArray = a; }
+    function subSetDPArray(a:Array):* { pubStatArray = a; }
     
     // public accessor to test asrt
     public function testPubStatDefSubArray(a:Array) : Array {
@@ -166,7 +166,7 @@ dynamic class DynExtDefImplDefPubStatInner extends DefaultClass implements Defau
     // ***************************************
 
     public function pubSubGetDPArray() : Array { return pubStatArray; }
-    public function pubSubSetDPArray(a:Array) { pubStatArray = a; }
+    public function pubSubSetDPArray(a:Array):* { pubStatArray = a; }
 
     // ***************************************
     // access public static property from
@@ -174,7 +174,7 @@ dynamic class DynExtDefImplDefPubStatInner extends DefaultClass implements Defau
     // ***************************************
 
     private function privSubGetDPArray() : Array { return pubStatArray; }
-    private function privSubSetDPArray(a:Array) { pubStatArray = a; }
+    private function privSubSetDPArray(a:Array):* { pubStatArray = a; }
     // public accessor to test asrt
     public function testPrivStatSubDPArray(a:Array) : Array {
         privSubSetDPArray(a);
@@ -188,7 +188,7 @@ dynamic class DynExtDefImplDefPubStatInner extends DefaultClass implements Defau
     // ***************************************
 
     final function finSubGetDPArray() : Array { return pubStatArray; }
-    final function finSubSetDPArray(a:Array) { pubStatArray = a; }
+    final function finSubSetDPArray(a:Array):* { pubStatArray = a; }
     // public accessor to test asrt
     public function testPrivStatFinSubDPArray(a:Array) : Array {
         finSubSetDPArray(a);
@@ -201,7 +201,7 @@ dynamic class DynExtDefImplDefPubStatInner extends DefaultClass implements Defau
     // ***************************************
 
     static function statSubGetSPArray() : Array { return pubStatArray; }
-    static function statSubSetSPArray(a:Array) { pubStatArray = a; }
+    static function statSubSetSPArray(a:Array):* { pubStatArray = a; }
     // public accessor to test asrt
     public function testStatSubDPArray(a:Array) : Array {
          statSubSetSPArray(a);
@@ -214,7 +214,7 @@ dynamic class DynExtDefImplDefPubStatInner extends DefaultClass implements Defau
     // ***************************************
 
     public static function pubStatSubGetSPArray() : Array { return pubStatArray; }
-    public static function pubStatSubSetSPArray(a:Array) { pubStatArray = a; }
+    public static function pubStatSubSetSPArray(a:Array):* { pubStatArray = a; }
 
     // ***************************************
     // access public static property from
@@ -222,7 +222,7 @@ dynamic class DynExtDefImplDefPubStatInner extends DefaultClass implements Defau
     // ***************************************
    
     private static function privStatSubGetSPArray() : Array { return pubStatArray; }
-    private static function privStatSubSetSPArray(a:Array) { pubStatArray = a; }
+    private static function privStatSubSetSPArray(a:Array):* { pubStatArray = a; }
 
     // public accessor for asrt
     public function testPrivStatSubPArray(a:Array) : Array {
@@ -236,10 +236,10 @@ dynamic class DynExtDefImplDefPubStatInner extends DefaultClass implements Defau
     // public static methods
     // **************************
 
-    public static function setPubStatArray(a:Array) { DefaultClassInner.setPubStatArray(a); }
-    public static function setPubStatBoolean( b:Boolean ) { DefaultClassInner.setPubStatBoolean(b); }
+    public static function setPubStatArray(a:Array):* { DefaultClassInner.setPubStatArray(a); }
+    public static function setPubStatBoolean( b:Boolean ):* { DefaultClassInner.setPubStatBoolean(b); }
 
-    public static function getPubStatArray() { return DefaultClassInner.getPubStatArray(); }
+    public static function getPubStatArray():* { return DefaultClassInner.getPubStatArray(); }
 
     // ***************************************
     // access public static method of parent
@@ -247,7 +247,7 @@ dynamic class DynExtDefImplDefPubStatInner extends DefaultClass implements Defau
     // ***************************************
 
     public static function pubStatSubGetArray() : Array { return DynExtDefImplDefPubStatInner.pubStatSubGetArray(); }
-    public static function pubStatSubSetArray(a:Array) { DynExtDefImplDefPubStatInner.pubStatSubSetArray(a); }
+    public static function pubStatSubSetArray(a:Array):* { DynExtDefImplDefPubStatInner.pubStatSubSetArray(a); }
  }
 
 }

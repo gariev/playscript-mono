@@ -43,19 +43,19 @@ package Example_9_3 {
 	}
 	
 	class A implements T {
-		public function f() {
+		public function f():* {
 			return "a.T::f()";
 		}
-		public function g() {
+		public function g():* {
 			return "a.g()";
 		}
 	}
 	
 	class B implements T {
-		public function f() {
+		public function f():* {
 			return "b.T::f()";
 		}
-		public function g() {
+		public function g():* {
 			return "b.g()";
 		}
 	}

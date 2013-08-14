@@ -68,7 +68,7 @@ package {
 				return -10;
 			}
 			
-			function addNegUintInFunc(){
+			function addNegUintInFunc():*{
 				var a:uint;
 				var b:* = -100;
 				var c:* = 1;

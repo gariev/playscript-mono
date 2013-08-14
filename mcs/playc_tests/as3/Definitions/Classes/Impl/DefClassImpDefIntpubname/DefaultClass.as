@@ -53,7 +53,7 @@ package DefClassImpDefIntpubname{
 
 	public class DefaultClassAccesor{
 	        var c:DefaultClass = new DefaultClass(); 
-              	public function accdeffunc(){return c.deffunc();}
+              	public function accdeffunc():*{return c.deffunc();}
 		// access default function deffunc
         
 

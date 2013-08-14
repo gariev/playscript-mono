@@ -117,21 +117,21 @@ package DefaultClass {
     // constructor
     // ****************
 
-    function DefaultClass() {
+    function DefaultClass():* {
     }
 
     // *******************
     // public methods
     // *******************
 
-    public function setPubArray( a:Array ) { pubArray = a; }
-    public function setPubBoolean( b:Boolean ) { pubBoolean = b; }
-    public function setPubDate( d:Date ) { pubDate = d; }
-    public function setPubFunction( f:Function ) { pubFunction = f; }
-    public function setPubMath( m:Math ) { pubMath = m; }
-    public function setPubNumber( n:Number ) { pubNumber = n; }
-    public function setPubObject( o:Object ) { pubObject = o; }
-    public function setPubString( s:String ) { pubString = s; }
+    public function setPubArray( a:Array ):* { pubArray = a; }
+    public function setPubBoolean( b:Boolean ):* { pubBoolean = b; }
+    public function setPubDate( d:Date ):* { pubDate = d; }
+    public function setPubFunction( f:Function ):* { pubFunction = f; }
+    public function setPubMath( m:Math ):* { pubMath = m; }
+    public function setPubNumber( n:Number ):* { pubNumber = n; }
+    public function setPubObject( o:Object ):* { pubObject = o; }
+    public function setPubString( s:String ):* { pubString = s; }
 
     public function getPubArray() : Array { return this.pubArray; }
     public function getPubBoolean() : Boolean { return this.pubBoolean; }
@@ -146,12 +146,12 @@ package DefaultClass {
     // to be overloaded
     // ***************************
 
-    function overLoad() { return "This is the parent class"; }
-    public function pubOverLoad() { return "This is the parent class"; }
-    private function privOverLoad() { return "This is the parent class"; }
-    static function statOverLoad() { return "This is the parent class"; }
-    public static function pubStatOverLoad() { return "This is the parent class"; }
-    private static function privStatOverLoad() { return "This is the parent class"; }
+    function overLoad():* { return "This is the parent class"; }
+    public function pubOverLoad():* { return "This is the parent class"; }
+    private function privOverLoad():* { return "This is the parent class"; }
+    static function statOverLoad():* { return "This is the parent class"; }
+    public static function pubStatOverLoad():* { return "This is the parent class"; }
+    private static function privStatOverLoad():* { return "This is the parent class"; }
   }
 
   public class DefaultClass extends DefaultClassInner {}

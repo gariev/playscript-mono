@@ -49,7 +49,7 @@ package InternalClassPackage {
 		// public methods
 		// *****************
 		public function getDate() : Date { return date; }
-		public function setDate( d:Date ) { date = d; }
+		public function setDate( d:Date ):* { date = d; }
 	}
 
 }

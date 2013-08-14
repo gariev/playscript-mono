@@ -70,7 +70,7 @@ package {
 			return [1,2,3];
 		}
 		
-		public function callNSFunc() {
+		public function callNSFunc():* {
 			var k:Array = Kitty::returnArray();
 			return k;
 		}

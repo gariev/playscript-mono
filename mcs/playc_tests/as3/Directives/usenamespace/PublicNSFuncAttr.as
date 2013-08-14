@@ -51,19 +51,19 @@ package {
 			public namespace Baseball;
 			
 			// public namespace
-			public function getTeam() { return "Public"; }
-			Baseball function getTeam() { return "Giants";} 
+			public function getTeam():* { return "Public"; }
+			Baseball function getTeam():* { return "Giants";} 
 			
-			public function a1(){
+			public function a1():*{
 			  return Baseball::getTeam();
 			  }
 			
 			
-			public function a2(){
+			public function a2():*{
 			use namespace Baseball
 			  return public::getTeam();
 			}
-			public function a3(){
+			public function a3():*{
 			use namespace Baseball
 			  return Baseball::getTeam();
 			}

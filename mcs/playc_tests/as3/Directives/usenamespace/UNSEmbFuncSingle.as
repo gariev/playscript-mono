@@ -53,12 +53,12 @@ package {
 				namespace Football;
 				Football var teamName:* = "Angels";
 			
-				public function nsTest1(){
+				public function nsTest1():*{
 				    use namespace Baseball;
 				    return teamName;
 				}
 			
-				public function nsTest2(){
+				public function nsTest2():*{
 				    use namespace Football;
 				    return teamName;
 				}

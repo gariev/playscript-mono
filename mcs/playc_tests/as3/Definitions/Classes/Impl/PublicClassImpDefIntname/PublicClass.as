@@ -49,7 +49,7 @@ package PublicClassImpDefIntname{
                 }
 		
       
-	        public function accdeffunc(){return DefaultInt::deffunc();}
+	        public function accdeffunc():*{return DefaultInt::deffunc();}
 		// access default function deffunc	
 
        } 	

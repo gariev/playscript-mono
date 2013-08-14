@@ -44,10 +44,10 @@ package Example_1_1_6 {
 	}
 	
 	class Greeter implements Greetings {
-		public function hello() {
+		public function hello():* {
 			return "hello, world";
 		}
-		public function goodmorning() {
+		public function goodmorning():* {
 			return "goodmorning, world";
 		}
 	}

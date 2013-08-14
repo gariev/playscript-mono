@@ -38,7 +38,7 @@ package {
 	public class OverrideMethAtRuntimeErrTest extends BaseTest {
 		public static function Main():int {
 			class BaseClass {
-			  public function foo(){}
+			  public function foo():*{}
 			}
 			
 			dynamic class OverrideMethAtRuntimeErr extends BaseClass {}

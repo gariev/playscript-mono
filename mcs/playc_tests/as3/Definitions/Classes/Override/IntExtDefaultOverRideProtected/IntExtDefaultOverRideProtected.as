@@ -47,7 +47,7 @@ package DefaultClassPackage {
 			orGet = true;
 			return date; 
 		}
-		override protected function setDate( d:Date ) { 
+		override protected function setDate( d:Date ):* { 
 			orSet = true;
 			date = d; 
 		}

@@ -127,7 +127,7 @@ package InternalClass {
     // constructor
     // ****************
 
-    function DefaultClass() {
+    function DefaultClass():* {
     }
 
     // *****************
@@ -144,15 +144,15 @@ package InternalClass {
     internal function getString() : String { return string; }
     //function getSimple() : Simple { return simple; }
 
-    internal function setArray( a:Array ) { array = a; }
-    function setBoolean( b:Boolean ) { boolean = b; }
-    internal function setDate( d:Date ) { date = d; }
-    function setFunction( f:Function ) { myFunction = f; }
-    internal function setMath( m:Math ) { math = m; }
-    function setNumber( n:Number ) { number = n; }
-    internal function setObject( o:Object ) { object = o; }
-    function setString( s:String ) { string = s; }
-    //function setSimple( s:Simple ) { simple = s; }
+    internal function setArray( a:Array ):* { array = a; }
+    function setBoolean( b:Boolean ):* { boolean = b; }
+    internal function setDate( d:Date ):* { date = d; }
+    function setFunction( f:Function ):* { myFunction = f; }
+    internal function setMath( m:Math ):* { math = m; }
+    function setNumber( n:Number ):* { number = n; }
+    internal function setObject( o:Object ):* { object = o; }
+    function setString( s:String ):* { string = s; }
+    //function setSimple( s:Simple ):* { simple = s; }
 
     function setAll( a:Array,
                      b:Boolean,
@@ -179,15 +179,15 @@ package InternalClass {
     // public methods
     // *******************
 
-    public function setPubArray( a:Array ) { pubArray = a; }
-    public function setPubBoolean( b:Boolean ) { pubBoolean = b; }
-    public function setPubDate( d:Date ) { pubDate = d; }
-    public function setPubFunction( f:Function ) { pubFunction = f; }
-    public function setPubMath( m:Math ) { pubMath = m; }
-    public function setPubNumber( n:Number ) { pubNumber = n; }
-    public function setPubObject( o:Object ) { pubObject = o; }
-    public function setPubString( s:String ) { pubString = s; }
-    //public function setPubSimple( s:Simple ) { pubSimple = s; }
+    public function setPubArray( a:Array ):* { pubArray = a; }
+    public function setPubBoolean( b:Boolean ):* { pubBoolean = b; }
+    public function setPubDate( d:Date ):* { pubDate = d; }
+    public function setPubFunction( f:Function ):* { pubFunction = f; }
+    public function setPubMath( m:Math ):* { pubMath = m; }
+    public function setPubNumber( n:Number ):* { pubNumber = n; }
+    public function setPubObject( o:Object ):* { pubObject = o; }
+    public function setPubString( s:String ):* { pubString = s; }
+    //public function setPubSimple( s:Simple ):* { pubSimple = s; }
 
     public function getPubArray() : Array { return this.pubArray; }
     public function getPubBoolean() : Boolean { return this.pubBoolean; }
@@ -213,60 +213,60 @@ package InternalClass {
     private function getPrivString() : String { return privString; }
     //private function getPrivSimple() : Simple { return privSimple; }
 
-    private function setPrivArray( a:Array ) { privArray = a; }
-    private function setPrivBoolean( b:Boolean ) { privBoolean = b; }
-    private function setPrivDate( d:Date ) { privDate = d; }
-    private function setPrivFunction( f:Function ) { privFunction = f; }
-    private function setPrivMath( m:Math ) { privMath = m; }
-    private function setPrivNumber( n:Number ) { privNumber = n; }
-    private function setPrivObject( o:Object ) { privObject = o; }
-    private function setPrivString( s:String ) { privString = s; }
-    //private function setPrivSimple( s:Simple ) { privSimple = s; }
+    private function setPrivArray( a:Array ):* { privArray = a; }
+    private function setPrivBoolean( b:Boolean ):* { privBoolean = b; }
+    private function setPrivDate( d:Date ):* { privDate = d; }
+    private function setPrivFunction( f:Function ):* { privFunction = f; }
+    private function setPrivMath( m:Math ):* { privMath = m; }
+    private function setPrivNumber( n:Number ):* { privNumber = n; }
+    private function setPrivObject( o:Object ):* { privObject = o; }
+    private function setPrivString( s:String ):* { privString = s; }
+    //private function setPrivSimple( s:Simple ):* { privSimple = s; }
 
     // *******************
     // static methods
     // *******************
 
-    static function setStatArray(a:Array) { statArray=a; }
-    static function setStatBoolean( b:Boolean ) { statBoolean = b; }
+    static function setStatArray(a:Array):* { statArray=a; }
+    static function setStatBoolean( b:Boolean ):* { statBoolean = b; }
 
-    static function getStatArray() { return statArray; }
+    static function getStatArray():* { return statArray; }
 
     // *******************
     // final methods
     // *******************
 
-    final function setFinArray(a:Array) { finArray=a; }
-    final function getFinArray() { return finArray; }
+    final function setFinArray(a:Array):* { finArray=a; }
+    final function getFinArray():* { return finArray; }
 
     // **************************
     // public static methods
     // **************************
 
-    public static function setPubStatArray(a:Array) { pubStatArray=a; }
-    public static function setPubStatBoolean( b:Boolean ) { pubStatBoolean = b; }
+    public static function setPubStatArray(a:Array):* { pubStatArray=a; }
+    public static function setPubStatBoolean( b:Boolean ):* { pubStatBoolean = b; }
 
-    public static function getPubStatArray() { return pubStatArray; }
+    public static function getPubStatArray():* { return pubStatArray; }
 
     // **************************
     // private static methods
     // **************************
 
-    private static function setPrivStatArray(a:Array) { privStatArray=a; }
-    private static function setPrivStatBoolean( b:Boolean ) { privStatBoolean = b; }
+    private static function setPrivStatArray(a:Array):* { privStatArray=a; }
+    private static function setPrivStatBoolean( b:Boolean ):* { privStatBoolean = b; }
 
-    private static function getPrivStatArray() { return privStatArray; }
+    private static function getPrivStatArray():* { return privStatArray; }
 
     // ***************************
     // to be overloaded
     // ***************************
 
-    function overLoad() { return "This is the parent class"; }
-    public function pubOverLoad() { return "This is the parent class"; }
-    private function privOverLoad() { return "This is the parent class"; }
-    static function statOverLoad() { return "This is the parent class"; }
-    public static function pubStatOverLoad() { return "This is the parent class"; }
-    private static function privStatOverLoad() { return "This is the parent class"; }
+    function overLoad():* { return "This is the parent class"; }
+    public function pubOverLoad():* { return "This is the parent class"; }
+    private function privOverLoad():* { return "This is the parent class"; }
+    static function statOverLoad():* { return "This is the parent class"; }
+    public static function pubStatOverLoad():* { return "This is the parent class"; }
+    private static function privStatOverLoad():* { return "This is the parent class"; }
   }
 
   
@@ -284,7 +284,7 @@ package InternalClass {
     // ************************************
 
     internal function subGetArray() : Array { return this.getArray(); }
-    function subSetArray(a:Array) { this.setArray(a); }
+    function subSetArray(a:Array):* { this.setArray(a); }
 
 	// this is needed so that the test cases can access this from
 	// outside the class.  This way the test case itself preserved
@@ -299,7 +299,7 @@ package InternalClass {
     // ************************************
 
     public function pubSubGetArray() : Array { return this.getArray(); }
-    public function pubSubSetArray(a:Array) { this.setArray(a); }
+    public function pubSubSetArray(a:Array):* { this.setArray(a); }
 
     // ************************************
     // access default method of parent
@@ -309,7 +309,7 @@ package InternalClass {
     // ************************************
 
     internal final function finSubGetArray() : Array { return this.getArray(); }
-    final function finSubSetArray(a:Array) { this.setArray(a); }
+    final function finSubSetArray(a:Array):* { this.setArray(a); }
 
 	public function testFinSubArray(a:Array):Array{
 		this.finSubSetArray(a);
@@ -322,7 +322,7 @@ package InternalClass {
     // ************************************
 
     public final function pubFinSubGetArray() : Array { return this.getArray(); }
-    final public function pubFinSubSetArray(a:Array) { this.setArray(a); }
+    final public function pubFinSubSetArray(a:Array):* { this.setArray(a); }
 
     // ************************************
     // access default method of parent
@@ -330,7 +330,7 @@ package InternalClass {
     // ************************************
 
     private final function privFinSubGetArray() : Array { return this.getArray(); }
-    final private function privFinSubSetArray(a:Array) { this.setArray(a); }
+    final private function privFinSubSetArray(a:Array):* { this.setArray(a); }
 
 	public function testPrivFinSubArray(a:Array):Array {
 		this.privFinSubSetArray(a);
@@ -344,7 +344,7 @@ package InternalClass {
     // ************************************
 
     private function privSubGetArray() : Array { return this.getArray(); }
-    private function privSubSetArray(a:Array) { this.setArray(a); }
+    private function privSubSetArray(a:Array):* { this.setArray(a); }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -358,7 +358,7 @@ package InternalClass {
     // ************************************
 
     internal virtual function virtSubGetArray() : Array { return this.getArray(); }
-    virtual function virtSubSetArray(a:Array) { this.setArray(a); }
+    virtual function virtSubSetArray(a:Array):* { this.setArray(a); }
 
 	public function testVirtSubArray(a:Array) : Array {
 		this.virtSubSetArray(a);
@@ -371,7 +371,7 @@ package InternalClass {
     // ************************************
 
     virtual public function pubVirtSubGetArray() : Array { return this.getArray(); }
-    public virtual function pubVirtSubSetArray(a:Array) { this.setArray(a); }
+    public virtual function pubVirtSubSetArray(a:Array):* { this.setArray(a); }
 
     // ************************************
     // access default method of parent
@@ -379,7 +379,7 @@ package InternalClass {
     // ************************************
 
     virtual private function privVirtSubGetArray() : Array { return this.getArray(); }
-    private virtual function privVirtSubSetArray(a:Array) { this.setArray(a); }
+    private virtual function privVirtSubSetArray(a:Array):* { this.setArray(a); }
 
 	public function testPrivVirtSubArray(a:Array) : Array {
 		this.privVirtSubSetArray(a);
@@ -400,7 +400,7 @@ package InternalClass {
     // ***************************************
 
     internal function subGetDPArray() : Array { return array; }
-    function subSetDPArray(a:Array) { array = a; }
+    function subSetDPArray(a:Array):* { array = a; }
 
 	// this is needed so that the test cases can access this from
 	// outside the class.  This way the test case itself preserved
@@ -415,7 +415,7 @@ package InternalClass {
     // ***************************************
 
     internal final function finSubGetDPArray() : Array { return array; }
-    final function finSubSetDPArray(a:Array) { array = a; }
+    final function finSubSetDPArray(a:Array):* { array = a; }
 
 	public function testFinSubDPArray(a:Array) : Array {
 		this.finSubSetDPArray(a);
@@ -428,7 +428,7 @@ package InternalClass {
     // ***************************************
 
     internal virtual function virtSubGetDPArray() : Array { return array; }
-    virtual function virtSubSetDPArray(a:Array) { array = a; }
+    virtual function virtSubSetDPArray(a:Array):* { array = a; }
 
 	public function testVirtSubDPArray(a:Array) : Array {
 		this.virtSubSetDPArray(a);
@@ -441,7 +441,7 @@ package InternalClass {
     // ***************************************
 
     public function pubSubGetDPArray() : Array { return this.array; }
-    public function pubSubSetDPArray(a:Array) { this.array = a; }
+    public function pubSubSetDPArray(a:Array):* { this.array = a; }
 
     // ***************************************
     // access default property from
@@ -449,7 +449,7 @@ package InternalClass {
     // ***************************************
  
     private function privSubGetDPArray() : Array { return this.array; }
-    private function privSubSetDPArray(a:Array) { this.array = a; }
+    private function privSubSetDPArray(a:Array):* { this.array = a; }
 
 	public function testPrivSubDPArray(a:Array) : Array {
 		this.privSubSetDPArray(a);
@@ -462,7 +462,7 @@ package InternalClass {
     // ***************************************
 
     public final function pubFinSubGetDPArray() : Array { return this.array; }
-    final public function pubFinSubSetDPArray(a:Array) { this.array = a; }
+    final public function pubFinSubSetDPArray(a:Array):* { this.array = a; }
 
     // ***************************************
     // access default property from
@@ -470,7 +470,7 @@ package InternalClass {
     // ***************************************
 
     public virtual function pubVirtSubGetDPArray() : Array { return this.array; }
-    virtual public function pubVirtSubSetDPArray(a:Array) { this.array = a; }
+    virtual public function pubVirtSubSetDPArray(a:Array):* { this.array = a; }
 
     // ***************************************
     // access default property from
@@ -478,7 +478,7 @@ package InternalClass {
     // ***************************************
 
     private final function privFinSubGetDPArray() : Array { return this.array; }
-    final private function privFinSubSetDPArray(a:Array) { this.array = a; }
+    final private function privFinSubSetDPArray(a:Array):* { this.array = a; }
 
 	public function testPrivFinSubDPArray(a:Array):Array {
 		this.privFinSubSetDPArray(a);
@@ -491,7 +491,7 @@ package InternalClass {
     // ***************************************
 
     private virtual function privVirtSubGetDPArray() : Array { return this.array; }
-    virtual private function privVirtSubSetDPArray(a:Array) { this.array = a; }
+    virtual private function privVirtSubSetDPArray(a:Array):* { this.array = a; }
 
 	public function testPrivVirtSubDPArray(a:Array):Array {
 		this.privVirtSubSetDPArray(a);
@@ -503,7 +503,7 @@ package InternalClass {
 	// public static method of sub class
     // ***************************************
 
-	public static function pubStatSubGetDPArray(){
+	public static function pubStatSubGetDPArray():*{
 		return array;
 	}
 

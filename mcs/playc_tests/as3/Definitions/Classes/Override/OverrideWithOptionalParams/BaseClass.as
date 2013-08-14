@@ -40,15 +40,15 @@ package OptionalParams {
 		public var i:int;
 		public var s:String;
 
-		public function setInt( input:int = 0 ) {
+		public function setInt( input:int = 0 ):* {
 			i = input;
 		}
 		
-		public function setString( string:String = "default" ) {
+		public function setString( string:String = "default" ):* {
 			s = string;
 		}
 		
-		public function setAll( input:int = 0, string:String = "default" ) {
+		public function setAll( input:int = 0, string:String = "default" ):* {
 			i = input;
 			s = string;
 		}

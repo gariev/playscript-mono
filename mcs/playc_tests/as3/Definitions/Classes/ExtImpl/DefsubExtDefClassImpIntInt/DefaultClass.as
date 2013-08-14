@@ -71,12 +71,12 @@ use namespace ns;
 
                 var B:* = new DefaultClass();
                 var i:InternalInt=B;
-		public function accdeffunc(){return deffunc();}
+		public function accdeffunc():*{return deffunc();}
 		// access default function deffunc
                 public function accdeffunc2():Number{return i.deffunc2();}
                 public function accdeffunc3():int{return B.InternalInt::deffunc3();}
                 
-		public function accnsFunc(a="test"){return ns::nsFunc(a);}
+		public function accnsFunc(a="test"):*{return ns::nsFunc(a);}
 		// access default function nsFunc
        } 	
 	

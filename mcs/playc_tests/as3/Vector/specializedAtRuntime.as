@@ -44,7 +44,7 @@
 package {
 	public class specializedAtRuntimeTest extends BaseTest {
 		public static function Main():int {
-			function getVector() { return Vector; }
+			function getVector():* { return Vector; }
 			
 			var CODE:* = 1007; //  Instantiation attempted on a non-constructor.
 			

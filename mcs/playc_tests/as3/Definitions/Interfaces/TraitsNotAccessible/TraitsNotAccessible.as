@@ -42,10 +42,10 @@ package TraitsNotAccessible {
 		function f();
 	}
 	class X implements I {
-		public function f() {
+		public function f():* {
 			return "x.I::f()";
 		}
-		public function g() {
+		public function g():* {
 			return super.f();
 		}
 	}

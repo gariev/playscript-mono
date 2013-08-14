@@ -63,11 +63,11 @@ use namespace ns;
 
                 var IntSubClass:* = new InternalsubClass();
                 var IntSupClass:* = new InternalClass();
-		//public function accdeffunc(){return IntSubClass.deffunc();}
+		//public function accdeffunc():*{return IntSubClass.deffunc();}
 		// access default function deffunc
-                //public function accsupdeffunc(){return IntSupClass.deffunc();}
+                //public function accsupdeffunc():*{return IntSupClass.deffunc();}
         	
-		public function accnsFunc(a="test"){return ns::nsFunc(a);}
+		public function accnsFunc(a="test"):*{return ns::nsFunc(a);}
 		// access default function nsFunc
        } 	
 	

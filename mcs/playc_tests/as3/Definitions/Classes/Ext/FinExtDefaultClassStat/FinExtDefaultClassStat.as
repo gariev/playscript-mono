@@ -58,37 +58,37 @@ package DefaultClass {
 	final class FinExtDefaultClassStat extends DefaultClass {
 
 		// access static method of parent from default method of sub class
-		function subSetArray( a:Array )  { setStatArray( a ); }
+		function subSetArray( a:Array ):*  { setStatArray( a ); }
 		function subGetArray() : Array { return getStatArray(); }
 
 
 		// access static method of parent from dynamic method of sub class
-		function dynSubSetArray( a:Array )  { setStatArray( a ); }		
+		function dynSubSetArray( a:Array ):*  { setStatArray( a ); }		
 		function dynSubGetArray() : Array { return getStatArray(); }
 		
 
 		// access static method of parent from public method of sub class
-		public function pubSubSetArray( a:Array ) { setStatArray( a ); }
+		public function pubSubSetArray( a:Array ):* { setStatArray( a ); }
 		public function pubSubGetArray() : Array { return getStatArray(); }
 
 
 		// access static method of parent from static method of sub class
-		static function statSubSetArray( a:Array ) { setStatArray( a ); }
+		static function statSubSetArray( a:Array ):* { setStatArray( a ); }
 		static function statSubGetArray() : Array { return getStatArray(); }
 
 
 		// access static method of parent from final method of sub class
-		final function finSubSetArray( a:Array )  { setStatArray( a ); }
+		final function finSubSetArray( a:Array ):*  { setStatArray( a ); }
 		final function finSubGetArray() : Array { return getStatArray(); }
 
 
 		// access static method of parent from virtual method of sub class
-		virtual function virSubSetArray( a:Array ) { setStatArray( a ); }
+		virtual function virSubSetArray( a:Array ):* { setStatArray( a ); }
 		virtual function virSubGetArray() : Array { return getStatArray(); }
 
 
 		// access static method of parent from private method of sub class
-		private function privSubSetArray( a:Array ) { setStatArray( a ); }
+		private function privSubSetArray( a:Array ):* { setStatArray( a ); }
 		private function privSubGetArray() : Array { return getStatArray(); }
 
 		// function to test above using a public function within the class
@@ -101,42 +101,42 @@ package DefaultClass {
 
 
 		// access static method of parent from public dynamic method of sub class
-		public function pubDynSubSetArray( a:Array ) { setStatArray( a ); }
+		public function pubDynSubSetArray( a:Array ):* { setStatArray( a ); }
 		public function pubDynSubGetArray() : Array { return getStatArray(); }
 
 		
 		// access static method of parent from public static method of sub class
-		public static function pubStatSubSetArray( a:Array )  { setStatArray( a ); }
+		public static function pubStatSubSetArray( a:Array ):*  { setStatArray( a ); }
 		public static function pubStatSubGetArray() : Array { return getStatArray(); }
 
 
 		// access static method of parent from public final method of sub class
-		public final function pubFinSubSetArray( a:Array )  { setStatArray( a ); }		
+		public final function pubFinSubSetArray( a:Array ):*  { setStatArray( a ); }		
 		final public function pubFinSubGetArray() : Array { return getStatArray(); }
 		
 
 		// access static method of parent from public virtual method of sub class
-		public virtual function pubVirSubSetArray( a:Array ) { setStatArray( a ); }
+		public virtual function pubVirSubSetArray( a:Array ):* { setStatArray( a ); }
 		virtual public function pubVirSubGetArray() : Array { return getStatArray(); }
 
 
 		// access static method of parent from dynamic static method of sub class
-		static function dynStatSubSetArray( a:Array )  { setStatArray( a ); }
+		static function dynStatSubSetArray( a:Array ):*  { setStatArray( a ); }
 		static function dynStatSubGetArray() : Array { return getStatArray(); }
 
 
 		// access static method of parent from dynamic final method of sub class
-		final function dynFinSubSetArray( a:Array )  { setStatArray( a ); }		
+		final function dynFinSubSetArray( a:Array ):*  { setStatArray( a ); }		
 		final function dynFinSubGetArray() : Array { return getStatArray(); }
 		
 
 		// access static method of parent from dynamic virtual method of sub class
-		virtual function dynVirSubSetArray( a:Array ) { setStatArray( a ); }
+		virtual function dynVirSubSetArray( a:Array ):* { setStatArray( a ); }
 		virtual function dynVirSubGetArray() : Array { return getStatArray(); }
 
 
 		// access static method of parent from dynamic private method of sub class
-		private function dynPrivSubSetArray( a:Array ) { setStatArray( a ); }
+		private function dynPrivSubSetArray( a:Array ):* { setStatArray( a ); }
 		private function dynPrivSubGetArray() : Array { return getStatArray(); }
 
 		// function to test above from test scripts
@@ -147,7 +147,7 @@ package DefaultClass {
 
 
 		// access static method of parent from final static method of sub class
-		static function finStatSubSetArray( a:Array )  { setStatArray( a ); }
+		static function finStatSubSetArray( a:Array ):*  { setStatArray( a ); }
 		static function finStatSubGetArray() : Array { return getStatArray(); }
 
 
@@ -155,12 +155,12 @@ package DefaultClass {
 		// This is an invalid case and compiler should report that a function cannot 
 		// be both final and virtual.
 		// This case will be moved to the negative test cases - Error folder.
-		// final virtual function finVirSubSetArray( a:Array ) { setStatArray( a ); }
+		// final virtual function finVirSubSetArray( a:Array ):* { setStatArray( a ); }
 		// virtual final function finVirSubGetArray() : Array { return getStatArray(); }
 
 
 		// access static method of parent from final private method of sub class
-		final private function finPrivSubSetArray( a:Array ) { setStatArray( a ); }
+		final private function finPrivSubSetArray( a:Array ):* { setStatArray( a ); }
 		private final function finPrivSubGetArray() : Array { return getStatArray(); }
 
 		// function to test above from test scripts
@@ -171,7 +171,7 @@ package DefaultClass {
 
 
 		// access static method of parent from private static method of sub class
-		private static function privStatSubSetArray( a:Array ) { setStatArray( a ); }
+		private static function privStatSubSetArray( a:Array ):* { setStatArray( a ); }
 		static private function privStatSubGetArray() : Array { return getStatArray(); }
 
 		// function to test above from test scripts
@@ -182,7 +182,7 @@ package DefaultClass {
 
 
 		// access static method of parent from private virtual method of sub class
-		private virtual function privVirSubSetArray( a:Array ) { setStatArray( a ); }
+		private virtual function privVirSubSetArray( a:Array ):* { setStatArray( a ); }
 		virtual private function privVirSubGetArray() : Array { return getStatArray(); }
 
 		// function to test above from test scripts
@@ -196,7 +196,7 @@ package DefaultClass {
 		// access static method of parent from virtual static method of sub class
 		// This is an invalid case as a function cannot be both virtual and static.
 		// This test case will be moved to the Error folder as a negative test case.
-		// virtual static function virStatSubSetArray( a:Array ) { setStatArray( a ); }
+		// virtual static function virStatSubSetArray( a:Array ):* { setStatArray( a ); }
 		// static virtual function virStatSubGetArray() : Array { return getStatArray(); }
 
     
@@ -204,22 +204,22 @@ package DefaultClass {
 
 
 		// access static property from default method of sub class
-		function subSetDPArray( a:Array ) { statArray = a; }
+		function subSetDPArray( a:Array ):* { statArray = a; }
 		function subGetDPArray() : Array { return statArray; }
 
 
 		// access static property from dynamic method of sub class.
-		function dynSubSetDPArray( a:Array ) { statArray = a; }
+		function dynSubSetDPArray( a:Array ):* { statArray = a; }
 		function dynSubGetDPArray() : Array { return statArray; }
 
 
 		// access static property from public method of sub class
-		public function pubSubSetDPArray( a:Array ) { statArray = a; }
+		public function pubSubSetDPArray( a:Array ):* { statArray = a; }
 		public function pubSubGetDPArray() : Array { return statArray; }
 
 
 		// access static property from private method of sub class
-		private function privSubSetDPArray( a:Array ) { statArray = a; }
+		private function privSubSetDPArray( a:Array ):* { statArray = a; }
 		private function privSubGetDPArray() : Array { return statArray; }
 
 		// public accessor for the above given private functions,
@@ -231,27 +231,27 @@ package DefaultClass {
 
 
 		// access static property from static method of sub class
-		static function statSubSetDPArray( a:Array ) { statArray = a; }
+		static function statSubSetDPArray( a:Array ):* { statArray = a; }
 		static function statSubGetDPArray() : Array { return statArray; }
 
 
 		// access static property from final method of sub class
-		final function finSubSetDPArray( a:Array ) { statArray = a; }
+		final function finSubSetDPArray( a:Array ):* { statArray = a; }
 		final function finSubGetDPArray() : Array { return statArray; }
 
 
 		// access static property from virtual method of sub class
-		virtual function virSubSetDPArray( a:Array ) { statArray = a; }
+		virtual function virSubSetDPArray( a:Array ):* { statArray = a; }
 		virtual function virSubGetDPArray() : Array { return statArray; }
 
 
 		// access static property from public static method of sub class
-		public static function pubStatSubSetDPArray( a:Array ) { statArray = a; }
+		public static function pubStatSubSetDPArray( a:Array ):* { statArray = a; }
 		public static function pubStatSubGetDPArray() : Array { return statArray; }
 
 
 		// access static property from private static method of sub class
-		private static function privStatSubSetDPArray( a:Array ) { statArray = a; }
+		private static function privStatSubSetDPArray( a:Array ):* { statArray = a; }
 		private static function privStatSubGetDPArray() : Array { return statArray; }
 
 		// public accessor for the above given private functions,
@@ -275,17 +275,17 @@ package DefaultClass {
 	// outside of the class definition.
 	
 	// The default method of the sub class.
-	public function subSetArray( a:Array )  { EXTDCLASS.subSetArray( a ); }
+	public function subSetArray( a:Array ):*  { EXTDCLASS.subSetArray( a ); }
 	public function subGetArray() : Array  { return EXTDCLASS.subGetArray(); }
 
 
 	// The dynamic method of the sub class.
-	public function dynSubSetArray( a:Array )  { EXTDCLASS.dynSubSetArray( a ); }
+	public function dynSubSetArray( a:Array ):*  { EXTDCLASS.dynSubSetArray( a ); }
 	public function dynSubGetArray() : Array  { return EXTDCLASS.dynSubGetArray(); }
 
 
 	// The public method of the sub class.	
-	public function pubSubSetArray( a:Array )  { EXTDCLASS.pubSubSetArray( a ); }
+	public function pubSubSetArray( a:Array ):*  { EXTDCLASS.pubSubSetArray( a ); }
 	public function pubSubGetArray() : Array  { return EXTDCLASS.pubSubGetArray(); }
 
 
@@ -296,38 +296,38 @@ package DefaultClass {
 
 
 	// The static method of the sub class.
-	public function statSubSetArray( a:Array )  { FinClassExtDefaultClass.statSubSetArray( a ); }
+	public function statSubSetArray( a:Array ):*  { FinClassExtDefaultClass.statSubSetArray( a ); }
 	public function statSubGetArray() : Array  { return FinClassExtDefaultClass.statSubGetArray(); }
 
 	// The STATIC class cannot be accessed by an object of the class, but has to be accessed
 	// by the class name itself. Bug filed for this: 108206
-	// public function statSubSetArray( a:Array )  { EXTDCLASS.statSubSetArray( a ); }
+	// public function statSubSetArray( a:Array ):*  { EXTDCLASS.statSubSetArray( a ); }
 	// public function statSubGetArray() : Array  { return EXTDCLASS.statSubGetArray(); }
 
 
 	// The final method of the sub class.
-	public function finSubSetArray( a : Array )  { EXTDCLASS.finSubSetArray( a ); }
+	public function finSubSetArray( a : Array ):*  { EXTDCLASS.finSubSetArray( a ); }
 	public function finSubGetArray() : Array  { return EXTDCLASS.finSubGetArray(); }
 	
 
 	// The virtual method of the sub class.
-	public function virSubSetArray( a : Array )  { EXTDCLASS.virSubSetArray( a ); }
+	public function virSubSetArray( a : Array ):*  { EXTDCLASS.virSubSetArray( a ); }
 	public function virSubGetArray() : Array  { return EXTDCLASS.virSubGetArray(); }
 
 		
 
 	// The public dynamic method of the sub class.
-	public function pubDynSubSetArray( a:Array )  { EXTDCLASS.dynSubSetArray( a ); }
+	public function pubDynSubSetArray( a:Array ):*  { EXTDCLASS.dynSubSetArray( a ); }
 	public function pubDynSubGetArray() : Array  { return EXTDCLASS.pubDynSubGetArray(); }
 
 
 	// The public final method of the sub class.
-	public function pubFinSubSetArray( a : Array )  { EXTDCLASS.pubFinSubSetArray( a ); }
+	public function pubFinSubSetArray( a : Array ):*  { EXTDCLASS.pubFinSubSetArray( a ); }
 	public function pubFinSubGetArray() : Array  { return EXTDCLASS.pubFinSubGetArray(); }
 	
 
 	// The public virtual method of the sub class.
-	public function pubVirSubSetArray( a : Array )  { EXTDCLASS.pubVirSubSetArray( a ); }
+	public function pubVirSubSetArray( a : Array ):*  { EXTDCLASS.pubVirSubSetArray( a ); }
 	public function pubVirSubGetArray() : Array  { return EXTDCLASS.pubVirSubGetArray(); }
 
 
@@ -339,12 +339,12 @@ package DefaultClass {
 
 
 	// The dynamic final method of the sub class.
-	public function dynFinSubSetArray( a : Array )  { EXTDCLASS.dynFinSubSetArray( a ); }
+	public function dynFinSubSetArray( a : Array ):*  { EXTDCLASS.dynFinSubSetArray( a ); }
 	public function dynFinSubGetArray() : Array  { return EXTDCLASS.dynFinSubGetArray(); }
 	
 
 	// The dynamic virtual method of the sub class.
-	public function dynVirSubSetArray( a : Array )  { EXTDCLASS.dynVirSubSetArray( a ); }
+	public function dynVirSubSetArray( a : Array ):*  { EXTDCLASS.dynVirSubSetArray( a ); }
 	public function dynVirSubGetArray() : Array  { return EXTDCLASS.dynVirSubGetArray(); }	
 
 
@@ -364,12 +364,12 @@ package DefaultClass {
 
 
 	// The final static method of the sub class.
-	public function finStatSubSetArray( a : Array )  { FinExtDefaultClassStat.finStatSubSetArray( a ); }
+	public function finStatSubSetArray( a : Array ):*  { FinExtDefaultClassStat.finStatSubSetArray( a ); }
 	public function finStatSubGetArray() : Array  { return FinExtDefaultClassStat.finStatSubGetArray(); }	
 
 	// The STATIC class cannot be accessed by an object of the class, but has to be accessed
 	// by the class name itself. Bug filed for this: 108206
-	// public function finStatSubSetArray( a:Array )  { EXTDCLASS.finStatSubSetArray( a ); }
+	// public function finStatSubSetArray( a:Array ):*  { EXTDCLASS.finStatSubSetArray( a ); }
 	// public function finStatSubGetArray() : Array  { return EXTDCLASS.finStatSubGetArray(); }
 	
 	
@@ -382,17 +382,17 @@ package DefaultClass {
 
 	// The default property being accessed by the different method attributes.
 	// The default method attribute.
-	public function subSetDPArray( a:Array ) { EXTDCLASS.subSetDPArray(a); }
+	public function subSetDPArray( a:Array ):* { EXTDCLASS.subSetDPArray(a); }
 	public function subGetDPArray() : Array { return EXTDCLASS.subGetDPArray(); }
 
 
 	// The dynamic method attribute.
-	public function dynSubSetDPArray( a:Array ) { EXTDCLASS.dynSubSetDPArray(a); }
+	public function dynSubSetDPArray( a:Array ):* { EXTDCLASS.dynSubSetDPArray(a); }
 	public function dynSubGetDPArray() : Array { return EXTDCLASS.dynSubGetDPArray(); }
 
 
 	// The public method attribute.
-	public function pubSubSetDPArray( a:Array ) { EXTDCLASS.pubSubSetDPArray(a); }
+	public function pubSubSetDPArray( a:Array ):* { EXTDCLASS.pubSubSetDPArray(a); }
 	public function pubSubGetDPArray() : Array { return EXTDCLASS.pubSubGetDPArray(); }
 
 
@@ -400,22 +400,22 @@ package DefaultClass {
 	public function testPrivSubDPArray( a:Array ):Array { return EXTDCLASS.testPrivSubDPArray(a) }
 
 	// the static method attribute.
-	public function statSubSetDPArray( a:Array ) { FinExtDefaultClassStat.statSubSetDPArray(a); }
+	public function statSubSetDPArray( a:Array ):* { FinExtDefaultClassStat.statSubSetDPArray(a); }
 	public function statSubGetDPArray() : Array { return FinExtDefaultClassStat.statSubGetDPArray(); }
 
 
 	// the final method attribute.
-	public function finSubSetDPArray( a:Array ) { EXTDCLASS.finSubSetDPArray(a); }
+	public function finSubSetDPArray( a:Array ):* { EXTDCLASS.finSubSetDPArray(a); }
 	public function finSubGetDPArray() : Array { return EXTDCLASS.finSubGetDPArray(); }
 
 
 	// the virtual method attribute.
-	public function virSubSetDPArray( a:Array ) { EXTDCLASS.virSubSetDPArray(a); }
+	public function virSubSetDPArray( a:Array ):* { EXTDCLASS.virSubSetDPArray(a); }
 	public function virSubGetDPArray() : Array { return EXTDCLASS.virSubGetDPArray(); }
 
 
 	// the public static method attrbute.
-	public function pubStatSubSetDPArray( a:Array ) { FinExtDefaultClassStat.pubStatSubSetDPArray(a); }
+	public function pubStatSubSetDPArray( a:Array ):* { FinExtDefaultClassStat.pubStatSubSetDPArray(a); }
 	public function pubStatSubGetDPArray() : Array { return FinExtDefaultClassStat.pubStatSubGetDPArray(); }
 
 

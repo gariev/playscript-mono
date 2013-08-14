@@ -47,18 +47,18 @@ package InterfaceAsType {
 	}
 
 	class X implements A, B {
-		public function a() {
+		public function a():* {
 			return "x.A::a()";
 		}
-		public function b() {
+		public function b():* {
 			return "x.B::b()";
 		}
 	}
 	class Y implements C {
-		public function a() {
+		public function a():* {
 			return "y.A::a()";
 		}
-		public function b() {
+		public function b():* {
 			return "y.B::b()";
 		}
 	}

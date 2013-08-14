@@ -62,14 +62,14 @@ package InternalClassPackage {
 		public function getObject() : Object { return object; }
 		public function getString() : String { return string; }
 
-		public function setArray( a:Array ) { array = a; }
-		public function setBoolean( b:Boolean ) { boolean = b; }
-		public function setDate( d:Date ) { date = d; }
-		public function setFunction( f:Function ) { myFunction = f; }
-		public function setMath( m:Math ) { math = m; }
-		public function setNumber( n:Number ) { number = n; }
-		public function setObject( o:Object ) { object = o; }
-		public function setString( s:String ) { string = s; }
+		public function setArray( a:Array ):* { array = a; }
+		public function setBoolean( b:Boolean ):* { boolean = b; }
+		public function setDate( d:Date ):* { date = d; }
+		public function setFunction( f:Function ):* { myFunction = f; }
+		public function setMath( m:Math ):* { math = m; }
+		public function setNumber( n:Number ):* { number = n; }
+		public function setObject( o:Object ):* { object = o; }
+		public function setString( s:String ):* { string = s; }
 
 	}
 

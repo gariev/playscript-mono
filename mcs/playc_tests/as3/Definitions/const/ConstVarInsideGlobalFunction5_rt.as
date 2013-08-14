@@ -45,7 +45,7 @@ package {
 			
 			startTest();
 			
-			function myConstArgs( arg1 ) {
+			function myConstArgs( arg1 ):* {
 			
 			 	const n2:*;
 			 	n2 = -( n1 / 30 );

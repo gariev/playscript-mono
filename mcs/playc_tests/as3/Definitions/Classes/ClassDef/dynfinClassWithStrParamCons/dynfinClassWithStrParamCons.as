@@ -89,7 +89,7 @@ public class publicClassCons{
       public function publicClassCons(){
       }
 
-      public function Add(){
+      public function Add():*{
              var z:* = M+N;
              return z;
 

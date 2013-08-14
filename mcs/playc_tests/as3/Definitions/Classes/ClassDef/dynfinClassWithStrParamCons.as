@@ -63,7 +63,7 @@ package {
 			      public function publicClassCons(){
 			      }
 			
-			      public function Add(){
+			      public function Add():*{
 			             private var z:* = x+y;
 			             return z;
 			

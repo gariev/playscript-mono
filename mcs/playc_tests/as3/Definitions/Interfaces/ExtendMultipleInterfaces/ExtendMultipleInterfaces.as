@@ -60,37 +60,37 @@ package ExtendMultipleInterfaces {
 	}
 
 	class X1 implements I1 {
-		public function a() {
+		public function a():* {
 			return "x1.A::a()";
 		}
 	}
 	class X2 implements I2 {
-		public function a() {
+		public function a():* {
 			return "x2.A::a()";
 		}
-		public function b() {
+		public function b():* {
 			return "x2.B::b()";
 		}
 	}
 	class X3 implements I3 {
-		public function c() {
+		public function c():* {
 			return "x3.C::c()";
 		}
-		public function d() {
+		public function d():* {
 			return "x3.I3::d()";
 		}
 	}
 	class X4 implements I4 {
-		public function a() {
+		public function a():* {
 			return "x4.A::a()";
 		}
-		public function b() {
+		public function b():* {
 			return "x4.B::b()";
 		}
-		public function c() {
+		public function c():* {
 			return "x4.C::c()";
 		}
-		public function d() {
+		public function d():* {
 			return "x4.I3::d()";
 		}
 	}
@@ -105,49 +105,49 @@ package ExtendMultipleInterfaces {
 	}
 	
 	class Y1 implements J1 {
-		public function a() {
+		public function a():* {
 			return "y1.A::a()";
 		}
-		public function b() {
+		public function b():* {
 			return "y1.B::b()";
 		}
 	}
 	class Y2 implements J2 {
-		public function a() {
+		public function a():* {
 			return "y2.A::a()";
 		}
-		public function b() {
+		public function b():* {
 			return "y2.B::b()";
 		}
-		public function c() {
+		public function c():* {
 			return "y2.C::c()";
 		}
 	}
 	class Y3 implements J3 {
-		public function a() {
+		public function a():* {
 			return "y3.A::a()";
 		}
-		public function b() {
+		public function b():* {
 			return "y3.B::b()";
 		}
-		public function c() {
+		public function c():* {
 			return "y3.C::c()";
 		}
-		public function d() {
+		public function d():* {
 			return "y3.I3::d()";
 		}
 	}
 	class Y4 implements J4 {
-		public function a() {
+		public function a():* {
 			return "y4.A::a()";
 		}
-		public function b() {
+		public function b():* {
 			return "y4.B::b()";
 		}
-		public function c() {
+		public function c():* {
 			return "y4.C::c()";
 		}
-		public function d() {
+		public function d():* {
 			return "y4.I3::d()";
 		}
 	}

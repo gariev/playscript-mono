@@ -44,7 +44,7 @@ package {
 			//-----------------------------------------------------------
 			
 			class A {
-				function f() {}
+				function f():* {}
 			}
 			
 			var expected:* = "Error #" + CODE;

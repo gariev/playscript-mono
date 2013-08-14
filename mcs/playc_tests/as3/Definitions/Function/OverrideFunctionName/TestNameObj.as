@@ -41,7 +41,7 @@ package OverrideFunctionName {
     	public function TestNameObjBase() {}
 
     	// not the constructor but looks like it
-    	public function testNameObj() { return null; }
+    	public function testNameObj():* { return null; }
 
     	public function a1 () { return null; }
     	public function a_1 () { return null; }
@@ -63,7 +63,7 @@ package OverrideFunctionName {
     	public function TestNameObj() {}
 
     	// not the constructor but looks like it
-    	override public function testNameObj() { return "not the constructor" }
+    	override public function testNameObj():* { return "not the constructor" }
 
     	override public function a1 () { return "a1"; }
     	override public function a_1 () { return "a_1"; }

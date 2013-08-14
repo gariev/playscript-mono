@@ -77,7 +77,7 @@ dynamic class DynExtDefImplDefDefPubInner extends DefaultClass implements Defaul
     // ************************************
 
     function subGetArray() : Array { return this.getPubArray(); }
-    function subSetArray(a:Array) { this.setPubArray(a); }
+    function subSetArray(a:Array):* { this.setPubArray(a); }
 
     public function testGetSubArray(a:Array) : Array {
         this.subSetArray(a);
@@ -91,7 +91,7 @@ dynamic class DynExtDefImplDefDefPubInner extends DefaultClass implements Defaul
     // ************************************
 
     public function pubSubGetArray() : Array { return this.getPubArray(); }
-    public function pubSubSetArray(a:Array) { this.setPubArray(a); }
+    public function pubSubSetArray(a:Array):* { this.setPubArray(a); }
 
     // ************************************
     // access public method of parent
@@ -99,7 +99,7 @@ dynamic class DynExtDefImplDefDefPubInner extends DefaultClass implements Defaul
     // ************************************
 
     private function privSubGetArray() : Array { return this.getPubArray(); }
-    private function privSubSetArray(a:Array) { this.setPubArray(a); }
+    private function privSubSetArray(a:Array):* { this.setPubArray(a); }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -114,16 +114,16 @@ public class DynExtDefaultImplDefDefPub extends DynExtDefImplDefDefPubInner {
    var THISTEST1:* = new DynExtDefImplDefDefPubInner();
 var i:DefaultInt = THISTEST1;
 var j:DefaultIntDef=THISTEST1;
-      public function iGetBooleanacc1(){
+      public function iGetBooleanacc1():*{
                                         return i.iGetBoolean();
                                        }
-      public function iGetBooleanacc2(){
+      public function iGetBooleanacc2():*{
                                         return j.iGetBoolean();
                                        }
-      public function iGetNumberacc1(){
+      public function iGetNumberacc1():*{
                                         return THISTEST1.DefaultInt::iGetNumber();
                                        }
-      public function iGetNumberacc2(){
+      public function iGetNumberacc2():*{
                                         return THISTEST1.DefaultIntDef::iGetNumber();
                                       }
 

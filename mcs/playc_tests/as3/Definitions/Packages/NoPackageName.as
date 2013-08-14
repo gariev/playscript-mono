@@ -41,23 +41,23 @@ package {
         var b:* = "hoo";           //private attribute is allowed only on class property
  	
  	public class PublicClass {
- 		public function sayHi() {
+ 		public function sayHi():* {
  			return "hi";
  		}
- 		function sayBye() {
+ 		function sayBye():* {
  			return "bye";
  		}
  	}
  	
  	/*private class PrivateClass {       //Commenting out since private attribute is                                              //allowed only on class property
- 		function sayHi() {
+ 		function sayHi():* {
  			return "private hi";
  		}
  	}*/
         
  	
  	class NotAPublicClass {
- 		public function sayHi() {
+ 		public function sayHi():* {
  			return "hi";
  		}
  	}

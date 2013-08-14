@@ -44,7 +44,7 @@ package Example_9_2_const {
 	
 	
 	class A implements I {
-		public function f() {
+		public function f():* {
 			return "A::f";
 		}
 	}

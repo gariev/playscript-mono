@@ -49,7 +49,7 @@ package DefaultClass {
 		// with a default method in subclass
 		// *********************************
 
-		override function setNumber(n:Number) {
+		override function setNumber(n:Number):* {
 			orSet = "PASSED";
 			this.number = n+10;
 		}

@@ -62,27 +62,27 @@ package InternalClassPackage {
 		// Default methods
 		// *****************
 		function getArray() : Array { return array; }
-		function setArray( a:Array ) { array = a; }
+		function setArray( a:Array ):* { array = a; }
 		
 		
 		// ************************
 		// Default virtual methods
 		// ************************
 		virtual function getVirtualArray() : Array { return array; }
-		virtual function setVirtualArray( a:Array ) { array = a; }
+		virtual function setVirtualArray( a:Array ):* { array = a; }
 		
 		
 		// ***********************
 		// Default Static methods
 		// ***********************
-		static function setStatFunction(f:Function) { statFunction = f; }
+		static function setStatFunction(f:Function):* { statFunction = f; }
 		static function getStatFunction() : Function { return statFunction; }
 
         
         // **********************
         // Default Final methods
 		// **********************
-		final function setFinNumber(n:Number) { finNumber = n; }
+		final function setFinNumber(n:Number):* { finNumber = n; }
 		final function getFinNumber() : Number { return finNumber; }
 
 		
@@ -90,27 +90,27 @@ package InternalClassPackage {
 		// Internal methods
 		// *****************
 		internal function getInternalArray() : Array { return internalArray; }
-		internal function setInternalArray( a:Array ) { internalArray = a; }
+		internal function setInternalArray( a:Array ):* { internalArray = a; }
 		
 		
 		// *************************
 		// Internal virtual methods
 		// *************************
 		internal virtual function getInternalVirtualArray() : Array { return internalArray; }
-		internal virtual function setInternalVirtualArray( a:Array ) { internalArray = a; }
+		internal virtual function setInternalVirtualArray( a:Array ):* { internalArray = a; }
 		
 		
 		// ***********************
 		// Internal Static methods
 		// ***********************
-		internal static function setInternalStatFunction(f:Function) { InternalClass.internalStatFunction = f; }
+		internal static function setInternalStatFunction(f:Function):* { InternalClass.internalStatFunction = f; }
 		internal static function getInternalStatFunction() : Function { return InternalClass.internalStatFunction; }
         
         
         // **********************
         // Internal Final methods
 		// **********************
-		internal final function setInternalFinNumber(n:Number) { internalFinNumber = n; }
+		internal final function setInternalFinNumber(n:Number):* { internalFinNumber = n; }
 		internal final function getInternalFinNumber() : Number { return internalFinNumber; }
 		
         
@@ -119,7 +119,7 @@ package InternalClassPackage {
 		// Private methods
 		// *******************
 		private function getPrivDate() : Date { return privDate; }
-		private function setPrivDate( d:Date ) { privDate = d; }
+		private function setPrivDate( d:Date ):* { privDate = d; }
 		// wrapper function
 		public function testGetSetPrivDate(d:Date) : Date {
 			setPrivDate(d);
@@ -131,7 +131,7 @@ package InternalClassPackage {
 		// Private virutal methods
 		// *******************
 		private virtual function getPrivVirtualDate() : Date { return privDate; }
-		private virtual function setPrivVirtualDate( d:Date ) { privDate = d; }
+		private virtual function setPrivVirtualDate( d:Date ):* { privDate = d; }
 		// wrapper function
 		public function testGetSetPrivVirtualDate(d:Date) : Date {
 			setPrivVirtualDate(d);
@@ -142,7 +142,7 @@ package InternalClassPackage {
 		// **************************
 		// Private Static methods
 		// **************************
-		private static function setPrivStatString(s:String) { privStatString = s; }
+		private static function setPrivStatString(s:String):* { privStatString = s; }
 		private static function getPrivStatString() : String { return privStatString; }
 		// wrapper function
 		public function testGetSetPrivStatString(s:String) : String {
@@ -154,7 +154,7 @@ package InternalClassPackage {
 		// **************************
 		// Private Final methods
 		// **************************
-		private final function setPrivFinalString(s:String) { privFinalString = s; }
+		private final function setPrivFinalString(s:String):* { privFinalString = s; }
 		private final function getPrivFinalString() : String { return privFinalString; }
 		// wrapper function
 		public function testGetSetPrivFinalString(s:String) : String {
@@ -167,28 +167,28 @@ package InternalClassPackage {
 		// *******************
 		// Public methods
 		// *******************
-		public function setPubBoolean( b:Boolean ) { pubBoolean = b; }
+		public function setPubBoolean( b:Boolean ):* { pubBoolean = b; }
 		public function getPubBoolean() : Boolean { return pubBoolean; }
 		
 		
 		// *******************
 		// Public virtual methods
 		// *******************
-		public virtual function setPubVirtualBoolean( b:Boolean ) { pubBoolean = b; }
+		public virtual function setPubVirtualBoolean( b:Boolean ):* { pubBoolean = b; }
 		public virtual function getPubVirtualBoolean() : Boolean { return pubBoolean; }
 
 
 		// **************************
 		// Public Static methods
 		// **************************
-		public static function setPubStatObject(o:Object) { InternalClass.pubStatObject = o; }
+		public static function setPubStatObject(o:Object):* { InternalClass.pubStatObject = o; }
 		public static function getPubStatObject() : Object { return InternalClass.pubStatObject; }
 
 
 		// *******************
 		// Public Final methods
 		// *******************
-		public final function setPubFinArray(a:Array) { pubFinArray = a; }
+		public final function setPubFinArray(a:Array):* { pubFinArray = a; }
 		public final function getPubFinArray() : Array { return pubFinArray; }
 		
 	}
@@ -256,16 +256,16 @@ package InternalClassPackage {
 		}
 		
 		// Public methods
-		public function setPubBoolean( b:Boolean ) { Obj.setPubBoolean(b); }
+		public function setPubBoolean( b:Boolean ):* { Obj.setPubBoolean(b); }
 		public function getPubBoolean() : Boolean { return Obj.getPubBoolean(); }
 		// Public virtual methods
-		public function setPubVirtualBoolean( b:Boolean ) { Obj.setPubVirtualBoolean(b); }
+		public function setPubVirtualBoolean( b:Boolean ):* { Obj.setPubVirtualBoolean(b); }
 		public function getPubVirtualBoolean() : Boolean { return Obj.getPubVirtualBoolean(); }
 		// Public Static methods
-		public function setPubStatObject(o:Object) { InternalClass.setPubStatObject(o); }
+		public function setPubStatObject(o:Object):* { InternalClass.setPubStatObject(o); }
 		public function getPubStatObject() : Object { return InternalClass.getPubStatObject(); }
 		// Public Final methods
-		public function setPubFinArray(a:Array) { Obj.setPubFinArray(a); }
+		public function setPubFinArray(a:Array):* { Obj.setPubFinArray(a); }
 		public function getPubFinArray() : Array { return Obj.getPubFinArray(); }
 
 	}

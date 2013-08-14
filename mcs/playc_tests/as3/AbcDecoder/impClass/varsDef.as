@@ -56,10 +56,10 @@ package packTwo {
 package {
     public class testClass {
 	public var testClassVar1:* = "Inside testClass";
-	public function func1() {
+	public function func1():* {
 		return "Inside func1()";
 	}
-	public function func2() {
+	public function func2():* {
 		return "Inside func2()";
 
 	}
@@ -68,10 +68,10 @@ package {
 
 final class finClass {
 	var finClassVar1:* = "Inside finClass";
-	function finFunc1() {
+	function finFunc1():* {
 		return "Inside func1()";
 	}
-	function finFunc2() {
+	function finFunc2():* {
 		return "Inside func2()";
 
 	}
@@ -85,10 +85,10 @@ interface inInterface {
 
 class accSpecClass {
 	var accSpec1:* = "string";
-	public function func1() {
+	public function func1():* {
 		return "Inside func1()-public function";
 	}
-	function func2() {
+	function func2():* {
 		return "Inside func2()-Dynamic function";
 	}
 
@@ -96,17 +96,17 @@ class accSpecClass {
 
 dynamic class dynClass {
 	var dynSpec1:* = "string";
-	public function func1() {
+	public function func1():* {
 		return "Inside func1()-public function";
 	}
-	function func2() {
+	function func2():* {
 		return "Inside func2()-Dynamic function";
 	}
 }
 
 class baseClass
 {
-  public function overrideFunc() {
+  public function overrideFunc():* {
   }
 }
 

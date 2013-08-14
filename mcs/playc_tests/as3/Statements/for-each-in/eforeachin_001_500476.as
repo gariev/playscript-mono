@@ -52,7 +52,7 @@ package {
 			
 			    test();
 			
-			    function ForIn_7( object ) {
+			    function ForIn_7( object ):* {
 			        var result1:* = 0;
 			        var result2:* = 0;
 			        var result3:* = 0;

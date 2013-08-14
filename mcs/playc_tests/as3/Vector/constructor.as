@@ -138,7 +138,7 @@ package {
 			v18.push(true);
 			AddTestCase("constructor type uint castes other types", 1, v18[0]);
 			
-			function bug449468() {
+			function bug449468():* {
 			    var v : Vector.<Vector.<Number>> = new Vector.<Vector.<Number>>(4);
 			    return v;
 			}

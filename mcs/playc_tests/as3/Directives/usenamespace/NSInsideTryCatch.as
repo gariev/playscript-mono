@@ -56,17 +56,17 @@ package {
 			       namespace N4;
 			       
 			            
-			       N2 function func() { 
+			       N2 function func():* { 
 			           return "Called N2::func1";
 			       }
 			       
-			       N3 function func() { 
+			       N3 function func():* { 
 			           return "Called N3::func1";	
 			       }
-			       public function accfunc1(){
+			       public function accfunc1():*{
 				    return N2::func()
 			       }
-			       public function accfunc2(){
+			       public function accfunc2():*{
 				  return N3::func()
 			   }
 			 }

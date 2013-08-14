@@ -37,14 +37,14 @@
 
 package test{
 	public var a:* = 'PASSED';
-	public function f() {
+	public function f():* {
 		var g:* = "g";
 		return g;
 	}
 }
 
 package test2{
-	public function g() {
+	public function g():* {
 		var h:* = "h";
 		return h;
 	}
@@ -53,7 +53,7 @@ package test2{
 
 class C {
 	import test2.*;
-	public function returnB() {
+	public function returnB():* {
 		return b;
 	}
 }

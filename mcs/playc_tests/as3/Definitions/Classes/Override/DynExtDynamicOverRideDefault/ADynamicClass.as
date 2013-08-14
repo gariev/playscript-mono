@@ -114,14 +114,14 @@ package DynamicClass {
     function getObject() : Object { return object; }
     function getString() : String { return string; }
 
-    function setArray( a:Array ) { array = a; }
-    function setBoolean( b:Boolean ) { boolean = b; }
-    function setDate( d:Date ) { date = d; }
-    function setFunction( f:Function ) { myFunction = f; }
-    function setMath( m:Math ) { math = m; }
-    function setNumber( n:Number ) { number = n; }
-    function setObject( o:Object ) { object = o; }
-    function setString( s:String ) { string = s; }
+    function setArray( a:Array ):* { array = a; }
+    function setBoolean( b:Boolean ):* { boolean = b; }
+    function setDate( d:Date ):* { date = d; }
+    function setFunction( f:Function ):* { myFunction = f; }
+    function setMath( m:Math ):* { math = m; }
+    function setNumber( n:Number ):* { number = n; }
+    function setObject( o:Object ):* { object = o; }
+    function setString( s:String ):* { string = s; }
 
     function setAll( a:Array,
                      b:Boolean,
@@ -145,14 +145,14 @@ package DynamicClass {
     // public methods
     // *******************
 
-    public function setPubArray( a:Array ) { pubArray = a; }
-    public function setPubBoolean( b:Boolean ) { pubBoolean = b; }
-    public function setPubDate( d:Date ) { pubDate = d; }
-    public function setPubFunction( f:Function ) { pubFunction = f; }
-    public function setPubMath( m:Math ) { pubMath = m; }
-    public function setPubNumber( n:Number ) { pubNumber = n; }
-    public function setPubObject( o:Object ) { pubObject = o; }
-    public function setPubString( s:String ) { pubString = s; }
+    public function setPubArray( a:Array ):* { pubArray = a; }
+    public function setPubBoolean( b:Boolean ):* { pubBoolean = b; }
+    public function setPubDate( d:Date ):* { pubDate = d; }
+    public function setPubFunction( f:Function ):* { pubFunction = f; }
+    public function setPubMath( m:Math ):* { pubMath = m; }
+    public function setPubNumber( n:Number ):* { pubNumber = n; }
+    public function setPubObject( o:Object ):* { pubObject = o; }
+    public function setPubString( s:String ):* { pubString = s; }
 
     public function getPubArray() : Array { return this.pubArray; }
     public function getPubBoolean() : Boolean { return this.pubBoolean; }
@@ -176,23 +176,23 @@ package DynamicClass {
     private function getPrivObject() : Object { return privObject; }
     private function getPrivString() : String { return privString; }
 
-    private function setPrivArray( a:Array ) { privArray = a; }
-    private function setPrivBoolean( b:Boolean ) { privBoolean = b; }
-    private function setPrivDate( d:Date ) { privDate = d; }
-    private function setPrivFunction( f:Function ) { privFunction = f; }
-    private function setPrivMath( m:Math ) { privMath = m; }
-    private function setPrivNumber( n:Number ) { privNumber = n; }
-    private function setPrivObject( o:Object ) { privObject = o; }
-    private function setPrivString( s:String ) { privString = s; }
+    private function setPrivArray( a:Array ):* { privArray = a; }
+    private function setPrivBoolean( b:Boolean ):* { privBoolean = b; }
+    private function setPrivDate( d:Date ):* { privDate = d; }
+    private function setPrivFunction( f:Function ):* { privFunction = f; }
+    private function setPrivMath( m:Math ):* { privMath = m; }
+    private function setPrivNumber( n:Number ):* { privNumber = n; }
+    private function setPrivObject( o:Object ):* { privObject = o; }
+    private function setPrivString( s:String ):* { privString = s; }
 
     // *******************
     // static methods
     // *******************
 
-    static function setStatArray(a:Array) { statArray=a; }
-    static function setStatBoolean( b:Boolean ) { statBoolean = b; }
+    static function setStatArray(a:Array):* { statArray=a; }
+    static function setStatBoolean( b:Boolean ):* { statBoolean = b; }
 
-    static function getStatArray() { return statArray; }
+    static function getStatArray():* { return statArray; }
 
 
 
@@ -200,19 +200,19 @@ package DynamicClass {
     // public static methods
     // **************************
 
-    public static function setPubStatArray(a:Array) { pubStatArray=a; }
-    public static function setPubStatBoolean( b:Boolean ) { pubStatBoolean = b; }
+    public static function setPubStatArray(a:Array):* { pubStatArray=a; }
+    public static function setPubStatBoolean( b:Boolean ):* { pubStatBoolean = b; }
 
-    public static function getPubStatArray() { return pubStatArray; }
+    public static function getPubStatArray():* { return pubStatArray; }
 
     // **************************
     // private static methods
     // **************************
 
-    private static function setPrivStatArray(a:Array) { privStatArray=a; }
-    private static function setPrivStatBoolean( b:Boolean ) { privStatBoolean = b; }
+    private static function setPrivStatArray(a:Array):* { privStatArray=a; }
+    private static function setPrivStatBoolean( b:Boolean ):* { privStatBoolean = b; }
 
-    private static function getPrivStatArray() { return privStatArray; }
+    private static function getPrivStatArray():* { return privStatArray; }
  }
 
 }

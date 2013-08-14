@@ -80,7 +80,7 @@ package PublicDynamicClassPackage {
 		// Default methods
 		// *****************
 		function getArray() : Array { return array; }
-		function setArray( a:Array ) { array = a; }
+		function setArray( a:Array ):* { array = a; }
 		// wrapper function
 		public function testGetSetArray(a:Array) : Array {
 			setArray(a);
@@ -93,7 +93,7 @@ package PublicDynamicClassPackage {
 		// ************************
 		// TODO: virtual vars are not implemented yet so this is currently using a normal var
 		virtual function getVirtualArray() : Array { return array; }
-		virtual function setVirtualArray( a:Array ) { array = a; }
+		virtual function setVirtualArray( a:Array ):* { array = a; }
 		// wrapper function
 		public function testGetSetVirtualArray(a:Array) : Array {
 			setVirtualArray(a);
@@ -104,7 +104,7 @@ package PublicDynamicClassPackage {
 		// ***********************
 		// Default Static methods
 		// ***********************
-		static function setStatFunction(f:Function) { PublicDynamicClass.statFunction = f; }
+		static function setStatFunction(f:Function):* { PublicDynamicClass.statFunction = f; }
 		static function getStatFunction() : Function { return PublicDynamicClass.statFunction; }
 		// wrapper function
 		public function testGetSetStatFunction(f:Function) : Function {
@@ -116,7 +116,7 @@ package PublicDynamicClassPackage {
         // **********************
         // Default Final methods
 		// **********************
-		final function setFinNumber(n:Number) { finNumber = n; }
+		final function setFinNumber(n:Number):* { finNumber = n; }
 		final function getFinNumber() : Number { return finNumber; }
 		// wrapper function
 		public function testGetSetFinNumber(n:Number) : Number {
@@ -129,7 +129,7 @@ package PublicDynamicClassPackage {
 		// Internal methods
 		// *****************
 		internal function getInternalArray() : Array { return internalArray; }
-		internal function setInternalArray( a:Array ) { internalArray = a; }
+		internal function setInternalArray( a:Array ):* { internalArray = a; }
 		// wrapper function
 		public function testGetSetInternalArray(a:Array) : Array {
 			setInternalArray(a);
@@ -142,7 +142,7 @@ package PublicDynamicClassPackage {
 		// ************************
 		// TODO: virtual vars are not implemented yet so this is currently using a normal var
 		internal virtual function getInternalVirtualArray() : Array { return internalArray; }
-		internal virtual function setInternalVirtualArray( a:Array ) { internalArray = a; }
+		internal virtual function setInternalVirtualArray( a:Array ):* { internalArray = a; }
 		// wrapper function
 		public function testGetSetInternalVirtualArray(a:Array) : Array {
 			setInternalVirtualArray(a);
@@ -153,7 +153,7 @@ package PublicDynamicClassPackage {
 		// ***********************
 		// Internal Static methods
 		// ***********************
-		internal static function setInternalStatFunction(f:Function) { internalStatFunction = f; }
+		internal static function setInternalStatFunction(f:Function):* { internalStatFunction = f; }
 		internal static function getInternalStatFunction() : Function { return internalStatFunction; }
 		// wrapper function
 		public function testGetSetInternalStatFunction(f:Function) : Function {
@@ -166,7 +166,7 @@ package PublicDynamicClassPackage {
         // **********************
         // Internal Final methods
 		// **********************
-		internal final function setInternalFinNumber(n:Number) { internalFinNumber = n; }
+		internal final function setInternalFinNumber(n:Number):* { internalFinNumber = n; }
 		internal final function getInternalFinNumber() : Number { return internalFinNumber; }
 		// wrapper function
 		public function testGetSetInternalFinNumber(n:Number) : Number {
@@ -179,7 +179,7 @@ package PublicDynamicClassPackage {
 		// Private methods
 		// *******************
 		private function getPrivDate() : Date { return privDate; }
-		private function setPrivDate( d:Date ) { privDate = d; }
+		private function setPrivDate( d:Date ):* { privDate = d; }
 		// wrapper function
 		public function testGetSetPrivDate(d:Date) : Date {
 			setPrivDate(d);
@@ -192,7 +192,7 @@ package PublicDynamicClassPackage {
 		// ***********************
 		// TODO: virtual vars are not implemented yet so this is currently using a normal var
 		private virtual function getPrivVirtualDate() : Date { return privDate; }
-		private virtual function setPrivVirtualDate( d:Date ) { privDate = d; }
+		private virtual function setPrivVirtualDate( d:Date ):* { privDate = d; }
 		// wrapper function
 		public function testGetSetPrivVirtualDate(d:Date) : Date {
 			setPrivVirtualDate(d);
@@ -203,7 +203,7 @@ package PublicDynamicClassPackage {
 		// **************************
 		// Private Static methods
 		// **************************
-		private static function setPrivStatString(s:String) { PublicDynamicClass.privStatString = s; }
+		private static function setPrivStatString(s:String):* { PublicDynamicClass.privStatString = s; }
 		private static function getPrivStatString() : String { return PublicDynamicClass.privStatString; }
 		// wrapper function
 		public function testGetSetPrivStatString(s:String) : String {
@@ -215,7 +215,7 @@ package PublicDynamicClassPackage {
 		// **************************
 		// Private Final methods
 		// **************************
-		private final function setPrivFinalString(s:String) { privFinalString = s; }
+		private final function setPrivFinalString(s:String):* { privFinalString = s; }
 		private final function getPrivFinalString() : String { return privFinalString; }
 		// wrapper function
 		public function testGetSetPrivFinalString(s:String) : String {
@@ -228,7 +228,7 @@ package PublicDynamicClassPackage {
 		// *******************
 		// Public methods
 		// *******************
-		public function setPubBoolean( b:Boolean ) { pubBoolean = b; }
+		public function setPubBoolean( b:Boolean ):* { pubBoolean = b; }
 		public function getPubBoolean() : Boolean { return pubBoolean; }
 		
 		
@@ -236,21 +236,21 @@ package PublicDynamicClassPackage {
 		// Public virutal methods
 		// ***********************
 		// TODO: virtual vars are not implemented yet so this is currently using a normal var
-		public virtual function setPubVirtualBoolean( b:Boolean ) { pubBoolean = b; }
+		public virtual function setPubVirtualBoolean( b:Boolean ):* { pubBoolean = b; }
 		public virtual function getPubVirtualBoolean() : Boolean { return pubBoolean; }
 
 
 		// **************************
 		// Public Static methods
 		// **************************
-		public static function setPubStatObject(o:Object) { PublicDynamicClass.pubStatObject = o; }
+		public static function setPubStatObject(o:Object):* { PublicDynamicClass.pubStatObject = o; }
 		public static function getPubStatObject() : Object { return PublicDynamicClass.pubStatObject; }
 
 
 		// *******************
 		// Public Final methods
 		// *******************
-		public final function setPubFinArray(a:Array) { pubFinArray = a; }
+		public final function setPubFinArray(a:Array):* { pubFinArray = a; }
 		public final function getPubFinArray() : Array { return pubFinArray; }
 
 	}

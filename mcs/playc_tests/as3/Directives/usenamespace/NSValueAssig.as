@@ -62,14 +62,14 @@ package {
 			N4 var flower2:String = "Rose";
 			
 			
-			function a1(){
+			function a1():*{
 			        if(a!=1) { return N1.toString()}
 				else {return null}
 			}
-			function a2(){
+			function a2():*{
 			        return N3::flower1
 			}
-			function a3(){
+			function a3():*{
 			        return N4::flower2
 			}
 			

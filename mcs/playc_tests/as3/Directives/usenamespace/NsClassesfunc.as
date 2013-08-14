@@ -56,8 +56,8 @@ package {
 			
 			     class Game{
 			
-			          Football function whoplay(){return "Joe"}
-			          Baseball function whoplay(){return "Steve"}
+			          Football function whoplay():*{return "Joe"}
+			          Baseball function whoplay():*{return "Steve"}
 			     }
 			
 			

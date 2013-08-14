@@ -37,12 +37,12 @@
 
 package foo {
 	public class fletch{ 
-		public function lives(){return 'PASSED';}
+		public function lives():*{return 'PASSED';}
 	}
 }
 
 class fletch {
-	public function lives() {return 'outside package';}
+	public function lives():* {return 'outside package';}
 }
 
 var SECTION:* = "Definitions";       // provide a document reference (ie, Actionscript section)

@@ -50,7 +50,7 @@ package {
 			/*===========================================================================*/
 			
 			
-			function MethodClosure( myReturnArg ) {
+			function MethodClosure( myReturnArg ):* {
 					
 					return myReturnArg * myReturnArg;
 			}

@@ -45,7 +45,7 @@ package {
 			
 			startTest();
 			
-			function const1Arg( arg1 ) {
+			function const1Arg( arg1 ):* {
 			
 			 	const localVar:* = arg1;
 			 	return localVar;

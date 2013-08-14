@@ -47,10 +47,10 @@
 	
 	public class B  {
 		var sB:*;
-		public function createB() {
+		public function createB():* {
 			sB = new A();
 		}
-		public function createB2() {
+		public function createB2():* {
 			sB = new A.A();
                    
 		}

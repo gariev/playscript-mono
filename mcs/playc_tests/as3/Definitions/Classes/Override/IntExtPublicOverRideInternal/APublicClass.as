@@ -49,7 +49,7 @@ package PublicClassPackage {
 		// internal methods
 		// *****************
 		internal function getDate() : Date { return date; }
-		internal function setDate( d:Date ) { date = d; }
+		internal function setDate( d:Date ):* { date = d; }
 	}
 
 }

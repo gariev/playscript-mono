@@ -58,10 +58,10 @@ use namespace ns;
 
 	public class InternalClassAccesor extends InternalClass{
 	
-		public function accdeffunc(){return deffunc();}
+		public function accdeffunc():*{return deffunc();}
 		// access default function deffunc
         	
-		public function accnsFunc(a="test"){return ns::nsFunc(a);}
+		public function accnsFunc(a="test"):*{return ns::nsFunc(a);}
 		// access default function nsFunc
        } 	
 	

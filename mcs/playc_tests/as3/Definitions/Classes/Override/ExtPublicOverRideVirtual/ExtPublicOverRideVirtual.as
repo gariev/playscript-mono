@@ -54,7 +54,7 @@ package PublicClass {
 			return this.boolean;
 		}
 
-		override virtual function setVirtualBoolean( b:Boolean ) {
+		override virtual function setVirtualBoolean( b:Boolean ):* {
 			orSet = true;
 			this.boolean = b;
 		}

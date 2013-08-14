@@ -42,7 +42,7 @@ package StaticFunctionName {
     	function TestNameObjInner() { res = "EmptyName"; }
     
     	// not the constructor but looks like it  
-    	function testNameObjInner() { return "not the constructor" }
+    	function testNameObjInner():* { return "not the constructor" }
 
     	static function a1 () { return "a1"; }
     	static function a_1 () { return "a_1"; }
@@ -60,7 +60,7 @@ package StaticFunctionName {
 	}
 
 	public class TestNameObj extends TestNameObjInner {
-	public function pubTestConst() { return testNameObjInner(); }
+	public function pubTestConst():* { return testNameObjInner(); }
     	public function puba1 () { return a1(); }
     	public function puba_1 () { return a_1(); }
     	public function pub_a1 () { return _a1(); }

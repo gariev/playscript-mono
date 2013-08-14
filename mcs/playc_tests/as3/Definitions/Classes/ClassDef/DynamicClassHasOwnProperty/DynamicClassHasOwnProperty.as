@@ -43,7 +43,7 @@
    public dynamic class DynamicClassHasOwnProperty {
    
        public var bar:Number;
-       public function testHasOwnProperty(p:String) {
+       public function testHasOwnProperty(p:String):* {
        	bar = 10;
        	return this.hasOwnProperty(p);
        }

@@ -47,7 +47,7 @@ package DefaultClassPackage {
 		// protected methods
 		// *****************
 		protected function getDate() : Date { return date; }
-		protected function setDate( d:Date ) { date = d; }
+		protected function setDate( d:Date ):* { date = d; }
 
 	}
 

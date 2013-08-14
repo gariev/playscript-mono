@@ -43,7 +43,7 @@ package FinalFunctionName {
     	function TestNameObjInner() { res = "EmptyName"; }
     
     	// not the constructor but looks like it  
-    	final function testNameObjInner() { return "not the constructor" }
+    	final function testNameObjInner():* { return "not the constructor" }
 
     	final function a1 () { return "a1"; }
     	final function a_1 () { return "a_1"; }
@@ -62,7 +62,7 @@ package FinalFunctionName {
 
 
 	public class TestNameObj extends TestNameObjInner {
-		public function pubTestConst() { return testNameObjInner(); }
+		public function pubTestConst():* { return testNameObjInner(); }
     	public function puba1 () { return a1(); }
     	public function puba_1 () { return a_1(); }
     	public function pub_a1 () { return _a1(); }

@@ -51,9 +51,9 @@ package {
 			
 			var f:foo = new foo();
 			
-			AddTestCase( "function getTeam1(){return Baseball::teamName}", "Giants", f.getTeam1() );
-			AddTestCase( "function getTeam2(){return Basketball::teamName}", "Kings", f.getTeam2() );
-			AddTestCase( "function getTeam3(){return Hockey::teamName}", "Sharks", f.getTeam3() );
+			AddTestCase( "function getTeam1():*{return Baseball::teamName}", "Giants", f.getTeam1() );
+			AddTestCase( "function getTeam2():*{return Basketball::teamName}", "Kings", f.getTeam2() );
+			AddTestCase( "function getTeam3():*{return Hockey::teamName}", "Sharks", f.getTeam3() );
 			
 			
 			test();       // leave this alone.  this executes the test cases and

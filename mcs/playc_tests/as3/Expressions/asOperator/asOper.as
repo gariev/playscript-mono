@@ -54,7 +54,7 @@ package {
 			var myClassB:TestClassB = new TestClassB();	// class TestClassB extends TestClassA {}
 			var myClassC:TestClassC = new TestClassC();	// class TestClassC extends TestClassB implements TestInterface {}
 														// interface TestInterface {}
-			function emptyFunction() {};
+			function emptyFunction():* {};
 			var emptyObject:Object = new Object();
 			var myDate:Date = new Date(1977,8,24);
 			
@@ -91,7 +91,7 @@ package {
 			resultArr[x++] =[null,	   -1.23,	    null,	null,	null,  -1.23,		    null,	 null,		null,		null,	null,		null];		// -1.23
 			resultArr[x++] =[null,	    NaN,	    null,	null,	null,	NaN,		    null,	 null,		null,		null,	null,		null];		// NaN
 			resultArr[x++] =[null,	    Infinity,	    null,	null,	null, Infinity,		    null,	 null,		null,		null,	null,		null];		// Infinity
-			resultArr[x++] =[null,	    null,	    null,	null,	null,function Function() {},function Function() {},null,null,		null,	null,		null];		// emptyFunction
+			resultArr[x++] =[null,	    null,	    null,	null,	null,function Function() {},function Function():* {},null,null,		null,	null,		null];		// emptyFunction
 			resultArr[x++] =[null,	    null,	    null,	null,	null,'[object Object]',	    null,	 null,		null,		null,	null,		null];		// emptyObject
 			resultArr[x++] =[null,	    null,	    null,	null,	null,'[object TestClassA]',   null,'[object TestClassA]',	null,		null,	null,		null];		// myClassA
 			resultArr[x++] =[null,	    null,	    null,	null,	null,'[object TestClassB]',   null,'[object TestClassB]','[object TestClassB]',null,	null,		null];		// myClassB

@@ -58,8 +58,8 @@ package DefClassImpInternalIntIntname{
 	public class DefaultClassAccesor{
 
                 var c:DefaultClass = new DefaultClass(); 
-		public function accdeffunc(){return c.InternalInt::deffunc();}
-		public function accdeffunc_s(){return c.InternalInt_S::deffunc();}
+		public function accdeffunc():*{return c.InternalInt::deffunc();}
+		public function accdeffunc_s():*{return c.InternalInt_S::deffunc();}
         	
 
        } 	

@@ -53,7 +53,7 @@ package {
 			    return this.num1 + this.num2;
 			}
 			
-			AddTestCase("const and:* function arg share same name, access const with this.  should return the sum of the two const", 4, getNumber(1, 1));
+			AddTestCase("const and:* function arg share same name, access const with:* this.  should return the sum of the two const", 4, getNumber(1, 1));
 			
 			test();
 			return results();

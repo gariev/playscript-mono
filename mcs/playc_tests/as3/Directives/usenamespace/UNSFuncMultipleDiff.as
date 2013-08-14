@@ -56,26 +56,26 @@ package {
 			Basketball var teamName:* = "Kings";
 			Hockey var teamName:* = "Sharks";
 			
-			public function getTeam1(){
+			public function getTeam1():*{
 			    use namespace Baseball;
 			    return Baseball::teamName;
 			} 
 			
-			public function getTeam2(){
+			public function getTeam2():*{
 			    use namespace Basketball;
 			    return Basketball::teamName;
 			} 
 			
-			public function getTeam3(){
+			public function getTeam3():*{
 			    use namespace Hockey;
 			    return Hockey::teamName;
 			} 
 			}
 			var obj:A = new A();
 			
-			AddTestCase( "function getTeam1(){use namespace Baseball}", "Giants", obj.getTeam1() );
-			AddTestCase( "function getTeam2(){use namespace Basketball}", "Kings", obj.getTeam2() );
-			AddTestCase( "function getTeam3(){use namespace Hockey}", "Sharks", obj.getTeam3() );
+			AddTestCase( "function getTeam1():*{use namespace Baseball}", "Giants", obj.getTeam1() );
+			AddTestCase( "function getTeam2():*{use namespace Basketball}", "Kings", obj.getTeam2() );
+			AddTestCase( "function getTeam3():*{use namespace Hockey}", "Sharks", obj.getTeam3() );
 			
 			
 			test();       // leave this alone.  this executes the test cases and

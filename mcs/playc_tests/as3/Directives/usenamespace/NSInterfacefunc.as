@@ -63,13 +63,13 @@ package {
 			
 			class MP3Player implements IPod {
 			
-				public function playMusic() {
+				public function playMusic():* {
 					return "Dead Souls";
 				}
-				public function rewind() {
+				public function rewind():* {
 					return "Monday Paracetamol";
 				}
-				public function forward() {
+				public function forward():* {
 					return "Dead Cities";
 				}
 			    

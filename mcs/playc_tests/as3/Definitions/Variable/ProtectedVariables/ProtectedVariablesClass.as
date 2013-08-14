@@ -39,9 +39,9 @@ package Package1
     public class Class1
     {
         protected var classItem1:* = "Class1 protected var classItem1:* set at creation time";
-        protected const classItem2:* = "Class1 protected const classItem2 set at creation time";
+        protected const classItem2:* = "Class1 protected const classItem2:* set at creation time";
         protected static var classItem3:* = "Class1 protected static var classItem3:* set at creation time";
-        protected static const classItem4:* = "Class protected static const classItem4 set at creation time";
+        protected static const classItem4:* = "Class protected static const classItem4:* set at creation time";
         
         public function setClassItem1(msg)
         {

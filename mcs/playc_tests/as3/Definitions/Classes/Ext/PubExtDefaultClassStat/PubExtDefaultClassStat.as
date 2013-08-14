@@ -49,7 +49,7 @@ package DefaultClass {
     // ************************************
 
     function subGetArray() : Array { return getStatArray(); }
-    function subSetArray(a:Array) { setStatArray(a); }
+    function subSetArray(a:Array):* { setStatArray(a); }
 
 	public function testSubGetSetArray(a:Array) : Array {
 		this.subSetArray(a);
@@ -63,7 +63,7 @@ package DefaultClass {
     // ************************************
 
     public function pubSubGetArray() : Array { return getStatArray(); }
-    public function pubSubSetArray(a:Array) { setStatArray(a); }
+    public function pubSubSetArray(a:Array):* { setStatArray(a); }
 
     // ************************************
     // access static method of parent
@@ -71,7 +71,7 @@ package DefaultClass {
     // ************************************
 
     private function privSubGetArray() : Array { return getStatArray(); }
-    private function privSubSetArray(a:Array) { setStatArray(a); }
+    private function privSubSetArray(a:Array):* { setStatArray(a); }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -85,7 +85,7 @@ package DefaultClass {
     // ************************************
 
     final function finSubGetArray() : Array { return getStatArray(); }
-    final function finSubSetArray(a:Array) { setStatArray(a); }
+    final function finSubSetArray(a:Array):* { setStatArray(a); }
 
 	public function testFinSubArray(a:Array) : Array {
 		this.finSubSetArray(a);
@@ -99,7 +99,7 @@ package DefaultClass {
     // ***************************************
 
     static function statSubGetArray() : Array { return getStatArray(); }
-    static function statSubSetArray(a:Array) { setStatArray(a); }
+    static function statSubSetArray(a:Array):* { setStatArray(a); }
 
     public static function testStatSubArray(a:Array) : Array {
         statSubSetArray(a);
@@ -113,7 +113,7 @@ package DefaultClass {
     // ***************************************
 
     public static function pubStatSubGetArray() : Array { return getStatArray(); }
-    public static function pubStatSubSetArray(a:Array) { setStatArray(a); }
+    public static function pubStatSubSetArray(a:Array):* { setStatArray(a); }
 
     // ***************************************
     // access static method of parent
@@ -121,7 +121,7 @@ package DefaultClass {
     // ***************************************
 
     private static function privStatSubGetArray() : Array { return getStatArray(); }
-    private static function privStatSubSetArray(a:Array) { setStatArray(a); }
+    private static function privStatSubSetArray(a:Array):* { setStatArray(a); }
 
     // public accessor to test asrt
     public function testPrivStatSubArray(a:Array) : Array {
@@ -135,7 +135,7 @@ package DefaultClass {
     // ***************************************
 
     function subGetDPArray() : Array { return statArray; }
-    function subSetDPArray(a:Array) { statArray = a; }
+    function subSetDPArray(a:Array):* { statArray = a; }
 
 	public function testSubGetSetDPArray(a:Array) : Array {
 		this.subSetDPArray(a);
@@ -149,7 +149,7 @@ package DefaultClass {
     // ***************************************
 
     public function pubSubGetDPArray() : Array { return statArray; }
-    public function pubSubSetDPArray(a:Array) { statArray = a; }
+    public function pubSubSetDPArray(a:Array):* { statArray = a; }
 
     // ***************************************
     // access static property from
@@ -157,7 +157,7 @@ package DefaultClass {
     // ***************************************
 
     private function privSubGetDPArray() : Array { return statArray; }
-    private function privSubSetDPArray(a:Array) { statArray = a; }
+    private function privSubSetDPArray(a:Array):* { statArray = a; }
 
 	public function testPrivSubDPArray(a:Array) : Array {
 		this.privSubSetDPArray(a);
@@ -171,7 +171,7 @@ package DefaultClass {
     // ***************************************
 
     final function finSubGetDPArray() : Array { return statArray; }
-    final function finSubSetDPArray(a:Array) { statArray = a; }
+    final function finSubSetDPArray(a:Array):* { statArray = a; }
 
 	public function testFinSubDPArray(a:Array) : Array {
 		this.finSubSetDPArray(a);
@@ -185,7 +185,7 @@ package DefaultClass {
     // ***************************************
 
     static function statSubGetSPArray() : Array { return statArray; }
-    static function statSubSetSPArray(a:Array) { statArray = a; }
+    static function statSubSetSPArray(a:Array):* { statArray = a; }
 
     public static function testStatSubPArray(a:Array) : Array {
         statSubSetSPArray( a );
@@ -199,7 +199,7 @@ package DefaultClass {
     // ***************************************
 
     public static function pubStatSubGetSPArray() : Array { return statArray; }
-    public static function pubStatSubSetSPArray(a:Array) { statArray = a; }
+    public static function pubStatSubSetSPArray(a:Array):* { statArray = a; }
 
     // ***************************************
     // access static property from
@@ -207,7 +207,7 @@ package DefaultClass {
     // ***************************************
    
     private static function privStatSubGetSPArray() : Array { return statArray; }
-    private static function privStatSubSetSPArray(a:Array) { statArray = a; }
+    private static function privStatSubSetSPArray(a:Array):* { statArray = a; }
 
     // public accessor for asrt
     public function testPrivStatSubPArray(a:Array) : Array {

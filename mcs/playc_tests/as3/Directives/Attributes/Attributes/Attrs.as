@@ -62,29 +62,29 @@ package Attrs {
 		statPrivVar = "var, static private";
 	};
 
-	function getStatVar()     { return statVar;     };
-	function getPubStatVar()  { return pubStatVar;  };
-	function getPrivStatVar() { return privStatVar; };
-	function getStatPubVar()  { return statPubVar;  };
-	function getStatPrivVar() { return statPrivVar; };
+	function getStatVar():*     { return statVar;     };
+	function getPubStatVar():*  { return pubStatVar;  };
+	function getPrivStatVar():* { return privStatVar; };
+	function getStatPubVar():*  { return statPubVar;  };
+	function getStatPrivVar():* { return statPrivVar; };
 
 	/*=======================================================================*/
 	/* Functions                                                             */
 	/*=======================================================================*/
 
-	                function emptyFunc()    { return "func, empty         "; };
-	public          function pubFunc()      { return "func, public        "; };
-	private         function privFunc()     { return "func, private       "; };
-	static          function statFunc()     { return "func, static        "; };
-	public  static  function pubStatFunc()  { return "func, public static "; };
-	private static  function privStatFunc() { return "func, private static"; };
-	static  public  function statPubFunc()  { return "func, static public "; };
-	static  private function statPrivFunc() { return "func, static private"; };
+	                function emptyFunc():*    { return "func, empty         "; };
+	public          function pubFunc():*      { return "func, public        "; };
+	private         function privFunc():*     { return "func, private       "; };
+	static          function statFunc():*     { return "func, static        "; };
+	public  static  function pubStatFunc():*  { return "func, public static "; };
+	private static  function privStatFunc():* { return "func, private static"; };
+	static  public  function statPubFunc():*  { return "func, static public "; };
+	static  private function statPrivFunc():* { return "func, static private"; };
 
-	function getStatFunc()     { return statFunc();     };
-	function getPubStatFunc()  { return pubStatFunc();  };
-	function getPrivStatFunc() { return privStatFunc(); };
-	function getStatPubFunc()  { return statPubFunc();  };
-	function getStatPrivFunc() { return statPrivFunc(); };
+	function getStatFunc():*     { return statFunc();     };
+	function getPubStatFunc():*  { return pubStatFunc();  };
+	function getPrivStatFunc():* { return privStatFunc(); };
+	function getStatPubFunc():*  { return statPubFunc();  };
+	function getStatPrivFunc():* { return statPrivFunc(); };
  }
 }

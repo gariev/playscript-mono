@@ -49,7 +49,7 @@ package {
 			test();
 			
 			
-			function getTestCases() {
+			function getTestCases():* {
 			    var array:* = new Array();
 			    var item:* = 0;
 			
@@ -80,7 +80,7 @@ package {
 			    return ( array );
 			}
 			
-			/*function test() {
+			/*function test():* {
 			        for ( tc = 0; tc < testcases.length; tc++ ) {
 			            testcases[tc].passed = writeTestCaseResult(
 			                            testcases[tc].expect,

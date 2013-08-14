@@ -48,7 +48,7 @@ package DynamicClass {
     // ************************************
 
     function subGetArray() : Array { return getStatArray(); }
-    function subSetArray(a:Array) { setStatArray(a); }
+    function subSetArray(a:Array):* { setStatArray(a); }
 
     // function to test above from test scripts
     public function testSubArray(a:Array) : Array {
@@ -62,7 +62,7 @@ package DynamicClass {
     // ************************************
 
     public function pubSubGetArray() : Array { return getStatArray(); }
-    public function pubSubSetArray(a:Array) { setStatArray(a); }
+    public function pubSubSetArray(a:Array):* { setStatArray(a); }
 
     // ************************************
     // access static method of parent
@@ -70,7 +70,7 @@ package DynamicClass {
     // ************************************
 
     private function privSubGetArray() : Array { return getStatArray(); }
-    private function privSubSetArray(a:Array) { setStatArray(a); }
+    private function privSubSetArray(a:Array):* { setStatArray(a); }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -84,7 +84,7 @@ package DynamicClass {
     // ************************************
 
     final function finSubGetArray() : Array { return getStatArray(); }
-    final function finSubSetArray(a:Array) { setStatArray(a); }
+    final function finSubSetArray(a:Array):* { setStatArray(a); }
 
     // function to test above from test scripts
     public function testFinSubArray(a:Array) : Array {
@@ -98,7 +98,7 @@ package DynamicClass {
     // ************************************
 
     private final function privFinSubGetArray() : Array { return getStatArray(); }
-    private final function privFinSubSetArray(a:Array) { setStatArray(a); }
+    private final function privFinSubSetArray(a:Array):* { setStatArray(a); }
 
     // function to test above from test scripts
     public function testPrivFinSubArray(a:Array) : Array {
@@ -112,7 +112,7 @@ package DynamicClass {
     // ************************************
 
     virtual function virSubGetArray() : Array { return getStatArray(); }
-    virtual function virSubSetArray(a:Array) { setStatArray(a); }
+    virtual function virSubSetArray(a:Array):* { setStatArray(a); }
 
     // function to test above from test scripts
     public function testVirSubArray(a:Array) : Array {
@@ -127,7 +127,7 @@ package DynamicClass {
     // ***************************************
 
     static function statSubGetArray() : Array { return getStatArray(); }
-    static function statSubSetArray(a:Array) { setStatArray(a); }
+    static function statSubSetArray(a:Array):* { setStatArray(a); }
     // function to test above from test scripts
     public function testStatSubArray(a:Array) : Array {
         this.statSubSetArray(a);
@@ -140,7 +140,7 @@ package DynamicClass {
     // ***************************************
 
     public static function pubStatSubGetArray() : Array { return getStatArray(); }
-    public static function pubStatSubSetArray(a:Array) { setStatArray(a); }
+    public static function pubStatSubSetArray(a:Array):* { setStatArray(a); }
     // function to test above from test scripts
     public function testPubStatSubArray(a:Array) : Array {
         this.pubStatSubSetArray(a);
@@ -153,7 +153,7 @@ package DynamicClass {
     // ***************************************
 
     private static function privStatSubGetArray() : Array { return getStatArray(); }
-    private static function privStatSubSetArray(a:Array) { setStatArray(a); }
+    private static function privStatSubSetArray(a:Array):* { setStatArray(a); }
 
     // public accessor to test asrt
     public function testPrivStatSubArray(a:Array) : Array {
@@ -167,7 +167,7 @@ package DynamicClass {
     // ***************************************
 
     function subGetDPArray() : Array { return statArray; }
-    function subSetDPArray(a:Array) { statArray = a; }
+    function subSetDPArray(a:Array):* { statArray = a; }
     // public accessor to test asrt
     public function testSubDPArray(a:Array) : Array {
         this.subSetDPArray(a);
@@ -181,7 +181,7 @@ package DynamicClass {
     // ***************************************
 
     public function pubSubGetDPArray() : Array { return statArray; }
-    public function pubSubSetDPArray(a:Array) { statArray = a; }
+    public function pubSubSetDPArray(a:Array):* { statArray = a; }
 
     // ***************************************
     // access static property from
@@ -189,7 +189,7 @@ package DynamicClass {
     // ***************************************
 
     private function privSubGetDPArray() : Array { return statArray; }
-    private function privSubSetDPArray(a:Array) { statArray = a; }
+    private function privSubSetDPArray(a:Array):* { statArray = a; }
     // public accessor to test asrt
     public function testPrivSubDPArray(a:Array) : Array {
         this.privSubSetDPArray(a);
@@ -202,7 +202,7 @@ package DynamicClass {
     // ***************************************
 
     static function statSubGetSPArray() : Array { return statArray; }
-    static function statSubSetSPArray(a:Array) { statArray = a; }
+    static function statSubSetSPArray(a:Array):* { statArray = a; }
     // public accessor to test asrt
     public function testStatSubDPArray(a:Array) : Array {
         this.statSubSetSPArray(a);
@@ -215,7 +215,7 @@ package DynamicClass {
     // ***************************************
 
     public static function pubStatSubGetSPArray() : Array { return statArray; }
-    public static function pubStatSubSetSPArray(a:Array) { statArray = a; }
+    public static function pubStatSubSetSPArray(a:Array):* { statArray = a; }
 
     // ***************************************
     // access static property from
@@ -223,7 +223,7 @@ package DynamicClass {
     // ***************************************
    
     private static function privStatSubGetSPArray() : Array { return statArray; }
-    private static function privStatSubSetSPArray(a:Array) { statArray = a; }
+    private static function privStatSubSetSPArray(a:Array):* { statArray = a; }
 
     // public accessor for asrt
     public function testPrivStatSubPArray(a:Array) : Array {
@@ -237,7 +237,7 @@ package DynamicClass {
     // ***************************************
 
     final function finSubGetDPArray() : Array { return statArray; }
-    final function finSubSetDPArray(a:Array) { statArray = a; }
+    final function finSubSetDPArray(a:Array):* { statArray = a; }
 
     // public accessor for asrt
     public function testFinSubDPArray(a:Array) : Array {
@@ -251,7 +251,7 @@ package DynamicClass {
     // ***************************************
 
     public virtual function pubVirSubGetDPArray() : Array { return statArray; }
-    public virtual function pubVirSubSetDPArray(a:Array) { statArray = a; }
+    public virtual function pubVirSubSetDPArray(a:Array):* { statArray = a; }
 
     // public accessor for asrt
     public function testPubVirSubDPArray(a:Array) : Array {

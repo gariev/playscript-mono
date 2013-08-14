@@ -48,7 +48,7 @@ package foo{
 package foo{
 	public var a:* = "This is var b";
 
-	function func2(){ return "This is func2"; }
+	function func2():*{ return "This is func2"; }
 
 	interface IntB{
 		function testInt();
@@ -56,8 +56,8 @@ package foo{
 
 	public class ClassB {
 	// public class ClassB implements IntB {s
-		function test(){ return "This is test in ClassB"; }
-		public function testInt() { return "This is testInt in ClassB"; }
+		function test():*{ return "This is test in ClassB"; }
+		public function testInt():* { return "This is testInt in ClassB"; }
 	}
 }
 

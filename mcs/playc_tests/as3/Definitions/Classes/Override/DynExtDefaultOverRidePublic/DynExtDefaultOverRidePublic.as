@@ -50,7 +50,7 @@ package DefaultClass {
 		// with a public method
 		// *******************************
 
-		override public function setPubBoolean( b:Boolean ) {
+		override public function setPubBoolean( b:Boolean ):* {
 			orSetCalled = true;
 			boolean = b;
 		}

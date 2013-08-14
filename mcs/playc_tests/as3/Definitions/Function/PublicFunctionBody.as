@@ -38,17 +38,17 @@
 import PublicFunctionBody.*;
 
 class PublicFunctionBodyClass {
-	public function noReturnNoParams() { return "noReturnNoParams"; }
-	public function noReturnParams(s:String, b:Boolean) { return s; }
-	public function noReturnCustomParam(c:Custom) { return new Custom(); }
+	public function noReturnNoParams():* { return "noReturnNoParams"; }
+	public function noReturnParams(s:String, b:Boolean):* { return s; }
+	public function noReturnCustomParam(c:Custom):* { return new Custom(); }
 	public function returnNoParams():String { return "returnNoParams"; }
 	public function returnParams(s:String, b:Boolean):String { return s; }
 	public function returnCustomNoParams():Custom { return new Custom(); }
 }
 
-function noReturnNoParamsNoPackage() { return "noReturnNoParams"; }
-function noReturnParamsNoPackage(s:String, b:Boolean) { return s; }
-function noReturnCustomParamNoPackage(c:Custom) { return new Custom(); }
+function noReturnNoParamsNoPackage():* { return "noReturnNoParams"; }
+function noReturnParamsNoPackage(s:String, b:Boolean):* { return s; }
+function noReturnCustomParamNoPackage(c:Custom):* { return new Custom(); }
 function returnNoParamsNoPackage():String { return "returnNoParams"; }
 function returnParamsNoPackage(s:String, b:Boolean):String { return s; }
 function returnCustomNoParamsNoPackage():Custom { return new Custom(); }

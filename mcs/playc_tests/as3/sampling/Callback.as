@@ -56,7 +56,7 @@ class simpleobject {
         this.str=s;
     }
 }
-function simpleLoop(n:int=10) {
+function simpleLoop(n:int=10):* {
     for (var i:int=0;i<n;i++) {
         var s:*="0123456789";
         objs.push(new simpleobject(s));
@@ -84,7 +84,7 @@ var callback1_num:int=0;
 var callback2_num:int=0;
 var callback3_num:int=0;
 
-function callback1() {
+function callback1():* {
     print("callback1 called at "+objs.length)
     callback1_num++;
     testSamples();

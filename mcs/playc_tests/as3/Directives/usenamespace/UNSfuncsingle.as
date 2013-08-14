@@ -53,22 +53,22 @@ package {
 			namespace Basketball;
 			namespace Hockey;
 			
-			Baseball function getTeam(){
+			Baseball function getTeam():*{
 			    return "Giants";
 			} 
-			Basketball function getTeam(){
+			Basketball function getTeam():*{
 			    return "Kings";
 			} 
-			Hockey function getTeam(){
+			Hockey function getTeam():*{
 			    return "Sharks";
 			} 
-			public function a1(){
+			public function a1():*{
 			  return Baseball::getTeam()
 			}
-			public function a2(){
+			public function a2():*{
 			  return Hockey::getTeam()
 			}
-			public function a3(){
+			public function a3():*{
 			 use namespace Basketball;
 			  return getTeam()
 			}

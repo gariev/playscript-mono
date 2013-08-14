@@ -55,25 +55,25 @@ package ImplementByExtension {
 	interface K1 extends I1, J1 { }
 	
 	class A {
-		public function f() {
+		public function f():* {
 			return "A::f()";
 		}
 	}
 	class AX extends A { }
 	class B {
-		public function g() {
+		public function g():* {
 			return "B::g()";
 		}
 	}
 	class BX extends B { }
 	class C extends A {
-		public function g() {
+		public function g():* {
 			return "C::g()";
 		}
 	}
 	class CX extends C { }
 	class CY extends AX {
-		public function g() {
+		public function g():* {
 			return "CY::g()";
 		}
 	}
@@ -82,27 +82,27 @@ package ImplementByExtension {
 	class A3 extends AX implements I { }
 	class A4 extends AX implements I1 { }
 	class A5 extends A implements K {
-		public function g() {
+		public function g():* {
 			return "A5::g()";
 		}
 	}
 	class A6 extends A implements I2 {
-		public function g() {
+		public function g():* {
 			return "A6::g()";
 		}
 	}
 	class B1 extends B implements K1 {
-		public function f() {
+		public function f():* {
 			return "B1::f()";
 		}
 	}
 	class B2 extends BX implements K {
-		public function f() {
+		public function f():* {
 			return "B2::f()";
 		}
 	}
 	class B3 extends BX implements J2 {
-		public function f() {
+		public function f():* {
 			return "B3::f()";
 		}
 	}

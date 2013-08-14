@@ -89,64 +89,64 @@ package VarDefStatic {
     // access methods - only used for runtime testing
     // *****************************************************************************************
 
-    public function getid() { return id; }
-    public function setid(x) { id = x; }
+    public function getid():* { return id; }
+    public function setid(x):* { id = x; }
     public function getidTypeExpr():Boolean { return idTypeExpr; }
-    public function setidTypeExpr(x:Boolean) { idTypeExpr = x; }
-    public function getidAssignExpr() { return idAssignExpr; }
-    public function setidAssignExpr(x) { idAssignExpr = x; }
+    public function setidTypeExpr(x:Boolean):* { idTypeExpr = x; }
+    public function getidAssignExpr():* { return idAssignExpr; }
+    public function setidAssignExpr(x):* { idAssignExpr = x; }
     public function getidTypeExprAssignExpr():Boolean { return idTypeExprAssignExpr; }
-    public function setidTypeExprAssignExpr(x:Boolean) { idTypeExprAssignExpr = x; }
-    public function getid1() { return id1; }
-    public function setid1(x) { id1 = x; }
-    public function getid2() { return id2; }
-    public function setid2(x) { id2 = x; }
-    public function getid3() { return id3; }
-    public function setid3(x) { id3 = x; }
+    public function setidTypeExprAssignExpr(x:Boolean):* { idTypeExprAssignExpr = x; }
+    public function getid1():* { return id1; }
+    public function setid1(x):* { id1 = x; }
+    public function getid2():* { return id2; }
+    public function setid2(x):* { id2 = x; }
+    public function getid3():* { return id3; }
+    public function setid3(x):* { id3 = x; }
     public function getid1TypeExpr():Boolean { return id1TypeExpr; }
-    public function setid1TypeExpr(x:Boolean) { id1TypeExpr = x; } 
+    public function setid1TypeExpr(x:Boolean):* { id1TypeExpr = x; } 
     public function getid2TypeExpr():Boolean { return id2TypeExpr; }
-    public function setid2TypeExpr(x:Boolean) { id2TypeExpr = x; } 
+    public function setid2TypeExpr(x:Boolean):* { id2TypeExpr = x; } 
     public function getid3TypeExpr():Boolean { return id3TypeExpr; }
-    public function setid3TypeExpr(x:Boolean) { id3TypeExpr = x; } 
-    public function getid1AssignExpr() { return id1AssignExpr; }
-    public function getid2AssignExpr() { return id2AssignExpr; }
-    public function getid3AssignExpr() { return id3AssignExpr; }
-    public function getid1AssignExprB() { return id1AssignExprB; }
-    public function getid2AssignExprB() { return id2AssignExprB; }
-    public function getid3AssignExprB() { return id3AssignExprB; }
+    public function setid3TypeExpr(x:Boolean):* { id3TypeExpr = x; } 
+    public function getid1AssignExpr():* { return id1AssignExpr; }
+    public function getid2AssignExpr():* { return id2AssignExpr; }
+    public function getid3AssignExpr():* { return id3AssignExpr; }
+    public function getid1AssignExprB():* { return id1AssignExprB; }
+    public function getid2AssignExprB():* { return id2AssignExprB; }
+    public function getid3AssignExprB():* { return id3AssignExprB; }
     public function getid1TypeExprAssignExpr():Boolean { return id1TypeExprAssignExpr; }
     public function getid2TypeExprAssignExpr():Boolean { return id2TypeExprAssignExpr; }
     public function getid3TypeExprAssignExpr():Boolean { return id3TypeExprAssignExpr; }
     public function getid1TypeExprAssignExprB():Boolean { return id1TypeExprAssignExprB; }
     public function getid2TypeExprAssignExprB():Boolean { return id2TypeExprAssignExprB; }
     public function getid3TypeExprAssignExprB():Boolean { return id3TypeExprAssignExprB; }
-    public function getidA() { return idA; }
-    public function setidA(x) { idA = x; }
+    public function getidA():* { return idA; }
+    public function setidA(x):* { idA = x; }
     public function getidB():Boolean { return idB; }
-    public function setidB(x:Boolean) { idB = x; }
-    public function getidAAssign() { return idAAssign; }
+    public function setidB(x:Boolean):* { idB = x; }
+    public function getidAAssign():* { return idAAssign; }
     public function getidBAssign():Boolean { return idBAssign; }
-    public function getidAAssignB() { return idAAssignB; }
+    public function getidAAssignB():* { return idAAssignB; }
     public function getidBAssignB():Boolean { return idBAssignB; }
     public function getidTypeExprA() : Array { return idTypeExprA; }
-    public function setidTypeExprA(x:Array) { idTypeExprA = x; }
+    public function setidTypeExprA(x:Array):* { idTypeExprA = x; }
     public function getidTypeExprB() : Boolean { return idTypeExprB; }
-    public function setidTypeExprB(x:Boolean) { idTypeExprB = x; }
+    public function setidTypeExprB(x:Boolean):* { idTypeExprB = x; }
     public function getidTypeExprAAssign() : Array { return idTypeExprAAssign; }
     public function getidTypeExprBAssign() : Boolean { return idTypeExprBAssign; }
     public function getidTypeExprAAssignB() : Array { return idTypeExprAAssignB; }
     public function getidTypeExprBAssignB() : Boolean { return idTypeExprBAssignB; }
-    public function getidId() { return idId; }
-    public function setidId(x) { idId = x; }
+    public function getidId():* { return idId; }
+    public function setidId(x):* { idId = x; }
     public function getidIdTypeExprA() : Array { return idIdTypeExprA; }
-    public function setidIdTypeExprA(x:Array) { idIdTypeExprA = x; }
+    public function setidIdTypeExprA(x:Array):* { idIdTypeExprA = x; }
     public function getidIdTypeExprB() : Boolean{ return idIdTypeExprB; }
-    public function setidIdTypeExprB(x:Boolean) { idIdTypeExprB = x; }
-    public function getidIdAssign() { return idIdAssign; }
+    public function setidIdTypeExprB(x:Boolean):* { idIdTypeExprB = x; }
+    public function getidIdAssign():* { return idIdAssign; }
     public function getidIdTypeExprAAssign() : Array { return idIdTypeExprAAssign; }
     public function getidIdTypeExprBAssign() : Boolean{ return idIdTypeExprBAssign; }
-    public function getidIdAssignB() { return idIdAssignB; }
+    public function getidIdAssignB():* { return idIdAssignB; }
     public function getidIdTypeExprAAssignB() : Array { return idIdTypeExprAAssignB; }
     public function getidIdTypeExprBAssignB() : Boolean{ return idIdTypeExprBAssignB; }
 

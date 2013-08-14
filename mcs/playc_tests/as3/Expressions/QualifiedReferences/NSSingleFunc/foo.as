@@ -42,13 +42,13 @@ package ns {
 	public class foo {
 		
 
-		Baseball function getTeam(){
+		Baseball function getTeam():*{
 		    return "Giants";
 		} 
-		Basketball function getTeam(){
+		Basketball function getTeam():*{
 		    return "Kings";
 		} 
-		Hockey function getTeam(){
+		Hockey function getTeam():*{
 		    return "Sharks";
 		} 
 	}

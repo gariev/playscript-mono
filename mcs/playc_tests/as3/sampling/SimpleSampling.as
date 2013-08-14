@@ -155,7 +155,7 @@ package {
 			
 			test();
 			
-			function simpleLoop() {
+			function simpleLoop():* {
 			    for (var i:int=0;i<100;i++) {
 			       objs.push(new simpleobject(""+i));
 			    }

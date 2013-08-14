@@ -49,7 +49,7 @@ package DefaultClass {
 		// with a default method in subclass
 		// *********************************
 
-		override virtual function setVirtualString( newString:String ) {
+		override virtual function setVirtualString( newString:String ):* {
 			orSet = true;
 			string = "override: " + newString;
 		}

@@ -64,15 +64,15 @@ package Importall {
     // public methods
     // *******************
 
-    public function setPubArray( a:Array ) { pubArray = a; }
-    public function setPubBoolean( b:Boolean ) { pubBoolean = b; }
-    public function setPubDate( d:Date ) { pubDate = d; }
-    public function setPubFunction( f:Function ) { pubFunction = f; }
-    public function setPubMath( m:Math ) { pubMath = m; }
-    public function setPubNumber( n:Number ) { pubNumber = n; }
-    public function setPubObject( o:Object ) { pubObject = o; }
-    public function setPubString( s:String ) { pubString = s; }
-    //public function setPubSimple( s:Simple ) { pubSimple = s; }
+    public function setPubArray( a:Array ):* { pubArray = a; }
+    public function setPubBoolean( b:Boolean ):* { pubBoolean = b; }
+    public function setPubDate( d:Date ):* { pubDate = d; }
+    public function setPubFunction( f:Function ):* { pubFunction = f; }
+    public function setPubMath( m:Math ):* { pubMath = m; }
+    public function setPubNumber( n:Number ):* { pubNumber = n; }
+    public function setPubObject( o:Object ):* { pubObject = o; }
+    public function setPubString( s:String ):* { pubString = s; }
+    //public function setPubSimple( s:Simple ):* { pubSimple = s; }
 
     public function getPubArray() : Array { return this.pubArray; }
     public function getPubBoolean() : Boolean { return this.pubBoolean; }

@@ -48,7 +48,7 @@ package DynamicClass {
     // ************************************
 
     function subGetArray() : Array { return getPubStatArray(); }
-    function subSetArray(a:Array) { setPubStatArray(a); }
+    function subSetArray(a:Array):* { setPubStatArray(a); }
 
     public function testSubSetArray(a:Array) : Array {
         this.subSetArray(a);
@@ -62,7 +62,7 @@ package DynamicClass {
     // ************************************
 
     public function pubSubGetArray() : Array { return getPubStatArray(); }
-    public function pubSubSetArray(a:Array) { setPubStatArray(a); }
+    public function pubSubSetArray(a:Array):* { setPubStatArray(a); }
 
     // ************************************
     // access public static method of parent
@@ -70,7 +70,7 @@ package DynamicClass {
     // ************************************
 
     private function privSubGetArray() : Array { return getPubStatArray(); }
-    private function privSubSetArray(a:Array) { setPubStatArray(a); }
+    private function privSubSetArray(a:Array):* { setPubStatArray(a); }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -84,7 +84,7 @@ package DynamicClass {
     // ***************************************
 
     static function statSubGetArray() : Array { return getPubStatArray(); }
-    static function statSubSetArray(a:Array) { setPubStatArray(a); }
+    static function statSubSetArray(a:Array):* { setPubStatArray(a); }
 
     public static function testStatSubSetArray(a:Array) : Array {
         statSubSetArray(a);
@@ -98,7 +98,7 @@ package DynamicClass {
     // ***************************************
 
     public static function pubStatSubGetArray() : Array { return getPubStatArray(); }
-    public static function pubStatSubSetArray(a:Array) { setPubStatArray(a); }
+    public static function pubStatSubSetArray(a:Array):* { setPubStatArray(a); }
 
     // ***************************************
     // access public static method of parent
@@ -106,7 +106,7 @@ package DynamicClass {
     // ***************************************
 
     private static function privStatSubGetArray() : Array { return getPubStatArray(); }
-    private static function privStatSubSetArray(a:Array) { setPubStatArray(a); }
+    private static function privStatSubSetArray(a:Array):* { setPubStatArray(a); }
 
     // public accessor to test asrt
     public function testPrivStatSubArray(a:Array) : Array {
@@ -120,7 +120,7 @@ package DynamicClass {
     // ***************************************
 
     function subGetDPArray() : Array { return pubStatArray; }
-    function subSetDPArray(a:Array) { pubStatArray = a; }
+    function subSetDPArray(a:Array):* { pubStatArray = a; }
 
     public function testSubSetDPArray(a:Array) : Array {
         this.subSetDPArray(a);
@@ -134,7 +134,7 @@ package DynamicClass {
     // ***************************************
 
     public function pubSubGetDPArray() : Array { return pubStatArray; }
-    public function pubSubSetDPArray(a:Array) { pubStatArray = a; }
+    public function pubSubSetDPArray(a:Array):* { pubStatArray = a; }
 
     // ***************************************
     // access public static property from
@@ -142,7 +142,7 @@ package DynamicClass {
     // ***************************************
 
     private function privSubGetDPArray() : Array { return pubStatArray; }
-    private function privSubSetDPArray(a:Array) { pubStatArray = a; }
+    private function privSubSetDPArray(a:Array):* { pubStatArray = a; }
 
 
     public function testPrivSubSetDPArray(a:Array) : Array {
@@ -157,7 +157,7 @@ package DynamicClass {
     // ***************************************
 
     static function statSubGetSPArray() : Array { return pubStatArray; }
-    static function statSubSetSPArray(a:Array) { pubStatArray = a; }
+    static function statSubSetSPArray(a:Array):* { pubStatArray = a; }
 
     public static function testStatSubSetDPArray(a:Array) : Array {
         statSubSetSPArray(a);
@@ -171,7 +171,7 @@ package DynamicClass {
     // ***************************************
 
     public static function pubStatSubGetSPArray() : Array { return pubStatArray; }
-    public static function pubStatSubSetSPArray(a:Array) { pubStatArray = a; }
+    public static function pubStatSubSetSPArray(a:Array):* { pubStatArray = a; }
 
     // ***************************************
     // access public static property from
@@ -179,7 +179,7 @@ package DynamicClass {
     // ***************************************
    
     private static function privStatSubGetSPArray() : Array { return pubStatArray; }
-    private static function privStatSubSetSPArray(a:Array) { pubStatArray = a; }
+    private static function privStatSubSetSPArray(a:Array):* { pubStatArray = a; }
 
     // public accessor for asrt
     public function testPrivStatSubPArray(a:Array) : Array {
@@ -188,18 +188,18 @@ package DynamicClass {
     }
  }
 public class ExtDynamicClassPubStat extends ExtDynamicClassPubStatInner {
-    static function setStatArray(a:Array) { DynamicClassInner.setStatArray(a); }
-    static function setStatBoolean( b:Boolean ) { DynamicClassInner.setStatBoolean(b); }
-    static function getStatArray() { return DynamicClassInner.getStatArray(); }
-    public static function setPubStatArray(a:Array) { DynamicClassInner.setPubStatArray(a); }
-    public static function setPubStatBoolean( b:Boolean ) { DynamicClassInner.setPubStatBoolean(b); }
-    public static function getPubStatArray() { return DynamicClassInner.getPubStatArray(); }
+    static function setStatArray(a:Array):* { DynamicClassInner.setStatArray(a); }
+    static function setStatBoolean( b:Boolean ):* { DynamicClassInner.setStatBoolean(b); }
+    static function getStatArray():* { return DynamicClassInner.getStatArray(); }
+    public static function setPubStatArray(a:Array):* { DynamicClassInner.setPubStatArray(a); }
+    public static function setPubStatBoolean( b:Boolean ):* { DynamicClassInner.setPubStatBoolean(b); }
+    public static function getPubStatArray():* { return DynamicClassInner.getPubStatArray(); }
     public static function testStatSubSetArray(a:Array) : Array { return ExtDynamicClassPubStatInner.testStatSubSetArray(a); }
     public static function pubStatSubGetArray() : Array { return ExtDynamicClassPubStatInner.pubStatSubGetArray(); }
-    public static function pubStatSubSetArray(a:Array) { ExtDynamicClassPubStatInner.pubStatSubSetArray(a); }
+    public static function pubStatSubSetArray(a:Array):* { ExtDynamicClassPubStatInner.pubStatSubSetArray(a); }
     public static function testStatSubSetDPArray(a:Array) : Array { return ExtDynamicClassPubStatInner.testStatSubSetDPArray(a); }
     public static function pubStatSubGetSPArray() : Array { return ExtDynamicClassPubStatInner.pubStatSubGetSPArray(); }
-    public static function pubStatSubSetSPArray(a:Array) { ExtDynamicClassPubStatInner.pubStatSubSetSPArray(a); }
+    public static function pubStatSubSetSPArray(a:Array):* { ExtDynamicClassPubStatInner.pubStatSubSetSPArray(a); }
 }
 
 }

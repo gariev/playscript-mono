@@ -40,7 +40,7 @@ package {
 	public class ExtDefImplDefDefPrivStatErr1Test extends BaseTest {
 		public static function Main():int {
 			class DefaultClass {
-			  private static function baseClass() {
+			  private static function baseClass():* {
 			  }
 			}
 			

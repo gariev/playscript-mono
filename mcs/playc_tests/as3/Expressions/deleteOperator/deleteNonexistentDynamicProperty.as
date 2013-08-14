@@ -47,7 +47,7 @@ package {
 			
 			dynamic class Account {
 				var name:* = "Jon";
-				function func() { return "Account.func"; }
+				function func():* { return "Account.func"; }
 			}
 			var account:Account = new Account();
 			

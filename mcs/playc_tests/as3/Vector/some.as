@@ -55,7 +55,7 @@ package {
 			
 			writeHeaderToLog(" Vector.some()");
 			var msg:*;
-			function checker1(value,index,obj) {
+			function checker1(value,index,obj):* {
 			  msg+="(value="+value+",index="+index+",object=["+obj+"])";
 			  if (value=='t')
 			    return true;

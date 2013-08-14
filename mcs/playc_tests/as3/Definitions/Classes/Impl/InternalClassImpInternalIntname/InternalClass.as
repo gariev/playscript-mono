@@ -57,7 +57,7 @@ package InternalClassImpInternalIntname{
 		
 		var c:InternalClass = new InternalClass(); 
 		var i:InternalInt = c;
-		public function accdeffunc(){return i.deffunc();}
+		public function accdeffunc():*{return i.deffunc();}
 			
       } 	
 	

@@ -44,7 +44,7 @@ package B {
 }
 
 class B {
-	function tada() {
+	function tada():* {
 		return 'class A';
 	}
 			

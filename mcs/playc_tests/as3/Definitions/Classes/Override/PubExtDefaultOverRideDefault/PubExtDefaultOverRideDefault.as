@@ -49,7 +49,7 @@ package DefaultClass {
 		// with a default method in subclass
 		// *********************************
 
-		override function setBoolean( b:Boolean ) {
+		override function setBoolean( b:Boolean ):* {
 			orSet = true;
 			boolean = b;
 		}

@@ -60,7 +60,7 @@ package testInternalClassWithParamCons{
         var intWithParamCons:intClassWithParamCons=new intClassWithParamCons(20,40); 
                                   
 
-                                 public function getAdd(){
+                                 public function getAdd():*{
                                                           var R:* = intWithParamCons.Add();
                                                           return R;
                                                          }

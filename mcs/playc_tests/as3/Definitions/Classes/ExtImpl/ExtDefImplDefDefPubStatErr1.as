@@ -40,7 +40,7 @@ package {
 	public class ExtDefImplDefDefPubStatErr1Test extends BaseTest {
 		public static function Main():int {
 			class DefaultClass {
-			  public static function baseClass() {
+			  public static function baseClass():* {
 				 // print("base is invoked");
 			  }
 			}

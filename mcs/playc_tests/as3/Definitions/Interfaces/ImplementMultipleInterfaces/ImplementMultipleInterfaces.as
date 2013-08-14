@@ -50,67 +50,67 @@ package ImplementMultipleInterfaces {
 	}
 
 	class X1 implements A {
-		public function a() {
+		public function a():* {
 			return "x1.A::a()";
 		}
 	}
 	class X2 implements A, B {
-		public function a() {
+		public function a():* {
 			return "x2.A::a()";
 		}
-		public function b() {
+		public function b():* {
 			return "x2.B::b()";
 		}
 	}
 	class X3 implements A, B, C {
-		public function a() {
+		public function a():* {
 			return "x3.A::a()";
 		}
-		public function b() {
+		public function b():* {
 			return "x3.B::b()";
 		}
-		public function c() {
+		public function c():* {
 			return "x3.C::c()";
 		}
 	}
 	class X4 implements A, B, C, D {
-		public function a() {
+		public function a():* {
 			return "x4.A::a()";
 		}
-		public function b() {
+		public function b():* {
 			return "x4.B::b()";
 		}
-		public function c() {
+		public function c():* {
 			return "x4.C::c()";
 		}
-		public function d() {
+		public function d():* {
 			return "x4.D::d()";
 		}
 	}
 	
 	class Y1 extends X1 implements B {
-		public function b() {
+		public function b():* {
 			return "y1.B::b()";
 		}
 	}
 	class Y2 extends X1 implements B, C {
-		public function b() {
+		public function b():* {
 			return "y2.B::b()";
 		}
-		public function c() {
+		public function c():* {
 			return "y2.C::c()";
 		}
 	}
 	class Y3 extends X2 implements C, D {
-		public function c() {
+		public function c():* {
 			return "y3.C::c()";
 		}
-		public function d() {
+		public function d():* {
 			return "y3.D::d()";
 		}
 	}
 	class Y4 extends X3 implements D {
-		public function d() {
+		public function d():* {
 			return "y4.D::d()";
 		}
 	}

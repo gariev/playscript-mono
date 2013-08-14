@@ -38,15 +38,15 @@ package OptionalParams {
 	
 	public class OverrideWithOptionalParams extends BaseClass {
 
-		override public function setInt( input:int = 1 ) {
+		override public function setInt( input:int = 1 ):* {
 			i = input;
 		}
 		
-		override public function setString( string:String = "override" ) {
+		override public function setString( string:String = "override" ):* {
 			s = string;
 		}
 		
-		override public function setAll( input:int = 1, string:String = "override" ) {
+		override public function setAll( input:int = 1, string:String = "override" ):* {
 			i = input;
 			s = string;
 		}

@@ -140,10 +140,10 @@ package DefaultClassSame {
 		// Error cases
 
 		// access private property from same package not same class
-		public function accPrivPropErr() { return privProp; }
+		public function accPrivPropErr():* { return privProp; }
 
 		// access private method from same pakcage not same class
-		public function accPrivMethErr() { return privMethod(); }
+		public function accPrivMethErr():* { return privMethod(); }
 
 	}
 	

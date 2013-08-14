@@ -64,9 +64,9 @@ public class testclass {
     function testclass(s:String) { 
         this.string_instance=s;
     }
-    function func() {}
-    public function publicfunction() {}
-    private function privatefunction() {}
+    function func():* {}
+    public function publicfunction():* {}
+    private function privatefunction():* {}
     private var _getset:int;
     public function get getset():int {
         return _getset;
@@ -80,7 +80,7 @@ public class testclass {
     public function set setonly(n:int):void {
     }
 }
-function simpleLoop() {
+function simpleLoop():* {
     for (var i:int=0;i<10;i++) {
        objs.push(new testclass(""+i));
     }

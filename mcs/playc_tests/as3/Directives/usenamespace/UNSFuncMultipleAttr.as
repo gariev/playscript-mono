@@ -61,16 +61,16 @@ package {
 			    Basketball var teamName:* = "basketball";
 			    Football var teamColor:* = "yellow";
 			
-				Football function getTeam(){
+				Football function getTeam():*{
 				    use namespace Football;
 				    return teamName;
 				}
 			
-				public function a1(){
+				public function a1():*{
 					return Football::getTeam();
 				}
 			
-				public function a2(){
+				public function a2():*{
 					return teamColor ;
 				}
 			}

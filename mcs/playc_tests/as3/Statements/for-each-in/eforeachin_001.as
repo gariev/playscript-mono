@@ -57,7 +57,7 @@ package {
 			
 			    test();
 			
-			    function ForIn_1( object ) {
+			    function ForIn_1( object ):* {
 			        PropertyArray = new Array();
 			        ValueArray = new Array();
 			
@@ -126,7 +126,7 @@ package {
 			            object.length );
 			    }
 			
-			    function ForIn_2( object ) {
+			    function ForIn_2( object ):* {
 			        PropertyArray = new Array();
 			        ValueArray = new Array();
 			        var i:* = 0;
@@ -196,7 +196,7 @@ package {
 			            object.length );
 			    }
 			
-			    function ForIn_3( object ) {
+			    function ForIn_3( object ):* {
 			        var checkBreak:* = "pass";
 			        var properties:* = new Array();
 			        var values:* = new Array();
@@ -232,7 +232,7 @@ package {
 			            myTest );
 			    }
 			
-			    function ForIn_4( object ) {
+			    function ForIn_4( object ):* {
 			        var result1:* = 0;
 			        var result2:* = 0;
 			        var result3:* = 0;
@@ -319,7 +319,7 @@ package {
 			            result3 == 0 );
 			    }
 			
-			    function ForIn_8( object ) {
+			    function ForIn_8( object ):* {
 			        var checkBreak:* = "pass";
 			        var properties:* = new Array();
 			        var values:* = new Array();

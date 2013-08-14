@@ -51,13 +51,13 @@ package Example_9_4 {
 	}
 	
 	class A implements V {
-		public function f() {
+		public function f():* {
 			return "a.{T,U}::f()";
 		}
-		public function g() {
+		public function g():* {
 			return "a.U::g()";
 		}
-		public function h() {
+		public function h():* {
 			return "a.V::h()";
 		}
 	}

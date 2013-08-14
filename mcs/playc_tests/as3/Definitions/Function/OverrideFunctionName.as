@@ -42,7 +42,7 @@ class OverrideFunctionNameClassBase {
     	function OverrideFunctionNameClassBase() {}
 
     	// not the constructor but looks like it
-    	function overrideFunctionNameClass() { return null; }
+    	function overrideFunctionNameClass():* { return null; }
 
     	function a1 () { return null; }
     	function a_1 () { return null; }
@@ -64,7 +64,7 @@ class OverrideFunctionNameClass extends OverrideFunctionNameClassBase {
     	function OverrideFunctionNameClass() {}
 
     	// not the constructor but looks like it
-    	override function overrideFunctionNameClass() { return "not the constructor" }
+    	override function overrideFunctionNameClass():* { return "not the constructor" }
 
     	override function a1 () { return "a1"; }
     	override function a_1 () { return "a_1"; }

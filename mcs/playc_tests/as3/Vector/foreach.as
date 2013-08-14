@@ -54,7 +54,7 @@ package {
 			
 			writeHeaderToLog( " Vector.forEach()");
 			
-			function eacher(value,index,obj) {
+			function eacher(value,index,obj):* {
 			  result+="("+value+":"+index+")";
 			}
 			var bad_eacher:*="astring";

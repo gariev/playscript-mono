@@ -52,10 +52,10 @@ package SuperArgsCall {
 		override function f() : String {
 			return "derived f()"
 		}
-		public function test0() {
+		public function test0():* {
 			return super(this).f()
 		}
-		public function test1( o : SuperArgsCall ) {
+		public function test1( o : SuperArgsCall ):* {
 			return super(o).f()
 		}
 	}

@@ -75,39 +75,39 @@ package GetSetInternal{
 	public class GetSetInternal {
 	
 		internalC = new GetSetInternalInternal();
-		public function getBoolean() {
+		public function getBoolean():* {
 			return internalC.boolean;
 		}
-		public function setBoolean(b:Boolean) {
+		public function setBoolean(b:Boolean):* {
 			internalC.boolean = b;
 			return internalC.boolean;
 		}
 		
-		public function getArray() {
+		public function getArray():* {
 			return internalC.x;
 		}
-		public function setArray(a:Array) {
+		public function setArray(a:Array):* {
 			internalC.x = a;
 			return internalC.x;
 		}
-		public function getUint() {
+		public function getUint():* {
 			return internalC.u;
 		}
-		public function setUint(u:uint) {
+		public function setUint(u:uint):* {
 			internalC.u = u;
 			return internalC.u;
 		}
-		public function getString() {
+		public function getString():* {
 			return internalC.string;
 		}
-		public function setString(s:String) {
+		public function setString(s:String):* {
 			internalC.string = s;
 			return internalC.string;
 		}
-		public function getNoType() {
+		public function getNoType():* {
 			return internalC.noType;
 		}
-		public function setNoType(nt) {
+		public function setNoType(nt):* {
 			internalC.noType = nt;
 			return internalC.noType;
 		}

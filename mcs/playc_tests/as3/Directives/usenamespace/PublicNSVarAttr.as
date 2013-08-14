@@ -54,20 +54,20 @@ package {
 			public var teamName:*="Public";
 			Baseball var teamName:*="Giants" 
 			
-			public function a1(){
+			public function a1():*{
 			 return public::teamName
 			}
 			
-			public function a2(){
+			public function a2():*{
 			 return Baseball::teamName
 			}
 			
-			public function a3(){
+			public function a3():*{
 			use namespace Baseball;
 			 return public::teamName
 			}
 			
-			public function a4(){
+			public function a4():*{
 			use namespace Baseball;
 			 return Baseball::teamName
 			}

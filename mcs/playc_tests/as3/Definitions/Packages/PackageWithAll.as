@@ -42,15 +42,15 @@ package foo {
 	public class A {
 
 		fletch var lives:* = 'PASSED';
-		public function getFletch() {
+		public function getFletch():* {
 			return fletch::lives;
 		}
 	}
 	
-	public function fletchFunc(){ return 'PASSED'; }
+	public function fletchFunc():*{ return 'PASSED'; }
 	
 	public class fletch2{ 
-		public function lives(){return 'PASSED';}
+		public function lives():*{return 'PASSED';}
 	}
 	
 	public interface fletch3 {
@@ -58,7 +58,7 @@ package foo {
 	}
 
 	public class erwin implements fletch3 { 
-		public function lives(){return 'PASSED';}
+		public function lives():*{return 'PASSED';}
 	}
 }
 
@@ -75,7 +75,7 @@ package P
 {
 	class A
 	{
-		public function f() { return "original f"}
+		public function f():* { return "original f"}
 	}
 }
 
@@ -84,7 +84,7 @@ package P
 {
 	public class B extends A
 	{
-		override public function f() { return "override f"}
+		override public function f():* { return "override f"}
 	}
 }
 

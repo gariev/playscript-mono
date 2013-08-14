@@ -72,7 +72,7 @@ package {
         }
         return result;
     }
-    function samplecallback() {
+    function samplecallback():* {
         var time:*=getTimer();
         samplescount+=getSampleCount();
         clearSamples();

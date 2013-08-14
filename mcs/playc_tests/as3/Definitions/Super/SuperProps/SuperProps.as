@@ -44,7 +44,7 @@ package SuperProps {
 			this["x"] = "base::dynamicX";
 		}
 		public function get baseProp() : String { return y; }
-		public function setBaseVal( y : String, z : String ) { this[y] = z; }
+		public function setBaseVal( y : String, z : String ):* { this[y] = z; }
 		public function getBaseVal( y : String ) : String { return this[y]; }
 	}
 	
@@ -52,7 +52,7 @@ package SuperProps {
 		public function get inheritedProp() : String { return y; }
 		public function get superPropDot() : String { return super.y; }
 		public function get superPropIndex() : String { return super["x"]; }
-		public function setDerivedVal( y : String, z : String ) { this[y] = z; }
+		public function setDerivedVal( y : String, z : String ):* { this[y] = z; }
 		public function getDerivedVal( y : String ) : String { return this[y]; }
 		public function getSuperVal( y : String ) : String { return super[y]; }
 	}

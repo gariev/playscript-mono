@@ -50,7 +50,7 @@ package DefaultClass {
 	    // ************************************
 
 	    function subGetArray() : Array { return this.getArray(); }
-	    function subSetArray(a:Array) { this.setArray(a); }
+	    function subSetArray(a:Array):* { this.setArray(a); }
 
 	    // ************************************
 	    // access default method of parent
@@ -58,7 +58,7 @@ package DefaultClass {
 	    // ************************************
 
 	    public function pubSubGetArray() : Array { return this.getArray(); }
-	    public function pubSubSetArray(a:Array) { this.setArray(a); }
+	    public function pubSubSetArray(a:Array):* { this.setArray(a); }
 	    
 	    // this is needed so that the test cases can access this from
 	    // outside the class.  This way the test case itself preserved
@@ -73,7 +73,7 @@ package DefaultClass {
 	    // ************************************
 
 	    private function privSubGetArray() : Array { return this.getArray(); }
-	    private function privSubSetArray(a:Array) { this.setArray(a); }
+	    private function privSubSetArray(a:Array):* { this.setArray(a); }
 
 	    // function to test above from test scripts
 	    public function testPrivSubArray(a:Array) : Array {
@@ -87,7 +87,7 @@ package DefaultClass {
 	    // ************************************
 
 	    final function finGetArray() : Array { return this.getArray(); }
-	    final function finSetArray(a:Array) { this.setArray(a); }
+	    final function finSetArray(a:Array):* { this.setArray(a); }
 	
 	    // this is needed so that the test cases can access this from
 	    // outside the class.  This way the test case itself preserved
@@ -102,7 +102,7 @@ package DefaultClass {
 	    // ************************************
 
 	    static function statGetArray() : Array { return getArray(); }
-	    static function statSetArray(a:Array) { setArray(a); }	    
+	    static function statSetArray(a:Array):* { setArray(a); }	    
 	    // this is needed so that the test cases can access this from
 	    // outside the class.  This way the test case itself preserved
 	    public function testStatSubArray(a:Array) : Array {
@@ -116,7 +116,7 @@ package DefaultClass {
 	    // ************************************
 	    
 	    public final function pubFinSubGetArray() : Array { return this.getArray(); }
-	    final public function pubFinSubSetArray(a:Array) { this.setArray(a); }
+	    final public function pubFinSubSetArray(a:Array):* { this.setArray(a); }
 	    
 	    // ************************************
 	    // access default method of parent
@@ -124,7 +124,7 @@ package DefaultClass {
 	    // ************************************
 	    
 	    private final function privFinSubGetArray() : Array { return this.getArray(); }
-	    final private function privFinSubSetArray(a:Array) { this.setArray(a); }
+	    final private function privFinSubSetArray(a:Array):* { this.setArray(a); }
 	   
 	    public function testPrivFinSubArray(a:Array):Array {
 	    	this.privFinSubSetArray(a);
@@ -138,7 +138,7 @@ package DefaultClass {
 	    // ************************************
 	    
 	    virtual function virtSubGetArray() : Array { return this.getArray(); }
-	    virtual function virtSubSetArray(a:Array) { this.setArray(a); }
+	    virtual function virtSubSetArray(a:Array):* { this.setArray(a); }
 	    
 	    public function testVirtSubArray(a:Array) : Array {
 	    	this.virtSubSetArray(a);
@@ -151,7 +151,7 @@ package DefaultClass {
 	    // ************************************
 	    
 	    virtual public function pubVirtSubGetArray() : Array { return this.getArray(); }
-	    public virtual function pubVirtSubSetArray(a:Array) { this.setArray(a); }
+	    public virtual function pubVirtSubSetArray(a:Array):* { this.setArray(a); }
 	    
 	    // ************************************
 	    // access default method of parent
@@ -159,7 +159,7 @@ package DefaultClass {
 	    // ************************************
 	    
 	    virtual private function privVirtSubGetArray() : Array { return this.getArray(); }
-	    private virtual function privVirtSubSetArray(a:Array) { this.setArray(a); }
+	    private virtual function privVirtSubSetArray(a:Array):* { this.setArray(a); }
 	    
 	    public function testPrivVirtSubArray(a:Array) : Array {
 	    	this.privVirtSubSetArray(a);
@@ -173,7 +173,7 @@ package DefaultClass {
 	    // ***************************************
 
 	    function subGetDPArray() : Array { return array; }
-	    function subSetDPArray(a:Array) { array = a; }
+	    function subSetDPArray(a:Array):* { array = a; }
 	
 	    // this is needed so that the test cases can access this from
 	    // outside the class.  This way the test case itself preserved
@@ -188,7 +188,7 @@ package DefaultClass {
 	    // ***************************************
 
 	    public function pubSubGetDPArray() : Array { return array; }
-	    public function pubSubSetDPArray(a:Array) { array = a; }
+	    public function pubSubSetDPArray(a:Array):* { array = a; }
 
 	    // ***************************************
 	    // access default property from
@@ -196,7 +196,7 @@ package DefaultClass {
 	    // ***************************************
 
 	    private function privSubGetDPArray() : Array { return array; }
-	    private function privSubSetDPArray(a:Array) { array = a; }
+	    private function privSubSetDPArray(a:Array):* { array = a; }
 
 	    public function testPrivSubDPArray(a:Array) : Array {
 		this.privSubSetDPArray(a);
@@ -210,7 +210,7 @@ package DefaultClass {
 	    // ***************************************
 
 	    final function finSubGetDPArray() : Array { return array; }
-	    final function finSubSetDPArray(a:Array) { array = a; }
+	    final function finSubSetDPArray(a:Array):* { array = a; }
 	    
 	    public function testFinSubDPArray(a:Array) : Array {
 	    	this.finSubSetDPArray(a);
@@ -223,7 +223,7 @@ package DefaultClass {
 	    // ***************************************
 	    
 	    virtual function virtSubGetDPArray() : Array { return array; }
-	    virtual function virtSubSetDPArray(a:Array) { array = a; }
+	    virtual function virtSubSetDPArray(a:Array):* { array = a; }
 	    
 	    public function testVirtSubDPArray(a:Array) : Array {
 	    	this.virtSubSetDPArray(a);
@@ -236,7 +236,7 @@ package DefaultClass {
 	    // ***************************************
 	    
 	    public virtual function pubVirtSubGetDPArray() : Array { return array; }
-	    virtual public function pubVirtSubSetDPArray(a:Array) { array = a; }
+	    virtual public function pubVirtSubSetDPArray(a:Array):* { array = a; }
 	    
 	    // ***************************************
 	    // access default property from
@@ -244,7 +244,7 @@ package DefaultClass {
 	    // ***************************************
 	    
 	    private final function privFinSubGetDPArray() : Array { return array; }
-	    final private function privFinSubSetDPArray(a:Array) { array = a; }
+	    final private function privFinSubSetDPArray(a:Array):* { array = a; }
 	    
 	    public function testPrivFinSubDPArray(a:Array):Array {
 	    	this.privFinSubSetDPArray(a);
@@ -257,7 +257,7 @@ package DefaultClass {
 	    // ***************************************
 	    
 	    private virtual function privVirtSubGetDPArray() : Array { return array; }
-	    virtual private function privVirtSubSetDPArray(a:Array) { array = a; }
+	    virtual private function privVirtSubSetDPArray(a:Array):* { array = a; }
 	    
 	    public function testPrivVirtSubDPArray(a:Array):Array {
 	    	this.privVirtSubSetDPArray(a);
@@ -270,7 +270,7 @@ package DefaultClass {
 	    // ***************************************
 	    
 	    public final function pubFinSubGetDPArray() : Array { return array; }
-            final public function pubFinSubSetDPArray(a:Array) { array = a; }
+            final public function pubFinSubSetDPArray(a:Array):* { array = a; }
 	   
 
 	}

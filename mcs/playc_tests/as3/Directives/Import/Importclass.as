@@ -40,7 +40,7 @@ public class PublicClass{
     var array:Array;
     public var pubArray:Array; 
 
-    public function setPubArray( a:Array ) { pubArray = a;}
+    public function setPubArray( a:Array ):* { pubArray = a;}
 }
 
 }

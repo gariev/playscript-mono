@@ -68,14 +68,14 @@ package PublicClassPackage {
     protected function getObject() : Object { return object; }
     protected function getString() : String { return string; }
 
-    protected function setArray( a:Array ) { array = a; }
-    protected function setBoolean( b:Boolean ) { boolean = b; }
-    protected function setDate( d:Date ) { date = d; }
-    protected function setFunction( f:Function ) { myFunction = f; }
-    protected function setMath( m:Math ) { math = m; }
-    protected function setNumber( n:Number ) { number = n; }
-    protected function setObject( o:Object ) { object = o; }
-    protected function setString( s:String ) { string = s; }
+    protected function setArray( a:Array ):* { array = a; }
+    protected function setBoolean( b:Boolean ):* { boolean = b; }
+    protected function setDate( d:Date ):* { date = d; }
+    protected function setFunction( f:Function ):* { myFunction = f; }
+    protected function setMath( m:Math ):* { math = m; }
+    protected function setNumber( n:Number ):* { number = n; }
+    protected function setObject( o:Object ):* { object = o; }
+    protected function setString( s:String ):* { string = s; }
 
   }
 }

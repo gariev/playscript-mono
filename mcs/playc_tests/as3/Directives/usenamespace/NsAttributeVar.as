@@ -60,12 +60,12 @@ package P {
              nsProtected1 var a:int = 10; 
              nsProtected2 var a:String = "team1";
 	    
-             public function accintvar1(){return nsInternal1::y} //public function to access internal variable
-             public function accintvar2(){return nsInternal2::y} //public function to access internal variable
-             public function accprivvar1(){return nsPrivate1::z} //public function to access private variable
-             public function accprivvar2(){return nsPrivate2::z} //public function to access private variable
-             public function accprotvar1(){return nsProtected1::a} //public function to access protected variable
-             public function accprotvar2(){return nsProtected2::a} //public function to access protected variable
+             public function accintvar1():*{return nsInternal1::y} //public function to access internal variable
+             public function accintvar2():*{return nsInternal2::y} //public function to access internal variable
+             public function accprivvar1():*{return nsPrivate1::z} //public function to access private variable
+             public function accprivvar2():*{return nsPrivate2::z} //public function to access private variable
+             public function accprotvar1():*{return nsProtected1::a} //public function to access protected variable
+             public function accprotvar2():*{return nsProtected2::a} //public function to access protected variable
 
      }
  }

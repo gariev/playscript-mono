@@ -54,6 +54,6 @@ class Test
 }
 
 var obj:Test = new Test();
-AddTestCase("const and:* class function arg with same name, access const with this.  should return the sum of function arg", 4, obj.getNumber(1, 1));
+AddTestCase("const and:* class function arg with same name, access const with:* this.  should return the sum of function arg", 4, obj.getNumber(1, 1));
 
 test();

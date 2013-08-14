@@ -53,7 +53,7 @@ package {
 			
 				const arg1, arg2;
 			
-			 	function myConstArgs( arg1, arg2 ) {
+			 	function myConstArgs( arg1, arg2 ):* {
 			 
 			  		const arg3:*;
 			 		arg3 = arg1 + arg2;

@@ -55,8 +55,8 @@ package DefClassImpPublicIntIntname{
 
 	public class DefaultClassAccesor{
 		var c:DefaultClass = new DefaultClass(); 
-		public function accdeffunc(){return c.PublicInt::deffunc();}
-		public function accdeffunc_s(){return c.PublicInt_S::deffunc();}
+		public function accdeffunc():*{return c.PublicInt::deffunc();}
+		public function accdeffunc_s():*{return c.PublicInt_S::deffunc();}
 
         } 	
 	

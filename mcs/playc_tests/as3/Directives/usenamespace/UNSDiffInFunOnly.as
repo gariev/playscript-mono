@@ -55,18 +55,18 @@ package {
 			Baseball var teamName:* = "Giants";
 			Football var teamName:* = "Chargers";
 			
-			public function a1(){
+			public function a1():*{
 			return teamName 
 			}
 			
 			use namespace Baseball;
 			
-			public function getTeam(){
+			public function getTeam():*{
 			    use namespace Football;
 			    return Football::teamName;
 			} 
 			
-			public function a2(){
+			public function a2():*{
 			return teamName 
 			}
 			}

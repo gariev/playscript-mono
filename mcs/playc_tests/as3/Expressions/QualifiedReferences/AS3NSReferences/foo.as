@@ -42,7 +42,7 @@ package ns {
 	
 	public class foo {
 		var a:* = 0;
-		N1 function A(){
+		N1 function A():*{
 			if(a!=1) { return N1.toString()}
 			else {return null}
 		}

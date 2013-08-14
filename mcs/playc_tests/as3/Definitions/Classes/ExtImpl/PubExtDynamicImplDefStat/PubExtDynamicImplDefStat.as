@@ -57,7 +57,7 @@ public class PubExtDynamicImplDefStat extends DynamicClass implements DefaultInt
     // ************************************
 
     function subGetArray() : Array { return getStatArray(); }
-    function subSetArray(a:Array) { setStatArray(a); }
+    function subSetArray(a:Array):* { setStatArray(a); }
 
     public function testSubSetArray(a:Array) : Array {
         this.subSetArray(a);
@@ -71,7 +71,7 @@ public class PubExtDynamicImplDefStat extends DynamicClass implements DefaultInt
     // ************************************
 
     public function pubSubGetArray() : Array { return getStatArray(); }
-    public function pubSubSetArray(a:Array) { setStatArray(a); }
+    public function pubSubSetArray(a:Array):* { setStatArray(a); }
 
     // ************************************
     // access static method of parent
@@ -79,7 +79,7 @@ public class PubExtDynamicImplDefStat extends DynamicClass implements DefaultInt
     // ************************************
 
     private function privSubGetArray() : Array { return getStatArray(); }
-    private function privSubSetArray(a:Array) { setStatArray(a); }
+    private function privSubSetArray(a:Array):* { setStatArray(a); }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -93,7 +93,7 @@ public class PubExtDynamicImplDefStat extends DynamicClass implements DefaultInt
     // ***************************************
 
     static function statSubGetArray() : Array { return getStatArray(); }
-    static function statSubSetArray(a:Array) { setStatArray(a); }
+    static function statSubSetArray(a:Array):* { setStatArray(a); }
 
     public static function testStatSubArray(a:Array) : Array {
         statSubSetArray(a);
@@ -107,7 +107,7 @@ public class PubExtDynamicImplDefStat extends DynamicClass implements DefaultInt
     // ***************************************
 
     public static function pubStatSubGetArray() : Array { return getStatArray(); }
-    public static function pubStatSubSetArray(a:Array) { setStatArray(a); }
+    public static function pubStatSubSetArray(a:Array):* { setStatArray(a); }
 
     // ***************************************
     // access static method of parent
@@ -115,7 +115,7 @@ public class PubExtDynamicImplDefStat extends DynamicClass implements DefaultInt
     // ***************************************
 
     private static function privStatSubGetArray() : Array { return getStatArray(); }
-    private static function privStatSubSetArray(a:Array) { setStatArray(a); }
+    private static function privStatSubSetArray(a:Array):* { setStatArray(a); }
 
     // function to test above test case
     public function testPrivStatSubArray(a:Array) : Array {
@@ -129,7 +129,7 @@ public class PubExtDynamicImplDefStat extends DynamicClass implements DefaultInt
     // ***************************************
 
     function subGetDPArray() : Array { return statArray; }
-    function subSetDPArray(a:Array) { statArray = a; }
+    function subSetDPArray(a:Array):* { statArray = a; }
 
     public function testSubSetDPArray(a:Array) : Array {
         subSetDPArray(a);
@@ -143,7 +143,7 @@ public class PubExtDynamicImplDefStat extends DynamicClass implements DefaultInt
     // ***************************************
 
     public function pubSubGetDPArray() : Array { return statArray; }
-    public function pubSubSetDPArray(a:Array) { statArray = a; }
+    public function pubSubSetDPArray(a:Array):* { statArray = a; }
 
     // ***************************************
     // access static property from
@@ -151,7 +151,7 @@ public class PubExtDynamicImplDefStat extends DynamicClass implements DefaultInt
     // ***************************************
 
     private function privSubGetDPArray() : Array { return statArray; }
-    private function privSubSetDPArray(a:Array) { statArray = a; }
+    private function privSubSetDPArray(a:Array):* { statArray = a; }
 
     public function testPrivSubSetDPArray(a:Array) : Array {
         privSubSetDPArray(a);
@@ -165,7 +165,7 @@ public class PubExtDynamicImplDefStat extends DynamicClass implements DefaultInt
     // ***************************************
 
     static function statSubGetDPArray() : Array { return statArray; }
-    static function statSubSetDPArray(a:Array) { statArray = a; }
+    static function statSubSetDPArray(a:Array):* { statArray = a; }
 
     public static function testStatSetDPArray(a:Array) : Array {
         statSubSetDPArray(a);
@@ -179,7 +179,7 @@ public class PubExtDynamicImplDefStat extends DynamicClass implements DefaultInt
     // ***************************************
 
     public static function pubStatSubGetDPArray() : Array { return statArray; }
-    public static function pubStatSubSetDPArray(a:Array) { statArray = a; }
+    public static function pubStatSubSetDPArray(a:Array):* { statArray = a; }
 
     // ***************************************
     // access static property from
@@ -187,11 +187,11 @@ public class PubExtDynamicImplDefStat extends DynamicClass implements DefaultInt
     // ***************************************
 
     private static function privStatSubGetDPArray() : Array { return statArray; }
-    private static function privStatSubSetDPArray(a:Array) { statArray = a; }
+    private static function privStatSubSetDPArray(a:Array):* { statArray = a; }
 
     // function to test above
 
-    public function testPrivStatSubDPArray(a:Array) {
+    public function testPrivStatSubDPArray(a:Array):* {
         statArray = a;
         return statArray;
     }

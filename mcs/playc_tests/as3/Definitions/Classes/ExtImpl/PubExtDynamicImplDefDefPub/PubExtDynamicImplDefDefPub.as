@@ -97,7 +97,7 @@ public class PubExtDynamicImplDefDefPub extends DynamicClass implements DefaultI
     // ************************************
 
     function subGetArray() : Array { return this.getPubArray(); }
-    function subSetArray(a:Array) { this.setPubArray(a); }
+    function subSetArray(a:Array):* { this.setPubArray(a); }
 
     public function testGetSubArray(a:Array) : Array {
         this.subSetArray(a);
@@ -111,7 +111,7 @@ public class PubExtDynamicImplDefDefPub extends DynamicClass implements DefaultI
     // ************************************
 
     public function pubSubGetArray() : Array { return this.getPubArray(); }
-    public function pubSubSetArray(a:Array) { this.setPubArray(a); }
+    public function pubSubSetArray(a:Array):* { this.setPubArray(a); }
 
     // ************************************
     // access public method of parent
@@ -119,7 +119,7 @@ public class PubExtDynamicImplDefDefPub extends DynamicClass implements DefaultI
     // ************************************
 
     private function privSubGetArray() : Array { return this.getPubArray(); }
-    private function privSubSetArray(a:Array) { this.setPubArray(a); }
+    private function privSubSetArray(a:Array):* { this.setPubArray(a); }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {

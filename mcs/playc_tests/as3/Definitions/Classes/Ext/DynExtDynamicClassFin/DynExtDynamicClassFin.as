@@ -48,7 +48,7 @@ package DynamicClass {
     // ************************************
 
     function subGetArray() : Array { return this.getFinArray(); }
-    function subSetArray(a:Array) { this.setFinArray(a); }
+    function subSetArray(a:Array):* { this.setFinArray(a); }
 
     // function to test above from test scripts
     public function testSubArray(a:Array) : Array {
@@ -62,7 +62,7 @@ package DynamicClass {
     // ************************************
 
     public function pubSubGetArray() : Array { return this.getFinArray(); }
-    public function pubSubSetArray(a:Array) { this.setFinArray(a); }
+    public function pubSubSetArray(a:Array):* { this.setFinArray(a); }
 
     // ************************************
     // access final method of parent
@@ -70,7 +70,7 @@ package DynamicClass {
     // ************************************
 
     private function privSubGetArray() : Array { return this.getFinArray(); }
-    private function privSubSetArray(a:Array) { this.setFinArray(a); }
+    private function privSubSetArray(a:Array):* { this.setFinArray(a); }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -84,7 +84,7 @@ package DynamicClass {
     // ************************************
 
     final function finSubGetArray() : Array { return this.getFinArray(); }
-    final function finSubSetArray(a:Array) { this.setFinArray(a); }
+    final function finSubSetArray(a:Array):* { this.setFinArray(a); }
 
     // function to test above from test scripts
     public function testFinSubArray(a:Array) : Array {
@@ -98,7 +98,7 @@ package DynamicClass {
     // ************************************
 
     private final function finPrivSubGetArray() : Array { return this.getFinArray(); }
-    private final function finPrivSubSetArray(a:Array) { this.setFinArray(a); }
+    private final function finPrivSubSetArray(a:Array):* { this.setFinArray(a); }
 
     // function to test above from test scripts
     public function testPrivFinSubArray(a:Array) : Array {
@@ -107,7 +107,7 @@ package DynamicClass {
     }
     
     virtual function virSubGetArray() : Array { return this.getFinArray(); }
-    virtual function virSubSetArray(a:Array) { this.setFinArray(a); }
+    virtual function virSubSetArray(a:Array):* { this.setFinArray(a); }
 
     // function to test above from test scripts
     public function testVirSubArray(a:Array) : Array {
@@ -121,7 +121,7 @@ package DynamicClass {
     // ***************************************
 
     function subGetDPArray() : Array { return finArray; }
-    function subSetDPArray(a:Array) { finArray = a; }
+    function subSetDPArray(a:Array):* { finArray = a; }
     // function to test above from test scripts
     public function testSubGetDPArray(a:Array) : Array {
         this.subSetDPArray(a);
@@ -135,7 +135,7 @@ package DynamicClass {
     // ***************************************
 
     public function pubSubGetDPArray() : Array { return this.finArray; }
-    public function pubSubSetDPArray(a:Array) { this.finArray = a; }
+    public function pubSubSetDPArray(a:Array):* { this.finArray = a; }
 
     // ***************************************
     // access final property from
@@ -143,7 +143,7 @@ package DynamicClass {
     // ***************************************
  
     private function privSubGetDPArray() : Array { return this.finArray; }
-    private function privSubSetDPArray(a:Array) { this.finArray = a; }
+    private function privSubSetDPArray(a:Array):* { this.finArray = a; }
     // function to test above from test scripts
     public function testPrivSubGetDPArray(a:Array) : Array {
         this.finSubSetDPArray(a);
@@ -156,7 +156,7 @@ package DynamicClass {
     // ***************************************
 
     final function finSubGetDPArray() : Array { return finArray; }
-    final function finSubSetDPArray(a:Array) { finArray = a; }
+    final function finSubSetDPArray(a:Array):* { finArray = a; }
     // function to test above from test scripts
     public function testFinSubGetDPArray(a:Array) : Array {
         this.finSubSetDPArray(a);
@@ -169,7 +169,7 @@ package DynamicClass {
     // ***************************************
 
     public virtual function privVirSubGetDPArray() : Array { return finArray; }
-    public virtual function privVirSubSetDPArray(a:Array) { finArray = a; }
+    public virtual function privVirSubSetDPArray(a:Array):* { finArray = a; }
     // function to test above from test scripts
     public function testPrivVirSubGetDPArray(a:Array) : Array {
         this.privVirSubSetDPArray(a);
