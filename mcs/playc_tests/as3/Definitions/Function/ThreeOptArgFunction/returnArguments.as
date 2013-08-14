@@ -44,7 +44,7 @@ package ThreeOptArgFunction {
 	}
 	
 	
-	public function returnArguments():* { returnArgumentsInner("Str2",false,20,true); }
+	public function returnArguments():* { returnArgumentsInner("Str2",false,20,true):*; }
 
 }
 

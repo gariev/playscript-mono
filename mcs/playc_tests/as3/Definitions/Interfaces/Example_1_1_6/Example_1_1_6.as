@@ -39,8 +39,8 @@
 package Example_1_1_6 {
 
 	interface Greetings {
-		function hello();
-		function goodmorning();
+		function hello():*;
+		function goodmorning():*;
 	}
 	
 	class Greeter implements Greetings {

@@ -37,13 +37,13 @@
 
 package foo {
 	public interface fletch {
-		function lives();
+		function lives():*;
 	}
 
 }
 
 interface fletch {
-	function lives();
+	function lives():*;
 }
 
 class erwin implements fletch { 

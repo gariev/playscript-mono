@@ -54,10 +54,10 @@ package {
 				function OverrideFunctionBodyClass() {}
 			    override function noReturnNoParams():* { return "noReturnNoParams"; }
 				override function noReturnParams(s:String, b:Boolean):* { return s; }
-				override function noReturnCustomParam(c:Custom):* { return new Custom(); }
+				override function noReturnCustomParam(c:Custom):* { return new Custom():*; }
 				override function returnNoParams():String { return "returnNoParams"; }
 				override function returnParams(s:String, b:Boolean):String { return s; }
-				override function returnCustomNoParams():Custom { return new Custom(); }
+				override function returnCustomNoParams():Custom { return new Custom():*; }
 			}
 			
 			

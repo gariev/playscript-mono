@@ -54,7 +54,7 @@ package DynamicClassImpDefIntname{
 		 var i:DefaultInt=acc;
 
  
- 	  public function accdeffunc():String{return i.deffunc();}
+ 	  public function accdeffunc():String{return i.deffunc():*;}
 		
 		      	
       } 	

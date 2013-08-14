@@ -40,10 +40,10 @@ import FinalFunctionBody.*;
 class FinalFunctionBodyClass {
    	final function noReturnNoParams():* { return "noReturnNoParams"; }
 	final function noReturnParams(s:String, b:Boolean):* { return s; }
-	final function noReturnCustomParam(c:Custom):* { return new Custom(); }
+	final function noReturnCustomParam(c:Custom):* { return new Custom():*; }
 	final function returnNoParams():String { return "returnNoParams"; }
 	final function returnParams(s:String, b:Boolean):String { return s; }
-	final function returnCustomNoParams():Custom { return new Custom(); }
+	final function returnCustomNoParams():Custom { return new Custom():*; }
 }
 
 var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)

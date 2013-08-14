@@ -38,10 +38,10 @@
 // to the type represented by the interface
 package InterfaceAsType {
 	interface A {
-		function a();
+		function a():*;
 	}
 	interface B {
-		function b();
+		function b():*;
 	}
 	interface C extends A, B {
 	}

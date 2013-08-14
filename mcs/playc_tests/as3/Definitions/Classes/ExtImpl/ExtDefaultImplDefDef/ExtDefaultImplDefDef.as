@@ -90,8 +90,8 @@ class ExtDefImplDefDefInner extends DefaultClass implements DefaultIntDef, Defau
     // from default method of sub class
     // ************************************
 
-    function subGetArray() : Array { return this.getArray(); }
-    function subSetArray(a:Array):* { this.setArray(a); }
+    function subGetArray() : Array { return this.getArray():*; }
+    function subSetArray(a:Array):* { this.setArray(a):*; }
 
     public function testGetSubArray(a:Array) : Array {
         this.subSetArray(a);
@@ -104,16 +104,16 @@ class ExtDefImplDefDefInner extends DefaultClass implements DefaultIntDef, Defau
     // from public method of sub class
     // ************************************
 
-    public function pubSubGetArray() : Array { return this.getArray(); }
-    public function pubSubSetArray(a:Array):* { this.setArray(a); }
+    public function pubSubGetArray() : Array { return this.getArray():*; }
+    public function pubSubSetArray(a:Array):* { this.setArray(a):*; }
 
     // ************************************
     // access default method of parent
     // from private method of sub class
     // ************************************
 
-    private function privSubGetArray() : Array { return this.getArray(); }
-    private function privSubSetArray(a:Array):* { this.setArray(a); }
+    private function privSubGetArray() : Array { return this.getArray():*; }
+    private function privSubSetArray(a:Array):* { this.setArray(a):*; }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -162,8 +162,8 @@ var s:* = new ExtDefImplDefDefInner();
 var i:DefaultIntDef=s;
 var j:DefaultInt=s;
 
-public function iiGetNumber1():Number{return i.iGetNumber1();}
-public function jiGetNumber1():Number{return s.DefaultInt::iGetNumber1();}
+public function iiGetNumber1():Number{return i.iGetNumber1():*;}
+public function jiGetNumber1():Number{return s.DefaultInt::iGetNumber1():*;}
 
 
 }

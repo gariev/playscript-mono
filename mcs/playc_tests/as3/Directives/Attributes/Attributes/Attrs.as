@@ -81,10 +81,10 @@ package Attrs {
 	static  public  function statPubFunc():*  { return "func, static public "; };
 	static  private function statPrivFunc():* { return "func, static private"; };
 
-	function getStatFunc():*     { return statFunc();     };
-	function getPubStatFunc():*  { return pubStatFunc();  };
-	function getPrivStatFunc():* { return privStatFunc(); };
-	function getStatPubFunc():*  { return statPubFunc();  };
-	function getStatPrivFunc():* { return statPrivFunc(); };
+	function getStatFunc():*     { return statFunc():*;     };
+	function getPubStatFunc():*  { return pubStatFunc():*;  };
+	function getPrivStatFunc():* { return privStatFunc():*; };
+	function getStatPubFunc():*  { return statPubFunc():*;  };
+	function getStatPrivFunc():* { return statPrivFunc():*; };
  }
 }

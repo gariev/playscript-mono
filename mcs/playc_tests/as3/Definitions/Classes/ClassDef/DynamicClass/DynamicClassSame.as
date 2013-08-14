@@ -76,7 +76,7 @@ package DynamicClassSame {
 		function accPrivProp():Boolean { return this.privVar; }
 
 		// access private method from same class same package
-		function accPrivMethod():Boolean { return this.privateMethod(); }
+		function accPrivMethod():Boolean { return this.privateMethod():*; }
 		
 	}
 
@@ -103,7 +103,7 @@ package DynamicClassSame {
 		public function accPubProp():uint { return acc.pubUint; }
 
 		// access private property from same class same package
-		public function accPrivProp():Boolean { return acc.accPrivProp(); }
+		public function accPrivProp():Boolean { return acc.accPrivProp():*; }
 
 		// access namespace property from same package
 		public function accNSProp():String { return acc.ns::nsProp; }
@@ -113,28 +113,28 @@ package DynamicClassSame {
 
 
 		// access default method from same package
-		public function accDefMethod():Boolean { return acc.defaultMethod(); }
+		public function accDefMethod():Boolean { return acc.defaultMethod():*; }
 
 		// access internal method from same package
-		public function accIntMethod():Number { return acc.internalMethod(50); }
+		public function accIntMethod():Number { return acc.internalMethod(50):*; }
 
 		// access protected method from same package - NOT LEGAL OUTSIDE DERIVED CLASS
-		//public function accProtMethod():uint { return acc.protectedMethod(); }
+		//public function accProtMethod():uint { return acc.protectedMethod():*; }
 
 		// access public method from same package
-		public function accPubMethod():Boolean { return acc.publicMethod(); }
+		public function accPubMethod():Boolean { return acc.publicMethod():*; }
 
 		// access private method from same class and package
-		public function accPrivMethod():Boolean { return acc.accPrivMethod(); }
+		public function accPrivMethod():Boolean { return acc.accPrivMethod():*; }
 
 		// access namespace method from same package
-		public function accNSMethod():String { return acc.ns::nsMethod(); }
+		public function accNSMethod():String { return acc.ns::nsMethod():*; }
 
 		// Access final public method from same package
-		public function accPubFinMethod():Number { return acc.publicFinalMethod(); }
+		public function accPubFinMethod():Number { return acc.publicFinalMethod():*; }
 
 		// access static public method from same package
-		public function accPubStatMethod():int { return DynamicClass.publicStaticMethod(); }
+		public function accPubStatMethod():int { return DynamicClass.publicStaticMethod():*; }
 
 		// Error cases
 
@@ -142,7 +142,7 @@ package DynamicClassSame {
 		public function accPrivPropErr():* { return privProp; }
 
 		// access private method from same pakcage not same class
-		public function accPrivMethErr():* { return privMethod(); }
+		public function accPrivMethErr():* { return privMethod():*; }
 
 	}
 	

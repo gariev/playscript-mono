@@ -283,8 +283,8 @@ package InternalClass {
     // from default method of sub class
     // ************************************
 
-    internal function subGetArray() : Array { return this.getArray(); }
-    function subSetArray(a:Array):* { this.setArray(a); }
+    internal function subGetArray() : Array { return this.getArray():*; }
+    function subSetArray(a:Array):* { this.setArray(a):*; }
 
 	// this is needed so that the test cases can access this from
 	// outside the class.  This way the test case itself preserved
@@ -298,8 +298,8 @@ package InternalClass {
     // from public method of sub class
     // ************************************
 
-    public function pubSubGetArray() : Array { return this.getArray(); }
-    public function pubSubSetArray(a:Array):* { this.setArray(a); }
+    public function pubSubGetArray() : Array { return this.getArray():*; }
+    public function pubSubSetArray(a:Array):* { this.setArray(a):*; }
 
     // ************************************
     // access default method of parent
@@ -308,8 +308,8 @@ package InternalClass {
 	// final will behave the same as default
     // ************************************
 
-    internal final function finSubGetArray() : Array { return this.getArray(); }
-    final function finSubSetArray(a:Array):* { this.setArray(a); }
+    internal final function finSubGetArray() : Array { return this.getArray():*; }
+    final function finSubSetArray(a:Array):* { this.setArray(a):*; }
 
 	public function testFinSubArray(a:Array):Array{
 		this.finSubSetArray(a);
@@ -321,16 +321,16 @@ package InternalClass {
     // from public final method of sub class
     // ************************************
 
-    public final function pubFinSubGetArray() : Array { return this.getArray(); }
-    final public function pubFinSubSetArray(a:Array):* { this.setArray(a); }
+    public final function pubFinSubGetArray() : Array { return this.getArray():*; }
+    final public function pubFinSubSetArray(a:Array):* { this.setArray(a):*; }
 
     // ************************************
     // access default method of parent
     // from private final method of sub class
     // ************************************
 
-    private final function privFinSubGetArray() : Array { return this.getArray(); }
-    final private function privFinSubSetArray(a:Array):* { this.setArray(a); }
+    private final function privFinSubGetArray() : Array { return this.getArray():*; }
+    final private function privFinSubSetArray(a:Array):* { this.setArray(a):*; }
 
 	public function testPrivFinSubArray(a:Array):Array {
 		this.privFinSubSetArray(a);
@@ -343,8 +343,8 @@ package InternalClass {
     // from private method of sub class
     // ************************************
 
-    private function privSubGetArray() : Array { return this.getArray(); }
-    private function privSubSetArray(a:Array):* { this.setArray(a); }
+    private function privSubGetArray() : Array { return this.getArray():*; }
+    private function privSubSetArray(a:Array):* { this.setArray(a):*; }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -357,8 +357,8 @@ package InternalClass {
     // from virtual method of sub class
     // ************************************
 
-    internal virtual function virtSubGetArray() : Array { return this.getArray(); }
-    virtual function virtSubSetArray(a:Array):* { this.setArray(a); }
+    internal virtual function virtSubGetArray() : Array { return this.getArray():*; }
+    virtual function virtSubSetArray(a:Array):* { this.setArray(a):*; }
 
 	public function testVirtSubArray(a:Array) : Array {
 		this.virtSubSetArray(a);
@@ -370,16 +370,16 @@ package InternalClass {
     // from public virtual method of sub class
     // ************************************
 
-    virtual public function pubVirtSubGetArray() : Array { return this.getArray(); }
-    public virtual function pubVirtSubSetArray(a:Array):* { this.setArray(a); }
+    virtual public function pubVirtSubGetArray() : Array { return this.getArray():*; }
+    public virtual function pubVirtSubSetArray(a:Array):* { this.setArray(a):*; }
 
     // ************************************
     // access default method of parent
     // from private virtual method of sub class
     // ************************************
 
-    virtual private function privVirtSubGetArray() : Array { return this.getArray(); }
-    private virtual function privVirtSubSetArray(a:Array):* { this.setArray(a); }
+    virtual private function privVirtSubGetArray() : Array { return this.getArray():*; }
+    private virtual function privVirtSubSetArray(a:Array):* { this.setArray(a):*; }
 
 	public function testPrivVirtSubArray(a:Array) : Array {
 		this.privVirtSubSetArray(a);
@@ -391,8 +391,8 @@ package InternalClass {
 	// static method of sub class
     // ***************************************
 
-	internal static function statSubGetArray():Array{ return getArray(); }
-	static public function pubStatSubGetArray():Array { return statSubGetArray(); }
+	internal static function statSubGetArray():Array{ return getArray():*; }
+	static public function pubStatSubGetArray():Array { return statSubGetArray():*; }
 
     // ***************************************
     // access default property from 

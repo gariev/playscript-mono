@@ -48,8 +48,8 @@ package PublicClass {
     // from default method of sub class
     // ************************************
 
-    function subGetArray() : Array { return this.getPrivArray(); }
-    function subSetArray(a:Array):* { this.setPrivArray(a); }
+    function subGetArray() : Array { return this.getPrivArray():*; }
+    function subSetArray(a:Array):* { this.setPrivArray(a):*; }
 
 	public function testSubGetSetArray(a:Array) : Array {
 		this.subSetArray(a);
@@ -62,16 +62,16 @@ package PublicClass {
     // from public method of sub class
     // ************************************
 
-    public function pubSubGetArray() : Array { return this.getPrivArray(); }
-    public function pubSubSetArray(a:Array):* { this.setPrivArray(a); }
+    public function pubSubGetArray() : Array { return this.getPrivArray():*; }
+    public function pubSubSetArray(a:Array):* { this.setPrivArray(a):*; }
 
     // ************************************
     // access private method of parent
     // from private method of sub class
     // ************************************
 
-    private function privSubGetArray() : Array { return this.getPrivArray(); }
-    private function privSubSetArray(a:Array):* { this.setPrivArray(a); }
+    private function privSubGetArray() : Array { return this.getPrivArray():*; }
+    private function privSubSetArray(a:Array):* { this.setPrivArray(a):*; }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {

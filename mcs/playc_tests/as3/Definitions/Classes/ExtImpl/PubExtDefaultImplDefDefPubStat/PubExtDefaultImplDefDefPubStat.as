@@ -76,8 +76,8 @@ public class PubExtDefaultImplDefDefPubStat extends DefaultClass implements Defa
     // from default method of sub class
     // ************************************
 
-    function subGetArray() : Array { return getPubStatArray(); }
-    function subSetArray(a:Array):* { setPubStatArray(a); }
+    function subGetArray() : Array { return getPubStatArray():*; }
+    function subSetArray(a:Array):* { setPubStatArray(a):*; }
 
 	public function testSubGetSetArray(a:Array) : Array {
 		this.subSetArray(a);
@@ -90,16 +90,16 @@ public class PubExtDefaultImplDefDefPubStat extends DefaultClass implements Defa
     // from public method of sub class
     // ************************************
 
-    public function pubSubGetArray() : Array { return getPubStatArray(); }
-    public function pubSubSetArray(a:Array):* { setPubStatArray(a); }
+    public function pubSubGetArray() : Array { return getPubStatArray():*; }
+    public function pubSubSetArray(a:Array):* { setPubStatArray(a):*; }
 
     // ************************************
     // access public static method of parent
     // from private method of sub class
     // ************************************
 
-    private function privSubGetArray() : Array { return getPubStatArray(); }
-    private function privSubSetArray(a:Array):* { setPubStatArray(a); }
+    private function privSubGetArray() : Array { return getPubStatArray():*; }
+    private function privSubSetArray(a:Array):* { setPubStatArray(a):*; }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -112,8 +112,8 @@ public class PubExtDefaultImplDefDefPubStat extends DefaultClass implements Defa
     // from final method of sub class
     // ************************************
 
-    final function finSubGetArray() : Array { return getPubStatArray(); }
-    final function finSubSetArray(a:Array):* { setPubStatArray(a); }
+    final function finSubGetArray() : Array { return getPubStatArray():*; }
+    final function finSubSetArray(a:Array):* { setPubStatArray(a):*; }
 
 	public function testFinSubArray(a:Array):Array {
 		this.finSubSetArray(a);
@@ -126,8 +126,8 @@ public class PubExtDefaultImplDefDefPubStat extends DefaultClass implements Defa
     // from static method of sub class
     // ***************************************
 
-    static function statSubGetArray() : Array { return getPubStatArray(); }
-    static function statSubSetArray(a:Array):* { setPubStatArray(a); }
+    static function statSubGetArray() : Array { return getPubStatArray():*; }
+    static function statSubSetArray(a:Array):* { setPubStatArray(a):*; }
 
 	public static function testStatSubArray(a:Array):Array {
 		statSubSetArray(a);
@@ -140,16 +140,16 @@ public class PubExtDefaultImplDefDefPubStat extends DefaultClass implements Defa
     // from public static method of sub class
     // ***************************************
 
-    public static function pubStatSubGetArray() : Array { return getPubStatArray(); }
-    public static function pubStatSubSetArray(a:Array):* { setPubStatArray(a); }
+    public static function pubStatSubGetArray() : Array { return getPubStatArray():*; }
+    public static function pubStatSubSetArray(a:Array):* { setPubStatArray(a):*; }
 
     // ***************************************
     // access public static method of parent
     // from private static method of sub class
     // ***************************************
 
-    private static function privStatSubGetArray() : Array { return getPubStatArray(); }
-    private static function privStatSubSetArray(a:Array):* { setPubStatArray(a); }
+    private static function privStatSubGetArray() : Array { return getPubStatArray():*; }
+    private static function privStatSubSetArray(a:Array):* { setPubStatArray(a):*; }
 
     // public accessor to test asrt
     public static function testPrivStatSubArray(a:Array) : Array {

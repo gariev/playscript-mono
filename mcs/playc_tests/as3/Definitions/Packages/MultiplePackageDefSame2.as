@@ -51,7 +51,7 @@ package foo{
 	function func2():*{ return "This is func2"; }
 
 	interface IntB{
-		function testInt();
+		function testInt():*;
 	}
 
 	public class ClassB {

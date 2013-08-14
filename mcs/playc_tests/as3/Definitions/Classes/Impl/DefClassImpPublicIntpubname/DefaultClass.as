@@ -52,7 +52,7 @@ package DefClassImpPublicIntpubname{
 	public class DefaultClassAccesor{
                 var c:DefaultClass = new DefaultClass(); 
                 var i:PublicInt = c;
-		public function accdeffunc():*{return i.deffunc();}
+		public function accdeffunc():*{return i.deffunc():*;}
 
        } 	
 	

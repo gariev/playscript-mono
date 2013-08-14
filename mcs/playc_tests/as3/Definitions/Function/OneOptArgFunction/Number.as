@@ -37,6 +37,6 @@
 package OneOptArgFunction {
 
  function returnNumberInner(n:Number = 10,... rest):Number { return n; }
- public function returnNumber():Number { return returnNumberInner(12,true); }
+ public function returnNumber():Number { return returnNumberInner(12,true):*; }
 }
 

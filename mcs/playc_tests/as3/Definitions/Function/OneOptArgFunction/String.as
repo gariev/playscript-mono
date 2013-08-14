@@ -37,7 +37,7 @@
 package OneOptArgFunction {
 
  function returnStringInner(s:String = "inside package outside of class",... rest):String { return s; }
- public function returnString():String { return returnStringInner(); }
+ public function returnString():String { return returnStringInner():*; }
 
 }
 

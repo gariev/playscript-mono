@@ -56,7 +56,7 @@ package DefClassImpDefIntname{
  
 		var c:DefaultClass = new DefaultClass(); 
 		var i:DefaultInt = c;
-		public function accdeffunc():*{return i.deffunc();}
+		public function accdeffunc():*{return i.deffunc():*;}
 		// access default function deffunc
         	
 

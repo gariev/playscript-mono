@@ -73,9 +73,9 @@ package {
 			}
 			var obj:A = new A();
 			
-			AddTestCase( "function getTeam1():*{use namespace Baseball}", "Giants", obj.getTeam1() );
-			AddTestCase( "function getTeam2():*{use namespace Basketball}", "Kings", obj.getTeam2() );
-			AddTestCase( "function getTeam3():*{use namespace Hockey}", "Sharks", obj.getTeam3() );
+			AddTestCase( "function getTeam1():*{use namespace Baseball}", "Giants", obj.getTeam1() ):*;
+			AddTestCase( "function getTeam2():*{use namespace Basketball}", "Kings", obj.getTeam2() ):*;
+			AddTestCase( "function getTeam3():*{use namespace Hockey}", "Sharks", obj.getTeam3() ):*;
 			
 			
 			test();       // leave this alone.  this executes the test cases and

@@ -50,7 +50,7 @@ package DynFinPubClassExtDynIntClassImpIntIntExtPubPub{
         dynamic internal class InternalSuperClass{
                                    public function MySuperBoolean():Boolean{return true;}
                                    internal function MySuperNumber():Number{return 10;}
-                            public static function MySuperStaticDate():Date {return new Date(0);}
+                            public static function MySuperStaticDate():Date {return new Date(0):*;}
 
                             
                                      }
@@ -73,9 +73,9 @@ package DynFinPubClassExtDynIntClassImpIntIntExtPubPub{
                                                                     var negint:int = -100000;
                                                                     return negint;
                                                                            }
-                                  public function RetMySuperNumber():Number{return MySuperNumber();}
-                                  public function RetMySuperBoolean():Boolean{return MySuperBoolean();}
-                                  public function RetMySuperStaticDate():Date{return MySuperStaticDate();}
+                                  public function RetMySuperNumber():Number{return MySuperNumber():*;}
+                                  public function RetMySuperBoolean():Boolean{return MySuperBoolean():*;}
+                                  public function RetMySuperStaticDate():Date{return MySuperStaticDate():*;}
                                                             }
 
         public class InternalInterfaceAccessor{

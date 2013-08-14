@@ -39,7 +39,7 @@
 // referenced trait does not exist on the implicit Object base class!
 package TraitsNotAccessible {
 	interface I {
-		function f();
+		function f():*;
 	}
 	class X implements I {
 		public function f():* {

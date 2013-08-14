@@ -54,7 +54,7 @@ package foo {
 	}
 	
 	public interface fletch3 {
-		function lives();
+		function lives():*;
 	}
 
 	public class erwin implements fletch3 { 

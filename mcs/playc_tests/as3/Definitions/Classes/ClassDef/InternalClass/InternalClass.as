@@ -256,17 +256,17 @@ package InternalClassPackage {
 		}
 		
 		// Public methods
-		public function setPubBoolean( b:Boolean ):* { Obj.setPubBoolean(b); }
-		public function getPubBoolean() : Boolean { return Obj.getPubBoolean(); }
+		public function setPubBoolean( b:Boolean ):* { Obj.setPubBoolean(b):*; }
+		public function getPubBoolean() : Boolean { return Obj.getPubBoolean():*; }
 		// Public virtual methods
-		public function setPubVirtualBoolean( b:Boolean ):* { Obj.setPubVirtualBoolean(b); }
-		public function getPubVirtualBoolean() : Boolean { return Obj.getPubVirtualBoolean(); }
+		public function setPubVirtualBoolean( b:Boolean ):* { Obj.setPubVirtualBoolean(b):*; }
+		public function getPubVirtualBoolean() : Boolean { return Obj.getPubVirtualBoolean():*; }
 		// Public Static methods
-		public function setPubStatObject(o:Object):* { InternalClass.setPubStatObject(o); }
-		public function getPubStatObject() : Object { return InternalClass.getPubStatObject(); }
+		public function setPubStatObject(o:Object):* { InternalClass.setPubStatObject(o):*; }
+		public function getPubStatObject() : Object { return InternalClass.getPubStatObject():*; }
 		// Public Final methods
-		public function setPubFinArray(a:Array):* { Obj.setPubFinArray(a); }
-		public function getPubFinArray() : Array { return Obj.getPubFinArray(); }
+		public function setPubFinArray(a:Array):* { Obj.setPubFinArray(a):*; }
+		public function getPubFinArray() : Array { return Obj.getPubFinArray():*; }
 
 	}
 	

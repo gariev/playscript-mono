@@ -56,8 +56,8 @@ package FinalClassImpInternalIntIntname{
 public class ClassGet {
 	private var obj:FinalClass = new FinalClass();
 	
-	public function accdeffunc():String{return obj.InternalInt::deffunc();}
-	public function accdeffunc_s():String{return obj.InternalInt_S::deffunc();}
+	public function accdeffunc():String{return obj.InternalInt::deffunc():*;}
+	public function accdeffunc_s():String{return obj.InternalInt_S::deffunc():*;}
        	
      } 	
 }  

@@ -63,14 +63,14 @@ use namespace ns;
                 var DefSupClass:* = new DefaultClass();
                 //var i:DefaultInt=DefSupClass;
                 var k:* = new DefaultClassAccessor();
-		public function accdeffunc():*{return DefSubClass.deffunc();}
+		public function accdeffunc():*{return DefSubClass.deffunc():*;}
 		// access default function deffunc
-                public function retaccdeffunc2():*{return k.accdeffunc2();}
-                public function retaccdeffunc3():*{return k.accdeffunc3();}
-                public function accsupdeffunc():*{return DefSupClass.deffunc();}
-                public function accpubfunc():*{return pubFunc();}
+                public function retaccdeffunc2():*{return k.accdeffunc2():*;}
+                public function retaccdeffunc3():*{return k.accdeffunc3():*;}
+                public function accsupdeffunc():*{return DefSupClass.deffunc():*;}
+                public function accpubfunc():*{return pubFunc():*;}
         	
-		public function accnsFunc(a="test"):*{return ns::nsFunc(a);}
+		public function accnsFunc(a="test"):*{return ns::nsFunc(a):*;}
 		// access default function nsFunc
        } 	
 	

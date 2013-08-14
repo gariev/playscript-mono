@@ -61,6 +61,6 @@ package DynamicClassImpInternalIntname{
 			 i=acc;
 		}
 
-		public function accdeffunc():String{return i.deffunc();}
+		public function accdeffunc():String{return i.deffunc():*;}
        } 	
 }  

@@ -50,8 +50,8 @@ package PublicClassImpPublicIntIntname{
 		/*PublicInt_S function deffunc():String{  
 			return"PASSED";
 		}*/
-		public function accdeffunc():*{return PublicInt::deffunc();}
-		public function accdeffunc_s():*{return PublicInt_S::deffunc();}
+		public function accdeffunc():*{return PublicInt::deffunc():*;}
+		public function accdeffunc_s():*{return PublicInt_S::deffunc():*;}
 
        } 	
 }  

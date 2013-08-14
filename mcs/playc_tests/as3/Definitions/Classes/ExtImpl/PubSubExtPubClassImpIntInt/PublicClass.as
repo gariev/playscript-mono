@@ -46,7 +46,7 @@ use namespace ns;
 			return"PASSED";
 		}
 
-		public function getdeffunc():String{return deffunc();}
+		public function getdeffunc():String{return deffunc():*;}
 		// access default function deffunc
 
 
@@ -58,7 +58,7 @@ use namespace ns;
 			return a.length;	
 		} 
 		
-		public function getnsFunc(a="test"):int{return ns::nsFunc(a);}
+		public function getnsFunc(a="test"):int{return ns::nsFunc(a):*;}
 		// access default function nsFunc
 
        }

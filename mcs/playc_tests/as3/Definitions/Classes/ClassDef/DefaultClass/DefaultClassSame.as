@@ -77,7 +77,7 @@ package DefaultClassSame {
 		function accPrivProp():Boolean { return this.privVar; }
 
 		// access private method from same class same package
-		function accPrivMethod():Boolean { return this.privateMethod(); }
+		function accPrivMethod():Boolean { return this.privateMethod():*; }
 		
 	}
 
@@ -104,7 +104,7 @@ package DefaultClassSame {
 		public function accPubProp():uint { return defaultClass.pubUint; }
 
 		// access private property from same class same package
-		public function accPrivProp():Boolean { return defaultClass.accPrivProp(); }
+		public function accPrivProp():Boolean { return defaultClass.accPrivProp():*; }
 
 		// access namespace property from same package
 		public function accNSProp():String { return defaultClass.ns::nsProp; }
@@ -114,28 +114,28 @@ package DefaultClassSame {
 
 
 		// access default method from same package
-		public function accDefMethod():Boolean { return defaultClass.defaultMethod(); }
+		public function accDefMethod():Boolean { return defaultClass.defaultMethod():*; }
 
 		// access internal method from same package
-		public function accIntMethod():Number { return defaultClass.internalMethod(50); }
+		public function accIntMethod():Number { return defaultClass.internalMethod(50):*; }
 
 		// access protected method from same package - NOT LEGAL OUTSIDE DERIVED CLASS
-		// public function accProtMethod():uint { return defaultClass.protectedMethod(); }
+		// public function accProtMethod():uint { return defaultClass.protectedMethod():*; }
 
 		// access public method from same package
-		public function accPubMethod():Boolean { return defaultClass.publicMethod(); }
+		public function accPubMethod():Boolean { return defaultClass.publicMethod():*; }
 
 		// access private method from same class and package
-		public function accPrivMethod():Boolean { return defaultClass.accPrivMethod(); }
+		public function accPrivMethod():Boolean { return defaultClass.accPrivMethod():*; }
 
 		// access namespace method from same package
-		public function accNSMethod():String { return defaultClass.ns::nsMethod(); }
+		public function accNSMethod():String { return defaultClass.ns::nsMethod():*; }
 
 		// Access final public method from same package
-		public function accPubFinMethod():Number { return defaultClass.publicFinalMethod(); }
+		public function accPubFinMethod():Number { return defaultClass.publicFinalMethod():*; }
 
 		// access static public method from same package
-		public function accPubStatMethod():int { return DefaultClass.publicStaticMethod(); }
+		public function accPubStatMethod():int { return DefaultClass.publicStaticMethod():*; }
 
 		// Error cases
 
@@ -143,7 +143,7 @@ package DefaultClassSame {
 		public function accPrivPropErr():* { return privProp; }
 
 		// access private method from same pakcage not same class
-		public function accPrivMethErr():* { return privMethod(); }
+		public function accPrivMethErr():* { return privMethod():*; }
 
 	}
 	

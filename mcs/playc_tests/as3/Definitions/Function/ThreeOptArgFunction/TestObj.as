@@ -48,7 +48,7 @@ package ThreeOptArgFunction {
 
 	public class TestObj extends TestObjInner {
 		
-		public function returnArguments():* { returnArgumentsInner("Str1", true, 10, 12); }
+		public function returnArguments():* { returnArgumentsInner("Str1", true, 10, 12):*; }
 		
 	}
 

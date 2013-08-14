@@ -50,7 +50,7 @@ package {
 			class A {}
 			
 			class B extends A {
-			  function f():* { super.f(); }
+			  function f():* { super.f():*; }
 			}
 			
 			try {

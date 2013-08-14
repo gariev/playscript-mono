@@ -47,8 +47,8 @@ package DynamicClass {
     // from default method of sub class
     // ************************************
 
-    function subGetArray() : Array { return this.getArray(); }
-    function subSetArray(a:Array):* { this.setArray(a); }
+    function subGetArray() : Array { return this.getArray():*; }
+    function subSetArray(a:Array):* { this.setArray(a):*; }
 
 	public function testSubGetSetArray(a:Array) : Array {
 		this.subSetArray(a);
@@ -61,16 +61,16 @@ package DynamicClass {
     // from public method of sub class
     // ************************************
 
-    public function pubSubGetArray() : Array { return this.getArray(); }
-    public function pubSubSetArray(a:Array):* { this.setArray(a); }
+    public function pubSubGetArray() : Array { return this.getArray():*; }
+    public function pubSubSetArray(a:Array):* { this.setArray(a):*; }
 
     // ************************************
     // access default method of parent
     // from private method of sub class
     // ************************************
 
-    private function privSubGetArray() : Array { return this.getArray(); }
-    private function privSubSetArray(a:Array):* { this.setArray(a); }
+    private function privSubGetArray() : Array { return this.getArray():*; }
+    private function privSubSetArray(a:Array):* { this.setArray(a):*; }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -83,8 +83,8 @@ package DynamicClass {
     // from final method of sub class
     // ************************************
 
-    final function finSubGetArray() : Array { return this.getArray(); }
-    final function finSubSetArray(a:Array):* { this.setArray(a); }
+    final function finSubGetArray() : Array { return this.getArray():*; }
+    final function finSubSetArray(a:Array):* { this.setArray(a):*; }
 
 	public function testFinSubArray(a:Array):Array{
 		this.finSubSetArray(a);

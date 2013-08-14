@@ -48,8 +48,8 @@ package DefaultClass {
     // from default method of sub class
     // ************************************
 
-    function subGetArray() : Array { return this.getFinArray(); }
-    function subSetArray(a:Array):* { this.setFinArray(a); }
+    function subGetArray() : Array { return this.getFinArray():*; }
+    function subSetArray(a:Array):* { this.setFinArray(a):*; }
 
 	// this is needed so that the test cases can access this from
 	// outside the class.  This way the test case itself preserved
@@ -64,16 +64,16 @@ package DefaultClass {
     // from public method of sub class
     // ************************************
 
-    public function pubSubGetArray() : Array { return this.getFinArray(); }
-    public function pubSubSetArray(a:Array):* { this.setFinArray(a); }
+    public function pubSubGetArray() : Array { return this.getFinArray():*; }
+    public function pubSubSetArray(a:Array):* { this.setFinArray(a):*; }
 
     // ************************************
     // access final method of parent
     // from private method of sub class
     // ************************************
 
-    private function privSubGetArray() : Array { return this.getFinArray(); }
-    private function privSubSetArray(a:Array):* { this.setFinArray(a); }
+    private function privSubGetArray() : Array { return this.getFinArray():*; }
+    private function privSubSetArray(a:Array):* { this.setFinArray(a):*; }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -86,8 +86,8 @@ package DefaultClass {
     // from final method of sub class
     // ************************************
 
-    final function finSubGetArray() : Array { return this.getFinArray(); }
-    final function finSubSetArray(a:Array):* { this.setFinArray(a); }
+    final function finSubGetArray() : Array { return this.getFinArray():*; }
+    final function finSubSetArray(a:Array):* { this.setFinArray(a):*; }
 
 	public function testFinSubArray(a:Array):Array{
 		this.finSubSetArray(a);

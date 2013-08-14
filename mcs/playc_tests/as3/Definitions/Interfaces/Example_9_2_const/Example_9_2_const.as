@@ -40,7 +40,7 @@
 // that is equivalent to a namespace...
 package Example_9_2_const {
 
-	interface I { function f(); }
+	interface I { function f():*; }
 	
 	
 	class A implements I {

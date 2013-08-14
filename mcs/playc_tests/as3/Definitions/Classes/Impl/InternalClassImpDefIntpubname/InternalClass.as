@@ -53,7 +53,7 @@ package InternalClassImpDefIntpubname{
 
 	public class InternalClassAccesor extends InternalClass{
 	
-		public function accdeffunc():*{return deffunc();}
+		public function accdeffunc():*{return deffunc():*;}
 	        	
        } 	
 	

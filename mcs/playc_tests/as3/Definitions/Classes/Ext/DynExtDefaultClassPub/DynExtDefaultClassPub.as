@@ -49,8 +49,8 @@ package DefaultClass {
     // from default method of sub class
     // ************************************
 
-    function subGetArray() : Array { return this.getPubArray(); }
-    function subSetArray(a:Array):* { this.setPubArray(a); }
+    function subGetArray() : Array { return this.getPubArray():*; }
+    function subSetArray(a:Array):* { this.setPubArray(a):*; }
     // function to test above from test scripts
     public function testSubArray(a:Array) : Array {
         this.subSetArray(a);
@@ -62,16 +62,16 @@ package DefaultClass {
     // from public method of sub class
     // ************************************
 
-    public function pubSubGetArray() : Array { return this.getPubArray(); }
-    public function pubSubSetArray(a:Array):* { this.setPubArray(a); }
+    public function pubSubGetArray() : Array { return this.getPubArray():*; }
+    public function pubSubSetArray(a:Array):* { this.setPubArray(a):*; }
 
     // ************************************
     // access public method of parent
     // from private method of sub class
     // ************************************
 
-    private function privSubGetArray() : Array { return this.getPubArray(); }
-    private function privSubSetArray(a:Array):* { this.setPubArray(a); }
+    private function privSubGetArray() : Array { return this.getPubArray():*; }
+    private function privSubSetArray(a:Array):* { this.setPubArray(a):*; }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -84,8 +84,8 @@ package DefaultClass {
     // from final method of sub class
     // ************************************
 
-    final function finSubGetArray() : Array { return this.getPubArray(); }
-    final function finSubSetArray(a:Array):* { this.setPubArray(a); }
+    final function finSubGetArray() : Array { return this.getPubArray():*; }
+    final function finSubSetArray(a:Array):* { this.setPubArray(a):*; }
     // function to test above from test scripts
     public function testFinSubArray(a:Array) : Array {
         this.finSubSetArray(a);
@@ -97,8 +97,8 @@ package DefaultClass {
     // from public final method of sub class
     // ************************************
 
-    public final function pubFinSubGetArray() : Array { return this.getPubArray(); }
-    public final function pubFinSubSetArray(a:Array):* { this.setPubArray(a); }
+    public final function pubFinSubGetArray() : Array { return this.getPubArray():*; }
+    public final function pubFinSubSetArray(a:Array):* { this.setPubArray(a):*; }
     // function to test above from test scripts
     public function testPubFinSubArray(a:Array) : Array {
         this.pubFinSubSetArray(a);
@@ -110,8 +110,8 @@ package DefaultClass {
     // from private final method of sub class
     // ************************************
 
-    private final function privFinSubGetArray() : Array { return this.getPubArray(); }
-    private final function privFinSubSetArray(a:Array):* { this.setPubArray(a); }
+    private final function privFinSubGetArray() : Array { return this.getPubArray():*; }
+    private final function privFinSubSetArray(a:Array):* { this.setPubArray(a):*; }
     // function to test above from test scripts
     public function testPrivFinSubArray(a:Array) : Array {
         this.privFinSubSetArray(a);
@@ -123,8 +123,8 @@ package DefaultClass {
     // from virtual method of sub class
     // ************************************
 
-    virtual function virSubGetArray() : Array { return this.getPubArray(); }
-    virtual function virSubSetArray(a:Array):* { this.setPubArray(a); }
+    virtual function virSubGetArray() : Array { return this.getPubArray():*; }
+    virtual function virSubSetArray(a:Array):* { this.setPubArray(a):*; }
     // function to test above from test scripts
     public function testVirSubArray(a:Array) : Array {
         this.virSubSetArray(a);
@@ -136,8 +136,8 @@ package DefaultClass {
     // from public virtual method of sub class
     // ************************************
 
-    public virtual function pubVirSubGetArray() : Array { return this.getPubArray(); }
-    public virtual function pubVirSubSetArray(a:Array):* { this.setPubArray(a); }
+    public virtual function pubVirSubGetArray() : Array { return this.getPubArray():*; }
+    public virtual function pubVirSubSetArray(a:Array):* { this.setPubArray(a):*; }
     // function to test above from test scripts
     public function testPubVirSubArray(a:Array) : Array {
         this.pubVirSubSetArray(a);
@@ -149,8 +149,8 @@ package DefaultClass {
     // from private virtual method of sub class
     // ************************************
 
-    private virtual function privVirSubGetArray() : Array { return this.getPubArray(); }
-    private virtual function privVirSubSetArray(a:Array):* { this.setPubArray(a); }
+    private virtual function privVirSubGetArray() : Array { return this.getPubArray():*; }
+    private virtual function privVirSubSetArray(a:Array):* { this.setPubArray(a):*; }
     // function to test above from test scripts
     public function testPrivVirSubArray(a:Array) : Array {
         this.pubVirSubSetArray(a);

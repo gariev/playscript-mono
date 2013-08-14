@@ -37,6 +37,6 @@
 package OneOptArgFunction {
 
  function returnBooleanInner(b:Boolean = true,... rest):Boolean { return b; }
- public function returnBoolean():Boolean { return returnBooleanInner(); }
+ public function returnBoolean():Boolean { return returnBooleanInner():*; }
 }
 

@@ -48,8 +48,8 @@ package DefaultClass {
     // from default method of sub class
     // ************************************
 
-    function subGetArray() : Array { return getStatArray(); }
-    function subSetArray(a:Array):* { setStatArray(a); }
+    function subGetArray() : Array { return getStatArray():*; }
+    function subSetArray(a:Array):* { setStatArray(a):*; }
 
 	public function testSubGetSetArray(a:Array) : Array {
 		this.subSetArray(a);
@@ -62,16 +62,16 @@ package DefaultClass {
     // from public method of sub class
     // ************************************
 
-    public function pubSubGetArray() : Array { return getStatArray(); }
-    public function pubSubSetArray(a:Array):* { setStatArray(a); }
+    public function pubSubGetArray() : Array { return getStatArray():*; }
+    public function pubSubSetArray(a:Array):* { setStatArray(a):*; }
 
     // ************************************
     // access static method of parent
     // from private method of sub class
     // ************************************
 
-    private function privSubGetArray() : Array { return getStatArray(); }
-    private function privSubSetArray(a:Array):* { setStatArray(a); }
+    private function privSubGetArray() : Array { return getStatArray():*; }
+    private function privSubSetArray(a:Array):* { setStatArray(a):*; }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -84,8 +84,8 @@ package DefaultClass {
     // from final method of sub class
     // ************************************
 
-    final function finSubGetArray() : Array { return getStatArray(); }
-    final function finSubSetArray(a:Array):* { setStatArray(a); }
+    final function finSubGetArray() : Array { return getStatArray():*; }
+    final function finSubSetArray(a:Array):* { setStatArray(a):*; }
 
 	public function testFinSubArray(a:Array) : Array {
 		this.finSubSetArray(a);
@@ -98,8 +98,8 @@ package DefaultClass {
     // from static method of sub class
     // ***************************************
 
-    static function statSubGetArray() : Array { return getStatArray(); }
-    static function statSubSetArray(a:Array):* { setStatArray(a); }
+    static function statSubGetArray() : Array { return getStatArray():*; }
+    static function statSubSetArray(a:Array):* { setStatArray(a):*; }
 
     public static function testStatSubArray(a:Array) : Array {
         statSubSetArray(a);
@@ -112,16 +112,16 @@ package DefaultClass {
     // from public static method of sub class
     // ***************************************
 
-    public static function pubStatSubGetArray() : Array { return getStatArray(); }
-    public static function pubStatSubSetArray(a:Array):* { setStatArray(a); }
+    public static function pubStatSubGetArray() : Array { return getStatArray():*; }
+    public static function pubStatSubSetArray(a:Array):* { setStatArray(a):*; }
 
     // ***************************************
     // access static method of parent
     // from private static method of sub class
     // ***************************************
 
-    private static function privStatSubGetArray() : Array { return getStatArray(); }
-    private static function privStatSubSetArray(a:Array):* { setStatArray(a); }
+    private static function privStatSubGetArray() : Array { return getStatArray():*; }
+    private static function privStatSubSetArray(a:Array):* { setStatArray(a):*; }
 
     // public accessor to test asrt
     public function testPrivStatSubArray(a:Array) : Array {

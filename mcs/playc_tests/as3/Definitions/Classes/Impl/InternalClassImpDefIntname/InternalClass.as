@@ -54,7 +54,7 @@ package InternalClassImpDefIntname{
 	public class InternalClassAccesor{
 	        var c:InternalClass = new InternalClass(); 
 		var i:DefaultInt = c;
-		public function accdeffunc():*{return i.deffunc();}
+		public function accdeffunc():*{return i.deffunc():*;}
 	        	
        } 	
 	

@@ -38,13 +38,13 @@
 // qualified name
 package QualUnqualAccess {
 	interface T {
-		function f();
+		function f():*;
 	}
 	interface U extends T {
-		function g();
+		function g():*;
 	}
 	interface V {
-		function h();
+		function h():*;
 	}
 
 	class A implements T {

@@ -54,7 +54,7 @@ public class ClassGet {
 
 	private var obj:FinalClass = new FinalClass();
 	var i:DefaultInt = obj;
-	public function accdeffunc():*{return i.deffunc();}
+	public function accdeffunc():*{return i.deffunc():*;}
 		
        } 	
 }  

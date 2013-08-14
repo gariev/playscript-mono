@@ -38,7 +38,7 @@
 package Example_9_2_qual {
 
 	interface I {
-		function m();	// example erroneously has { } here
+		function m():*;	// example erroneously has { } here
 	}
 	
 	class A implements I {

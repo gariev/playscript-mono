@@ -60,7 +60,7 @@ package DynamicClassImpPublicIntpubname{
 			 acc = new DynamicClass();
 		}
 
-		public function accdeffunc():String{return acc.deffunc();}
+		public function accdeffunc():String{return acc.deffunc():*;}
 		        	
        } 	
 }  

@@ -43,7 +43,7 @@ use namespace ns;
    public class PublicsubClass extends InternalClass{
 		
 
-	//override public function getdeffunc():String{return deffunc();}
+	//override public function getdeffunc():String{return deffunc():*;}
 		// access default function deffunc
 
 

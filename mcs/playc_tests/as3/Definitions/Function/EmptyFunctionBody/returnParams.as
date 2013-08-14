@@ -36,6 +36,6 @@
  * ***** END LICENSE BLOCK ***** */
 package EmptyFunctionBody {
 	function returnParamsInner(s:String, b:Boolean):String { return s; }
-	public function returnParams(s:String, b:Boolean):String { return returnParamsInner(s,b); }
+	public function returnParams(s:String, b:Boolean):String { return returnParamsInner(s,b):*; }
 }
 

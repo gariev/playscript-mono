@@ -37,16 +37,16 @@
 // 9 interface can extend multiple interfaces
 package ExtendMultipleInterfaces {
 	interface A {
-		function a();
+		function a():*;
 	}
 	interface B {
-		function b();
+		function b():*;
 	}
 	interface C {
-		function c();
+		function c():*;
 	}
 	interface D {
-		function d();
+		function d():*;
 	}
 	
 	interface I1 extends A {
@@ -54,7 +54,7 @@ package ExtendMultipleInterfaces {
 	interface I2 extends A, B {
 	}
 	interface I3 extends C {
-		function d();
+		function d():*;
 	}
 	interface I4 extends A, B, I3 {
 	}

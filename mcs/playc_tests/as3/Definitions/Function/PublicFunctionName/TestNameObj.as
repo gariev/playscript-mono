@@ -60,7 +60,7 @@ package PublicFunctionName {
 	}
 
 	public class TestNameObj extends TestNameObjInner {
-	public function pubTestConst():* { return testNameObjInner(); }
+	public function pubTestConst():* { return testNameObjInner():*; }
     	public function puba1 () { return a1(); }
     	public function puba_1 () { return a_1(); }
     	public function pub_a1 () { return _a1(); }

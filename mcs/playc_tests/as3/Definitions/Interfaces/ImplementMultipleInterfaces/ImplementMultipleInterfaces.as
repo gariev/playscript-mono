@@ -37,16 +37,16 @@
 // 8 / 9 / 16.3.3 a variety of implements multiple and extends plus implements single / multiple
 package ImplementMultipleInterfaces {
 	interface A {
-		function a();
+		function a():*;
 	}
 	interface B {
-		function b();
+		function b():*;
 	}
 	interface C {
-		function c();
+		function c():*;
 	}
 	interface D {
-		function d();
+		function d():*;
 	}
 
 	class X1 implements A {

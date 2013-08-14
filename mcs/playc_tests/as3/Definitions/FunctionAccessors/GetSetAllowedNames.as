@@ -79,7 +79,7 @@ package {
 			
 			var f1:* = function () {}
 			var f2:* = function () { var i:* = 5; }
-			AddTestCase( "getter function keyword, different capitalization", "function Function():* {}", TESTOBJ.FuncTion.toString());
+			AddTestCase( "getter function keyword, different capitalization", "function Function():* {}", TESTOBJ.FuncTion.toString()):*;
 			AddTestCase( "setter function keyword, different capitalization", f2, (TESTOBJ.FuncTion = f2, TESTOBJ.FuncTion));
 			
 			AddTestCase( "getter name same as constructor, different capitalization", "constructor, different case", TESTOBJ.getSetAllowedNames);

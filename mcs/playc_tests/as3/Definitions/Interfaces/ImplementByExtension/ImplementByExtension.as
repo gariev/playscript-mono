@@ -38,18 +38,18 @@
 // be assembled via inheritance from one or more classes
 package ImplementByExtension {
 	interface I {
-		function f();
+		function f():*;
 	}
 	interface J {
-		function g();
+		function g():*;
 	}
 	interface I1 extends I { }
 	interface I2 extends I {
-		function g();
+		function g():*;
 	}
 	interface J1 extends J { }
 	interface J2 extends J {
-		function f();
+		function f():*;
 	}
 	interface K extends I, J { }
 	interface K1 extends I1, J1 { }

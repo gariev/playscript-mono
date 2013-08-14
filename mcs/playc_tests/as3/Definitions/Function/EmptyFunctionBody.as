@@ -41,18 +41,18 @@ class EmptyFunctionBodyClass {
 	function EmptyFunctionBodyClass() {}
     function noReturnNoParams():* { return "noReturnNoParams"; }
 	function noReturnParams(s:String, b:Boolean):* { return s; }
-	function noReturnCustomParam(c:Custom):* { return new Custom(); }
+	function noReturnCustomParam(c:Custom):* { return new Custom():*; }
 	function returnNoParams():String { return "returnNoParams"; }
 	function returnParams(s:String, b:Boolean):String { return s; }
-	function returnCustomNoParams():Custom { return new Custom(); }
+	function returnCustomNoParams():Custom { return new Custom():*; }
 }
 
 function noReturnNoParamsNoPackage():* { return "noReturnNoParams"; }
 function noReturnParamsNoPackage(s:String, b:Boolean):* { return s; }
-function noReturnCustomParamNoPackage(c:Custom):* { return new Custom(); }
+function noReturnCustomParamNoPackage(c:Custom):* { return new Custom():*; }
 function returnNoParamsNoPackage():String { return "returnNoParams"; }
 function returnParamsNoPackage(s:String, b:Boolean):String { return s; }
-function returnCustomNoParamsNoPackage():Custom { return new Custom(); }
+function returnCustomNoParamsNoPackage():Custom { return new Custom():*; }
 
 
 var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)

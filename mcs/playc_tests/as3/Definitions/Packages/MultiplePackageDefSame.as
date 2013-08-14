@@ -42,7 +42,7 @@ package foo{
 	public function func1():*{ return "This is func1"; }
 
 	interface IntA{
-		function testInt();
+		function testInt():*;
 	}
 
 	public class ClassA implements IntA {
@@ -67,7 +67,7 @@ package foo{
 	public function func2():*{ return "This is func2"; }
 
 	interface IntB{
-		function testInt();
+		function testInt():*;
 	}
 
 	public class ClassB implements IntB {
@@ -77,7 +77,7 @@ package foo{
 
 	// use the definitions from the first package foo
 	public var c:* = a;
-	public function func3():*{ return func1(); }
+	public function func3():*{ return func1():*; }
 
 	public var classC:* = new ClassA();
 

@@ -53,7 +53,7 @@ package FinalClassImpInternalIntname{
 public class ClassGet {
 	private var obj:FinalClass = new FinalClass();
 	var i:InternalInt = obj;
-	public function accdeffunc():String{return i.deffunc();}
+	public function accdeffunc():String{return i.deffunc():*;}
        	
      } 	
 }  

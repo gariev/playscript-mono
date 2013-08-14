@@ -57,7 +57,7 @@ package testfunctiondefinition{
 // interface definition
 package testinterfacedefinition{
 	public interface blah {
-		function testinterfacefunc();
+		function testinterfacefunc():*;
 	}
 	public class testinterface {
 		public function testinterfacefunc():* { return "this is an interface definition";}

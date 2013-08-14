@@ -76,8 +76,8 @@ final class finClass {
 }
 
 interface inInterface {
-	function intFunc1();
-	function intFunc2();
+	function intFunc1():*;
+	function intFunc2():*;
 }
 
 

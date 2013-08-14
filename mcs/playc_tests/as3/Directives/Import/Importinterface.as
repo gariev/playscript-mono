@@ -37,7 +37,7 @@
 package Importinterface  {
 
 	public interface Publicinterface {
-              function setPubArray(a:Array);
+              function setPubArray(a:Array):*;
 	 }
 }
 

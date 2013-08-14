@@ -40,10 +40,10 @@ import VirtualFunctionBody.*;
 class VirtualFunctionBodyClass{
 	virtual function noReturnNoParams():* { return "noReturnNoParams"; }
 	virtual function noReturnParams(s:String, b:Boolean):* { return s; }
-	virtual function noReturnCustomParam(c:Custom):* { return new Custom(); }
+	virtual function noReturnCustomParam(c:Custom):* { return new Custom():*; }
 	virtual function returnNoParams():String { return "returnNoParams"; }
 	virtual function returnParams(s:String, b:Boolean):String { return s; }
-	virtual function returnCustomNoParams():Custom { return new Custom(); }
+	virtual function returnCustomNoParams():Custom { return new Custom():*; }
 }
 
 var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)

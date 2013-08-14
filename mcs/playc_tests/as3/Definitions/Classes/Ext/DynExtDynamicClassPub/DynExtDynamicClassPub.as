@@ -47,8 +47,8 @@ package DynamicClass {
     // from default method of sub class
     // ************************************
 
-    function subGetArray() : Array { return this.getPubArray(); }
-    function subSetArray(a:Array):* { this.setPubArray(a); }
+    function subGetArray() : Array { return this.getPubArray():*; }
+    function subSetArray(a:Array):* { this.setPubArray(a):*; }
     // function to test above from test scripts
     public function testSubArray(a:Array) : Array {
         this.subSetArray(a);
@@ -60,16 +60,16 @@ package DynamicClass {
     // from public method of sub class
     // ************************************
 
-    public function pubSubGetArray() : Array { return this.getPubArray(); }
-    public function pubSubSetArray(a:Array):* { this.setPubArray(a); }
+    public function pubSubGetArray() : Array { return this.getPubArray():*; }
+    public function pubSubSetArray(a:Array):* { this.setPubArray(a):*; }
 
     // ************************************
     // access public method of parent
     // from private method of sub class
     // ************************************
 
-    private function privSubGetArray() : Array { return this.getPubArray(); }
-    private function privSubSetArray(a:Array):* { this.setPubArray(a); }
+    private function privSubGetArray() : Array { return this.getPubArray():*; }
+    private function privSubSetArray(a:Array):* { this.setPubArray(a):*; }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -82,8 +82,8 @@ package DynamicClass {
     // from final method of sub class
     // ************************************
 
-    final function finSubGetArray() : Array { return this.getPubArray(); }
-    final function finSubSetArray(a:Array):* { this.setPubArray(a); }
+    final function finSubGetArray() : Array { return this.getPubArray():*; }
+    final function finSubSetArray(a:Array):* { this.setPubArray(a):*; }
     // function to test above from test scripts
     public function testFinSubArray(a:Array) : Array {
         this.finSubSetArray(a);

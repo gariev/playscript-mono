@@ -46,14 +46,14 @@
 package Qualifiers {
 
 	interface defInt {
-		function defFunc();
+		function defFunc():*;
 	}
 	internal interface intInt {
-		function defFunc();
+		function defFunc():*;
 	}
     
 	public interface pubInt {
-		function defFunc();
+		function defFunc():*;
 	}
 	
 	class defImplDefIntByInt implements defInt {

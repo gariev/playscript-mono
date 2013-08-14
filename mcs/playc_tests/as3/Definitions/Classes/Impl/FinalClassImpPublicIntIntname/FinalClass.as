@@ -58,8 +58,8 @@ public class ClassGet {
 	var i:PublicInt = obj;
          var i_s:PublicInt_S = obj;
 
-		public function accdeffunc():String{return i.deffunc();}
-		public function accdeffunc_s():String{return i_s.deffunc();}
+		public function accdeffunc():String{return i.deffunc():*;}
+		public function accdeffunc_s():String{return i_s.deffunc():*;}
 		// access default function deffunc
         	
 	       } 	

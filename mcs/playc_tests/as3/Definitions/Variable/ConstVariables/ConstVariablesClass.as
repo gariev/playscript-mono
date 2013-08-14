@@ -40,14 +40,14 @@ package Package1
     
     public const packageItem1:* = "const packageItem1:* set at creation time";
     
-    public const packageItem2:* = "const packageItem2:* set at creation time", packageItem3, packageItem4 = "const packageItem4 set at creation time";;
+    public const packageItem2:* = "const packageItem2:* set at creation time", packageItem3, packageItem4 = "const packageItem4:* set at creation time";;
     
     public const packageItem5:int = 5;
     
     public class Class1
     {
         public const classItem1:* = "const Class1:* classItem1 set at creation time";
-        public const classItem2:* = "const Class1:* classItem2 set at creation time", classItem3, classItem4 = "const Class1 classItem4 set at creation time";
+        public const classItem2:* = "const Class1:* classItem2 set at creation time", classItem3, classItem4 = "const Class1:* classItem4 set at creation time";
         public const classItem5:int = 6;
         public static const classItem6:* = "static const Class1:* classItem6 set at creation time";
         ns1 const classItem7:String = "ns1 const Class1:* classItem7 set at creation time";

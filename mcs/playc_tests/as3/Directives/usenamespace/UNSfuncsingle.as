@@ -76,14 +76,14 @@ package {
 			
 			var obj:A = new A();
 			
-			AddTestCase( "Baseball function getTeam()", "Giants", obj.a1());
+			AddTestCase( "Baseball function getTeam()", "Giants", obj.a1()):*;
 			
 			
-			AddTestCase( "Hockey function getTeam()", "Sharks", obj.a2());
+			AddTestCase( "Hockey function getTeam()", "Sharks", obj.a2()):*;
 			
 			
 			
-			AddTestCase( "Basketball function getTeam()", "Kings", obj.a3());
+			AddTestCase( "Basketball function getTeam()", "Kings", obj.a3()):*;
 			
 			
 			test();       // leave this alone.  this executes the test cases and

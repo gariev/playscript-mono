@@ -47,8 +47,8 @@ package PublicClass {
 	    // from default method of sub class
 	    // ************************************
 
-	    function subGetArray() : Array { return this.getFinArray(); }
-	    function subSetArray(a:Array):*  { this.setFinArray(a); }
+	    function subGetArray() : Array { return this.getFinArray():*; }
+	    function subSetArray(a:Array):*  { this.setFinArray(a):*; }
 	    // function to test above from test scripts
 	    public function testSubArray(a:Array) : Array {
 		this.subSetArray(a);
@@ -60,16 +60,16 @@ package PublicClass {
 	    // from public method of sub class
 	    // ************************************
 
-	    public function pubSubGetArray() : Array { return this.getFinArray(); }
-	    public function pubSubSetArray(a:Array):* { this.setFinArray(a); }
+	    public function pubSubGetArray() : Array { return this.getFinArray():*; }
+	    public function pubSubSetArray(a:Array):* { this.setFinArray(a):*; }
 
 	    // ************************************
 	    // access final method of parent
 	    // from private method of sub class
 	    // ************************************
 
-	    private function privSubGetArray() : Array { return this.getFinArray(); }
-	    private function privSubSetArray(a:Array):* { this.setFinArray(a); }
+	    private function privSubGetArray() : Array { return this.getFinArray():*; }
+	    private function privSubSetArray(a:Array):* { this.setFinArray(a):*; }
 
 	    // function to test above from test scripts
 	    public function testPrivSubArray(a:Array) : Array {
@@ -82,24 +82,24 @@ package PublicClass {
 	    // from static method of sub class
 	    // ***************************************
 
-	    static function statSubGetArray() : Array { return getStatArray(); }
-	    static function statSubSetArray(a:Array):* { setStatArray(a); }
+	    static function statSubGetArray() : Array { return getStatArray():*; }
+	    static function statSubSetArray(a:Array):* { setStatArray(a):*; }
 
 	    // ***************************************
 	    // access static method of parent
 	    // from public static method of sub class
 	    // ***************************************
 
-	    public static function pubStatSubGetArray() : Array { return getStatArray(); }
-	    public static function pubStatSubSetArray(a:Array):* { setStatArray(a); }
+	    public static function pubStatSubGetArray() : Array { return getStatArray():*; }
+	    public static function pubStatSubSetArray(a:Array):* { setStatArray(a):*; }
 
 	    // ***************************************
 	    // access static method of parent
 	    // from private static method of sub class
 	    // ***************************************
 
-	    private static function privStatSubGetArray() : Array { return getStatArray(); }
-	    private static function privStatSubSetArray(a:Array):* { setStatArray(a); }
+	    private static function privStatSubGetArray() : Array { return getStatArray():*; }
+	    private static function privStatSubSetArray(a:Array):* { setStatArray(a):*; }
 
 	    // public accessor to test asrt
 	    public function testPrivStatSubArray(a:Array) : Array {
@@ -112,8 +112,8 @@ package PublicClass {
 	    // from final method of sub class
 	    // ************************************
 
-	    final function finSubGetArray() : Array { return this.getFinArray(); }
-	    final function finSubSetArray(a:Array):*  { this.setFinArray(a); }
+	    final function finSubGetArray() : Array { return this.getFinArray():*; }
+	    final function finSubSetArray(a:Array):*  { this.setFinArray(a):*; }
 	    // public accessor to test asrt
 	    public function testFinSubArray(a:Array) : Array {
 		this.finSubSetArray(a);
@@ -125,16 +125,16 @@ package PublicClass {
 	    // from public final method of sub class
 	    // ************************************
 
-	    public final function pubFinSubGetArray() : Array { return this.getFinArray(); }
-	    public final function pubFinSubSetArray(a:Array):*  { this.setFinArray(a); }
+	    public final function pubFinSubGetArray() : Array { return this.getFinArray():*; }
+	    public final function pubFinSubSetArray(a:Array):*  { this.setFinArray(a):*; }
 
 	    // ************************************
 	    // access final method of parent
 	    // from public final method of sub class
 	    // ************************************
 
-	    private final function privFinSubGetArray() : Array { return this.getFinArray(); }
-	    private final function privFinSubSetArray(a:Array):*  { this.setFinArray(a); }
+	    private final function privFinSubGetArray() : Array { return this.getFinArray():*; }
+	    private final function privFinSubSetArray(a:Array):*  { this.setFinArray(a):*; }
 	    // public accessor to test asrt
 	    public function testPrivFinSubArray(a:Array) : Array {
 		this.privFinSubSetArray(a);

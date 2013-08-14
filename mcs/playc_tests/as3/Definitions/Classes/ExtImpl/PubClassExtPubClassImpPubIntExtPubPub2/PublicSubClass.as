@@ -50,7 +50,7 @@ package PubClassExtPubClassImpPubIntExtPubPub2{
         public class PublicSuperClass{
                                    public function MySuperBoolean():Boolean{return true;}
                                    internal function MySuperNumber():Number{return 10;}
-                            public static function MySuperStaticDate():Date {return new Date(0);}
+                            public static function MySuperStaticDate():Date {return new Date(0):*;}
 
                             
                                      }
@@ -73,7 +73,7 @@ package PubClassExtPubClassImpPubIntExtPubPub2{
                                                                     var negint:int = -100000;
                                                                     return negint;
                                                                            }
-                                  public function RetMySuperNumber():Number{return MySuperNumber();}
+                                  public function RetMySuperNumber():Number{return MySuperNumber():*;}
 
                                                             }
 

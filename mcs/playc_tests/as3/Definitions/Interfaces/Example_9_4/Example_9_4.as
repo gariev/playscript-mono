@@ -38,16 +38,16 @@
 package Example_9_4 {
 
 	interface T {
-		function f();
+		function f():*;
 	}
 	
 	interface U {
-		function f();
-		function g();
+		function f():*;
+		function g():*;
 	}
 	
 	interface V extends T, U {
-		function h();
+		function h():*;
 	}
 	
 	class A implements V {

@@ -51,8 +51,8 @@ package PublicClassImpDefIntIntname{
 			return"PASSED"
                 }*/
       
-	        public function accdeffunc():*{return DefaultInt::deffunc();}
-		public function accdeffunc_s():*{return DefaultInt_S::deffunc();}
+	        public function accdeffunc():*{return DefaultInt::deffunc():*;}
+		public function accdeffunc_s():*{return DefaultInt_S::deffunc():*;}
 		// access default function deffunc	
 
        } 	

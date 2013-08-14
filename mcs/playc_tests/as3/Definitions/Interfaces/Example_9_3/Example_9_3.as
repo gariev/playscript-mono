@@ -38,8 +38,8 @@
 // for user-defined namespaces inside interfaces per section 9.3
 package Example_9_3 {
 	interface T {
-		function f();
-		function g();
+		function f():*;
+		function g():*;
 	}
 	
 	class A implements T {

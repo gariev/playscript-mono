@@ -37,7 +37,7 @@
 package ImplTwoInterfacesSameMethod{
 
 	public interface B{
-		function sameName();
+		function sameName():*;
 	}
 
 }

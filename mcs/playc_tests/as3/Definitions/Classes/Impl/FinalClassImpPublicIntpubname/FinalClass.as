@@ -52,7 +52,7 @@ package FinalClassImpPublicIntpubname{
 
 public class ClassGet {
 	private var obj:FinalClass = new FinalClass();
-		public function accdeffunc():String{return obj.deffunc();}
+		public function accdeffunc():String{return obj.deffunc():*;}
 		       	
 	       } 	
 }  

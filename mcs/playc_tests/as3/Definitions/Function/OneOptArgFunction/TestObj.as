@@ -45,9 +45,9 @@ package OneOptArgFunction {
 	
 	public class TestObj extends TestObjInner {
 			
-	 public function returnString():String { return returnStringInner(); }
-	 public function returnBoolean():Boolean { return returnBooleanInner(); }
-	 public function returnNumber():Number { return returnNumberInner(); }		
+	 public function returnString():String { return returnStringInner():*; }
+	 public function returnBoolean():Boolean { return returnBooleanInner():*; }
+	 public function returnNumber():Number { return returnNumberInner():*; }		
 	}
 
 }

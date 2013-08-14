@@ -52,8 +52,8 @@ final class FinExtDefaultImplDefStat extends DefaultClass implements DefaultIntD
     // from default method of sub class
     // ************************************
 
-    function subGetArray() : Array { return getStatArray(); }
-    function subSetArray(a:Array):* { setStatArray(a); }
+    function subGetArray() : Array { return getStatArray():*; }
+    function subSetArray(a:Array):* { setStatArray(a):*; }
 
     public function testSubSetArray(a:Array) : Array {
         this.subSetArray(a);
@@ -66,16 +66,16 @@ final class FinExtDefaultImplDefStat extends DefaultClass implements DefaultIntD
     // from public method of sub class
     // ************************************
 
-    public function pubSubGetArray() : Array { return getStatArray(); }
-    public function pubSubSetArray(a:Array):* { setStatArray(a); }
+    public function pubSubGetArray() : Array { return getStatArray():*; }
+    public function pubSubSetArray(a:Array):* { setStatArray(a):*; }
 
     // ************************************
     // access static method of parent
     // from private method of sub class
     // ************************************
 
-    private function privSubGetArray() : Array { return getStatArray(); }
-    private function privSubSetArray(a:Array):* { setStatArray(a); }
+    private function privSubGetArray() : Array { return getStatArray():*; }
+    private function privSubSetArray(a:Array):* { setStatArray(a):*; }
 
     // function to test above from test scripts
     public function testPrivSubArray(a:Array) : Array {
@@ -88,8 +88,8 @@ final class FinExtDefaultImplDefStat extends DefaultClass implements DefaultIntD
     // from static method of sub class
     // ***************************************
 
-    static function statSubGetArray() : Array { return getStatArray(); }
-    static function statSubSetArray(a:Array):* { setStatArray(a); }
+    static function statSubGetArray() : Array { return getStatArray():*; }
+    static function statSubSetArray(a:Array):* { setStatArray(a):*; }
 
     public static function testStatSubArray(a:Array) : Array {
         statSubSetArray(a);
@@ -102,16 +102,16 @@ final class FinExtDefaultImplDefStat extends DefaultClass implements DefaultIntD
     // from public static method of sub class
     // ***************************************
 
-    public static function pubStatSubGetArray() : Array { return getStatArray(); }
-    public static function pubStatSubSetArray(a:Array):* { setStatArray(a); }
+    public static function pubStatSubGetArray() : Array { return getStatArray():*; }
+    public static function pubStatSubSetArray(a:Array):* { setStatArray(a):*; }
 
     // ***************************************
     // access static method of parent
     // from private static method of sub class
     // ***************************************
 
-    private static function privStatSubGetArray() : Array { return getStatArray(); }
-    private static function privStatSubSetArray(a:Array):* { setStatArray(a); }
+    private static function privStatSubGetArray() : Array { return getStatArray():*; }
+    private static function privStatSubSetArray(a:Array):* { setStatArray(a):*; }
 
     // function to test above test case
     public function testPrivStatSubArray(a:Array) : Array {
@@ -224,44 +224,44 @@ final class FinExtDefaultImplDefStat extends DefaultClass implements DefaultIntD
   	// outside of the class definition.
 
   	// The default method of the sub class.
-  	public function setPubArray( a:Array ):*  { return FINEXTDCLASS.setPubArray( a ); }
-  	public function setPubBoolean( a:Boolean ):*  { return FINEXTDCLASS.setPubBoolean( a ); }
-  	public function setPubDate( a:Date ):*  { return FINEXTDCLASS.setPubDate( a ); }
-  	public function setPubFunction( a:Function ):*  { return FINEXTDCLASS.setPubFunction( a ); }
-  	public function setPubNumber( a:Number ):*  { return FINEXTDCLASS.setPubNumber( a ); }
-  	public function setPubString( a:String ):*  { return FINEXTDCLASS.setPubString( a ); }
-  	public function setPubObject( a:Object ):*  { return FINEXTDCLASS.setPubObject( a ); }
+  	public function setPubArray( a:Array ):*  { return FINEXTDCLASS.setPubArray( a ):*; }
+  	public function setPubBoolean( a:Boolean ):*  { return FINEXTDCLASS.setPubBoolean( a ):*; }
+  	public function setPubDate( a:Date ):*  { return FINEXTDCLASS.setPubDate( a ):*; }
+  	public function setPubFunction( a:Function ):*  { return FINEXTDCLASS.setPubFunction( a ):*; }
+  	public function setPubNumber( a:Number ):*  { return FINEXTDCLASS.setPubNumber( a ):*; }
+  	public function setPubString( a:String ):*  { return FINEXTDCLASS.setPubString( a ):*; }
+  	public function setPubObject( a:Object ):*  { return FINEXTDCLASS.setPubObject( a ):*; }
 
   	// The dynamic method of the sub class.
-  	public function testGetSetBoolean( a:Array ):*  { FINEXTDCLASS.testGetSetBoolean( a ); }
-  	public function testPubGetSetBoolean( a:Array ):*  { FINEXTDCLASS.testPubGetSetBoolean( a ); }
+  	public function testGetSetBoolean( a:Array ):*  { FINEXTDCLASS.testGetSetBoolean( a ):*; }
+  	public function testPubGetSetBoolean( a:Array ):*  { FINEXTDCLASS.testPubGetSetBoolean( a ):*; }
 
 
   	// The public method of the sub class.
-  	public function testGetSubArray( a:Array ):*  { return FINEXTDCLASS.testGetSubArray( a ); }
-  	public function pubSubSetArray( a:Array ):*  { return FINEXTDCLASS.pubSubSetArray( a ); }
-  	public function pubSubGetArray():*  { return FINEXTDCLASS.pubSubGetArray(  ); }
+  	public function testGetSubArray( a:Array ):*  { return FINEXTDCLASS.testGetSubArray( a ):*; }
+  	public function pubSubSetArray( a:Array ):*  { return FINEXTDCLASS.pubSubSetArray( a ):*; }
+  	public function pubSubGetArray():*  { return FINEXTDCLASS.pubSubGetArray(  ):*; }
 
   	// The private method of the sub class. Only one is used as we need to call only the
   	// test function, which in turn calls the actual private methods, as within the class
   	// we can access the private methods; but not outside of the class.
-  	public function testPrivSubArray( a:Array ) : Array  { return FINEXTDCLASS.testPrivSubArray( a ); }
+  	public function testPrivSubArray( a:Array ) : Array  { return FINEXTDCLASS.testPrivSubArray( a ):*; }
 
   	// The default property being accessed by the different method attributes.
   	// The default method attribute.
-  	public function pubSubSetDPArray( a:Array ):* { return FINEXTDCLASS.pubSubSetDPArray(a); }
-  	public function testSubGetDPArray(a:Array) : Array { return FINEXTDCLASS.testSubGetDPArray(a); }
-        public function testPubSubGetDPArray(a:Array) : Array { return FINEXTDCLASS.testPubSubGetDPArray(a); }
+  	public function pubSubSetDPArray( a:Array ):* { return FINEXTDCLASS.pubSubSetDPArray(a):*; }
+  	public function testSubGetDPArray(a:Array) : Array { return FINEXTDCLASS.testSubGetDPArray(a):*; }
+        public function testPubSubGetDPArray(a:Array) : Array { return FINEXTDCLASS.testPubSubGetDPArray(a):*; }
 
 
   	// the private static method attribute
-  	public function testPrivSubGetDPArray(a:Array) : Array { return FINEXTDCLASS.testPrivSubGetDPArray(a); }
+  	public function testPrivSubGetDPArray(a:Array) : Array { return FINEXTDCLASS.testPrivSubGetDPArray(a):*; }
 
 
 public class accFinExtDefaultImplDefStat{
       private var obj:FinExtDefaultImplDefStat = new FinExtDefaultImplDefStat();
 
-      public function acciGetPubBoolean() : Boolean {return obj.iGetPubBoolean();}
+      public function acciGetPubBoolean() : Boolean {return obj.iGetPubBoolean():*;}
 }
 
 }

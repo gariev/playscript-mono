@@ -91,7 +91,7 @@ package {
 			resultArr[x++] =[null,	   -1.23,	    null,	null,	null,  -1.23,		    null,	 null,		null,		null,	null,		null];		// -1.23
 			resultArr[x++] =[null,	    NaN,	    null,	null,	null,	NaN,		    null,	 null,		null,		null,	null,		null];		// NaN
 			resultArr[x++] =[null,	    Infinity,	    null,	null,	null, Infinity,		    null,	 null,		null,		null,	null,		null];		// Infinity
-			resultArr[x++] =[null,	    null,	    null,	null,	null,function Function() {},function Function():* {},null,null,		null,	null,		null];		// emptyFunction
+			resultArr[x++] =[null,	    null,	    null,	null,	null,function Function():* {},function Function():* {},null,null,		null,	null,		null];		// emptyFunction
 			resultArr[x++] =[null,	    null,	    null,	null,	null,'[object Object]',	    null,	 null,		null,		null,	null,		null];		// emptyObject
 			resultArr[x++] =[null,	    null,	    null,	null,	null,'[object TestClassA]',   null,'[object TestClassA]',	null,		null,	null,		null];		// myClassA
 			resultArr[x++] =[null,	    null,	    null,	null,	null,'[object TestClassB]',   null,'[object TestClassB]','[object TestClassB]',null,	null,		null];		// myClassB

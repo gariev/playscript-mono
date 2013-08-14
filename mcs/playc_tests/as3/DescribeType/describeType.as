@@ -75,9 +75,9 @@ package {
 		function Foo(q:int, s:String = "") { z = q; }
 		
 		[metahere(foo="blah")]
-		public function yah(d:Number):String { return String(z+d); }
+		public function yah(d:Number):String { return String(z+d):*; }
 
-		ns function yah(d:Number):String { return String(z+d); }
+		ns function yah(d:Number):String { return String(z+d):*; }
 
 		public function i1():* {}
 		public function get i2():* {}
@@ -91,7 +91,7 @@ package {
 		ns2 const bb:IFoo = undefined;
 		
 		function Foo2(q:int) { super(q); }
-		override public function yah(d:Number):String { return String(z+d+1); }
+		override public function yah(d:Number):String { return String(z+d+1):*; }
 
 		public function whatever(a:*, b:int, c:String):* {}
 		ns2 function whatever(a:*, b:int, c:String = "hey"):* {}
