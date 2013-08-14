@@ -42,25 +42,25 @@ package {
 	
 	public class ExtErrorTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-			var VERSION = "AS 3.0";  // Version of JavaScript or ECMA
-			var TITLE   = "extend Error";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS 3.0";  // Version of JavaScript or ECMA
+			var TITLE:*   = "extend Error";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
 			
-			var error = new CustError();
-			var ee = new CustEvalError();
-			var te = new CustTypeError();
-			var re = new CustReferenceError();
-			var ra = new CustRangeError();
+			var error:* = new CustError();
+			var ee:* = new CustEvalError();
+			var te:* = new CustTypeError();
+			var re:* = new CustReferenceError();
+			var ra:* = new CustRangeError();
 			
-			AddTestCase( "var error = new CustError()", "Error", error.toString() );
-			AddTestCase( "var ee = new CustEvalError()", "EvalError", ee.toString() );
-			AddTestCase( "var te = new CustTypeError()", "TypeError", te.toString() );
-			AddTestCase( "var re = new CustReferenceError()", "ReferenceError", re.toString() );
-			AddTestCase( "var ra = new CustRangeError()", "RangeError", ra.toString() );
+			AddTestCase( "var error:* = new CustError()", "Error", error.toString() );
+			AddTestCase( "var ee:* = new CustEvalError()", "EvalError", ee.toString() );
+			AddTestCase( "var te:* = new CustTypeError()", "TypeError", te.toString() );
+			AddTestCase( "var re:* = new CustReferenceError()", "ReferenceError", re.toString() );
+			AddTestCase( "var ra:* = new CustRangeError()", "RangeError", ra.toString() );
 			
 			AddTestCase( "typeof new CustError()", "object", typeof new CustError() );
 			AddTestCase( "typeof new CustEvalError()", "object", typeof new CustEvalError() );
@@ -77,11 +77,11 @@ package {
 			re = new CustReferenceError2();
 			ra = new CustRangeError2();
 			
-			AddTestCase( "var error = new CustError2()", "Error", error.toString() );
-			AddTestCase( "var ee = new CustEvalError2()", "EvalError", ee.toString() );
-			AddTestCase( "var te = new CustTypeError2()", "TypeError", te.toString() );
-			AddTestCase( "var re = new CustReferenceError2()", "ReferenceError", re.toString() );
-			AddTestCase( "var ra = new CustRangeError2()", "RangeError", ra.toString() );
+			AddTestCase( "var error:* = new CustError2()", "Error", error.toString() );
+			AddTestCase( "var ee:* = new CustEvalError2()", "EvalError", ee.toString() );
+			AddTestCase( "var te:* = new CustTypeError2()", "TypeError", te.toString() );
+			AddTestCase( "var re:* = new CustReferenceError2()", "ReferenceError", re.toString() );
+			AddTestCase( "var ra:* = new CustRangeError2()", "RangeError", ra.toString() );
 			
 			error = new CustError2("test");
 			ee = new CustEvalError2("eval error");
@@ -89,11 +89,11 @@ package {
 			re = new CustReferenceError2("reference error");
 			ra = new CustRangeError2("range error");
 			
-			AddTestCase( "var error = new CustError2('test')", "Error: test", error.toString() );
-			AddTestCase( "var ee = new CustEvalError2('eval error')", "EvalError: eval error", ee.toString() );
-			AddTestCase( "var te = new CustTypeError2('type error')", "TypeError: type error", te.toString() );
-			AddTestCase( "var re = new CustReferenceError2('reference error')", "ReferenceError: reference error", re.toString() );
-			AddTestCase( "var ra = new CustRangeError2('range error')", "RangeError: range error", ra.toString() );
+			AddTestCase( "var error:* = new CustError2('test')", "Error: test", error.toString() );
+			AddTestCase( "var ee:* = new CustEvalError2('eval error')", "EvalError: eval error", ee.toString() );
+			AddTestCase( "var te:* = new CustTypeError2('type error')", "TypeError: type error", te.toString() );
+			AddTestCase( "var re:* = new CustReferenceError2('reference error')", "ReferenceError: reference error", re.toString() );
+			AddTestCase( "var ra:* = new CustRangeError2('range error')", "RangeError: range error", ra.toString() );
 			
 			AddTestCase( "typeof new CustError2()", "object", typeof new CustError2() );
 			AddTestCase( "typeof new CustEvalError2()", "object", typeof new CustEvalError2() );

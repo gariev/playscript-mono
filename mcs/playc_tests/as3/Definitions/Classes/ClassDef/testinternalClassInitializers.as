@@ -42,14 +42,14 @@ package {
 	
 	public class testinternalClassInitializersTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";                   // Version of JavaScript or ECMA
-			var TITLE   = "Class Initializers";  // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";           // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";                   // Version of JavaScript or ECMA
+			var TITLE:*   = "Class Initializers";  // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
-			var testInit= new testinternalClassInitializersWrap();
+			var testInit:*= new testinternalClassInitializersWrap();
 			//print(testInit.MyNumber1());
 			//print(testInit.MyNumber2());
 			//print();

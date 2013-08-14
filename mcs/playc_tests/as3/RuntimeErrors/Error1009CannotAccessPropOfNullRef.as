@@ -41,15 +41,15 @@
 package {
 	public class Error1009CannotAccessPropOfNullRefTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1009;
+			var CODE:* = 1009;
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var z = "no error";
-				var a = null.a;
+				var z:* = "no error";
+				var a:* = null.a;
 			} catch (err) {
 				z = err.toString();
 			} finally {

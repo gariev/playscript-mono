@@ -103,17 +103,17 @@ import kitty.Kitty;
 import ImportIndividualClasses.s;
 import ImportIndividualClasses.publicFunc;
 
-var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "PackageDefinition" //Proved ECMA section titile or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions";       // provide a document reference (ie, Actionscript section)
+var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+var TITLE:*   = "PackageDefinition" //Proved ECMA section titile or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
 
-var a = new A();
-var b = new B();
-var c = new C();
+var a:* = new A();
+var b:* = new B();
+var c:* = new C();
 
 AddTestCase("Class A imported individually", "A", a.whoAmI());
 AddTestCase("Interface imported individually", "B", b.whoAmI());

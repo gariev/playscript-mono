@@ -41,7 +41,7 @@ package foo {
 	
 	public class A {
 
-		fletch var lives = 'PASSED';
+		fletch var lives:* = 'PASSED';
 		public function getFletch() {
 			return fletch::lives;
 		}
@@ -50,10 +50,10 @@ package foo {
 import foo.*;
 use namespace fletch;
 
-var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "PackageDefinition" //Proved ECMA section titile or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions";       // provide a document reference (ie, Actionscript section)
+var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+var TITLE:*   = "PackageDefinition" //Proved ECMA section titile or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 

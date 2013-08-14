@@ -42,16 +42,16 @@ package {
 	
 	public class finalClassWithParamConsTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";                   // Version of JavaScript or ECMA
-			var TITLE   = "Constructors with parameters of a final class";  // Provide ECMA section                                                                 // title or a                                                                 // description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";           // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";                   // Version of JavaScript or ECMA
+			var TITLE:*   = "Constructors with parameters of a final class";  // Provide ECMA section                                                                 // title or a                                                                 // description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
 			//print("test");
 			                     
-			var finalWithParamCons = new finalClassWithParamCons(20,40);
+			var finalWithParamCons:* = new finalClassWithParamCons(20,40);
 			//print (finalWithParamCons.Add());
 			
 			

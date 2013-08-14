@@ -38,9 +38,9 @@
 package {
 	public class ExplicitConversionsTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Types: Conversions";
-			var VERSION = "as3";
-			var TITLE   = "type conversions";
+			var SECTION:* = "Types: Conversions";
+			var VERSION:* = "as3";
+			var TITLE:*   = "type conversions";
 			
 			startTest();
 			

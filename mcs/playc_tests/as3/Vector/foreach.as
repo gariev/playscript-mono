@@ -47,8 +47,8 @@
 package {
 	public class foreachTest extends BaseTest {
 		public static function Main():int {
-			var SECTION="";
-			var VERSION = "ECMA_1";
+			var SECTION:*="";
+			var VERSION:* = "ECMA_1";
 			
 			startTest();
 			
@@ -57,12 +57,12 @@ package {
 			function eacher(value,index,obj) {
 			  result+="("+value+":"+index+")";
 			}
-			var bad_eacher="astring";
+			var bad_eacher:*="astring";
 			
-			var v1=new Vector.<int>();
-			var errormsg="";
+			var v1:*=new Vector.<int>();
+			var errormsg:*="";
 			try {
-			  var result=v1.forEach();
+			  var result:*=v1.forEach();
 			} catch (e) {
 			  errormsg=e.toString();
 			}
@@ -70,11 +70,11 @@ package {
 					"ArgumentError: Error #1063",
 			    parseError(errormsg,"ArgumentError: Error #1063".length));
 			
-			var v1=new Vector.<int>();
-			for (var i=0;i<3;i++) v1[i]=i;
-			var errormsg="";
+			var v1:*=new Vector.<int>();
+			for (var i:*=0;i<3;i++) v1[i]=i;
+			var errormsg:*="";
 			try {
-			  var result=v1.forEach(bad_eacher);
+			  var result:*=v1.forEach(bad_eacher);
 			} catch (e) {
 			  errormsg=e.toString();
 			}
@@ -82,9 +82,9 @@ package {
 			         		"TypeError: Error #1034",
 			            parseError(errormsg,"TypeError: Error #1034".length));
 			
-			var v1=new Vector.<String>();
-			for (var i=0;i<3;i++) v1[i]="s"+i;
-			var result="";
+			var v1:*=new Vector.<String>();
+			for (var i:*=0;i<3;i++) v1[i]="s"+i;
+			var result:*="";
 			v1.forEach(eacher);
 			AddTestCase(	"forEach simple vector",
 					"(s0:0)(s1:1)(s2:2)",

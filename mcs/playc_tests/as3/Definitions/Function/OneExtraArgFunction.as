@@ -40,15 +40,15 @@ import OneExtraArgFunction.*
 function returnRestNoPackage(... rest):Number { return rest.length; }
 
 
-var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";  // Version of JavaScript or ECMA
-var TITLE   = "Optional Argument test";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+var VERSION:* = "AS3";  // Version of JavaScript or ECMA
+var TITLE:*   = "Optional Argument test";       // Provide ECMA section title or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
-var TESTOBJ = new TestObj();
-var TESTOBJ1 = new OneExtraArgFunctionClass();
+var TESTOBJ:* = new TestObj();
+var TESTOBJ1:* = new OneExtraArgFunctionClass();
 
 // Pass a Number argument
 // inside class inside package

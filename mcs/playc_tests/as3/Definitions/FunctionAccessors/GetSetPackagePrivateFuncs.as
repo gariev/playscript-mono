@@ -37,19 +37,19 @@
 
 import GetSetPackagePrivateFuncs.*;
 
-var SECTION = "FunctionAccessors";
-var VERSION = "AS3"; 
-var TITLE   = "Function Accessors";
-var BUGNUMBER = "";
+var SECTION:* = "FunctionAccessors";
+var VERSION:* = "AS3"; 
+var TITLE:*   = "Function Accessors";
+var BUGNUMBER:* = "";
 
 startTest();
 
-var OBJ = new GetSetPackagePrivateFuncs();
+var OBJ:* = new GetSetPackagePrivateFuncs();
 
 
 // Attempt to access package private getters and setters
 try{
-	var res = "not run";
+	var res:* = "not run";
 	OBJ.y;
 	res = "no exception";
 } catch (e1) {
@@ -59,7 +59,7 @@ try{
 }
 
 try{
-	var res = "not run";
+	var res:* = "not run";
 	OBJ.y = 23334;
 	OBJ.y;
 	res = "no exception";
@@ -70,7 +70,7 @@ try{
 }
 
 try{
-	var res = "not run";
+	var res:* = "not run";
 	OBJ.x.toString();
 	res = "no exception";
 } catch (e3) {
@@ -80,7 +80,7 @@ try{
 }
 
 try{
-	var res = "not run";
+	var res:* = "not run";
 	OBJ.x = new Array(4,5,6); 
 	OBJ.x.toString();
 	res = "no exception";
@@ -91,7 +91,7 @@ try{
 }
 
 try{
-	var res = "not run";
+	var res:* = "not run";
 	OBJ.boolean;
 	res = "no exception";
 } catch (e4) {
@@ -101,7 +101,7 @@ try{
 }
 
 try{
-	var res = "not run";
+	var res:* = "not run";
 	OBJ.boolean = false;
 	OBJ.boolean;
 	res = "no exception";
@@ -113,7 +113,7 @@ try{
 
 
 try{
-	var res = "not run";
+	var res:* = "not run";
 	OBJ.u;
 	res = "no exception";
 } catch (e2) {
@@ -123,7 +123,7 @@ try{
 }
 
 try{
-	var res = "not run";
+	var res:* = "not run";
 	OBJ.u = 42;
 	OBJ.u;
 	res = "no exception";
@@ -134,7 +134,7 @@ try{
 }
 
 try{
-	var res = "not run";
+	var res:* = "not run";
 	OBJ.string;
 	res = "no exception";
 } catch (e3) {
@@ -144,7 +144,7 @@ try{
 }
 
 try{
-	var res = "not run";
+	var res:* = "not run";
 	OBJ.string = "new string"; 
 	OBJ.string;
 	res = "no exception";
@@ -155,7 +155,7 @@ try{
 }
 
 try{
-	var res = "not run";
+	var res:* = "not run";
 	OBJ.noType;
 	res = "no exception";
 } catch (e3) {
@@ -165,7 +165,7 @@ try{
 }
 
 try{
-	var res = "not run";
+	var res:* = "not run";
 	OBJ.noType = "new value"; 
 	OBJ.noType;
 	res = "no exception";

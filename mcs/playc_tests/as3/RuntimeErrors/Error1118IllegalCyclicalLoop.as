@@ -37,14 +37,14 @@
 package {
 	public class Error1118IllegalCyclicalLoopTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1118; //	Illegal cyclical loop between nodes.
+			var CODE:* = 1118; //	Illegal cyclical loop between nodes.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
-			var expected = "Error #" + CODE;
-			var result = "no error";
+			var expected:* = "Error #" + CODE;
+			var result:* = "no error";
 			try {
 				var xml:XML =
 			        <menu>

@@ -38,14 +38,14 @@ package Package1
 {
     public class Class1
     {
-        private var classItem1 = "Class1 var classItem1 set at creation time";
+        private var classItem1:* = "Class1 var classItem1:* set at creation time";
     }
     
     public class Class2
     {
         public function getClass1ClassItem1()
         {
-            var c1 = new Class1();
+            var c1:* = new Class1();
             return c1.classItem1;
         }
     }
@@ -57,7 +57,7 @@ var c2:Class2 = new Class2();
 
 startTest();
 
-var thisError = "no error";
+var thisError:* = "no error";
 try
 {
     c2.getClass1ClassItem1();

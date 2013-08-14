@@ -38,10 +38,10 @@
 package {
 	public class ConstAndClassFuncArgWithSameNameTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-			var TITLE   = "const & class function arg with same name";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION:* = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE:*   = "const & class function arg with same name";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();
 			
@@ -57,7 +57,7 @@ package {
 			}
 			
 			var obj:Test = new Test();
-			AddTestCase("const and class function arg with same name.  should return the sum of function arg", 2, obj.getNumber(1, 1));
+			AddTestCase("const and:* class function arg with same name.  should return the sum of function arg", 2, obj.getNumber(1, 1));
 			
 			test();
 			return results();

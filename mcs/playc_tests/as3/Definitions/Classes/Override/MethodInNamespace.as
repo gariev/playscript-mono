@@ -41,17 +41,17 @@ package {
 	
 	public class MethodInNamespaceTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       							// provide a document reference (ie, ECMA section)
-			var VERSION = "AS 3.0";  								// Version of JavaScript or ECMA
-			var TITLE   = "Override a method defined in a namespace";    	// Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       							// provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS 3.0";  								// Version of JavaScript or ECMA
+			var TITLE:*   = "Override a method defined in a namespace";    	// Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                							// leave this alone
 			
 			
 			
 			
-			var obj = new MethodInNamespace();
+			var obj:* = new MethodInNamespace();
 			
 			AddTestCase( "obj.i = 12, obj.i", 12, (obj.i = 12, obj.i) );
 			AddTestCase( "obj.ns1::getI()", 17, obj.ns1::getI() );

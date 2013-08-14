@@ -37,14 +37,14 @@
 package {
 	public class Error1006CallNonFunctionObjectTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1006; //	_ is not a function.
+			var CODE:* = 1006; //	_ is not a function.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
-			var expected = "Error #" + CODE;
-			var result = "no error";
+			var expected:* = "Error #" + CODE;
+			var result:* = "no error";
 			try {
 				var x:Number = 0;
 				x.toString()();

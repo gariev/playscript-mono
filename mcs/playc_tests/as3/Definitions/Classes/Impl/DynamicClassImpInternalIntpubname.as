@@ -38,10 +38,10 @@ package {
 	import DynamicClassImpInternalIntpubname.*;
 	public class DynamicClassImpInternalIntpubnameTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
-			var TITLE   = "Dynamic class implements internal interface";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS3";        // Version of ECMAScript or ActionScript 
+			var TITLE:*   = "Dynamic class implements internal interface";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -49,7 +49,7 @@ package {
 			///////////////////////////////////////////////////////////////
 			// add your tests here
 			  
-			var obj = new DynamicClassAccessor();
+			var obj:* = new DynamicClassAccessor();
 			
 			//Dynamic class implements an internal interface with a public interface name method
 			AddTestCase("Dynamic class implements an internal interface with a public interface name method", "PASSED", obj.accdeffunc());

@@ -158,7 +158,7 @@ class ExtDefImplDefDefInner extends DefaultClass implements DefaultIntDef, Defau
 
  }
 public class ExtDefaultImplDefDef extends ExtDefImplDefDefInner {
-var s = new ExtDefImplDefDefInner();
+var s:* = new ExtDefImplDefDefInner();
 var i:DefaultIntDef=s;
 var j:DefaultInt=s;
 

@@ -40,14 +40,14 @@ package {
 	
 	public class GetSetStaticExtendedTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "FunctionAccessors";
-			var VERSION = "AS3";
-			var TITLE   = "Function Accessors";
-			var BUGNUMBER = "";
+			var SECTION:* = "FunctionAccessors";
+			var VERSION:* = "AS3";
+			var TITLE:*   = "Function Accessors";
+			var BUGNUMBER:* = "";
 			
 			startTest();
 			
-			var res;
+			var res:*;
 			
 			/*
 			 *

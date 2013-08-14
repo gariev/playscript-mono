@@ -43,29 +43,29 @@
 package {
 	public class pushTest extends BaseTest {
 		public static function Main():int {
-			var SECTION="";
-			var VERSION = "ECMA_1";
+			var SECTION:*="";
+			var VERSION:* = "ECMA_1";
 			
 			startTest();
 			
 			writeHeaderToLog( " Vector.push()");
 			
-			var v1=new Vector.<int>();
+			var v1:*=new Vector.<int>();
 			v1.push();
 			AddTestCase(
 					"push empty vector",
 					"",
 					v1.toString());
 			
-			var v1=new Vector.<int>();
+			var v1:*=new Vector.<int>();
 			v1.push(1)
 			AddTestCase(
 			                "push single item to item vector",
 			                "1",
 			                v1.toString());
 			
-			var v1=new Vector.<int>();
-			for (var i=0;i<3;i++) v1[i]=i;
+			var v1:*=new Vector.<int>();
+			for (var i:*=0;i<3;i++) v1[i]=i;
 			v1.push()
 			AddTestCase(
 			                "push nothing to small vector",
@@ -73,8 +73,8 @@ package {
 			                v1.toString());
 			
 			/*
-			var v1=new Vector.<int>();
-			for (var i=0;i<3;i++) v1[i]=i;
+			var v1:*=new Vector.<int>();
+			for (var i:*=0;i<3;i++) v1[i]=i;
 			v1.push(4,5,6);
 			AddTestCase(
 			                "push several elements to small vector",

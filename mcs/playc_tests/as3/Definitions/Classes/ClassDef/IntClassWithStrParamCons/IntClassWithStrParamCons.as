@@ -85,7 +85,7 @@ public class publicClassCons{
                                         }
 
       public function Add(){
-             var z = x+y;
+             var z:* = x+y;
              return z;
 
                            
@@ -94,7 +94,7 @@ public class publicClassCons{
 class DefaultClass{}
 
 public class wrapIntClassWithStrParamCons{
-   var x = "test"; 
+   var x:* = "test"; 
    var y:Boolean = true;
    var myArray:Array = new Array(4,6,5);
    var pbClCons:publicClassCons = new publicClassCons(); 

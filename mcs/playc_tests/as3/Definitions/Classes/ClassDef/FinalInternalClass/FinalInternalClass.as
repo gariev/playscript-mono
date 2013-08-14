@@ -207,11 +207,11 @@ package FinalInternalClassPackage {
 		
 		// Constructor tests
 		public function testConstructorOne() : int {
-			var foo = new FinalInternalClass();
+			var foo:* = new FinalInternalClass();
 			return FinalInternalClass.constructorCount;
 		}
 		public function testConstructorTwo() : int {
-			var foo = new FinalInternalClass;
+			var foo:* = new FinalInternalClass;
 			return FinalInternalClass.constructorCount;
 		}
 		

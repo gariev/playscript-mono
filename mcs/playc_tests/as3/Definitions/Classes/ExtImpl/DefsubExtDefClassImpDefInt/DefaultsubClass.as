@@ -59,10 +59,10 @@ use namespace ns;
 
 	public class DefaultsubClassAccessor extends DefaultsubClass{
 
-                var DefSubClass = new DefaultsubClass();
-                var DefSupClass = new DefaultClass();
+                var DefSubClass:* = new DefaultsubClass();
+                var DefSupClass:* = new DefaultClass();
                 var i:DefaultInt = DefSupClass;
-                //var k = new DefaultClassAccessor();
+                //var k:* = new DefaultClassAccessor();
 		public function accdeffunc(){return DefSubClass.deffunc();}
 		// access default function deffunc
                 public function accdeffunc2(){return i.deffunc2();}

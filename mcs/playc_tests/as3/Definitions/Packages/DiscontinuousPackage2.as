@@ -96,17 +96,17 @@ package Discontinuous.Pack {
 
 import Discontinuous.Pack.*;
 
-var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "PackageDefinition" //Proved ECMA section titile or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions";       // provide a document reference (ie, Actionscript section)
+var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+var TITLE:*   = "PackageDefinition" //Proved ECMA section titile or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
 
-var a = new A();
-var b = new B();
-var c = new C();
+var a:* = new A();
+var b:* = new B();
+var c:* = new C();
 
 AddTestCase("Function defined in [Package.Name]/A.as", "A", a.whoAmI());
 AddTestCase("Interface defined in [Package.Name]/B.as", "B", b.whoAmI());
@@ -122,7 +122,7 @@ Kitty function kittyFunc(s:String):String {
 }
 }
 
-var obj = new X();
+var obj:* = new X();
 AddTestCase("Variable, namespace defined in [Package.Name]/vars.as", 5, obj.Kitty::num);
 AddTestCase("Function, namespace defined in [Package.Name]/vars.as", "You said hi", obj.Kitty::kittyFunc("hi"));
 

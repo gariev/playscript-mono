@@ -38,17 +38,17 @@
 package {
 	public class asOperatorTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Expressions";        // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS3";        		// Version of ECMAScript or ActionScript
-			var TITLE   = "as operator";        // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Expressions";        // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS3";        		// Version of ECMAScript or ActionScript
+			var TITLE:*   = "as operator";        // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
 			// as Array
 			AddTestCase( "null as Array", null, (null as Array));
 			AddTestCase( "[1,1,1,1] as Array", "1,1,1,1", ([1,1,1,1] as Array).toString());
-			AddTestCase( "var array = new Array('1'); array as Array", "1", (array = new Array('1'), (array as Array).toString()));
+			AddTestCase( "var array:* = new Array('1'); array as Array", "1", (array = new Array('1'), (array as Array).toString()));
 			AddTestCase( "Boolean as Array", null, (Boolean as Array));
 			AddTestCase( "Date as Array", null, (Date as Array));
 			AddTestCase( "Function as Array", null, (Function as Array));

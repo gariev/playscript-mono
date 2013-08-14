@@ -37,17 +37,17 @@
 package {
 	public class Error1004MethodInvokedOnIncompatibleObjTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1004; //	Method '_' was invoked on an incompatible object.
+			var CODE:* = 1004; //	Method '_' was invoked on an incompatible object.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var z = "no error";
-				var object = new Object();
+				var z:* = "no error";
+				var object:* = new Object();
 				object.valueOf = Number.prototype.valueOf;
-				var result = object.valueOf();
+				var result:* = object.valueOf();
 			} catch (err) {
 				z = err.toString();
 			} finally {

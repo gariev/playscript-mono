@@ -56,17 +56,17 @@ package {
 			}
 			
 			
-			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";  // Version of JavaScript or ECMA
-			var TITLE   = "Function Body Parameter/Result Type";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";  // Version of JavaScript or ECMA
+			var TITLE:*   = "Function Body Parameter/Result Type";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
-			var TESTOBJ = new TestObj();
-			var TESTOBJ1 = new ThreeOptArgFunctionClass();
+			var TESTOBJ:* = new TestObj();
+			var TESTOBJ1:* = new ThreeOptArgFunctionClass();
 			
-			var success = false;
+			var success:* = false;
 			TESTOBJ.returnArguments();
 			
 			if(str == "Str1" && bool == true && num == 10)

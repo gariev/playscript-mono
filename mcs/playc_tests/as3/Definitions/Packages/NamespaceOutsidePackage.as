@@ -40,7 +40,7 @@ package foo {
 	class goo {
 		public namespace fletch;
 
-		fletch var lives = 'PASSED';
+		fletch var lives:* = 'PASSED';
 		use namespace fletch;
 		public function returnLives() {
 			return fletch::lives;
@@ -50,7 +50,7 @@ package foo {
 
 class goo {
 	public namespace fletch;
-	fletch var lives = 'ns variable outside package';
+	fletch var lives:* = 'ns variable outside package';
 
 	use namespace fletch;
 	public function returnLives() {
@@ -58,10 +58,10 @@ class goo {
 	}
 }
 
-var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "PackageDefinition" //Proved ECMA section titile or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions";       // provide a document reference (ie, Actionscript section)
+var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+var TITLE:*   = "PackageDefinition" //Proved ECMA section titile or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 

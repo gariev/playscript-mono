@@ -43,14 +43,14 @@ package {
 			
 			}
 			
-			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-			var TITLE   = "static const";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION:* = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE:*   = "static const";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();
 			
-			AddTestCase("static const in class", "name", Test.NAME);
+			AddTestCase("static const in:* class", "name", Test.NAME);
 			
 			test();
 			return results();

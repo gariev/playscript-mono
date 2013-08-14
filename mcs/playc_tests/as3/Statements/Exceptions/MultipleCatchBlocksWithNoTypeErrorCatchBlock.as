@@ -38,10 +38,10 @@
 package {
 	public class MultipleCatchBlocksWithNoTypeErrorCatchBlockTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";                   // Version of JavaScript or ECMA
-			var TITLE   = "Testing try block with multiple catch blocks, the  catch block with parameter of type Error catching the type Error as there is no catch block with parameter of type TypeError";  // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";           // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";                   // Version of JavaScript or ECMA
+			var TITLE:*   = "Testing try block with multiple catch blocks, the  catch block with parameter of type Error catching the type Error as there is no catch block with parameter of type TypeError";  // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			

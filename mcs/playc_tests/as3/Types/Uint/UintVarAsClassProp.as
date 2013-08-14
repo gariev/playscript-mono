@@ -43,7 +43,7 @@ package {
 			startTest();                // leave this alone
 			
 			
-			var obj = new testuint();
+			var obj:* = new testuint();
 			
 			AddTestCase( "Uint public property", 1, obj.num1 );
 			

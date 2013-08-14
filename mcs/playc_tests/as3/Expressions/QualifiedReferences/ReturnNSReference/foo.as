@@ -42,9 +42,9 @@ package ns {
 	
 	public class foo {
 
-		Baseball var teamName = "Giants";
-		Basketball var teamName = "Kings";
-		Hockey var teamName = "Sharks";
+		Baseball var teamName:* = "Giants";
+		Basketball var teamName:* = "Kings";
+		Hockey var teamName:* = "Sharks";
 
 		public function getTeam1(){
 	  	  return Baseball::teamName;

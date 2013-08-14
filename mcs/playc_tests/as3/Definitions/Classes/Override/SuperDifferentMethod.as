@@ -41,17 +41,17 @@ package {
 	
 	public class SuperDifferentMethodTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       							// provide a document reference (ie, ECMA section)
-			var VERSION = "AS 3.0";  								// Version of JavaScript or ECMA
-			var TITLE   = "Call super.differentMeth() from the override method";    	// Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       							// provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS 3.0";  								// Version of JavaScript or ECMA
+			var TITLE:*   = "Call super.differentMeth() from the override method";    	// Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                							// leave this alone
 			
 			
 			
 			
-			var obj = new SuperDifferentMethod();
+			var obj:* = new SuperDifferentMethod();
 			
 			AddTestCase( "obj.echo()", "foo() from BaseClass", obj.echo() );
 			AddTestCase( "obj.callFoo()", "foo() from BaseClass", obj.callFoo() );

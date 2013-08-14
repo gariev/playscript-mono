@@ -39,7 +39,7 @@ package P {
     public namespace Baseball;
  
     public class Game{
-         Baseball var teamName = "Giants";
+         Baseball var teamName:* = "Giants";
          use namespace Baseball; 
      }
   }
@@ -48,10 +48,10 @@ package P {
  
 
 
-var SECTION = "Directives";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "namespace inside package";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
+var SECTION:* = "Directives";       // provide a document reference (ie, Actionscript section)
+var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+var TITLE:*   = "namespace inside package";       // Provide ECMA section title or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
@@ -59,13 +59,13 @@ startTest();                // leave this alone
 
 
 import P.*;
-var game = new Game();
+var game:* = new Game();
 
-AddTestCase( "Baseball var teamName = 'Giants'", "Giants", game.Baseball::teamName );
+AddTestCase( "Baseball var teamName:* = 'Giants'", "Giants", game.Baseball::teamName );
 
-var teamName = "Test"
+var teamName:* = "Test"
 
-AddTestCase( "Baseball var teamName = 'Test'", "Test", teamName );
+AddTestCase( "Baseball var teamName:* = 'Test'", "Test", teamName );
 
 
 

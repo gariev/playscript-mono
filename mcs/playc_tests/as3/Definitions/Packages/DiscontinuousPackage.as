@@ -40,17 +40,17 @@ package {
 	
 	public class DiscontinuousPackageTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-			var TITLE   = "PackageDefinition" //Proved ECMA section titile or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+			var TITLE:*   = "PackageDefinition" //Proved ECMA section titile or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
 			
-			var a = new A();
-			var b = new B();
-			var c = new C();
+			var a:* = new A();
+			var b:* = new B();
+			var c:* = new C();
 			
 			AddTestCase("Function defined in [Packagename]/A.as", "A", a.whoAmI());
 			AddTestCase("Interface defined in [Packagename]/B.as", "B", b.whoAmI());

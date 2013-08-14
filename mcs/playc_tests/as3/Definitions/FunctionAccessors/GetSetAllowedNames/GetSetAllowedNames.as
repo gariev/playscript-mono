@@ -38,23 +38,23 @@ package GetSetAllowedNames{
  public class GetSetAllowedNames {
  
  	
- 	var __a1 = "_a1";
- 	var ___a1 = "__a1";
- 	var ___a1__ = "__a1__";
- 	var __a1_ = "_a1_";
+ 	var __a1:* = "_a1";
+ 	var ___a1:* = "__a1";
+ 	var ___a1__:* = "__a1__";
+ 	var __a1_:* = "_a1_";
  	var _$a1 = "$a1";
  	var _a$1 = "a$1";
  	var _a1$ = "a1$";
- 	var _A1 = "A1";
- 	var _cases = "cases";
- 	var _Cases = "Cases";
- 	var _all = "all";
- 	var _get = "get";
- 	var _set = "set";
+ 	var _A1:* = "A1";
+ 	var _cases:* = "cases";
+ 	var _Cases:* = "Cases";
+ 	var _all:* = "all";
+ 	var _get:* = "get";
+ 	var _set:* = "set";
  	
- 	private var _Function = function() { }
- 	private var _getSetAllowedNames = "constructor, different case";
- 	private var _Class = "class";
+ 	private var _Function:* = function() { }
+ 	private var _getSetAllowedNames:* = "constructor, different case";
+ 	private var _Class:* = "class";
 
     	
 	public function get _a1 () { return __a1; }

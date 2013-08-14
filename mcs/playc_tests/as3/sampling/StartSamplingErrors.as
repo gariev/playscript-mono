@@ -41,11 +41,11 @@ package {
 	
 	public class StartSamplingErrorsTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Sampling";
-			var VERSION = "AS3";
-			var TITLE   = "Sampling Basic Usage";
+			var SECTION:* = "Sampling";
+			var VERSION:* = "AS3";
+			var TITLE:*   = "Sampling Basic Usage";
 			
-			var isdebugger=System.isDebugger();
+			var isdebugger:*=System.isDebugger();
 			
 			startTest();
 			writeHeaderToLog("Sampling api");

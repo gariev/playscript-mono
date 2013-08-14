@@ -38,10 +38,10 @@
 package {
 	public class SuperObjectCallTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "8.6.1 Constructor Methods";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
-			var TITLE   = "SuperExpression on Object";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "8.6.1 Constructor Methods";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS3";        // Version of ECMAScript or ActionScript 
+			var TITLE:*   = "SuperExpression on Object";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -51,10 +51,10 @@ package {
 			  
 			import SuperObjectCall.*
 			
-			var soc = new SuperObjectCall();
-			var thisException = "no exception thrown";
+			var soc:* = new SuperObjectCall();
+			var thisException:* = "no exception thrown";
 			try {
-				var s = soc.whatIsIt();
+				var s:* = soc.whatIsIt();
 			} catch (e) {
 				thisException = e.toString();
 			} finally {

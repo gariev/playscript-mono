@@ -41,8 +41,8 @@ package DynamicClass {
 
 	dynamic class DynExtDynamicOverRideDefaultInner extends DynamicClass {
 
-		public var orSet = false;
-		public var orGet = false;
+		public var orSet:* = false;
+		public var orGet:* = false;
 
 		// *********************************
 		// override a default method

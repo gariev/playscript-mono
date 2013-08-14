@@ -36,10 +36,10 @@
  * ***** END LICENSE BLOCK ***** */
  
 
-var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";  // Version of JavaScript or ECMA
-var TITLE   = "Modify variable after they are created";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+var VERSION:* = "AS3";  // Version of JavaScript or ECMA
+var TITLE:*   = "Modify variable after they are created";       // Provide ECMA section title or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
@@ -51,7 +51,7 @@ import Package1.*;
 use namespace ns1;
 
 var item1:String = "item1 set at creation time";
-var item2 = "item2 set at creation time", item3, item4 = "item4 set at creation time";
+var item2:* = "item2 set at creation time", item3, item4 = "item4 set at creation time";
 var item5:int = 4;
 
 item1 = "item1 modified";
@@ -78,7 +78,7 @@ AddTestCase( "Modify package variable packageItem3", "packageItem3 modified", pa
 AddTestCase( "Modify package variable packageItem4", "packageItem4 modified", packageItem4);
 AddTestCase( "Modify package variable packageItem5", 2, packageItem5);
 
-var c1 = new Class1();
+var c1:* = new Class1();
 c1.classItem1 = "Class1 classItem1 modified";
 c1.classItem2 = "Class1 classItem2 modified";
 c1.classItem3 = "Class1 classItem3 modified";
@@ -95,7 +95,7 @@ AddTestCase( "Modify Class1 variable classItem5", 1, c1.classItem5);
 AddTestCase( "Modify Class1 variable classItem6", "Class1 static classItem6 modified", Class1.classItem6);
 AddTestCase( "Modify Class1 variable classItem7", "ns1 Class1 classItem7 modified", c1.classItem7);
 
-var c2 = new Class2();
+var c2:* = new Class2();
 c2.classItem1 = "Class2 classItem1 modified";
 c2.classItem2 = "Class2 classItem2 modified";
 c2.classItem3 = "Class2 classItem3 modified";

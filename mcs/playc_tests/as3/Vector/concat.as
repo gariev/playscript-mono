@@ -45,17 +45,17 @@ package {
 public class Tester extends Test {
 public static function Main():int {
 
-var SECTION = " ";
-var VERSION = "AS3";
+var SECTION:* = " ";
+var VERSION:* = "AS3";
 startTest();
 
 writeHeaderToLog( SECTION + " Vector.concat()");
 
-var v1=new Vector.<uint>();
+var v1:*=new Vector.<uint>();
 v1[0]=0; v1[1]=1; v1[2]=2;
-var v2=new Vector.<uint>();
+var v2:*=new Vector.<uint>();
 v2[0]=3;v2[1]=4;v2[2]=5;
-var v3=v1.concat(v2);
+var v3:*=v1.concat(v2);
 AddTestCase(    "concat uint vector, original vector is unchanged",
 		"0,1,2",
 		v1.toString());
@@ -67,9 +67,9 @@ var v4:Vector.<String>=new Vector.<String>();
 v4[0]="zero"; v4[1]="one"; v4[2]="two";
 var v5:Vector.<int>=new Vector.<int>();
 v5[0]=0; v5[1]=1; v5[2]=2;
-var errormsg;
+var errormsg:*;
 try {
-  var v6=v4.concat(v5);
+  var v6:*=v4.concat(v5);
 } catch (e:Error) {
   errormsg=e.toString();
 }
@@ -81,10 +81,10 @@ var v7:Vector.<TestClass> = new Vector.<TestClass>();
 v7.push(new TestClass(33));
 v7.push(new TestClass(44));
 
-var v8 = new Vector.<TestClass>();
+var v8:* = new Vector.<TestClass>();
 v8.push(new TestClass(100));
 
-var v9 = v7.concat(v8);
+var v9:* = v7.concat(v8);
 
 AddTestCase("concat custom vector class", "33,44,100", v9.toString());
 
@@ -98,13 +98,13 @@ AddTestCase("concat with no parameters duplicates original vector",
             v7.concat().toString()
             );
 
-var b1 = new <Boolean>[true,false,true];
-var b2 = new <Boolean>[false,true,false];
+var b1:* = new <Boolean>[true,false,true];
+var b2:* = new <Boolean>[false,true,false];
 AddTestCase("concat boolean vectors", "true,false,true,false,true,false", b1.concat(b2).toString());
 
-var xmlVector = new <XML>[];
+var xmlVector:* = new <XML>[];
 var expectedArr:Array = [];
-for (var i=0; i<80; i++) {
+for (var i:*=0; i<80; i++) {
     xmlVector = xmlVector.concat(new <XML>[XML("<test>"+i+"</test>")]);
     expectedArr.push(i);
 }
@@ -113,7 +113,7 @@ AddTestCase("concat XML vectors", expectedArr.join(','), xmlVector.toString() );
 
 var va:Array = [];
 // Concat multiple vectors
-for (var i=0; i <= 10; i++) {
+for (var i:*=0; i <= 10; i++) {
     va[i] = new <int>[i];
 }
 

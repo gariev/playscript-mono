@@ -45,16 +45,16 @@ package {
 			  }
 			}
 			
-			var SECTION = "RTE";
-			var VERSION = "AS3";
-			var TITLE = "accessing public static method outside of the class";
-			var BUGNUMBER = "";
+			var SECTION:* = "RTE";
+			var VERSION:* = "AS3";
+			var TITLE:* = "accessing public static method outside of the class";
+			var BUGNUMBER:* = "";
 			
 			startTest();
 			
-			var out = new DefaultClass();
+			var out:* = new DefaultClass();
 			
-			var error = "no error thrown";
+			var error:* = "no error thrown";
 			
 			try {
 			  out.baseClass();

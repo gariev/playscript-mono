@@ -43,7 +43,7 @@ package GetSetFinal {
    	}*/
    	public final class GetSetFinal {
 	
-		private var _nt = "no type";
+		private var _nt:* = "no type";
 		private var _x:Array = [1,2,3];
 		private var _y:int = -10;
 		private var _b:Boolean = true;
@@ -132,11 +132,11 @@ package GetSetFinal {
 		}
 
 		// define a getter for a property and call the undefined setter
-		private var _nosetter = "FAILED";
+		private var _nosetter:* = "FAILED";
 		public function get noSetter(){ return _nosetter; }
 
 		// define a setter for a property and call the undefined getter
-		private var _nogetter = "FAILED";
+		private var _nogetter:* = "FAILED";
 		public function set noGetter(s){ _nogetter = s; }
 			
 	}

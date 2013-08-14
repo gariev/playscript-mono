@@ -39,15 +39,15 @@ package myConsts {
 	
 	public class myConst {
 		
-		public const myVar = 10;
+		public const myVar:* = 10;
 	}
 }
 
 
-var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  				// Version of JavaScript or ECMA
-var TITLE   = "const expression variable inside a package";     // Provide ECMA section title or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+var VERSION:* = "ActionScript 3.0";  				// Version of JavaScript or ECMA
+var TITLE:*   = "const expression:* variable inside a package";     // Provide ECMA section title or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
@@ -58,9 +58,9 @@ startTest();                // leave this alone
 
 import myConsts.*;
 
-var myObj = new myConst();
+var myObj:* = new myConst();
 
-AddTestCase( "package myConsts { const myVar = 10; };", 10, myObj.myVar ); 
+AddTestCase( "package myConsts { const myVar:* = 10; };", 10, myObj.myVar ); 
 
 
 test();       		// Leave this function alone.

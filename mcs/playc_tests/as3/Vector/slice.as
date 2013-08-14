@@ -37,13 +37,13 @@
 package {
 	public class sliceTest extends BaseTest {
 		public static function Main():int {
-			var SECTION="";
-			var VERSION = "ECMA_1";
+			var SECTION:*="";
+			var VERSION:* = "ECMA_1";
 			
 			startTest();
 			
 			writeHeaderToLog( " Vector.slice()");
-			var v1=new Vector.<String>();
+			var v1:*=new Vector.<String>();
 			AddTestCase(
 					"slice no args on empty vector",
 					"",

@@ -37,14 +37,14 @@
 package {
 	public class intConstructorTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "as3";
-			var VERSION = "as3";
+			var SECTION:* = "as3";
+			var VERSION:* = "as3";
 			startTest();
-			var TITLE   = "The int Constructor Called as a Function";
+			var TITLE:*   = "The int Constructor Called as a Function";
 			
 			writeHeaderToLog( SECTION + " "+ TITLE);
 			
-			var testcases = new Array();
+			var testcases:* = new Array();
 			
 			testcases = getTestCases();
 			
@@ -52,8 +52,8 @@ package {
 			
 			
 			function getTestCases() {
-			    var array = new Array();
-			    var item = 0;
+			    var array:* = new Array();
+			    var item:* = 0;
 			
 			    array[item++] = new TestCase(SECTION, "int()",                  0,          int() );
 			    array[item++] = new TestCase(SECTION, "int(void 0)",            0,  int(void 0) );

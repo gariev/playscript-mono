@@ -37,14 +37,14 @@
 package {
 	public class Error1083XmlPrefixNotFoundTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1083; //	The prefix "_" for element "_" is not bound.
+			var CODE:* = 1083; //	The prefix "_" for element "_" is not bound.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var result = "no error";
+				var result:* = "no error";
 				x1 = <foo:x xmlns:test="test"/>;
 			} catch (err) {
 				result = err.toString();

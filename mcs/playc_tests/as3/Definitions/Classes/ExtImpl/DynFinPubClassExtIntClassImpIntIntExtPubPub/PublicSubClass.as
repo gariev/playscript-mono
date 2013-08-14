@@ -79,7 +79,7 @@ package DynFinPubClassExtIntClassImpIntIntExtPubPub{
                                                             }
 
         public class InternalInterfaceAccessor{
-                var k = new PublicSubClass();
+                var k:* = new PublicSubClass();
 
                 var PubInt3:PublicInt3 = k;
                 var PubInttwo:PublicInt2=k;

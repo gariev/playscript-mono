@@ -38,25 +38,25 @@
 package {
 	public class InfRecTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "FunctionAccessors";
-			var VERSION = "AS3"; 
-			var TITLE   = "Function Accessors";
-			var BUGNUMBER = "";
+			var SECTION:* = "FunctionAccessors";
+			var VERSION:* = "AS3"; 
+			var TITLE:*   = "Function Accessors";
+			var BUGNUMBER:* = "";
 			
 			startTest();
 			
 			class foo{
 				// infinite recursion calling setter from setter and back again
-				private var _inf;
-				private var _inf2;
+				private var _inf:*;
+				private var _inf2:*;
 				public function get inf(){ return inf2; }
 				public function get inf2(){ return inf; }
 			
 			}
 			
-			var OBJ = new foo();
+			var OBJ:* = new foo();
 			try{
-				var res = "not run";
+				var res:* = "not run";
 				OBJ.inf; // should cause infinite recursion
 				res = "no exception";
 			} catch (e) {

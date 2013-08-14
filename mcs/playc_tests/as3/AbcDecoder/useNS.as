@@ -43,9 +43,9 @@
 package {
 	public class useNSTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = " ";
-			var VERSION = "AS3";
-			var TITLE   = "import namespace defined from a varsDef.abc file";
+			var SECTION:* = " ";
+			var VERSION:* = "AS3";
+			var TITLE:*   = "import namespace defined from a varsDef.abc file";
 			
 			startTest();
 			writeHeaderToLog( SECTION + " "+ TITLE);
@@ -54,9 +54,9 @@ package {
 			use namespace Baseball;
 			use namespace Basketball;
 			
-			Baseball var teamName = "Giants";
-			Basketball var teamName = "Kings";
-			foo var teamName = "Chargers";
+			Baseball var teamName:* = "Giants";
+			Basketball var teamName:* = "Kings";
+			foo var teamName:* = "Chargers";
 			}
 			
 			var obj:A = new A()

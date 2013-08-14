@@ -43,20 +43,20 @@
 package {
 	public class accessSpecifiersTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = " ";
-			var VERSION = "AS3";
-			var TITLE   = "import a class defined in .abc file";
+			var SECTION:* = " ";
+			var VERSION:* = "AS3";
+			var TITLE:*   = "import a class defined in .abc file";
 			
 			startTest();
 			writeHeaderToLog( SECTION + " "+ TITLE);
 			
-			var obj = new accSpecClass();
+			var obj:* = new accSpecClass();
 			
 			AddTestCase( "invoke the method 'func1()' from the imported file", "string", obj.accSpec1);
 			AddTestCase( "invoke the method 'func2()' from the imported file", "Inside func1()-public function", obj.func1());
 			AddTestCase( "invoke the method 'func2()' from the imported file", "Inside func2()-Dynamic function", obj.func2());
 			
-			var obj = new dynClass();
+			var obj:* = new dynClass();
 			
 			AddTestCase( "invoke the method 'func1()' from the imported file", "string", obj.dynSpec1);
 			AddTestCase( "invoke the method 'func2()' from the imported file", "Inside func1()-public function", obj.func1());

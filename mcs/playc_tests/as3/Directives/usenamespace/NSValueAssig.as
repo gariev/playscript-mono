@@ -40,10 +40,10 @@
 package {
 	public class NSValueAssigTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Directives";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-			var TITLE   = "Namespace values";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Directives";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+			var TITLE:*   = "Namespace values";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -56,7 +56,7 @@ package {
 			//namespace N2 = N1
 			namespace N3="flowershop.com";
 			
-			var a=0;
+			var a:*=0;
 			N3 var flower1:String = "Gerbera Daisy"; 
 			namespace N4 = "flowershop.com";
 			N4 var flower2:String = "Rose";

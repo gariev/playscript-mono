@@ -42,34 +42,34 @@
 package {
 	public class constructorTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = " ";
-			var VERSION = "AS3";
-			var TITLE   = "Vector.<type> constructor (length, fixed)";
+			var SECTION:* = " ";
+			var VERSION:* = "AS3";
+			var TITLE:*   = "Vector.<type> constructor (length, fixed)";
 			
 			startTest();
 			writeHeaderToLog( SECTION + " "+ TITLE);
 			
-			var v1=new Vector.<uint>;
+			var v1:*=new Vector.<uint>;
 			AddTestCase("constructor no arg no parens syntax",0,v1.length);
-			var v2=new Vector.<uint>();
+			var v2:*=new Vector.<uint>();
 			AddTestCase("constructor no arg empty parens syntax",0,v2.length);
 			
 			var v3:Vector.<uint>=new Vector.<uint>();
-			AddTestCase("constructor to typed var no arg empty parens syntax",0,v3.length);
+			AddTestCase("constructor to typed var no:* arg empty parens syntax",0,v3.length);
 			
-			var v4=new Vector.<uint>(100);
+			var v4:*=new Vector.<uint>(100);
 			AddTestCase("constructor length parameters",100,v4.length);
 			
 			// default value for fixed is false
-			var v5=new Vector.<uint>(10);
+			var v5:*=new Vector.<uint>(10);
 			v5.push(10);
 			AddTestCase( "constructor fixed parameter default is false", 11, v5.length);
 			
-			var v6=new Vector.<uint>(10,false);
+			var v6:*=new Vector.<uint>(10,false);
 			v6.push(10);
 			AddTestCase( "constructor fixed parameter false produces unfixed vector", 11, v6.length);
-			var v7=new Vector.<uint>(10,true);
-			var errormsg="";
+			var v7:*=new Vector.<uint>(10,true);
+			var errormsg:*="";
 			try {
 			  v7.push(10);
 			} catch (e) {
@@ -79,8 +79,8 @@ package {
 			             "RangeError: Error #1126", 
 			             parseError(errormsg,"RangeError: Error #1126".length));
 			AddTestCase( "constructor fixed parameter set to true length is unchanged", 10, v7.length);
-			var v8=new Vector.<uint>(10,true);
-			var errormsg="";
+			var v8:*=new Vector.<uint>(10,true);
+			var errormsg:*="";
 			try {
 			  v8[10];
 			} catch (e) {
@@ -89,37 +89,37 @@ package {
 			
 			/*
 			// 2^30=1073741824
-			var v9=new Vector.<int>(1073741824);
+			var v9:*=new Vector.<int>(1073741824);
 			AddTestCase( "constructor large vector", 1073741824, v9.length);
 			*/
 			
 			// test basic types: already 
-			var v10=new Vector.<uint>();
+			var v10:*=new Vector.<uint>();
 			v10.push(10);
 			AddTestCase( "constructor type uint", 10, v10[0]);
-			var v11=new Vector.<int>();
+			var v11:*=new Vector.<int>();
 			v11.push(-10);
 			AddTestCase( "constructor type int", -10, v11[0]);
-			var v12=new Vector.<Number>();
+			var v12:*=new Vector.<Number>();
 			v12.push(3.14);
 			AddTestCase( "constructor type Number", 3.14, v12[0]);
-			var v13=new Vector.<Boolean>();
+			var v13:*=new Vector.<Boolean>();
 			v13.push(true);
 			AddTestCase( "constructor type Boolean", true, v13[0]);
-			var v14=new Vector.<String>();
+			var v14:*=new Vector.<String>();
 			v14.push("astring");
 			AddTestCase( "constructor type String", "astring", v14[0]);
 			class c1 { };
 			class c2 { };
 			class c3 extends c1 { };
-			var v15=new Vector.<c1>();
-			var c1inst=new c1();
+			var v15:*=new Vector.<c1>();
+			var c1inst:*=new c1();
 			v15.push(c1inst);
 			AddTestCase("constructor type custom class c1", c1inst, v15[0]);
 			
-			var v16=new Vector.<c1>();
-			var c2inst=new c2();
-			var errormsg="";
+			var v16:*=new Vector.<c1>();
+			var c2inst:*=new c2();
+			var errormsg:*="";
 			try {
 			  v16.push(c2inst);
 			} catch (e) {
@@ -129,12 +129,12 @@ package {
 			            "TypeError: Error #1034", 
 			            parseError(errormsg,"TypeError: Error #1034".length));
 			
-			var c3inst=new c3();
-			var v17=new Vector.<c1>();
+			var c3inst:*=new c3();
+			var v17:*=new Vector.<c1>();
 			v17.push(new c3());
 			AddTestCase("constructor type custom class can caste to custom class", "[object c3]", v17[0].toString());
 			
-			var v18=new Vector.<uint>();
+			var v18:*=new Vector.<uint>();
 			v18.push(true);
 			AddTestCase("constructor type uint castes other types", 1, v18[0]);
 			

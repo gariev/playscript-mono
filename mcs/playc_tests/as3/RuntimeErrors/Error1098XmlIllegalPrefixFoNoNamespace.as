@@ -37,14 +37,14 @@
 package {
 	public class Error1098XmlIllegalPrefixFoNoNamespaceTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1098; //	Illegal prefix '_' for 'no namespace'.
+			var CODE:* = 1098; //	Illegal prefix '_' for 'no namespace'.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var z = "no error";
+				var z:* = "no error";
 				ns = new Namespace ("prefix", "");
 			} catch (err) {
 				z = err.toString();

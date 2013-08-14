@@ -67,7 +67,7 @@ package Example_9_4 {
 		var t : T = a;
 		var u : U = a;
 		var v : V = a;
-		var o = a;
+		var o:* = a;
 		public function doUniqueTest() : String {
 			return t.f() + "," + u.g();
 		}

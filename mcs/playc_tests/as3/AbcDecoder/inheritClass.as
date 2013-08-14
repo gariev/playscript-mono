@@ -42,9 +42,9 @@
 package {
 	public class inheritClassTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = " ";
-			var VERSION = "AS3";
-			var TITLE   = "import a class defined in .abc file";
+			var SECTION:* = " ";
+			var VERSION:* = "AS3";
+			var TITLE:*   = "import a class defined in .abc file";
 			
 			startTest();
 			writeHeaderToLog( SECTION + " "+ TITLE);

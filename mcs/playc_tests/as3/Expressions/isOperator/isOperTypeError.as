@@ -38,9 +38,9 @@
 package {
 	public class isOperTypeErrorTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Expressions";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS3";        // Version of ECMAScript or ActionScript
-			var TITLE   = "is Operator";       // Provide ECMA section title or a description
+			var SECTION:* = "Expressions";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS3";        // Version of ECMAScript or ActionScript
+			var TITLE:*   = "is Operator";       // Provide ECMA section title or a description
 			
 			
 			startTest();                // leave this alone
@@ -81,7 +81,7 @@ package {
 			} catch (e:TypeError) {
 			    result = e;
 			} finally {
-			    AddTestCase("is Operator: invalid Type - different var on RHS","TypeError: Error #1009", typeError(result));
+			    AddTestCase("is Operator: invalid Type - different var on:* RHS","TypeError: Error #1009", typeError(result));
 			}
 			
 			result = "Value error not thrown";
@@ -90,7 +90,7 @@ package {
 			} catch (e:ReferenceError) {
 			    result = e;
 			} finally {
-			    AddTestCase("is Operator: undeclared var on LHS","ReferenceError: Error #1065",referenceError(result));
+			    AddTestCase("is Operator: undeclared var on:* LHS","ReferenceError: Error #1065",referenceError(result));
 			}
 			
 			

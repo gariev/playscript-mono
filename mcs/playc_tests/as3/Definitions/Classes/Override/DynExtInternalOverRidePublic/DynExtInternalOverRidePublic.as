@@ -41,8 +41,8 @@ package InternalClassPackage {
 
 	dynamic class DynExtInternalOverRidePublicInner extends InternalClass {
 
-		public var orSet = false;
-		public var orGet = false;
+		public var orSet:* = false;
+		public var orGet:* = false;
 
 		// *******************************
 		// override a public method

@@ -41,14 +41,14 @@ package {
 	
 	public class SimpleSamplingTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Sampling";
-			var VERSION = "AS3";
-			var TITLE   = "Sampling Basic Usage";
+			var SECTION:* = "Sampling";
+			var VERSION:* = "AS3";
+			var TITLE:*   = "Sampling Basic Usage";
 			
 			startTest();
 			writeHeaderToLog("Sampling api");
 			
-			var isdebugger=System.isDebugger();
+			var isdebugger:*=System.isDebugger();
 			
 			var objs:Array=new Array();
 			class simpleobject {
@@ -77,7 +77,7 @@ package {
 			    );
 			}
 			var len:int=0;
-			for each (var sample in getSamples()) {
+			for each (var sample:* in getSamples()) {
 			  len++;
 			}
 			if (isdebugger) {
@@ -96,7 +96,7 @@ package {
 			    );
 			}
 			len=0;
-			for each (var sample in getSamples()) {
+			for each (var sample:* in getSamples()) {
 			  len++;
 			}
 			if (isdebugger) {
@@ -119,7 +119,7 @@ package {
 			    );
 			}
 			var len:int=0;
-			for each (var sample in getSamples()) {
+			for each (var sample:* in getSamples()) {
 			  len++;
 			}
 			
@@ -142,7 +142,7 @@ package {
 			}
 			
 			len=0;
-			for each (var sample in getSamples()) {
+			for each (var sample:* in getSamples()) {
 			  len++;
 			}
 			if (isdebugger) {

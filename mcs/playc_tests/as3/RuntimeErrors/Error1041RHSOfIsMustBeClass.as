@@ -37,14 +37,14 @@
 package {
 	public class Error1041RHSOfIsMustBeClassTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1041; //	The right-hand side of operator must be a class.
+			var CODE:* = 1041; //	The right-hand side of operator must be a class.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var result = "no error";
+				var result:* = "no error";
 			    var obj:Object = new Object();
 			    0 is obj;
 			} catch (err) {

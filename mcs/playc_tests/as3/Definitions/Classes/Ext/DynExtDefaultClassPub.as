@@ -41,10 +41,10 @@ package {
 	
 	public class DynExtDefaultClassPubTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       			// provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";  					// Version of JavaScript or ECMA
-			var TITLE   = "Public Class Extends Default Class";      // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       			// provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";  					// Version of JavaScript or ECMA
+			var TITLE:*   = "Public Class Extends Default Class";      // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -57,17 +57,17 @@ package {
 			 *
 			 * For example, a test might look like this:
 			 *
-			 * var helloWorld = "Hello World";
+			 * var helloWorld:* = "Hello World";
 			 *
 			 * AddTestCase(
-			 * "var helloWorld = 'Hello World'",   // description of the test
+			 * "var helloWorld:* = 'Hello World'",   // description of the test
 			 *  "Hello World",                     // expected result
 			 *  helloWorld );                      // actual result
 			 *
 			 */
 			
-			var EXTDCLASS = new DynExtDefaultClassPub();
-			var arr = new Array(10, 15, 20, 25, 30);
+			var EXTDCLASS:* = new DynExtDefaultClassPub();
+			var arr:* = new Array(10, 15, 20, 25, 30);
 			  
 			// *******************************************
 			//  access public method of parent class from 

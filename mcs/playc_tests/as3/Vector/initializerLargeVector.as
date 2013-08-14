@@ -49,12 +49,12 @@
 package {
 	public class initializerLargeVectorTest extends BaseTest {
 		public static function Main():int {
-			var SECTION="";
-			var VERSION="";
+			var SECTION:*="";
+			var VERSION:*="";
 			
 			startTest();
 			
-			var v1 = new<int> [
+			var v1:* = new<int> [
 			1,2,3,4,5,6,7,8,9,10,
 			1,2,3,4,5,6,7,8,9,10,
 			1,2,3,4,5,6,7,8,9,10,

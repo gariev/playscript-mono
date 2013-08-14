@@ -38,9 +38,9 @@
 package {
 	public class asOperTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Expressions";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
-			var TITLE   = "as Operator";       // Provide ECMA section title or a description
+			var SECTION:* = "Expressions";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS3";        // Version of ECMAScript or ActionScript 
+			var TITLE:*   = "as Operator";       // Provide ECMA section title or a description
 			
 			
 			startTest();                // leave this alone
@@ -72,7 +72,7 @@ package {
 			var typeDescArr:Array =	["String","Number","int","uint","Boolean","Object","Function","TestClassA","TestClassB","TestClassC","TestInterface","Date"];
 			
 			// The resultArr Array holds the expected boolean values when each value is compared to type using "is"
-			var resultArr  = new Array(typeArr.length);
+			var resultArr:*  = new Array(typeArr.length);
 			
 			var x:int = 0;	//counter for resultArr.  DO NOT change the line order of the array.
 			
@@ -107,14 +107,14 @@ package {
 			resultArr[x++] =[null,	    -2147483648,    -2147483648,null,	null,	-2147483648,		    null,	 null,		null,		null,	null,		null];		// int.MIN_VALUE
 			resultArr[x++] =["",	    null,	    null,	null,	null,	"",		    null,	 null,		null,		null,	null,		null];		// "" (empty string)
 			
-			var typeArrLength = typeArr.length;
+			var typeArrLength:* = typeArr.length;
 			
 			//var result:String = "";
 			
 			for (var i:int = 0; i < valueArr.length; i++) {
 				for (var j:int = 0; j < typeArrLength; j++) {
 				    try {
-					var result = (valueArr[i] as typeArr[j]);
+					var result:* = (valueArr[i] as typeArr[j]);
 					if (resultArr[i][j] === result) {  //answer is the same as resultArray
 					    result = true;
 					} else if  (String(resultArr[i][j]) == String(result))	{ //if the answers didn't match check with a string comparison

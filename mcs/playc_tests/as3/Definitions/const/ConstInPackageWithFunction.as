@@ -37,8 +37,8 @@
 
 package TestPackage
 {
-    public const num1 = 1;
-    public const num2 = 2;
+    public const num1:* = 1;
+    public const num2:* = 2;
     
     public function getNumber()
     {
@@ -46,15 +46,15 @@ package TestPackage
     }
 }
 
-var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-var TITLE   = "using const in package in a function";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+var VERSION:* = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+var TITLE:*   = "using const in:* package in a function";       // Provide ECMA section title or a description
+var BUGNUMBER:* = "";
 
 startTest();
 
 import TestPackage.*;
 
-AddTestCase("const in package with function", 3, getNumber());
+AddTestCase("const in:* package with function", 3, getNumber());
 
 test();

@@ -39,10 +39,10 @@
 package {
 	public class VarDefPublicStaticTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-			var VERSION = "Clean AS2";  // Version of JavaScript or ECMA
-			var TITLE   = "Public Static Variable Definition";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION:* = "Clean AS2";  // Version of JavaScript or ECMA
+			var TITLE:*   = "Public Static Variable Definition";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -51,13 +51,13 @@ package {
 			
 			
 			 
-			var VARDEFEMPTY = new VarDefPublicStaticClass();
+			var VARDEFEMPTY:* = new VarDefPublicStaticClass();
 			AddTestCase( "Public Static Variable Definition defined inside class", 1, 1);
 			
-			AddTestCase( "var Identifier = <empty>", "id", (VARDEFEMPTY.setid("id"), VARDEFEMPTY.getid()));
+			AddTestCase( "var Identifier:* = <empty>", "id", (VARDEFEMPTY.setid("id"), VARDEFEMPTY.getid()));
 			AddTestCase( "var Identifier : TypeExpression = <empty>", true, (VARDEFEMPTY.setidTypeExpr(true), 
 			                                                                 VARDEFEMPTY.getidTypeExpr()));
-			AddTestCase( "var Identifier = AssignmentExpression", true, VARDEFEMPTY.getidAssignExpr()); 
+			AddTestCase( "var Identifier:* = AssignmentExpression", true, VARDEFEMPTY.getidAssignExpr()); 
 			AddTestCase( "var Identifier : TypeExpression = AssignmentExpression", true, VARDEFEMPTY.getidTypeExprAssignExpr()); 
 			AddTestCase( "var VariableBindingList, Identifier = <empty> [1]", true, (VARDEFEMPTY.setid1(true), 
 			                                                                         VARDEFEMPTY.getid1()));
@@ -91,7 +91,7 @@ package {
 			AddTestCase( "var Identifier, Identifier : TypeExpression = AssignmentExpression [2]", true, VARDEFEMPTY.getidBAssign() )
 			AddTestCase( "var Identifier, Identifier : TypeExpression = AssignmentExpression [3]", undefined, VARDEFEMPTY.getidAAssignB() )
 			AddTestCase( "var Identifier, Identifier : TypeExpression = AssignmentExpression [4]", true, VARDEFEMPTY.getidBAssignB() )
-			var arr = new Array(1,2,3);
+			var arr:* = new Array(1,2,3);
 			AddTestCase( "var Identifier : TypeExpressionA, Identifier : TypeExpressionB = <empty> [1]", arr, (VARDEFEMPTY.setidTypeExprA(arr),
 			                                                                                                   VARDEFEMPTY.getidTypeExprA()) );
 			AddTestCase( "var Identifier : TypeExpressionA, Identifier : TypeExpressionB = <empty> [2]", false, (VARDEFEMPTY.setidTypeExprB(false),

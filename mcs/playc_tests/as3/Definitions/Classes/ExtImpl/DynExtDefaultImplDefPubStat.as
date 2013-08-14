@@ -39,10 +39,10 @@
 package {
 	public class DynExtDefaultImplDefPubStatTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-			var VERSION = "Clean AS2";  // Version of JavaScript or ECMA
-			var TITLE   = "Extend Default Class Implement Default Interface";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION:* = "Clean AS2";  // Version of JavaScript or ECMA
+			var TITLE:*   = "Extend Default Class Implement Default Interface";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -55,10 +55,10 @@ package {
 			 *
 			 * For example, a test might look like this:
 			 *
-			 * var helloWorld = "Hello World";
+			 * var helloWorld:* = "Hello World";
 			 *
 			 * AddTestCase(
-			 * "var helloWorld = 'Hello World'",   // description of the test
+			 * "var helloWorld:* = 'Hello World'",   // description of the test
 			 *  "Hello World",                     // expected result
 			 *  helloWorld );                      // actual result
 			 *
@@ -158,7 +158,7 @@ package {
 			//
 			// ********************************************
 			
-			var EXTDEFAULTCLASS = new DynExtDefaultImplDefPubStat();
+			var EXTDEFAULTCLASS:* = new DynExtDefaultImplDefPubStat();
 			AddTestCase( "*** Access public static method from private static method of sub class ***", 1, 1 );
 			AddTestCase( "EXTDCLASS.testPrivStatSubArray(arr)", arr, 
 			              EXTDCLASS.testPrivStatSubArray(arr) );

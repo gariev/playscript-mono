@@ -37,7 +37,7 @@
 package {
 	public class Error1077IllegalReadOfWriteOnlyPropTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1077; //	Illegal read of write-only property _ on _.
+			var CODE:* = 1077; //	Illegal read of write-only property _ on _.
 			
 			//-----------------------------------------------------------
 			startTest();
@@ -51,8 +51,8 @@ package {
 			}
 			
 			try {
-				var result = "no error";
-				var c = new C();
+				var result:* = "no error";
+				var c:* = new C();
 				c.a();
 			} catch (err) {
 				result = err.toString();

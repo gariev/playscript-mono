@@ -39,7 +39,7 @@ package GetSetSameName {
  	public class GetSetSameNameArg
  	
 	{
-	var _e = 4;
+	var _e:* = 4;
 	public function get e() { return _e}
 	public function set e(e) { _e = e;}
 	

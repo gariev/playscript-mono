@@ -43,9 +43,9 @@
 package {
 	public class simpleTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = " ";
-			var VERSION = "AS3";
-			var TITLE   = "import variables defined from a varsDef.abc file";
+			var SECTION:* = " ";
+			var VERSION:* = "AS3";
+			var TITLE:*   = "import variables defined from a varsDef.abc file";
 			
 			startTest();
 			writeHeaderToLog( SECTION + " "+ TITLE);

@@ -37,16 +37,16 @@
 package {
 	public class Error1085XmlEndTagMissingTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1085; //	The element type "_" must be terminated by the matching end-tag "</_>".
+			var CODE:* = 1085; //	The element type "_" must be terminated by the matching end-tag "</_>".
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var result = "no error";
-				var x = "<a/><b>";
-				var y = new XML(x);
+				var result:* = "no error";
+				var x:* = "<a/><b>";
+				var y:* = new XML(x);
 			} catch (err) {
 				result = err.toString();
 			} finally {

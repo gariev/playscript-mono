@@ -53,16 +53,16 @@ package Importfunc {
 
 
 
-var SECTION = "Directives";       				// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  				// Version of JavaScript or ECMA
-var TITLE   = "Import only a public function";       	// Provide ECMA section title or a description
-var BUGNUMBER = "";
+var SECTION:* = "Directives";       				// provide a document reference (ie, ECMA section)
+var VERSION:* = "ActionScript 3.0";  				// Version of JavaScript or ECMA
+var TITLE:*   = "Import only a public function";       	// Provide ECMA section title or a description
+var BUGNUMBER:* = "";
 
 startTest();                					// leave this alone
 
 
 
-var arr = new Array(1, 2, 3);
+var arr:* = new Array(1, 2, 3);
 
 import Importfunc.array;
 import Importfunc.setPubArray;

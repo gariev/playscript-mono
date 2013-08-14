@@ -41,14 +41,14 @@
 package {
 	public class Error1076MathNotAConstructorTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1076;
+			var CODE:* = 1076;
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var z = "no error";
+				var z:* = "no error";
 				new Math();
 			} catch (err) {
 				z = err.toString();

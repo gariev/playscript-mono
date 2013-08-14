@@ -41,8 +41,8 @@ package PublicClass {
 
 	public class PubExtPublicOverRidePublic extends PublicClass {
 
-		public var orSet = false;
-		public var orGet = false;
+		public var orSet:* = false;
+		public var orGet:* = false;
 
 		// *******************************
 		// override a public method

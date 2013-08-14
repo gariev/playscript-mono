@@ -117,7 +117,7 @@ package {
 			resultArr[x++] = 	[false,	false,	false,	false,	false,	true,	false,	    false,  false,		false,		false,	false,	true];		// filledArray
 			resultArr[x++] = 	[false,	false,	false,	false,	false,	true,	false,	    false,  false,		false,		false,	false,	true];		// emptyArray
 
-			var typeArrLength = typeArr.length;
+			var typeArrLength:* = typeArr.length;
 
 			for (var i:int = 0; i < valueArr.length; i++) {
 				for (var j:int = 0; j < typeArrLength; j++) {

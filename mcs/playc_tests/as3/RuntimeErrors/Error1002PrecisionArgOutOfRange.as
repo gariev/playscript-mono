@@ -37,14 +37,14 @@
 package {
 	public class Error1002PrecisionArgOutOfRangeTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1002; //	The precision argument must be between 0 and 20; _ is invalid.
+			var CODE:* = 1002; //	The precision argument must be between 0 and 20; _ is invalid.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var result = "no error";
+				var result:* = "no error";
 				var n:Number = new Number(1);
 				n.toPrecision(0);
 			} catch (err) {

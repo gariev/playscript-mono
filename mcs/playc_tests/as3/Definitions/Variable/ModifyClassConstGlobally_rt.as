@@ -39,17 +39,17 @@ package Package1
 {
     public class Class1
     {
-        public const item1;
+        public const item1:*;
     }
 }
 
 import Package1.*;
 
-var c1 = new Class1();
+var c1:* = new Class1();
 
 startTest();
 
-var thisError = "no error";
+var thisError:* = "no error";
 try
 {
     c1.item = "updated";

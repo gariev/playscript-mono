@@ -38,10 +38,10 @@
 package {
 	public class QualUnqualAccessTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";  // Version of JavaScript or ECMA
-			var TITLE   = "Interface Definition";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";  // Version of JavaScript or ECMA
+			var TITLE:*   = "Interface Definition";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -49,7 +49,7 @@ package {
 			
 			import QualUnqualAccess.*;
 			
-			var eg = new AccessTest();
+			var eg:* = new AccessTest();
 			AddTestCase("single implements, default, interface, class", "a.T::f(),a.T::f(),a.T::f()", eg.doAccessA());
 			AddTestCase("single implements (extends and add), default, interface, base, class", "b.T::f(),b.T::f(),b.T::f(),b.T::f()", eg.doAccessBF());
 			AddTestCase("single implements (extends and add), default, interface, class", "b.U::g(),b.U::g(),b.U::g()", eg.doAccessBG());

@@ -107,12 +107,12 @@ package {
 		public static function statfunc():void {}
 	}
 
-	var oi = describeType(new Foo2(2), FLASH10_FLAGS);
-	var oc = describeType(Foo2, FLASH10_FLAGS);
-	var ov = describeType(new Vector.<String>(), FLASH10_FLAGS);
+	var oi:* = describeType(new Foo2(2), FLASH10_FLAGS);
+	var oc:* = describeType(Foo2, FLASH10_FLAGS);
+	var ov:* = describeType(new Vector.<String>(), FLASH10_FLAGS);
 	
-	var expected = []
-	var xc = 
+	var expected:* = []
+	var xc:* = 
 <type name="Foo2" base="Class" isDynamic="true" isFinal="true" isStatic="true">
     <extendsClass type="Class"/>
     <extendsClass type="Object"/>
@@ -173,7 +173,7 @@ package {
     </factory>
 </type>
 
-	var xi = 
+	var xi:* = 
 <type name="Foo2" base="Foo" isDynamic="false" isFinal="false" isStatic="false">
     <metadata name="classmeta">
         <arg key="a" value="b"/>
@@ -228,7 +228,7 @@ package {
     </variable>
 </type>
 
-	var xv = 
+	var xv:* = 
 <type name="__AS3__.vec::Vector.&lt;String&gt;" base="__AS3__.vec::Vector.&lt;*&gt;" isDynamic="true" isFinal="false" isStatic="false">
     <extendsClass type="__AS3__.vec::Vector.&lt;*&gt;"/>
     <extendsClass type="Object"/>
@@ -283,11 +283,11 @@ package {
 	}
 	
     // save values to restore afterwards (for ATS)
-    var ignoreComments = XML.ignoreComments ;
-    var ignoreProcessingInstructions = XML.ignoreProcessingInstructions ;
-    var ignoreWhitespace = XML.ignoreWhitespace ;
-    var prettyIndent = XML.prettyIndent;
-    var prettyPrinting = XML.prettyPrinting ;
+    var ignoreComments:* = XML.ignoreComments ;
+    var ignoreProcessingInstructions:* = XML.ignoreProcessingInstructions ;
+    var ignoreWhitespace:* = XML.ignoreWhitespace ;
+    var prettyIndent:* = XML.prettyIndent;
+    var prettyPrinting:* = XML.prettyPrinting ;
     
     startTest();
 

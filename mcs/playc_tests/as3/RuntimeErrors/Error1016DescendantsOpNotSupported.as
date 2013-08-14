@@ -37,15 +37,15 @@
 package {
 	public class Error1016DescendantsOpNotSupportedTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1016; //	Descendants operator (..) not supported on type _.
+			var CODE:* = 1016; //	Descendants operator (..) not supported on type _.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var result = "no error";
-				var i = 1;
+				var result:* = "no error";
+				var i:* = 1;
 				i..j;
 			} catch (err) {
 				result = err.toString();

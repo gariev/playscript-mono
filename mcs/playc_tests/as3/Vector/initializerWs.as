@@ -42,8 +42,8 @@
 package {
 	public class initializerWsTest extends BaseTest {
 		public static function Main():int {
-			var SECTION="";
-			var VERSION = "ECMA_1";
+			var SECTION:*="";
+			var VERSION:* = "ECMA_1";
 			
 			startTest();
 			

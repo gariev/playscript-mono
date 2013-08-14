@@ -38,10 +38,10 @@
 package {
 	public class ConstConditionalInitializationInClass3_rtTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-			var TITLE   = "conditional initialization inside class constructor";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION:* = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE:*   = "conditional initialization inside class constructor";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			class MagicBall
 			{

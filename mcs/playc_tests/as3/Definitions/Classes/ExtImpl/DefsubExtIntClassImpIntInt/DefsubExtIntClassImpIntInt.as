@@ -88,9 +88,9 @@ class DefaultsubClass extends InternalClass{
 	}
 
 	public class DefsubExtIntClassImpIntInt extends DefaultsubClass{
-                //var pubsupacc = new DefaultClassAccesor();
-                var DefSubClass = new DefaultsubClass();
-                var DefSupClass = new InternalClass();
+                //var pubsupacc:* = new DefaultClassAccesor();
+                var DefSubClass:* = new DefaultsubClass();
+                var DefSupClass:* = new InternalClass();
 		var i:InternalInt=DefSupClass;
 	        public function accdeffunc2():Number{return i.deffunc2();}
                 public function accdeffunc3():int{return DefSupClass.InternalInt::deffunc3();}

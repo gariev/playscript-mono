@@ -38,10 +38,10 @@
 package {
 	public class GetSetTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";  // Version of JavaScript or ECMA
-			var TITLE   = "Interface Definition";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";  // Version of JavaScript or ECMA
+			var TITLE:*   = "Interface Definition";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -49,7 +49,7 @@ package {
 			
 			import GetSet.*;
 			
-			var eg = new GetSetTest();
+			var eg:* = new GetSetTest();
 			AddTestCase("simple get", "x.A::get a()", eg.doGetAX());
 			AddTestCase("simple set", "x.A::set a()", eg.doSetAX());
 			AddTestCase("simple get", "x.A::get b()", eg.doGetBX());

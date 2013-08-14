@@ -57,17 +57,17 @@ package B
     }
 }
 
-var SECTION = "Definitions\Packages";       			// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-var TITLE   = "access ambiguous class by fully qualified name";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions\Packages";       			// provide a document reference (ie, ECMA section)
+var VERSION:* = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+var TITLE:*   = "access ambiguous class by fully qualified name";       // Provide ECMA section title or a description
+var BUGNUMBER:* = "";
 
 import A.*;
 import B.*;
 
 startTest();
 
-var obj = new B.C();
+var obj:* = new B.C();
 
 AddTestCase("Access ambiguious class by fully qualified name", "B.C", obj.info());
 

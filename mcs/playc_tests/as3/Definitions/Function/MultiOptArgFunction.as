@@ -55,18 +55,18 @@ package {
 			}
 			
 			
-			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";  // Version of JavaScript or ECMA
-			var TITLE   = "Function Body Parameter/Result Type";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";  // Version of JavaScript or ECMA
+			var TITLE:*   = "Function Body Parameter/Result Type";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
 			
-			var TESTOBJ = new TestObj();
-			var TESTOBJ1 = new MultiOptArgFunctionClass();
+			var TESTOBJ:* = new TestObj();
+			var TESTOBJ1:* = new MultiOptArgFunctionClass();
 			
-			var success = false;
+			var success:* = false;
 			TESTOBJ.returnArguments("String1");
 			
 			if(str == "String1" && bool == true && num == 10)

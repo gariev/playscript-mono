@@ -47,8 +47,8 @@
 package {
 	public class everyInitializersTest extends BaseTest {
 		public static function Main():int {
-			var SECTION="";
-			var VERSION = "ECMA_1";
+			var SECTION:*="";
+			var VERSION:* = "ECMA_1";
 			
 			startTest();
 			
@@ -65,12 +65,12 @@ package {
 			  return true;
 			}
 			
-			var msg="";
+			var msg:*="";
 			AddTestCase(	"every empty Vector",
 					true,
 					new <int>[].every(checker1));
 			
-			var msg="";
+			var msg:*="";
 			AddTestCase(	"every small Vector returns true",
 					true,
 					new <int>[1,2,3].every(checker1));
@@ -79,13 +79,13 @@ package {
 					"checker1(1,0,[1,2,3])checker1(2,1,[1,2,3])checker1(3,2,[1,2,3])",
 					msg);
 			
-			var msg="";
+			var msg:*="";
 			AddTestCase(    "every small array returns false on 0",
 			                false,
 			                new <int>[2,1,0].every(checker1));
 			
-			var msg="";
-			var thisobj=new Object();
+			var msg:*="";
+			var thisobj:*=new Object();
 			thisobj.message="object";
 			new <int>[1,2,3,4,5,].every(checker3,thisobj);
 			AddTestCase(	"every small array with a specified this object",

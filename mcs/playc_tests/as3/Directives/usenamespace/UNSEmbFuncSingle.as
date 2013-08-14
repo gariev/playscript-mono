@@ -38,20 +38,20 @@
 package {
 	public class UNSEmbFuncSingleTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Directives";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript
-			var TITLE   = "use namespace";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Directives";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript
+			var TITLE:*   = "use namespace";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
 			
 			class A {
 				namespace Baseball;
-				Baseball var teamName = "Giants";
+				Baseball var teamName:* = "Giants";
 			
 				namespace Football;
-				Football var teamName = "Angels";
+				Football var teamName:* = "Angels";
 			
 				public function nsTest1(){
 				    use namespace Baseball;

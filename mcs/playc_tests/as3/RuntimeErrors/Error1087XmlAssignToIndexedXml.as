@@ -37,16 +37,16 @@
 package {
 	public class Error1087XmlAssignToIndexedXmlTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1087; //	Assignment to indexed XML is not allowed.
+			var CODE:* = 1087; //	Assignment to indexed XML is not allowed.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
-			var expected = "Error #" + CODE;
-			var result = "no error";
+			var expected:* = "Error #" + CODE;
+			var result:* = "no error";
 			try {
-				var xml = new XML("<x><a>1</a><b>2</b><c>3</c></x>");
+				var xml:* = new XML("<x><a>1</a><b>2</b><c>3</c></x>");
 				xml[0] = 5;
 			} catch (err) {
 				result = grabError(err, err.toString());

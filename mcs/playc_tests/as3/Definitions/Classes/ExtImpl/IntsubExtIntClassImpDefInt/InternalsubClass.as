@@ -61,8 +61,8 @@ use namespace ns;
 
 	public class InternalsubClassAccessor extends InternalsubClass{
 
-                var IntSubClass = new InternalsubClass();
-                var IntSupClass = new InternalClass();
+                var IntSubClass:* = new InternalsubClass();
+                var IntSupClass:* = new InternalClass();
 		//public function accdeffunc(){return IntSubClass.deffunc();}
 		// access default function deffunc
                 //public function accsupdeffunc(){return IntSupClass.deffunc();}

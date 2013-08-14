@@ -41,8 +41,8 @@ package DefaultClass {
 
 	dynamic class DynExtDefaultOverRidePublicInner extends DefaultClass {
 
-		public var orSetCalled = false;
-		public var orGetCalled = false;
+		public var orSetCalled:* = false;
+		public var orGetCalled:* = false;
 	
 
 		// *******************************

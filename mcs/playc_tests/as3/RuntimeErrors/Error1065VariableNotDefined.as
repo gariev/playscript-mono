@@ -37,14 +37,14 @@
 package {
 	public class Error1065VariableNotDefinedTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1065; //	Variable _ is not defined.
+			var CODE:* = 1065; //	Variable _ is not defined.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var z = "no error";
+				var z:* = "no error";
 				new Date(x);
 			} catch (err) {
 				z = err.toString();

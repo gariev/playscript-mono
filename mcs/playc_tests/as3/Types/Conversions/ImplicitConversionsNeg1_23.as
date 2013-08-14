@@ -38,16 +38,16 @@
 package {
 	public class ImplicitConversionsNeg1_23Test extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Types: Conversions";
-			var VERSION = "as3";
-			var TITLE   = "implicit type conversions";
+			var SECTION:* = "Types: Conversions";
+			var VERSION:* = "as3";
+			var TITLE:*   = "implicit type conversions";
 			
 			startTest();
 			
 			
 			// Value = -1.23 
 			
-			var thisError = "no exception thrown";
+			var thisError:* = "no exception thrown";
 			try{
 				var string:String = -1.23;
 			} catch (e0) {

@@ -38,30 +38,30 @@ package Package1
 {
     public namespace ns1;
     
-    public var packageItem1 = "packageItem1 set at creation time";
+    public var packageItem1:* = "packageItem1 set at creation time";
 
-    public var packageItem2 = "packageItem2 set at creation time", packageItem3, packageItem4 = "const packageItem4 set at creation time";;
+    public var packageItem2:* = "packageItem2 set at creation time", packageItem3, packageItem4 = "const packageItem4:* set at creation time";;
     
     public var packageItem5:int = 5;
     
     public class Class1
     {
-        public var classItem1 = "Class1 classItem1 set at creation time";
-        public var classItem2 = "Class1 classItem2 set at creation time", classItem3, classItem4 = "const Class1 classItem4 set at creation time";
+        public var classItem1:* = "Class1 classItem1 set at creation time";
+        public var classItem2:* = "Class1 classItem2 set at creation time", classItem3, classItem4 = "const Class1:* classItem4 set at creation time";
         public var classItem5:int = 6;
-        public static var classItem6 = "static Class1 classItem6 set at creation time";
-        ns1 var classItem7 = "ns1 Class1 classItem7 set at creation time";
-        ns1 static var classItem8 = "ns1 Class1 classItem8 set at creation time"
+        public static var classItem6:* = "static Class1 classItem6 set at creation time";
+        ns1 var classItem7:* = "ns1 Class1 classItem7 set at creation time";
+        ns1 static var classItem8:* = "ns1 Class1 classItem8 set at creation time"
     }
     
     public class Class2
     {
-        public var classItem1;
+        public var classItem1:*;
         public var classItem2, classItem3, classItem4;
         public var classItem5:int = 6;
-        public static var classItem6 = init();;
-        ns1 var classItem7;
-        ns1 static var classItem8 = init2();
+        public static var classItem6:* = init();;
+        ns1 var classItem7:*;
+        ns1 static var classItem8:* = init2();
         
         public function Class2()
         {

@@ -41,7 +41,7 @@
 package {
 	public class Error1070MethodNotFoundTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1070;
+			var CODE:* = 1070;
 			
 			//-----------------------------------------------------------
 			startTest();
@@ -54,7 +54,7 @@ package {
 			}
 			
 			try {
-				var z = "no error";
+				var z:* = "no error";
 				new B().f();
 			} catch (err) {
 				z = err.toString();

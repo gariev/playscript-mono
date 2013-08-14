@@ -46,10 +46,10 @@ package DefaultClass{
  */
 import DefaultClass.*;
 
-var SECTION = "Definitions";       			// provide a document reference (ie, ECMA section)
-var VERSION = "AS 3.0";  				// Version of JavaScript or ECMA
-var TITLE   = "Dynamic Class Extends Default Class";    // Provide ECMA section title or a description
-//var BUGNUMBER = "";
+var SECTION:* = "Definitions";       			// provide a document reference (ie, ECMA section)
+var VERSION:* = "AS 3.0";  				// Version of JavaScript or ECMA
+var TITLE:*   = "Dynamic Class Extends Default Class";    // Provide ECMA section title or a description
+//var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
@@ -62,10 +62,10 @@ startTest();                // leave this alone
  *
  * For example, a test might look like this:
  *
- * var helloWorld = "Hello World";
+ * var helloWorld:* = "Hello World";
  *
  * AddTestCase(
- * "var helloWorld = 'Hello World'",   // description of the test
+ * "var helloWorld:* = 'Hello World'",   // description of the test
  *  "Hello World",                     // expected result
  *  helloWorld );                      // actual result
  *
@@ -77,7 +77,7 @@ startTest();                // leave this alone
 //  outside of class
 // *******************************************
 
-var DYNEXTDCLASS = new DynExtDefaultClass();
+var DYNEXTDCLASS:* = new DynExtDefaultClass();
 var arr:Array;
 arr = new Array(10, 15, 20, 25, 30);
 
@@ -118,7 +118,7 @@ AddTestCase( "access 'default' method from 'final' method of sub class", arr, (D
 // ********************************************
 
 DYNEXTDCLASS = new DynExtDefaultClass();
-var thisError10 = "no Exception thrown";
+var thisError10:* = "no Exception thrown";
 try{
 	DYNEXTDCLASS.testStatSubArray(arr);
 } catch (e) {
@@ -282,7 +282,7 @@ AddTestCase( "access 'default' property from 'private virtual' method of sub cla
 // ********************************************
 
 //Add new property to parent through prototype object, verify child inherits it
-var child = new DynExtDefaultClass();
+var child:* = new DynExtDefaultClass();
 DefaultClassInner.prototype.fakeProp = 100;
 AddTestCase("*** Add new property to parent prototype object, verify child class inherits it ***", 100, child.fakeProp);
 

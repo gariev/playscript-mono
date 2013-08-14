@@ -42,18 +42,18 @@ package ns {
 	public namespace N4 = N3;
 	 
  	public class foo {
-		public var v1;
-		public var v2;
-		public var v3;
+		public var v1:*;
+		public var v2:*;
+		public var v3:*;
                 public var o:Object;
-		var holder;
+		var holder:*;
 		
-		N1 var v3;
-		N2 var n2;
-		N2 var n3;
-		N2 var n4;
-		N3 var v1;
-		N3 var v2;
+		N1 var v3:*;
+		N2 var n2:*;
+		N2 var n3:*;
+		N2 var n4:*;
+		N3 var v1:*;
+		N3 var v2:*;
                 
 	
 		public function foo() {

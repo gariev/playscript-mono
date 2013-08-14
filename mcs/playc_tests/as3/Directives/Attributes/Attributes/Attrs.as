@@ -41,13 +41,13 @@ package Attrs {
 	/*=======================================================================*/
 	/* Variables                                                             */
 	/*=======================================================================*/
-                    var emptyVar    : String;
-    public          var pubVar      : String;
-    private         var privVar     : String;
-    static          var statVar     : String;
-    public  static  var pubStatVar  : String;
+                    var emptyVar:*    : String;
+    public          var pubVar:*      : String;
+    private         var privVar:*     : String;
+    static          var statVar:*     : String;
+    public  static  var pubStatVar:*  : String;
     private static  var privStatVar : String;
-    static  public  var statPubVar  : String;
+    static  public  var statPubVar:*  : String;
     static  private var statPrivVar : String;
 
 	function Attrs()

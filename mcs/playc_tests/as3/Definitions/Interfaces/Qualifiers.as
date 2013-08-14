@@ -38,10 +38,10 @@
 package {
 	public class QualifiersTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";  // Version of JavaScript or ECMA
-			var TITLE   = "Interface Definition";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";  // Version of JavaScript or ECMA
+			var TITLE:*   = "Interface Definition";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -49,7 +49,7 @@ package {
 			
 			import Qualifiers.*;
 			
-			var eg = new QualifierTest();
+			var eg:* = new QualifierTest();
 			AddTestCase("implements default interface, access via interface name", "defFunc()", eg.doDefByInt());
 			AddTestCase("implements default interface, access via public", "defFunc()", eg.doDefByPub());
 			AddTestCase("implements internal interface, access via interface name", "defFunc()", eg.doIntByInt());

@@ -40,15 +40,15 @@ package Prototyping {
 
 import DynamicClassPrototype.*;
 
-var SECTION = "Class Prototype";           // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";                   // Version of JavaScript or ECMA
-var TITLE   = "Testing prototype in dynamic classes";  // Provide ECMA section title or a description
-//var BUGNUMBER = "";
+var SECTION:* = "Class Prototype";           // provide a document reference (ie, ECMA section)
+var VERSION:* = "AS3";                   // Version of JavaScript or ECMA
+var TITLE:*   = "Testing prototype in dynamic classes";  // Provide ECMA section title or a description
+//var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
 
-var dynamicObj = new DynamicClass();
+var dynamicObj:* = new DynamicClass();
 
 
 
@@ -108,7 +108,7 @@ var equivalent:Boolean = (DynamicClass.prototype.constructor == DynamicClass);
 AddTestCase("Verify prototype constructor is equivalent to class object", true, equivalent);
 
 
-var thisError10 = "no error thrown";
+var thisError10:* = "no error thrown";
 var temp:Object = new Object();
 try{
 	DynamicClass.prototype = temp;

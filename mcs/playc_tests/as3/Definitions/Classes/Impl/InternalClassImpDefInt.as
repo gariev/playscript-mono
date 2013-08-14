@@ -38,10 +38,10 @@ package {
 	import InternalClassImpDefInt.*;
 	public class InternalClassImpDefIntTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
-			var TITLE   = "Internal class implements default interface";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS3";        // Version of ECMAScript or ActionScript 
+			var TITLE:*   = "Internal class implements default interface";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -49,7 +49,7 @@ package {
 			///////////////////////////////////////////////////////////////
 			// add your tests here
 			  
-			var obj = new InternalClassAccesor();
+			var obj:* = new InternalClassAccesor();
 			
 			//Internal class implements a default interface with a public method
 			AddTestCase("Internal class implements a default interface with a public method", "PASSED", obj.accdeffunc());

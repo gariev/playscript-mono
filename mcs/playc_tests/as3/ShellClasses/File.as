@@ -41,10 +41,10 @@ package {
 	
 	public class FileTest extends BaseTest {
 		public static function Main():int {
-			    var SECTION = "File";
-			    var VERSION = "as3";
+			    var SECTION:* = "File";
+			    var VERSION:* = "as3";
 			    startTest();
-			    var TITLE   = "test File class";
+			    var TITLE:*   = "test File class";
 			
 			    writeHeaderToLog( SECTION + " "+ TITLE );
 			
@@ -62,7 +62,7 @@ package {
 			      "test file",
 			      File.read("test.txt"));
 			
-			    var err="";
+			    var err:*="";
 			    try {
 			        File.read('unknown.txt');
 			    } catch (e) {

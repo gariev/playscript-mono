@@ -38,16 +38,16 @@
 package {
 	public class ConstVarInsideGlobalFunction2Test extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-			var TITLE   = "const inside a global function with multiple arguments";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION:* = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE:*   = "const inside:* a global function with multiple arguments";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();
 			
 			function constMultiArgs( arg1, arg2, arg3 ) {
 			
-			 	const localVar = arg1 + arg2 + arg3;
+			 	const localVar:* = arg1 + arg2 + arg3;
 			 	return localVar;
 			
 			}

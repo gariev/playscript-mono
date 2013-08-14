@@ -48,7 +48,7 @@ package testInternalClassWithParamCons{
                                         
 
                 public function Add():Number{
-                                     var z = x+y;
+                                     var z:* = x+y;
                                      return z;
                                      }
                                           }
@@ -61,7 +61,7 @@ package testInternalClassWithParamCons{
                                   
 
                                  public function getAdd(){
-                                                          var R = intWithParamCons.Add();
+                                                          var R:* = intWithParamCons.Add();
                                                           return R;
                                                          }
                                               }

@@ -47,8 +47,8 @@
 package {
 	public class filterInitializersTest extends BaseTest {
 		public static function Main():int {
-			var SECTION="";
-			var VERSION = "ECMA_1";
+			var SECTION:*="";
+			var VERSION:* = "ECMA_1";
 			
 			startTest();
 			
@@ -59,15 +59,15 @@ package {
 			    return true;
 			  return false;
 			}
-			var invalidchecker="a string";
+			var invalidchecker:*="a string";
 			function ThisChecker(value,index,obj):Boolean {
 			  msg+=this.message;
 			  return true;
 			}
 			
-			var errormsg="";
+			var errormsg:*="";
 			try {
-			  var result=new <int>[].filter();
+			  var result:*=new <int>[].filter();
 			} catch (e) {
 			  errormsg=e.toString();
 			}
@@ -75,9 +75,9 @@ package {
 					"ArgumentError: Error #1063",
 			    parseError(errormsg,"ArgumentError: Error #1063".length));
 			
-			var errormsg="";
+			var errormsg:*="";
 			try {
-			  var result=new <int>[0,1,2,3,4,5,6,7,8,9].filter(invalidchecker);
+			  var result:*=new <int>[0,1,2,3,4,5,6,7,8,9].filter(invalidchecker);
 			} catch (e) {
 			  errormsg=e.toString();
 			}
@@ -85,7 +85,7 @@ package {
 					"TypeError: Error #1034",
 			              parseError(errormsg,"TypeError: Error #1034".length));
 			
-			var result=new <int>[].filter(EvenChecker);
+			var result:*=new <int>[].filter(EvenChecker);
 			AddTestCase(	"filter empty vector",
 					"",
 					result.toString());
@@ -94,10 +94,10 @@ package {
 					"0,2,4,6,8",
 					new <int>[0,1,2,3,4,5,6,7,8,9].filter(EvenChecker).toString());
 			
-			var myobject=new Object();
+			var myobject:*=new Object();
 			myobject.message="message";
-			var msg="";
-			var result=new <int>[0,1,2].filter(ThisChecker,myobject);
+			var msg:*="";
+			var result:*=new <int>[0,1,2].filter(ThisChecker,myobject);
 			AddTestCase(	"filter use thisobj",
 					"messagemessagemessage",
 					msg);

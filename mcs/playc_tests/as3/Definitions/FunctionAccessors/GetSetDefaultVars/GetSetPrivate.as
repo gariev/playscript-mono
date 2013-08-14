@@ -39,7 +39,7 @@ package GetSetDefaultVars {
 
 	public class GetSetDefault {
 
-		  var _nt = "no type";
+		  var _nt:* = "no type";
 		  var _x:Array = [1,2,3];
 		  var _y:int = -10;
 		  var _b:Boolean = true;
@@ -118,11 +118,11 @@ package GetSetDefaultVars {
 		}
 
 		// define a getter for a property and call the undefined setter
-		  var _nosetter = "FAILED";
+		  var _nosetter:* = "FAILED";
 		public function get noSetter(){ return _nosetter; }
 
 		// define a setter for a property and call the undefined getter
-		  var _nogetter = "FAILED";
+		  var _nogetter:* = "FAILED";
 		public function set noGetter(s){ _nogetter = s; }
 
 	}

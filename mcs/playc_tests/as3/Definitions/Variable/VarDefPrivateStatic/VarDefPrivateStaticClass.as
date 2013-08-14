@@ -38,14 +38,14 @@ package VarDefPrivateStatic{
 
   public class VarDefPrivateStaticClass {
 
-    // var Identifier = <empty>
-    private static var id;
+    // var Identifier:* = <empty>
+    private static var id:*;
 
     // var Identifier : TypeExpression = <empty>
     private static var idTypeExpr : Boolean;
 
-    // var Identifier = AssignmentExpression
-    private static var idAssignExpr = true;
+    // var Identifier:* = AssignmentExpression
+    private static var idAssignExpr:* = true;
 
     // var Identifier : TypeExpression = AssignmentExpression
     private static var idTypeExprAssignExpr : Boolean = true;
@@ -57,7 +57,7 @@ package VarDefPrivateStatic{
     private static var id1TypeExpr:Boolean, id2TypeExpr:Boolean, id3TypeExpr:Boolean;
 
     // var VariableBindingList, Identifier = AssignmentExpression
-    private static var id1AssignExpr = true, id2AssignExpr = false, id3AssignExpr = true;
+    private static var id1AssignExpr:* = true, id2AssignExpr = false, id3AssignExpr = true;
     private static var id1AssignExprB, id2AssignExprB, id3AssignExprB = true;
 
     // var VariableBindingList, Identifier : TypeExpression = AssignmentExpression
@@ -68,7 +68,7 @@ package VarDefPrivateStatic{
     private static var idA, idB:Boolean;
 
     // var Identifier, Identifier : TypeExpression = AssignmentExpression
-    private static var idAAssign = false, idBAssign:Boolean = true; 
+    private static var idAAssign:* = false, idBAssign:Boolean = true; 
     private static var idAAssignB, idBAssignB:Boolean = true; 
 
     // var Identifier : TypeExpressionA, Identifier : TypeExpressionB = <empty>
@@ -82,7 +82,7 @@ package VarDefPrivateStatic{
     private static var idId, idIdTypeExprA:Array, idIdTypeExprB:Boolean;
 
     // var Identifier, Identifier:TypeExpressionA, Identifier:TypeExpressionB = AssignmentExpression
-    private static var idIdAssign = false, idIdTypeExprAAssign:Array = new Array(1,2,3), idIdTypeExprBAssign:Boolean = true;
+    private static var idIdAssign:* = false, idIdTypeExprAAssign:Array = new Array(1,2,3), idIdTypeExprBAssign:Boolean = true;
     private static var idIdAssignB, idIdTypeExprAAssignB:Array, idIdTypeExprBAssignB:Boolean = true;
 
     // *****************************************************************************************

@@ -37,16 +37,16 @@
 package {
 	public class Error1115NotAConstructorTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1115; //	_ is not a constructor.
+			var CODE:* = 1115; //	_ is not a constructor.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var z = "no error";
-				var OBJECT = new Object();
-				var o = new OBJECT();
+				var z:* = "no error";
+				var OBJECT:* = new Object();
+				var o:* = new OBJECT();
 			} catch (err) {
 				z = err.toString();
 			} finally {

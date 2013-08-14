@@ -43,7 +43,7 @@ package testInternalClassDefCons{
                                         
 
                                          public function Add(){
-                                                              var z = x+y;
+                                                              var z:* = x+y;
                                                               return z;
                                                               }
                                           }
@@ -54,7 +54,7 @@ package testInternalClassDefCons{
                                   
 
                                  public function getAdd(){
-                                                          var R = intDefCons.Add();
+                                                          var R:* = intDefCons.Add();
                                                           return R;
                                                          }
                                        }

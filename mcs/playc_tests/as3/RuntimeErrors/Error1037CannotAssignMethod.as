@@ -37,7 +37,7 @@
 package {
 	public class Error1037CannotAssignMethodTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1037; //	Cannot assign to a method _ on _.
+			var CODE:* = 1037; //	Cannot assign to a method _ on _.
 			
 			//-----------------------------------------------------------
 			startTest();
@@ -47,10 +47,10 @@ package {
 				function f() {}
 			}
 			
-			var expected = "Error #" + CODE;
-			var result = "no error";
+			var expected:* = "Error #" + CODE;
+			var result:* = "no error";
 			try {
-				var a = new A();
+				var a:* = new A();
 				a.f = function () {}
 			} catch (err) {
 				result = grabError(err, err.toString());

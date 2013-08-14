@@ -39,7 +39,7 @@ package GetSetPublicVars {
 
 	public class GetSetPublic {
 
-		public var _nt = "no type";
+		public var _nt:* = "no type";
 		public var _x:Array = [1,2,3];
 		public var _y:int = -10;
 		public var _b:Boolean = true;
@@ -118,11 +118,11 @@ package GetSetPublicVars {
 		}
 
 		// define a getter for a property and call the undefined setter
-		public var _nosetter = "FAILED";
+		public var _nosetter:* = "FAILED";
 		public function get noSetter(){ return _nosetter; }
 
 		// define a setter for a property and call the undefined getter
-		public var _nogetter = "FAILED";
+		public var _nogetter:* = "FAILED";
 		public function set noGetter(s){ _nogetter = s; }
 
 	}

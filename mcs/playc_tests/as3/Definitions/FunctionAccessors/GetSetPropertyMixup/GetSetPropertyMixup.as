@@ -39,10 +39,10 @@ package GetSetPropertyMixup {
 
 	public class GetSetPropertyMixup {
 
-		  var _foo = "foo";
-		  var _poo = "poo";
-		  var _loo = "loo";
-		  var _boo = "boo";
+		  var _foo:* = "foo";
+		  var _poo:* = "poo";
+		  var _loo:* = "loo";
+		  var _boo:* = "boo";
 		  
 		
 		public function get foo():String {

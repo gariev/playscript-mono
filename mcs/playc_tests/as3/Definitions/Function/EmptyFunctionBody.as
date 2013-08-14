@@ -55,14 +55,14 @@ function returnParamsNoPackage(s:String, b:Boolean):String { return s; }
 function returnCustomNoParamsNoPackage():Custom { return new Custom(); }
 
 
-var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";  // Version of JavaScript or ECMA
-var TITLE   = "Function Body Parameter/Result Type";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+var VERSION:* = "AS3";  // Version of JavaScript or ECMA
+var TITLE:*   = "Function Body Parameter/Result Type";       // Provide ECMA section title or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
-var TESTOBJ;
+var TESTOBJ:*;
 var s:String = new String("this is a test");
 var b:Boolean = new Boolean(true);
 var c:Custom = new Custom();

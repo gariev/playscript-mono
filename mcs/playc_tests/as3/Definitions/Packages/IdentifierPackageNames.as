@@ -59,10 +59,10 @@ package uint {}
 
 
 
-var SECTION = "Package Names";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
-var TITLE   = "Identifiers as valid package names";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
+var SECTION:* = "Package Names";       // provide a document reference (ie, Actionscript section)
+var VERSION:* = "AS3";        // Version of ECMAScript or ActionScript 
+var TITLE:*   = "Identifiers as valid package names";       // Provide ECMA section title or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 

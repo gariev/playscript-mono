@@ -44,31 +44,31 @@
 package {
 	public class joinTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "15.4.4.3-1";
-			var VERSION = "ECMA_1";
+			var SECTION:* = "15.4.4.3-1";
+			var VERSION:* = "ECMA_1";
 			startTest();
 			
 			writeHeaderToLog( SECTION + " Array.join()");
 			
-			var v1=new Vector.<int>();
+			var v1:*=new Vector.<int>();
 			AddTestCase(	"join empty vector",
 					"",
 					v1.join());
 			
-			var v1=new Vector.<int>();
-			for (var i=0;i<10;i++) v1[i]=i;
+			var v1:*=new Vector.<int>();
+			for (var i:*=0;i<10;i++) v1[i]=i;
 			AddTestCase(	"join vector 0-9",
 					"0,1,2,3,4,5,6,7,8,9",
 					v1.join());
 			
-			var v1=new Vector.<int>();
-			for (var i=0;i<10;i++) v1[i]=i;
+			var v1:*=new Vector.<int>();
+			for (var i:*=0;i<10;i++) v1[i]=i;
 			AddTestCase(	"join vector with 'and' separator",
 					"0 and 1 and 2 and 3 and 4 and 5 and 6 and 7 and 8 and 9",
 					v1.join(" and "));
 			
-			var v1=new Vector.<int>();
-			for (var i=0;i<10;i++) v1[i]=i;
+			var v1:*=new Vector.<int>();
+			for (var i:*=0;i<10;i++) v1[i]=i;
 			AddTestCase(	"join vector with '|' separator",
 					"0|1|2|3|4|5|6|7|8|9",
 					v1.join("|"));

@@ -38,22 +38,22 @@
 package {
 	public class VarDefOutsideTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-			var VERSION = "Clean AS2";  // Version of JavaScript or ECMA
-			var TITLE   = "Variable";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION:* = "Clean AS2";  // Version of JavaScript or ECMA
+			var TITLE:*   = "Variable";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
 			
-			    // var Identifier = <empty>
-			    var id;
+			    // var Identifier:* = <empty>
+			    var id:*;
 			
 			    // var Identifier : TypeExpression = <empty>
 			    var idTypeExpr : Boolean;
 			
-			    // var Identifier = AssignmentExpression
-			    var idAssignExpr = true;
+			    // var Identifier:* = AssignmentExpression
+			    var idAssignExpr:* = true;
 			
 			    // var Identifier : TypeExpression = AssignmentExpression
 			    var idTypeExprAssignExpr : Boolean = true;
@@ -66,7 +66,7 @@ package {
 			
 			    // var VariableBindingList, Identifier = AssignmentExpression
 				// Bug 117477
-			    //var id1AssignExpr = true, id2AssignExpr = false, id3AssignExpr = true;
+			    //var id1AssignExpr:* = true, id2AssignExpr = false, id3AssignExpr = true;
 			    var id1AssignExprB, id2AssignExprB, id3AssignExprB = true;
 			
 			    // var VariableBindingList, Identifier : TypeExpression = AssignmentExpression
@@ -79,7 +79,7 @@ package {
 			
 			    // var Identifier, Identifier : TypeExpression = AssignmentExpression
 				// Bug 117477
-			    //var idAAssign = false, idBAssign:Boolean = true; 
+			    //var idAAssign:* = false, idBAssign:Boolean = true; 
 			    //var idAAssignB, idBAssignB:Boolean = true; 
 			
 			    // var Identifier : TypeExpressionA, Identifier : TypeExpressionB = <empty>
@@ -95,14 +95,14 @@ package {
 			
 			    // var Identifier, Identifier:TypeExpressionA, Identifier:TypeExpressionB = AssignmentExpression
 				// Bug 117477
-			    //var idIdAssign = false, idIdTypeExprAAssign:Array = new Array(1,2,3), idIdTypeExprBAssign:Boolean = true;
+			    //var idIdAssign:* = false, idIdTypeExprAAssign:Array = new Array(1,2,3), idIdTypeExprBAssign:Boolean = true;
 			    //var idIdAssignB, idIdTypeExprAAssignB:Array, idIdTypeExprBAssignB:Boolean = true;
 			
 			AddTestCase( "Variable Definition <empty> defined inside class", 1, 1);
 			
-			AddTestCase( "var Identifier = <empty>", "id", (id = "id", id));
+			AddTestCase( "var Identifier:* = <empty>", "id", (id = "id", id));
 			AddTestCase( "var Identifier : TypeExpression = <empty>", true, (idTypeExpr = true, idTypeExpr ));
-			AddTestCase( "var Identifier = AssignmentExpression", true, idAssignExpr); 
+			AddTestCase( "var Identifier:* = AssignmentExpression", true, idAssignExpr); 
 			AddTestCase( "var Identifier : TypeExpression = AssignmentExpression", true, idTypeExprAssignExpr); 
 			AddTestCase( "var VariableBindingList, Identifier = <empty> [1]", true, (id1 = true, id1)); 
 			AddTestCase( "var VariableBindingList, Identifier = <empty> [2]", true, (id2 = true, id2)); 
@@ -133,7 +133,7 @@ package {
 			//AddTestCase( "var Identifier, Identifier : TypeExpression = AssignmentExpression [2]", true, idBAssign );
 			//AddTestCase( "var Identifier, Identifier : TypeExpression = AssignmentExpression [3]", undefined, idAAssignB );
 			//AddTestCase( "var Identifier, Identifier : TypeExpression = AssignmentExpression [4]", true, idBAssignB );
-			var arr = new Array(1,2,3);
+			var arr:* = new Array(1,2,3);
 			AddTestCase( "var Identifier : TypeExpressionA, Identifier : TypeExpressionB = <empty> [1]", arr, (idTypeExprA = arr,
 			                                                                                                   idTypeExprA ));
 			AddTestCase( "var Identifier : TypeExpressionA, Identifier : TypeExpressionB = <empty> [2]", false, (idTypeExprB = false,

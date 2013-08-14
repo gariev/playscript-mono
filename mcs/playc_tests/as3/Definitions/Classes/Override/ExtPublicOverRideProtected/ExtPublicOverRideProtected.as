@@ -41,8 +41,8 @@ package PublicClassPackage {
 
 	class ExtPublicOverRideProtectedInner extends PublicClass {
 
-		public var orSet = false;
-		public var orGet = false;
+		public var orSet:* = false;
+		public var orGet:* = false;
 
 		// *********************************
 		// override a protected method

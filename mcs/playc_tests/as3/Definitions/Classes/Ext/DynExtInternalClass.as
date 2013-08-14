@@ -48,10 +48,10 @@ package {
 	
 	public class DynExtInternalClassTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       			// provide a document reference (ie, ECMA section)
-			var VERSION = "AS 3.0";  				// Version of JavaScript or ECMA
-			var TITLE   = "Dynamic Class Extends Default Class";    // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       			// provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS 3.0";  				// Version of JavaScript or ECMA
+			var TITLE:*   = "Dynamic Class Extends Default Class";    // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -64,10 +64,10 @@ package {
 			 *
 			 * For example, a test might look like this:
 			 *
-			 * var helloWorld = "Hello World";
+			 * var helloWorld:* = "Hello World";
 			 *
 			 * AddTestCase(
-			 * "var helloWorld = 'Hello World'",   // description of the test
+			 * "var helloWorld:* = 'Hello World'",   // description of the test
 			 *  "Hello World",                     // expected result
 			 *  helloWorld );                      // actual result
 			 *
@@ -79,8 +79,8 @@ package {
 			//  outside of class
 			// *******************************************
 			
-			var DYNEXTDCLASS = new DynExtInternalClass();
-			var arr = new Array(10, 15, 20, 25, 30);
+			var DYNEXTDCLASS:* = new DynExtInternalClass();
+			var arr:* = new Array(10, 15, 20, 25, 30);
 			
 			AddTestCase( "*** Access Default Method from Default method of sub class  ***", 1, 1 );
 			AddTestCase( "DYNEXTDCLASS.testSubGetSetArray(arr)", arr, (DYNEXTDCLASS.testSubGetSetArray(arr)) );
@@ -91,7 +91,7 @@ package {
 			// method of a sub class
 			//
 			// ********************************************
-			var arr = new Array(1, 5);
+			var arr:* = new Array(1, 5);
 			DYNEXTDCLASS = new DynExtInternalClass();
 			AddTestCase( "DYNEXTDCLASS.pubSubSetArray(arr), DYNEXTDCLASS.pubSubGetArray()", arr, (DYNEXTDCLASS.pubSubSetArray(arr), DYNEXTDCLASS.pubSubGetArray()) );
 			
@@ -101,7 +101,7 @@ package {
 			// method of a sub class
 			//
 			// ********************************************
-			var arr = new Array(2, 4, 6);
+			var arr:* = new Array(2, 4, 6);
 			DYNEXTDCLASS = new DynExtInternalClass();
 			AddTestCase( "DYNEXTDCLASS.testPrivSubArray(arr)", arr, DYNEXTDCLASS.testPrivSubArray(arr) );
 			
@@ -119,7 +119,7 @@ package {
 			// ********************************************
 			
 			DYNEXTDCLASS = new DynExtInternalClass();
-			var thisError = "no Exception thrown";
+			var thisError:* = "no Exception thrown";
 			try{
 				DYNEXTDCLASS.testStatSubArray(arr);
 			} catch (e) {
@@ -135,7 +135,7 @@ package {
 			//
 			// ********************************************
 			/*
-			var arr = new Array(1, 5);
+			var arr:* = new Array(1, 5);
 			DYNEXTDCLASS = new DynExtInternalClass();
 			AddTestCase( "*** Access default method from static method of sub class ***", 1, 1 );
 			AddTestCase( "DYNEXTDCLASS.testStatSubArray(arr)", arr, (DYNEXTDCLASS.testStatSubArray(arr)) );

@@ -41,16 +41,16 @@
 package {
 	public class Error1010UndefinedTermTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1010;
+			var CODE:* = 1010;
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var z = "no error";
+				var z:* = "no error";
 				var obj:Object = new Object();
-				var a = obj.x.prop;
+				var a:* = obj.x.prop;
 			} catch (err) {
 				z = err.toString();
 			} finally {

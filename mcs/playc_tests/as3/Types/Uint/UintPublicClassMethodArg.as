@@ -44,7 +44,7 @@ package {
 			
 			import UintPublicClassMethodArg.*;
 			
-			var obj = new UintPublicClass();
+			var obj:* = new UintPublicClass();
 			
 			AddTestCase( "Calling function with 1 uint argument", 1 , obj.oneArg(1) );
 			AddTestCase( "Calling function with 2 uint arguments", 3 , obj.twoArg(1,2) );
@@ -58,7 +58,7 @@ package {
 			
 			// precision runtime errors
 			
-			var pResult = null;
+			var pResult:* = null;
 			try{
 				obj.oneArg(-1);
 				pResult = "exception NOT caught";

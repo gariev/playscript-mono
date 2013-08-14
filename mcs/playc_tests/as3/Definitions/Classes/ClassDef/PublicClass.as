@@ -64,10 +64,10 @@ startTest();
 // ********************************************
 AddTestCase( "*** No param constructor test ***", 1, 1 );
 foo = new PublicClass();
-AddTestCase( "var foo = new PublicClass(), foo.constructorCount", 2, PublicClass.constructorCount );
+AddTestCase( "var foo:* = new PublicClass(), foo.constructorCount", 2, PublicClass.constructorCount );
 AddTestCase( "*** No param constructor test ***", 1, 1 );
 foo = new PublicClass;
-AddTestCase( "var foo = new PublicClass, foo.constructorCount", 3, PublicClass.constructorCount );
+AddTestCase( "var foo:* = new PublicClass, foo.constructorCount", 3, PublicClass.constructorCount );
 
 // ********************************************
 // Access Default method

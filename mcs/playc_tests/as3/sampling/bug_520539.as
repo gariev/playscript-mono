@@ -51,8 +51,8 @@ package {
 								// get a live reference when it is triggered
 			}
 			
-			var s = flash.sampler.getSamples();
-			for each (var ss in s)
+			var s:* = flash.sampler.getSamples();
+			for each (var ss:* in s)
 			{
 				// nothing -- just iterate to force the samples to be generated
 				// print(ss);

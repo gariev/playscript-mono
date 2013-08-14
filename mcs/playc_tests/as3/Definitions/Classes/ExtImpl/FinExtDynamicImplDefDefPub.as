@@ -39,10 +39,10 @@
 package {
 	public class FinExtDynamicImplDefDefPubTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-			var VERSION = "Clean AS2";  // Version of JavaScript or ECMA
-			var TITLE   = "Extend Dynamic Class Implement Default interface";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION:* = "Clean AS2";  // Version of JavaScript or ECMA
+			var TITLE:*   = "Extend Dynamic Class Implement Default interface";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -55,10 +55,10 @@ package {
 			 *
 			 * For example, a test might look like this:
 			 *
-			 * var helloWorld = "Hello World";
+			 * var helloWorld:* = "Hello World";
 			 *
 			 * AddTestCase(
-			 * "var helloWorld = 'Hello World'",   // description of the test
+			 * "var helloWorld:* = 'Hello World'",   // description of the test
 			 *  "Hello World",                     // expected result
 			 *  helloWorld );                      // actual result
 			 *
@@ -66,7 +66,7 @@ package {
 			
 			import DynamicClass.*;
 			
-			var obj = new accFinExtDynamicImplDefDefPub();
+			var obj:* = new accFinExtDynamicImplDefDefPub();
 			
 			AddTestCase( "*** public method implemented interface ***", 1, 1 );
 			AddTestCase( "iGetPubBoolean", false, obj.acciGetPubBoolean() );
@@ -82,12 +82,12 @@ package {
 			// inherited it from it's parent class
 			//*******************************************
 			
-			var arr = new Array(1, 2, 3);
-			var date = new Date(0);
-			var func = function() {};
-			var num = new Number();
-			var obj = new Object();
-			var str = new String("test");
+			var arr:* = new Array(1, 2, 3);
+			var date:* = new Date(0);
+			var func:* = function() {};
+			var num:* = new Number();
+			var obj:* = new Object();
+			var str:* = new String("test");
 			
 			AddTestCase( "*** Default Methods and Default properites of extended class ***", 1, 1 );
 			AddTestCase( "testGetSubArray(arr)", arr, testGetSubArray(arr) );
@@ -106,7 +106,7 @@ package {
 			obj = new Object();
 			str = new String("test");
 			
-			var EXTDCLASS = new DynamicClass();
+			var EXTDCLASS:* = new DynamicClass();
 			
 			// ********************************************
 			// access default method from a default

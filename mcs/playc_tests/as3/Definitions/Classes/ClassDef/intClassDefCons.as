@@ -42,15 +42,15 @@ package {
 	
 	public class intClassDefConsTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";                   // Version of JavaScript or ECMA
-			var TITLE   = "Default Constructors of a Internal class";  // Provide ECMA section title or                                                           //a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";           // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";                   // Version of JavaScript or ECMA
+			var TITLE:*   = "Default Constructors of a Internal class";  // Provide ECMA section title or                                                           //a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
 			
-			//var currentDate = new Date();                     
+			//var currentDate:* = new Date();                     
 			var wrapintDefCons:wrapintClassDefCons = new wrapintClassDefCons();
 			//print (wrapintDefCons.getAdd());
 			//print (DefCons.wrapprivchangeval());

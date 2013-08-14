@@ -43,10 +43,10 @@ package
     }
 }
 
-var SECTION = "Definitions\Packages";       			// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-var TITLE   = "access default package function globally";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions\Packages";       			// provide a document reference (ie, ECMA section)
+var VERSION:* = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+var TITLE:*   = "access default package function globally";       // Provide ECMA section title or a description
+var BUGNUMBER:* = "";
 
 startTest();
 

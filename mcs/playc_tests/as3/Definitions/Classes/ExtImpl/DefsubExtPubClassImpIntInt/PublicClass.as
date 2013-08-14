@@ -92,9 +92,9 @@ use namespace ns;
 	}
 
 	public class DefaultsubClassAccessor extends DefaultsubClass{
-                //var pubsupacc = new DefaultClassAccesor();
-                var DefSubClass = new DefaultsubClass();
-                var DefSupClass = new PublicClass();
+                //var pubsupacc:* = new DefaultClassAccesor();
+                var DefSubClass:* = new DefaultsubClass();
+                var DefSupClass:* = new PublicClass();
                 var i:InternalInt = DefSupClass;
 		public function accdeffunc(){return DefSubClass.deffunc();}
 		// access default function deffunc

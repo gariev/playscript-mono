@@ -42,9 +42,9 @@ package extClass{
 
 import extClass.*;
 
-var SECTION = " ";
-var VERSION = "AS3";
-var TITLE   = "import a class defined in .abc file";
+var SECTION:* = " ";
+var VERSION:* = "AS3";
+var TITLE:*   = "import a class defined in .abc file";
 
 startTest();
 

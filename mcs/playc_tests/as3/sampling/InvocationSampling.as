@@ -40,11 +40,11 @@ package {
 import flash.sampler.*
 import avmplus.*
 
-var SECTION = "Sampling";
-var VERSION = "AS3";
-var TITLE   = "Test the Invocation methods of Sampling api";
+var SECTION:* = "Sampling";
+var VERSION:* = "AS3";
+var TITLE:*   = "Test the Invocation methods of Sampling api";
 
-var isdebugger = System.isDebugger();
+var isdebugger:* = System.isDebugger();
 
 startTest();
 writeHeaderToLog("Sampling api "+TITLE);
@@ -91,18 +91,18 @@ startSampling();
 simpleLoop();
 pauseSampling();
 
-var names1=getMemberNames(testclass,true);
+var names1:*=getMemberNames(testclass,true);
 var namestable:Object=new Object();
 
 var items1:Array=[];
-for each (var item1 in names1) {
+for each (var item1:* in names1) {
     items1.push(item1.toString());
     namestable[item1.toString()]=item1;
 }
 items1.sort();
 /*
 print("getMemberNames,instanceNames=true");
-for (var i=0;i<items1.length;i++) {
+for (var i:*=0;i<items1.length;i++) {
     print(items1[i]);
 }
 */
@@ -132,10 +132,10 @@ if (isdebugger) {
     );
 }
 
-var names2=getMemberNames(testclass,false);
+var names2:*=getMemberNames(testclass,false);
 
 var items2:Array=[];
-for each (var item2 in names2) {
+for each (var item2:* in names2) {
     items2.push(item2.toString());
 }
 items2.sort();
@@ -205,7 +205,7 @@ if (isdebugger) {
          isGetterSetter(testclass,namestable['func'])
     );
 }
-var value;
+var value:*;
 objs[0].getset=5;
 value=objs[0].getset;
 objs[1].getset=5;

@@ -37,16 +37,16 @@
 package {
 	public class Error1050CannotConvertToPrimitiveTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1050; //	Cannot convert _ to primitive.
+			var CODE:* = 1050; //	Cannot convert _ to primitive.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
-			var expected = "Error #" + CODE;
-			var result = "no error";
+			var expected:* = "Error #" + CODE;
+			var result:* = "no error";
 			try {
-				var object1 = { toString: function() { return this; } };
+				var object1:* = { toString: function() { return this; } };
 				isXMLName(object1);
 			} catch (err) {
 				result = grabError(err, err.toString());

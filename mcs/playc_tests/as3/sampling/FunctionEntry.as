@@ -44,18 +44,18 @@ package {
     import flash.sampler.*
     import avmplus.*
 
-    var SECTION = "Sampling";
-    var VERSION = "AS3";
-    var TITLE   = "Function Entry";
+    var SECTION:* = "Sampling";
+    var VERSION:* = "AS3";
+    var TITLE:*   = "Function Entry";
 
-    var isdebugger=System.isDebugger();
+    var isdebugger:*=System.isDebugger();
 
     startTest();
     writeHeaderToLog("Sampling function entry tests");
 
     var callcount:uint=0;
     var samplescount:uint=0;    
-    var stoppagetime=0;
+    var stoppagetime:*=0;
 
     function ackermann(m:uint,n:uint):Number {
         callcount+=1;
@@ -64,7 +64,7 @@ package {
         return ackermann(m-1,ackermann(m,n-1));
     }
     function samplecallback() {
-        var time=getTimer();
+        var time:*=getTimer();
         samplescount+=getSampleCount();
         clearSamples();
         stoppagetime+=getTimer()-time;
@@ -74,11 +74,11 @@ package {
     setSamplerCallback(samplecallback);
     sampleInternalAllocs(false);
     startSampling();
-    var totaltime=getTimer();    
-    var result=0;
+    var totaltime:*=getTimer();    
+    var result:*=0;
     // if exception is thrown, stack overflow ok
     try {
-        var start=getTimer();
+        var start:*=getTimer();
         result=ackermann(3,7);
         if (getTimer()-start<200) {
             result=ackermann(3,8);

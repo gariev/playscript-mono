@@ -37,14 +37,14 @@
 package VarDefPrivate {
   public class VarDefPrivate {
 
-    // var Identifier = <empty>
-    private var id;
+    // var Identifier:* = <empty>
+    private var id:*;
 
     // var Identifier : TypeExpression = <empty>
     private var idTypeExpr : Boolean;
 
-    // var Identifier = AssignmentExpression
-    private var idAssignExpr = true;
+    // var Identifier:* = AssignmentExpression
+    private var idAssignExpr:* = true;
 
     // var Identifier : TypeExpression = AssignmentExpression
     private var idTypeExprAssignExpr : Boolean = true;
@@ -56,7 +56,7 @@ package VarDefPrivate {
     private var id1TypeExpr:Boolean, id2TypeExpr:Boolean, id3TypeExpr:Boolean;
 
     // var VariableBindingList, Identifier = AssignmentExpression
-    private var id1AssignExpr = true, id2AssignExpr = false, id3AssignExpr = true;
+    private var id1AssignExpr:* = true, id2AssignExpr = false, id3AssignExpr = true;
     private var id1AssignExprB, id2AssignExprB, id3AssignExprB = true;
 
     // var VariableBindingList, Identifier : TypeExpression = AssignmentExpression
@@ -67,7 +67,7 @@ package VarDefPrivate {
     private var idA, idB:Boolean;
 
     // var Identifier, Identifier : TypeExpression = AssignmentExpression
-    private var idAAssign = false, idBAssign:Boolean = true; 
+    private var idAAssign:* = false, idBAssign:Boolean = true; 
     private var idAAssignB, idBAssignB:Boolean = true; 
 
     // var Identifier : TypeExpressionA, Identifier : TypeExpressionB = <empty>
@@ -81,7 +81,7 @@ package VarDefPrivate {
     private var idId, idIdTypeExprA:Array, idIdTypeExprB:Boolean;
 
     // var Identifier, Identifier:TypeExpressionA, Identifier:TypeExpressionB = AssignmentExpression
-    private var idIdAssign = false, idIdTypeExprAAssign:Array = new Array(1,2,3), idIdTypeExprBAssign:Boolean = true;
+    private var idIdAssign:* = false, idIdTypeExprAAssign:Array = new Array(1,2,3), idIdTypeExprBAssign:Boolean = true;
     private var idIdAssignB, idIdTypeExprAAssignB:Array, idIdTypeExprBAssignB:Boolean = true;
 
     // *****************************************************************************************

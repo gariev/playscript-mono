@@ -38,10 +38,10 @@
 package {
 	public class ConstAndFunctionArgWithSameName2Test extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-			var TITLE   = "const & function arg with same name";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION:* = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE:*   = "const & function arg with same name";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();
 			
@@ -53,7 +53,7 @@ package {
 			    return this.num1 + this.num2;
 			}
 			
-			AddTestCase("const and function arg share same name, access const with this.  should return the sum of the two const", 4, getNumber(1, 1));
+			AddTestCase("const and:* function arg share same name, access const with this.  should return the sum of the two const", 4, getNumber(1, 1));
 			
 			test();
 			return results();

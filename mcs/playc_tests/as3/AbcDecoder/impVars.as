@@ -41,9 +41,9 @@ package {
 	
 	public class impVarsTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = " ";
-			var VERSION = "AS3";
-			var TITLE   = "import variable from a .abc file [defined in varsDef.as]";
+			var SECTION:* = " ";
+			var VERSION:* = "AS3";
+			var TITLE:*   = "import variable from a .abc file [defined in varsDef.as]";
 			
 			startTest();
 			writeHeaderToLog( SECTION + " "+ TITLE);

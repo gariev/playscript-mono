@@ -45,15 +45,15 @@ package {
 public class Tester extends Test {
 public static function Main():int {
 
-var SECTION = " ";
-var VERSION = "AS3";
+var SECTION:* = " ";
+var VERSION:* = "AS3";
 startTest();
 
 writeHeaderToLog( SECTION + " Vector.concat()-using-initializers");
 
-var v1=new <uint>[0,1,2];
-var v2=new <uint>[3,4,5];
-var v3=v1.concat(v2)
+var v1:*=new <uint>[0,1,2];
+var v2:*=new <uint>[3,4,5];
+var v3:*=v1.concat(v2)
 AddTestCase(    "concat uint vector, original vector is unchanged",
 		"0,1,2",
 		v1.toString());
@@ -61,11 +61,11 @@ AddTestCase(	"concat uint vector, new vector concat worked",
 		"0,1,2,3,4,5",
 		v3.toString());
 
-var v4=new <String>["zero","one","two"];
-var v5=new <int>[0,1,2];
+var v4:*=new <String>["zero","one","two"];
+var v5:*=new <int>[0,1,2];
 var errormsg:String;
 try {
-  var v6=v4.concat(v5);
+  var v6:*=v4.concat(v5);
 } catch (e:Error) {
   errormsg=e.toString();
 }
@@ -74,10 +74,10 @@ AddTestCase(    "concat two differently typed vectors",
                 parseError(errormsg,"TypeError: Error #1034".length));
                 
 
-var v7=new <uint>[5,6,7,8,9];
-var v8=new <int>[0,1,2];
+var v7:*=new <uint>[5,6,7,8,9];
+var v8:*=new <int>[0,1,2];
 try {
-  var v9=v7.concat(v8);
+  var v9:*=v7.concat(v8);
 } catch (e:Error) {
   errormsg=e.toString();
 }

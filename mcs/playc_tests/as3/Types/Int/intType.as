@@ -37,22 +37,22 @@
 package {
 	public class intTypeTest extends BaseTest {
 		public static function Main():int {
-			    var SECTION = "Types: int";
-			    var VERSION = "as3";
+			    var SECTION:* = "Types: int";
+			    var VERSION:* = "as3";
 			    startTest();
-			    var TITLE   = "typeof an int";
+			    var TITLE:*   = "typeof an int";
 			
 			    writeHeaderToLog( SECTION + " "+ TITLE );
 			
-			    var testcases = getTestCases();
+			    var testcases:* = getTestCases();
 			    test();
 			
 			function getTestCases() {
-			    var array = new Array();
-			    var item = 0;
+			    var array:* = new Array();
+			    var item:* = 0;
 			
 				var i:int = 3;
-				var result;
+				var result:*;
 				try{
 					result = typeof i;
 				} catch (e) {

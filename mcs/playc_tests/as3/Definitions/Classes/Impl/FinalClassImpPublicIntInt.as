@@ -38,10 +38,10 @@ package {
 	import FinalClassImpPublicIntInt.*;
 	public class FinalClassImpPublicIntIntTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
-			var TITLE   = "Final class implements public interface";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS3";        // Version of ECMAScript or ActionScript 
+			var TITLE:*   = "Final class implements public interface";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -49,7 +49,7 @@ package {
 			///////////////////////////////////////////////////////////////
 			// add your tests here
 			  
-			var obj = new ClassGet();
+			var obj:* = new ClassGet();
 			//Final class implements two public interfaces with a public method
 			AddTestCase("Final class implements two public interfaces with a public method", "PASSED", obj.accdeffunc());
 			

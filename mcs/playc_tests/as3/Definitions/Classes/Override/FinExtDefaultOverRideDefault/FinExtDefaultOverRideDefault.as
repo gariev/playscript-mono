@@ -41,8 +41,8 @@ package DefaultClass {
 
 	public final class FinExtDefaultOverRideDefault extends DefaultClass {
 
-		public var orSet = "FAILED";
-		public var orGet = "FAILED";
+		public var orSet:* = "FAILED";
+		public var orGet:* = "FAILED";
 
 		// *********************************
 		// override a default method

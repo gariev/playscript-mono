@@ -43,16 +43,16 @@ package {
 			
 			dynamic class OverrideMethAtRuntimeErr extends BaseClass {}
 			
-			var SECTION = "test";
-			var VERSION = "AS3";
-			var TITLE = "Override Method at runtime error";
-			var BUGNUMBER = "";
+			var SECTION:* = "test";
+			var VERSION:* = "AS3";
+			var TITLE:* = "Override Method at runtime error";
+			var BUGNUMBER:* = "";
 			
 			startTest();
 			
 			var obj:OverrideMethAtRuntimeErr = new OverrideMethAtRuntimeErr;
 			
-			var error = "no error thrown";
+			var error:* = "no error thrown";
 			
 			try {
 			  obj.foo = function () { return "here"; }

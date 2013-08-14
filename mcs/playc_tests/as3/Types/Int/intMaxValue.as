@@ -37,21 +37,21 @@
 package {
 	public class intMaxValueTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "int.MAX_VALUE";
-			var VERSION = "AS3";
+			var SECTION:* = "int.MAX_VALUE";
+			var VERSION:* = "AS3";
 			startTest();
-			var TITLE =  "int.MAX_VALUE";
+			var TITLE:* =  "int.MAX_VALUE";
 			
 			writeHeaderToLog( SECTION + " "+ TITLE);
 			
-			var testcases = getTestCases();
+			var testcases:* = getTestCases();
 			
 			test();
 			
 			
 			function getTestCases() {
-			    var array = new Array();
-			    var item = 0;
+			    var array:* = new Array();
+			    var item:* = 0;
 			
 				// MAX_VALUE
 			    array[item++] = new TestCase( SECTION, "int.MAX_VALUE",      2147483647,     int.MAX_VALUE );
@@ -66,13 +66,13 @@ package {
 				//array[item++] = new TestCase( SECTION, "int.MAX_VALUE=0,int.MAX_VALUE", 2147483647, int.MAX_VALUE );
 			
 			    var string:String = '';
-			    for ( var prop in int ) { 
+			    for ( var prop:* in int ) { 
 			        string += ( prop == 'MAX_VALUE' ) ? prop : '';
 			    }
 			
 			    array[item++] = new TestCase(
 			                    SECTION,
-			                    "var string = ''; for ( prop in int) { string += ( prop == 'MAX_VALUE' ) ? prop : '' } string;",
+			                    "var string:* = ''; for ( prop in int) { string += ( prop == 'MAX_VALUE' ) ? prop : '' } string;",
 			                    "",
 			                    string
 			                    );

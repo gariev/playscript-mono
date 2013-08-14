@@ -39,10 +39,10 @@ package {
 		public static function Main():int {
 			package{
 			
-			var SECTION = "Directives";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript
-			var TITLE   = "QNS Property Access";       // Provide ECMA section title or a description
-			//var BUGNUMBER = "";
+			var SECTION:* = "Directives";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript
+			var TITLE:*   = "QNS Property Access";       // Provide ECMA section title or a description
+			//var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -51,7 +51,7 @@ package {
 			
 			class nsTest
 			{
-				T1 var o = new Object();
+				T1 var o:* = new Object();
 				T1 function get x () { return "T1 ns";}
 				public function get x () {return "public ns";}
 				private function get z () {return "private var";}
@@ -65,7 +65,7 @@ package {
 			
 			}
 			
-			var myTest = new nsTest;
+			var myTest:* = new nsTest;
 			
 			var testResult:String = new String();
 			

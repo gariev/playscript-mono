@@ -49,7 +49,7 @@ private function changeval():Boolean{
                                      return (!s);
                                     }
 public function currentdate():Date{
-                                   var today = new Date(0);
+                                   var today:* = new Date(0);
                                    return today;
                                    }
 

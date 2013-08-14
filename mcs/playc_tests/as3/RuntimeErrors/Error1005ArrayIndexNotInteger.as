@@ -37,14 +37,14 @@
 package {
 	public class Error1005ArrayIndexNotIntegerTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1005; //	Array index is not a positive integer (_).
+			var CODE:* = 1005; //	Array index is not a positive integer (_).
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var result = "no error";
+				var result:* = "no error";
 				new Array(1.2);
 			} catch (err) {
 				result = err.toString();

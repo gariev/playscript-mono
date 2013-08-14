@@ -39,21 +39,21 @@ import MultipleExtraArgFunction3.*
 // import MultipleExtraArgFunction3Class;  //uncomment when we can do this
 
 function returnRestNoPackage(str:String,n:Number,obj:Object,... rest):Number {
-    var count = rest.length;
+    var count:* = rest.length;
     var a:int = 0;
     return count;
 }
 
 
-var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";  // Version of JavaScript or ECMA
-var TITLE   = "Optional Argument test";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+var VERSION:* = "AS3";  // Version of JavaScript or ECMA
+var TITLE:*   = "Optional Argument test";       // Provide ECMA section title or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
-var TESTOBJ = new TestObj();
-var TESTOBJ1 = new MultipleExtraArgFunction3Class();
+var TESTOBJ:* = new TestObj();
+var TESTOBJ1:* = new MultipleExtraArgFunction3Class();
 
 // Pass no argument
 // inside class inside package

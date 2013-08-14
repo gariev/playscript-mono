@@ -111,7 +111,7 @@ dynamic class DynExtDefImplDefDefPubInner extends DefaultClass implements Defaul
 
  }
 public class DynExtDefaultImplDefDefPub extends DynExtDefImplDefDefPubInner {
-   var THISTEST1 = new DynExtDefImplDefDefPubInner();
+   var THISTEST1:* = new DynExtDefImplDefDefPubInner();
 var i:DefaultInt = THISTEST1;
 var j:DefaultIntDef=THISTEST1;
       public function iGetBooleanacc1(){

@@ -40,11 +40,11 @@ package {
 import flash.sampler.*;
 import avmplus.*;
 
-var SECTION = "Sampling";
-var VERSION = "AS3";
-var TITLE   = "Iterate and investigate the sample data";
+var SECTION:* = "Sampling";
+var VERSION:* = "AS3";
+var TITLE:*   = "Iterate and investigate the sample data";
 
-var isdebugger=System.isDebugger();
+var isdebugger:*=System.isDebugger();
 
 startTest();
 writeHeaderToLog("Sampling api");
@@ -73,7 +73,7 @@ var allocs:uint=0;
 var deallocs:uint=0;
 var alloctable:Array=new Array();
 var badalloc:String="";
-for each (var sample in getSamples()) {
+for each (var sample:* in getSamples()) {
     var nos : NewObjectSample;
     var dos : DeleteObjectSample;
     if ( (nos=sample as NewObjectSample) != null) {
@@ -99,7 +99,7 @@ AddTestCase(
 
 var sizeAllocs:uint=0;
 var sizeDeallocs:uint=0;
-for each (var sample1 in getSamples()) {
+for each (var sample1:* in getSamples()) {
     var nos1 : NewObjectSample;
     var dos1 : DeleteObjectSample;
     if ( (nos1=sample as NewObjectSample) != null) {
@@ -123,7 +123,7 @@ if (isdebugger) {
     );
 }    
 var objs1:Object=new Object();
-for each (var sample2 in getSamples()) {
+for each (var sample2:* in getSamples()) {
     var nos2 : NewObjectSample;
     var dos2 : DeleteObjectSample;
     if ( (nos2=sample2 as NewObjectSample) != null) {
@@ -132,7 +132,7 @@ for each (var sample2 in getSamples()) {
         objs1[nos2.stack[0].name]+=nos2.size;
     }
 }
-for (var item in objs1) {
+for (var item:* in objs1) {
    print(item+" "+objs1[item]);
 }
 if (isdebugger) {
@@ -143,7 +143,7 @@ if (isdebugger) {
     );
 }
 
-for (var sample3 in getSamples()) {
+for (var sample3:* in getSamples()) {
     print("getsample:"+sample3);
 }
 

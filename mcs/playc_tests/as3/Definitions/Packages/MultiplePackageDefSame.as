@@ -37,7 +37,7 @@
 
 
 package foo{
-	public var a = "This is var a";
+	public var a:* = "This is var a";
 
 	public function func1(){ return "This is func1"; }
 
@@ -47,8 +47,8 @@ package foo{
 
 	public class ClassA implements IntA {
 		
-		v1 var ns = "This is namespace v1";
-		v2 var ns = "This is namespace v2";
+		v1 var ns:* = "This is namespace v1";
+		v2 var ns:* = "This is namespace v2";
 		public function test(){ return "This is test in ClassA"; }
 		public function testInt() { return "This is testInt in ClassA"; }
 		public function testNS() {return v1::ns; }
@@ -62,7 +62,7 @@ package foo{
 
 }
 package foo{
-	public var b = "This is var b";
+	public var b:* = "This is var b";
 
 	public function func2(){ return "This is func2"; }
 
@@ -76,10 +76,10 @@ package foo{
 	}
 
 	// use the definitions from the first package foo
-	public var c = a;
+	public var c:* = a;
 	public function func3(){ return func1(); }
 
-	public var classC = new ClassA();
+	public var classC:* = new ClassA();
 
 	public class ClassD implements IntA {
 		public function testInt() { return "This is testInt from ClassD"; }
@@ -87,7 +87,7 @@ package foo{
 
 	public class ClassN {
 		use namespace v1;
-		v1 var ns2 = "This is namespace v1";
+		v1 var ns2:* = "This is namespace v1";
 		public function getNSVar() {
 			return v1::ns2;
 		}
@@ -96,18 +96,18 @@ package foo{
 
 import foo.*;
 
-var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "PackageDefinition" //Proved ECMA section titile or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions";       // provide a document reference (ie, Actionscript section)
+var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+var TITLE:*   = "PackageDefinition" //Proved ECMA section titile or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
 
-var classA = new ClassA();
-var classB = new ClassB();
-var classD = new ClassD();
-var classN = new ClassN();
+var classA:* = new ClassA();
+var classB:* = new ClassB();
+var classD:* = new ClassD();
+var classN:* = new ClassN();
  
 AddTestCase( "variable a in first definition of foo", "This is var a", a );
 AddTestCase( "variable b in second definition of foo", "This is var b", b );

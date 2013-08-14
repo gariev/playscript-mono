@@ -41,15 +41,15 @@ package {
 	
 	public class DynExtDefaultOverRidePublicTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       							// provide a document reference (ie, ECMA section)
-			var VERSION = "AS 3.0";  								// Version of JavaScript or ECMA
-			var TITLE   = "Override public function in dynamic class extending default class";    	// Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       							// provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS 3.0";  								// Version of JavaScript or ECMA
+			var TITLE:*   = "Override public function in dynamic class extending default class";    	// Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                							// leave this alone
 			
 			
-			var CLASSDEFN = new DynExtDefaultOverRidePublic();
+			var CLASSDEFN:* = new DynExtDefaultOverRidePublic();
 			
 			AddTestCase( "CLASSDEFN.setPubBoolean(true); CLASSDEFN.orSetCalled", true, ( CLASSDEFN.setPubBoolean(true), CLASSDEFN.orSetCalled ) );
 			AddTestCase( "CLASSDEFN.getPubBoolean();", true, CLASSDEFN.getPubBoolean() );

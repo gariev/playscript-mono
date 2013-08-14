@@ -104,7 +104,7 @@ final class FinExtPublicImplDefPub extends PublicClass implements DefaultIntDef 
  	// Create an instance of the final class in the package.
   	// This object will be used for accessing the methods created
   	// within the sub class given above.
-  	var FINEXTDCLASS = new FinExtPublicImplDefPub();
+  	var FINEXTDCLASS:* = new FinExtPublicImplDefPub();
 
   	// Create a series of public functions that call the methods.
   	// The same names can be used as used in the class; because we are now

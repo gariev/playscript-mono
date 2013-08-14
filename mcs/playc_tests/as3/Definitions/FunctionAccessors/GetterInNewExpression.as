@@ -40,10 +40,10 @@ package {
 	
 	public class GetterInNewExpressionTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "FunctionAccessors";
-			var VERSION = "AS3"; 
-			var TITLE   = "Function Accessors";
-			var BUGNUMBER = "";
+			var SECTION:* = "FunctionAccessors";
+			var VERSION:* = "AS3"; 
+			var TITLE:*   = "Function Accessors";
+			var BUGNUMBER:* = "";
 			
 			startTest();
 			
@@ -67,7 +67,7 @@ package {
 			
 			result = "no exception";
 			try {
-				var c = new someClass2();
+				var c:* = new someClass2();
 				
 			} catch (e2:TypeError) {
 				result = e2.toString();;

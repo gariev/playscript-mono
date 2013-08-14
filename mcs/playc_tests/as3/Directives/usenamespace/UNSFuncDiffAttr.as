@@ -38,10 +38,10 @@
 package {
 	public class UNSFuncDiffAttrTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Directives";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-			var TITLE   = "namespace used in the case of same function is defined multiple defined";
-			var BUGNUMBER = "";
+			var SECTION:* = "Directives";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+			var TITLE:*   = "namespace used in the case of same function is defined multiple defined";
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -59,12 +59,12 @@ package {
 			    } 
 			
 			    Football function getTeam(){
-				    var teamName = "Chargers";
+				    var teamName:* = "Chargers";
 			     	     return teamName;
 			    } 
 			
 			   Baseball function getTeam(){
-				    var teamName = "Giants";
+				    var teamName:* = "Giants";
 			            return teamName;
 			   }
 			

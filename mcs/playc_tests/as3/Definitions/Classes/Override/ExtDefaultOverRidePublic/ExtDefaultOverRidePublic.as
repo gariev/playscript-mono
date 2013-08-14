@@ -41,8 +41,8 @@ package DefaultClass {
 
 	class ExtDefaultOverRidePublicInner extends DefaultClass {
 	
-		public var orSetString = "FAILED";
-		public var orGetString = "FAILED";
+		public var orSetString:* = "FAILED";
+		public var orGetString:* = "FAILED";
 
 		// *******************************
 		// override a public method

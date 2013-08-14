@@ -41,16 +41,16 @@ package {
 	 
 	public class GetSetAllowedNamesTest extends BaseTest {
 		public static function Main():int {
-			 var SECTION = "FunctionAccessors";
-			 var VERSION = "AS3"; 
-			 var TITLE   = "Function Accessors";
-			 var BUGNUMBER = "";
+			 var SECTION:* = "FunctionAccessors";
+			 var VERSION:* = "AS3"; 
+			 var TITLE:*   = "Function Accessors";
+			 var BUGNUMBER:* = "";
 			 
 			
 			startTest();
 			
 			
-			var TESTOBJ = new GetSetAllowedNames();
+			var TESTOBJ:* = new GetSetAllowedNames();
 			
 			AddTestCase( "getter name _a1", "_a1", TESTOBJ._a1);
 			AddTestCase( "getter name _a1_", "_a1_", TESTOBJ._a1_);
@@ -77,8 +77,8 @@ package {
 			AddTestCase( "setter name abcdefghijklmnopqrstuvwxyz0123456789$_", "new all", (TESTOBJ.abcdefghijklmnopqrstuvwxyz0123456789$_ = "new all", TESTOBJ.abcdefghijklmnopqrstuvwxyz0123456789$_));
 			AddTestCase( "setter name set", "new set", (TESTOBJ.set = "new set", TESTOBJ.set));
 			
-			var f1 = function () {}
-			var f2 = function () { var i = 5; }
+			var f1:* = function () {}
+			var f2:* = function () { var i:* = 5; }
 			AddTestCase( "getter function keyword, different capitalization", "function Function() {}", TESTOBJ.FuncTion.toString());
 			AddTestCase( "setter function keyword, different capitalization", f2, (TESTOBJ.FuncTion = f2, TESTOBJ.FuncTion));
 			

@@ -44,8 +44,8 @@
 package {
 	public class someInitializersTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "";
-			var VERSION = "AS3";
+			var SECTION:* = "";
+			var VERSION:* = "AS3";
 			startTest();
 			
 			writeHeaderToLog( SECTION + " Vector.some()-initializers");
@@ -57,7 +57,7 @@ package {
 			    return false;
 			}
 			
-			var errormsg="";
+			var errormsg:*="";
 			try {
 			  result=new <int>[].some();
 			} catch (e) {
@@ -69,8 +69,8 @@ package {
 					"ArgumentError: Error #1063",
 					parseError(errormsg,"ArgumentError: Error #1063".length));
 			
-			var checker2="a string";
-			var errormsg="";
+			var checker2:*="a string";
+			var errormsg:*="";
 			try {
 			  result=new<int>[1,2,3].some(checker2);
 			} catch (e) {

@@ -37,15 +37,15 @@
 package {
 	public class Error1086XmlMethodOnlyOnListWithOneItemTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1086; //	The _ method only works on lists containing one item.
+			var CODE:* = 1086; //	The _ method only works on lists containing one item.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var result = "no error";
-				var a = new XMLList();
+				var result:* = "no error";
+				var a:* = new XMLList();
 				a.name();
 			} catch (err) {
 				result = err.toString();

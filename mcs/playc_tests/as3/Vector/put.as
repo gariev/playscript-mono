@@ -49,14 +49,14 @@
 package {
 	public class putTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "";
-			var VERSION = "ECMA_1";
+			var SECTION:* = "";
+			var VERSION:* = "ECMA_1";
 			startTest();
-			var TITLE   = "Vector [[Put]] (P, V)";
+			var TITLE:*   = "Vector [[Put]] (P, V)";
 			
 			writeHeaderToLog( SECTION + " "+ TITLE);
 			
-			var v1=new Vector.<int>();
+			var v1:*=new Vector.<int>();
 			v1[0]=10;
 			AddTestCase("set [0] to empty vector",
 			            10,
@@ -65,8 +65,8 @@ package {
 			            1,
 			            v1.length);
 			
-			var v1=new Vector.<int>();
-			var errormsg="";
+			var v1:*=new Vector.<int>();
+			var errormsg:*="";
 			try {
 			  v1[1]=10;
 			} catch (e) {
@@ -79,9 +79,9 @@ package {
 			            "",
 			            v1.toString());
 			
-			var v1=new Vector.<int>(5,true);
+			var v1:*=new Vector.<int>(5,true);
 			for (var i:uint=0;i<5;i++) v1[i]=i+1;
-			var errormsg="";
+			var errormsg:*="";
 			try {
 			  v1[5]=10;
 			} catch (e) {
@@ -94,15 +94,15 @@ package {
 			            "1,2,3,4,5",
 			            v1.toString());
 			
-			var v1=new Vector.<int>(5);
-			for (var i=0;i<5;i++) v1[i]=i;
+			var v1:*=new Vector.<int>(5);
+			for (var i:*=0;i<5;i++) v1[i]=i;
 			v1[4]=10;
 			AddTestCase("set existing element in vector to new value",
 			            "0,1,2,3,10",
 			            v1.toString());
 			
-			var v1=new Vector.<int>(5);
-			for (var i=0;i<5;i++) v1[i]=i;
+			var v1:*=new Vector.<int>(5);
+			for (var i:*=0;i<5;i++) v1[i]=i;
 			v1[5]=5;
 			AddTestCase("existing vector set expand the vector by setting element to v1[length]",
 			            "0,1,2,3,4,5",

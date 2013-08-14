@@ -38,10 +38,10 @@
 package {
 	public class AssignmentExpTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Directives";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-			var TITLE   = "namespace assigned with AssignmentExpression";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Directives";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+			var TITLE:*   = "namespace assigned with AssignmentExpression";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -57,10 +57,10 @@ package {
 				var v1:int =1;
 				var v2:int =2;
 				var v3:int =5;
-				N1 var v3;
-				N2 var n2;
+				N1 var v3:*;
+				N2 var n2:*;
 				N2 var n3
-				N3 var v1 = 5;
+				N3 var v1:* = 5;
 			
 				function a1() {
 				     N1::v3=v1+v2;

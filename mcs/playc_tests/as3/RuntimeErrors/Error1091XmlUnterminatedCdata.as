@@ -37,16 +37,16 @@
 package {
 	public class Error1091XmlUnterminatedCdataTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1091; //	XML parser failure: Unterminated CDATA section.
+			var CODE:* = 1091; //	XML parser failure: Unterminated CDATA section.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var result = "no error";
-				var y = "<a><![CDATA[test</a>";
-				var z = new XML(y);
+				var result:* = "no error";
+				var y:* = "<a><![CDATA[test</a>";
+				var z:* = new XML(y);
 			} catch (err) {
 				result = err.toString();
 			} finally {

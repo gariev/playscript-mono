@@ -40,13 +40,13 @@ package foo{
 	
 	import bar.*;
 	// will give a compiler error now
-	//public var a;
+	//public var a:*;
 
-	var c = new ClassB();
+	var c:* = new ClassB();
 }
 
 package foo{
-	public var a = "This is var b";
+	public var a:* = "This is var b";
 
 	function func2(){ return "This is func2"; }
 
@@ -63,10 +63,10 @@ package foo{
 
 import foo.*;
 
-var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "PackageDefinition" //Proved ECMA section titile or a description
-var BUGNUMBER = "116491";
+var SECTION:* = "Definitions";       // provide a document reference (ie, Actionscript section)
+var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+var TITLE:*   = "PackageDefinition" //Proved ECMA section titile or a description
+var BUGNUMBER:* = "116491";
 
 startTest();                // leave this alone
 

@@ -60,14 +60,14 @@ package {
 			
 			
 			import Main;
-			var CODE = 1081; //	Property name not found on name and there is no default value.
+			var CODE:* = 1081; //	Property name not found on name and there is no default value.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-			    var m = new Main();
+			    var m:* = new Main();
 			} catch (err) {
 				result = err.toString();
 			} finally {

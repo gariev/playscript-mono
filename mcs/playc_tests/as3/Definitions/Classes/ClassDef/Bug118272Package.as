@@ -38,10 +38,10 @@
 package {
 	public class Bug118272PackageTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";  // Version of JavaScript or ECMA
-			var TITLE   = "Class Definition";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";  // Version of JavaScript or ECMA
+			var TITLE:*   = "Class Definition";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -50,7 +50,7 @@ package {
 			import Bug118272Package.*;
 			
 			
-			var eg = new BugTest();
+			var eg:* = new BugTest();
 			AddTestCase("Trying to initialize public  class identifier", "ReferenceError: Error #1056", referenceError(eg.thisError));
 			AddTestCase("Trying to initialize default class identifier", "ReferenceError: Error #1056", referenceError(eg.thisError1));
 			AddTestCase("Trying to initialize internal class identifier", "ReferenceError: Error #1056", referenceError(eg.thisError2));

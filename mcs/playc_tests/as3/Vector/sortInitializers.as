@@ -50,14 +50,14 @@
 package {
 	public class sortInitializersTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "";
-			var VERSION = "ECMA_1";
+			var SECTION:* = "";
+			var VERSION:* = "ECMA_1";
 			startTest();
-			var TITLE   = "Vector.sort(comparefn)";
+			var TITLE:*   = "Vector.sort(comparefn)";
 			
 			writeHeaderToLog( SECTION + " "+ TITLE);
 			
-			var errormsg="";
+			var errormsg:*="";
 			try {
 			  new<int>[4,92,1].sort()
 			} catch (e) {
@@ -79,9 +79,9 @@ package {
 			function Sort( a ) {
 			  for ( i = 0; i < a.length; i++ ) {
 			    for ( j = i+1; j < a.length; j++ ) {
-			      var lo = a[i];
-			      var hi = a[j];
-			      var c = Compare( lo, hi );
+			      var lo:* = a[i];
+			      var hi:* = a[j];
+			      var c:* = Compare( lo, hi );
 			      if ( c == 1 ) {
 				a[i] = hi;
 				a[j] = lo;

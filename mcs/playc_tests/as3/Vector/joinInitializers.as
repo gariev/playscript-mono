@@ -44,8 +44,8 @@
 package {
 	public class joinInitializersTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "15.4.4.3-1";
-			var VERSION = "ECMA_1";
+			var SECTION:* = "15.4.4.3-1";
+			var VERSION:* = "ECMA_1";
 			startTest();
 			
 			writeHeaderToLog( SECTION + " Vector.join()-initializers");

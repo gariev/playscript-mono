@@ -37,21 +37,21 @@
 package {
 	public class intMinValueTest extends BaseTest {
 		public static function Main():int {
-			    var SECTION = "int.MIN_VALUE";
-			    var VERSION = "AS3";
+			    var SECTION:* = "int.MIN_VALUE";
+			    var VERSION:* = "AS3";
 			    startTest();
-			    var TITLE   = "int.MIN_VALUE";
+			    var TITLE:*   = "int.MIN_VALUE";
 			
 			    writeHeaderToLog( SECTION + " "+ TITLE );
 			
-			    var testcases = getTestCases();
+			    var testcases:* = getTestCases();
 			    test();
 			
 			function getTestCases() {
-			    var array = new Array();
-			    var item = 0;
+			    var array:* = new Array();
+			    var item:* = 0;
 			
-			    var MIN_VAL = -2147483648;
+			    var MIN_VAL:* = -2147483648;
 			
 			    array[item++] = new TestCase(  SECTION, "int.MIN_VALUE",     MIN_VAL,    int.MIN_VALUE );
 			
@@ -67,14 +67,14 @@ package {
 			                    int.MIN_VALUE,
 			                    int.MIN_VALUE );
 			*/
-			    var string = '';
-			    for ( var prop in int ) { 
+			    var string:* = '';
+			    for ( var prop:* in int ) { 
 			        string += ( prop == 'MIN_VALUE' ) ? prop : '';
 			    }
 			
 			    array[item++] = new TestCase(
 			                    SECTION,
-			                    "var string = ''; for ( prop in int ) { string += ( prop == 'MIN_VALUE' ) ? prop : '' } string;",
+			                    "var string:* = ''; for ( prop in int ) { string += ( prop == 'MIN_VALUE' ) ? prop : '' } string;",
 			                    "",
 			                    string
 			                    );

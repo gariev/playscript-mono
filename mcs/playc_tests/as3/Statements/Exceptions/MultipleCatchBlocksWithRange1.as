@@ -38,10 +38,10 @@
 package {
 	public class MultipleCatchBlocksWithRange1Test extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";                   // Version of JavaScript or ECMA
-			var TITLE   = "Testing try block with multiple catch blocks, the  catch block with parameter of type RangeError catching the Range error ";  // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";           // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";                   // Version of JavaScript or ECMA
+			var TITLE:*   = "Testing try block with multiple catch blocks, the  catch block with parameter of type RangeError catching the Range error ";  // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			

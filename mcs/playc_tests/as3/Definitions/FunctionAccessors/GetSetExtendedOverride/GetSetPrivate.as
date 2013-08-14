@@ -41,7 +41,7 @@ package GetSetExtendedOverride {
 
 	internal class GetSetPrivateInternal {
 
-		private var _nt = "no type";
+		private var _nt:* = "no type";
 		private var _x:Array = [1,2,3];
 		private var _y:int = -10;
 		private var _b:Boolean = true;
@@ -120,11 +120,11 @@ package GetSetExtendedOverride {
 		}
 
 		// define a getter for a property and call the undefined setter
-		private var _nosetter = "FAILED";
+		private var _nosetter:* = "FAILED";
 		public function get noSetter(){ return _nosetter; }
 
 		// define a setter for a property and call the undefined getter
-		private var _nogetter = "FAILED";
+		private var _nogetter:* = "FAILED";
 		public function set noGetter(s){ _nogetter = s; }
 
 	}
@@ -150,14 +150,14 @@ package GetSetExtendedOverride {
 		}
 
 		// call a parent getter from a child setter
-		private var _z = "FAILED";
+		private var _z:* = "FAILED";
 		public function set childZ(p:String){
 			_z = string;
 		}
 		public function get childZ(){ return _z; }
 
 		// call a parent setter from a child setter
-		private var _w = "FAILED";
+		private var _w:* = "FAILED";
 		public function set childW(p:String){
 			_w = string = p;
 		}

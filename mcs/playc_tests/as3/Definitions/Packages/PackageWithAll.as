@@ -41,7 +41,7 @@ package foo {
 	
 	public class A {
 
-		fletch var lives = 'PASSED';
+		fletch var lives:* = 'PASSED';
 		public function getFletch() {
 			return fletch::lives;
 		}
@@ -63,12 +63,12 @@ package foo {
 }
 
 package test{
-	public var a = 'PASSED';
+	public var a:* = 'PASSED';
 }
 
 package foo2{
 	import test.*;
-	public var b = a;
+	public var b:* = a;
 }
 
 package P
@@ -94,10 +94,10 @@ import P.*;
 import foo.*;
 use namespace fletch;
 
-var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "PackageDefinition" //Proved ECMA section titile or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions";       // provide a document reference (ie, Actionscript section)
+var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+var TITLE:*   = "PackageDefinition" //Proved ECMA section titile or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
@@ -107,10 +107,10 @@ AddTestCase( "namespace inside of package", "PASSED", (a = new A(), a.getFletch(
 AddTestCase( "import inside of package", "PASSED",b );
 AddTestCase( "function inside of package", "PASSED",fletchFunc() );
 
-var FLETCHCLASS = new fletch2(); 
+var FLETCHCLASS:* = new fletch2(); 
 AddTestCase( "class inside of package", "PASSED",FLETCHCLASS.lives() );
 
-var FLETCHCLASS2 = new erwin(); 
+var FLETCHCLASS2:* = new erwin(); 
 AddTestCase( "interface inside of package", "PASSED",FLETCHCLASS2.lives() );
 
 b = new B();

@@ -51,10 +51,10 @@
 package {
 	public class tostringInitializersTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "";
-			var VERSION = "ECMA_1";
+			var SECTION:* = "";
+			var VERSION:* = "ECMA_1";
 			startTest();
-			var TITLE   = "Vector.toString-initializers";
+			var TITLE:*   = "Vector.toString-initializers";
 			
 			writeHeaderToLog( SECTION + " "+ TITLE);
 			 

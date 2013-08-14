@@ -41,7 +41,7 @@ package {
 		public static function Main():int {
 			startTest();
 			
-			var OBJ = new C();
+			var OBJ:* = new C();
 			
 			AddTestCase( "Interface name does not disambiguate method definitions", 
 						 "{A,B} function sameName", 

@@ -68,7 +68,7 @@ package {
 			AddTestCase( "Diving uint by a Number variable", 2, (num3 = (num1 / 10)) );
 			
 			// RangeError precision test cases
-			var pResult = null;
+			var pResult:* = null;
 			try{
 				var temp:uint;
 				temp = num1 + num5;

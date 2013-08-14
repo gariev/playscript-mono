@@ -38,10 +38,10 @@
 package {
 	public class MultipleCatchBlocksWithVerify1Test extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";                   // Version of JavaScript or ECMA
-			var TITLE   = "Testing try block with multiple catch blocks, the  catch block with parameter of type VerifyError catching the Verify error Normally verifyError cannot be caught by try and catch block. As it is usually during the link time after the compiler parses the program and before runtime This test case is to test whether the catch block with parameter of type verifyError catches it/ignores the error/catches some other error when the throw statement throws an error of VerifyError";  // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";           // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";                   // Version of JavaScript or ECMA
+			var TITLE:*   = "Testing try block with multiple catch blocks, the  catch block with parameter of type VerifyError catching the Verify error Normally verifyError cannot be caught by try and catch block. As it is usually during the link time after the compiler parses the program and before runtime This test case is to test whether the catch block with parameter of type verifyError catches it/ignores the error/catches some other error when the throw statement throws an error of VerifyError";  // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			

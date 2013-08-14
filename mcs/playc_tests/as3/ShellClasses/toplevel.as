@@ -40,10 +40,10 @@ package {
 	
 	public class toplevelTest extends BaseTest {
 		public static function Main():int {
-			    var SECTION = "toplevel";
-			    var VERSION = "as3";
+			    var SECTION:* = "toplevel";
+			    var VERSION:* = "as3";
 			    startTest();
-			    var TITLE   = "test toplevel classes";
+			    var TITLE:*   = "test toplevel classes";
 			
 			    import avmplus.System
 			    import flash.system.Capabilities
@@ -92,7 +92,7 @@ package {
 			    print("metric System.privateMemory "+System.privateMemory);
 			
 			
-			    var err="";
+			    var err:*="";
 			    try {
 			        System.exec();
 			    } catch (e) {
@@ -102,12 +102,12 @@ package {
 			      "ArgumentError: Error #1063",
 			      err.substring(0,26));
 			
-			    var ct=0;
+			    var ct:*=0;
 			    while (getTimer()==0) {
 			      ct++;
 			      if (ct==1000000) break;
 			    }
-			    var time=getTimer();
+			    var time:*=getTimer();
 			    AddTestCase("System getTimer>0",
 			      true,
 			      time>0);

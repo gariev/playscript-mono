@@ -41,12 +41,12 @@ package poo {
 	public namespace Hockey;
 
 	public class foo {
-		public var teamName = "Macromedia";
-		Baseball var teamName = "Giants";
-		Baseball var teamColor = "green";
-		Football var teamName = "Chargers";
-		Basketball var teamName = "Kings";
-		Hockey var teamName = "Sharks";
-		Hockey var teamColor = "yellow";
+		public var teamName:* = "Macromedia";
+		Baseball var teamName:* = "Giants";
+		Baseball var teamColor:* = "green";
+		Football var teamName:* = "Chargers";
+		Basketball var teamName:* = "Kings";
+		Hockey var teamName:* = "Sharks";
+		Hockey var teamColor:* = "yellow";
 	}
 }

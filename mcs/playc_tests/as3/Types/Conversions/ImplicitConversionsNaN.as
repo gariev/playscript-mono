@@ -38,16 +38,16 @@
 package {
 	public class ImplicitConversionsNaNTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Types: Conversions";
-			var VERSION = "as3";
-			var TITLE   = "implicit type conversions";
+			var SECTION:* = "Types: Conversions";
+			var VERSION:* = "as3";
+			var TITLE:*   = "implicit type conversions";
 			
 			startTest();
 			
 			
 			// Value = NaN 
 			
-			/*var thisError = "no exception thrown";
+			/*var thisError:* = "no exception thrown";
 			try{
 				var string:String = NaN;
 			} catch (e0) {

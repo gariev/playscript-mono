@@ -40,15 +40,15 @@ package Prototyping {
 
 import PublicClassPrototype.*;
 
-var SECTION = "Class Prototype";           // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";                   // Version of JavaScript or ECMA
-var TITLE   = "Testing prototype for public classes";  // Provide ECMA section title or a description
-//var BUGNUMBER = "";
+var SECTION:* = "Class Prototype";           // provide a document reference (ie, ECMA section)
+var VERSION:* = "AS3";                   // Version of JavaScript or ECMA
+var TITLE:*   = "Testing prototype for public classes";  // Provide ECMA section title or a description
+//var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
 
-var publicObj = new PublicClass();
+var publicObj:* = new PublicClass();
 
 
 PublicClass.prototype.array = new Array('a', 'b', 'c');
@@ -107,7 +107,7 @@ var equivalent:Boolean = (PublicClass.prototype.constructor == PublicClass);
 AddTestCase("Verify prototype constructor is equivalent to class object", true, equivalent);
 
 
-var thisError10 = "no error thrown";
+var thisError10:* = "no error thrown";
 var temp:Object = new Object();
 try{
 	PublicClass.prototype = temp;

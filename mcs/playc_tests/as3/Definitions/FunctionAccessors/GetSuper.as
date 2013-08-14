@@ -38,10 +38,10 @@
 package {
 	public class GetSuperTest extends BaseTest {
 		public static function Main():int {
-			 var SECTION = "FunctionAccessors";
-			 var VERSION = "AS3"; 
-			 var TITLE   = "Function Accessors";
-			 var BUGNUMBER = "106381";
+			 var SECTION:* = "FunctionAccessors";
+			 var VERSION:* = "AS3"; 
+			 var TITLE:*   = "Function Accessors";
+			 var BUGNUMBER:* = "106381";
 			 
 			startTest();
 			
@@ -71,7 +71,7 @@ package {
 			
 			var b:B = new B();
 			try{
-				var res = "not run";
+				var res:* = "not run";
 				b.v; // should cause infinite recursion
 				res = "no exception";
 			} catch (e) {
@@ -81,7 +81,7 @@ package {
 			}
 			
 			try{
-				var res = "not run";
+				var res:* = "not run";
 				b.v = 1;
 				res = "no exception";
 				AddTestCase("Setting value whose getter calls super", 2, b.v);

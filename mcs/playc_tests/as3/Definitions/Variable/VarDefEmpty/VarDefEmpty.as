@@ -38,14 +38,14 @@ package VarDefEmpty {
 
   public class VarDefEmpty {
 
-    // var Identifier = <empty>
-    var id;
+    // var Identifier:* = <empty>
+    var id:*;
 
     // var Identifier : TypeExpression = <empty>
     var idTypeExpr : Boolean;
 
-    // var Identifier = AssignmentExpression
-    var idAssignExpr = true;
+    // var Identifier:* = AssignmentExpression
+    var idAssignExpr:* = true;
 
     // var Identifier : TypeExpression = AssignmentExpression
     var idTypeExprAssignExpr : Boolean = true;
@@ -57,7 +57,7 @@ package VarDefEmpty {
     var id1TypeExpr:Boolean, id2TypeExpr:Boolean, id3TypeExpr:Boolean;
 
     // var VariableBindingList, Identifier = AssignmentExpression
-    var id1AssignExpr = true, id2AssignExpr = false, id3AssignExpr = true;
+    var id1AssignExpr:* = true, id2AssignExpr = false, id3AssignExpr = true;
     var id1AssignExprB, id2AssignExprB, id3AssignExprB = true;
 
     // var VariableBindingList, Identifier : TypeExpression = AssignmentExpression
@@ -68,7 +68,7 @@ package VarDefEmpty {
     var idA, idB:Boolean;
 
     // var Identifier, Identifier : TypeExpression = AssignmentExpression
-    var idAAssign = false, idBAssign:Boolean = true; 
+    var idAAssign:* = false, idBAssign:Boolean = true; 
     var idAAssignB, idBAssignB:Boolean = true; 
 
     // var Identifier : TypeExpressionA, Identifier : TypeExpressionB = <empty>
@@ -82,7 +82,7 @@ package VarDefEmpty {
     var idId, idIdTypeExprA:Array, idIdTypeExprB:Boolean;
 
     // var Identifier, Identifier:TypeExpressionA, Identifier:TypeExpressionB = AssignmentExpression
-    var idIdAssign = false,idIdTypeExprAAssign:Array = new Array(1,2,3),    idIdTypeExprBAssign:Boolean = true
+    var idIdAssign:* = false,idIdTypeExprAAssign:Array = new Array(1,2,3),    idIdTypeExprBAssign:Boolean = true
     
     var idIdAssignB,  idIdTypeExprAAssignB:Array,idIdTypeExprBAssignB:Boolean = true;
 

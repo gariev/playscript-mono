@@ -37,14 +37,14 @@
 package {
 	public class Error1100RegExpFlagsArgTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1100; //	Cannot supply flags when constructing one RegExp from another.
+			var CODE:* = 1100; //	Cannot supply flags when constructing one RegExp from another.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var result = "no error";
+				var result:* = "no error";
 				var re:RegExp = new RegExp("ali", "/s");
 				var re2:RegExp = new RegExp(re, "i");
 			} catch (err) {

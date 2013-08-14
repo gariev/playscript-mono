@@ -40,10 +40,10 @@ package GetSetDiffScope {
 
 	public class GetSetDiffScope {
 
-		private var _s1;
-		private var _s2;
-		private var _g1 = "original value";
-		private var _g2 = 5;
+		private var _s1:*;
+		private var _s2:*;
+		private var _g1:* = "original value";
+		private var _g2:* = 5;
 		private var ind:int = 1;
 
 		public function get index():int

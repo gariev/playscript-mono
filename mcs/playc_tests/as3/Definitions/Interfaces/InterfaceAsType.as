@@ -38,10 +38,10 @@
 package {
 	public class InterfaceAsTypeTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";  // Version of JavaScript or ECMA
-			var TITLE   = "Interface Definition";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";  // Version of JavaScript or ECMA
+			var TITLE:*   = "Interface Definition";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -49,7 +49,7 @@ package {
 			
 			import InterfaceAsType.*;
 			
-			var eg = new TypeTest();
+			var eg:* = new TypeTest();
 			AddTestCase("class as interface, call via interface", "x.A::a()", eg.doCallXViaA());
 			AddTestCase("class as interface, call via interface", "x.B::b()", eg.doCallXViaB());
 			AddTestCase("class passed as interface, call via args", "x.A::a(),x.B::b()", eg.doCallXViaArgs());

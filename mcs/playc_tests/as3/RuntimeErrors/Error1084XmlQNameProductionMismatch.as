@@ -37,16 +37,16 @@
 package {
 	public class Error1084XmlQNameProductionMismatchTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1084; //	Element or attribute ("_") does not match QName production: QName::=(NCName':')?NCName.
+			var CODE:* = 1084; //	Element or attribute ("_") does not match QName production: QName::=(NCName':')?NCName.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var result = "no error";
-				var x = "<::/>";
-				var y = new XML(x);
+				var result:* = "no error";
+				var x:* = "<::/>";
+				var y:* = new XML(x);
 			} catch (err) {
 				result = err.toString();
 			} finally {

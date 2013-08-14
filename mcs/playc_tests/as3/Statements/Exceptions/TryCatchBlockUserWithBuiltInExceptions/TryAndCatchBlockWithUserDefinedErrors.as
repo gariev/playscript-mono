@@ -95,17 +95,17 @@ package TryCatchBlockUserWithBuiltInExceptions
     {
         var b:Box = new Box();
         var someWidth:Number=(Number.MAX_VALUE)*10;
-        var thisError = "no error";
-        var thisError1 = "no error";
-        var thisError2 = "no error";
-        var thisError3 = "no error";
-        var thisError4 = "no error";
-        var thisError5 = "no error";
-        var thisError6 = "no error";
-        var thisError11 = "no error";
-        var thisError8 = "no error";
-        var thisError9 = "no error";
-        var thisError10 ="no error";
+        var thisError:* = "no error";
+        var thisError1:* = "no error";
+        var thisError2:* = "no error";
+        var thisError3:* = "no error";
+        var thisError4:* = "no error";
+        var thisError5:* = "no error";
+        var thisError6:* = "no error";
+        var thisError11:* = "no error";
+        var thisError8:* = "no error";
+        var thisError9:* = "no error";
+        var thisError10:* ="no error";
         public function MyTryThrowCatchFunction():void
         {
             try {

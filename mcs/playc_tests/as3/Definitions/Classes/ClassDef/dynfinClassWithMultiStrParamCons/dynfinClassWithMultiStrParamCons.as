@@ -52,8 +52,8 @@ package testdynfinalClassWithMultiStringParamCons{
                   public function myString2():String{
                   var x:String="test2";
                   var y:String="test3";
-                  var g1= new dynfinClassWithMultiStrParamCons("test2");
-                  var g3=new dynfinClassWithMultiStrParamCons("hello"+
+                  var g1:*= new dynfinClassWithMultiStrParamCons("test2");
+                  var g3:*=new dynfinClassWithMultiStrParamCons("hello"+
 "world");
                                     
                                      return g3.myString();    

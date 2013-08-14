@@ -44,14 +44,14 @@
 package {
 	public class shiftTest extends BaseTest {
 		public static function Main():int {
-			var SECTION="";
-			var VERSION = "ECMA_1";
+			var SECTION:*="";
+			var VERSION:* = "ECMA_1";
 			
 			startTest();
 			
 			writeHeaderToLog( " Vector.shift()");
 			
-			var v1=new Vector.<int>();
+			var v1:*=new Vector.<int>();
 			AddTestCase(
 					"shift on empty vector returns undefined",
 					0,
@@ -61,7 +61,7 @@ package {
 					"",
 					v1.toString());
 			
-			var v1=new Vector.<int>();
+			var v1:*=new Vector.<int>();
 			v1.push(10);
 			AddTestCase(
 					"shift on single element vector returns element[0]",
@@ -72,8 +72,8 @@ package {
 					"",
 					v1.toString());
 			
-			var v1=new Vector.<int>();
-			for (var i=0;i<5;i++) v1[i]=10+i;
+			var v1:*=new Vector.<int>();
+			for (var i:*=0;i<5;i++) v1[i]=10+i;
 			AddTestCase(
 					"shift on vector returns element[0]",
 					10,
@@ -83,7 +83,7 @@ package {
 					"11,12,13,14",
 					v1.toString());
 			
-			var v1=new Vector.<int>(10);
+			var v1:*=new Vector.<int>(10);
 			AddTestCase(
 					"shift on initialized vector returns element[0]",
 					0,
@@ -93,10 +93,10 @@ package {
 					"0,0,0,0,0,0,0,0,0",
 					v1.toString());
 			
-			var v1=new Vector.<int>(10,true);
-			for (var i=0;i<10;i++) v1[i]=10+i;
+			var v1:*=new Vector.<int>(10,true);
+			for (var i:*=0;i<10;i++) v1[i]=10+i;
 			
-			var errormsg="";
+			var errormsg:*="";
 			try {
 			  v1.shift();
 			} catch (e) {

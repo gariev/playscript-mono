@@ -69,7 +69,7 @@ use namespace ns;
 
 	public class DefaultClassAccessor{
 
-                var B = new DefaultClass();
+                var B:* = new DefaultClass();
                 var i:InternalInt=B;
 		public function accdeffunc(){return deffunc();}
 		// access default function deffunc

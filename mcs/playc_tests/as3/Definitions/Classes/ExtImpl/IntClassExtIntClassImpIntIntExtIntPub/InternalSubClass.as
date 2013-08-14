@@ -81,7 +81,7 @@ package IntClassExtIntClassImpIntIntExtIntPub{
                                                             }
 
        public class InternalInterfaceAccessor{
-                var k = new InternalSubClass();
+                var k:* = new InternalSubClass();
 
                 var PubInt3:PublicInt3 = k;
                 var PubInttwo:PublicInt2=k;

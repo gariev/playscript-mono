@@ -46,7 +46,7 @@ package testdynfinalClassWithParamCons{
                                         
 
                                         public function Add():Number{
-                                                              var z = x+y;
+                                                              var z:* = x+y;
                                                               return z;
                                                               }
                                           }

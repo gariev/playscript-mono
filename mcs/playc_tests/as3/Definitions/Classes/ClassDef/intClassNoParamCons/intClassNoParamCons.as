@@ -46,7 +46,7 @@ package testInternalClassNoParamCons{
                                         
 
                                          public function Add(){
-                                                              var z = x+y;
+                                                              var z:* = x+y;
                                                               return z;
                                                               }
                                           }
@@ -57,7 +57,7 @@ package testInternalClassNoParamCons{
                                   
 
                                  public function getAdd(){
-                                                          var R = intNoParamCons.Add();
+                                                          var R:* = intNoParamCons.Add();
                                                           return R;
                                                          }
                                        }

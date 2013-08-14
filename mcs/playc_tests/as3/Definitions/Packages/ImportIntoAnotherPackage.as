@@ -62,14 +62,14 @@ package ImportIntoAnotherPackage {
 	
 	public var newS:String = s;
 	public function newFunc() {
-		var f = publicFunc(5);
+		var f:* = publicFunc(5);
 		return f;
 	}
 	public class newA {
-		var a;
+		var a:*;
 		public function whoAmI():String {
 			a = new A();
-			var s = a.whoAmI();
+			var s:* = a.whoAmI();
 			return s;
 		}
 	}
@@ -101,17 +101,17 @@ package ImportIntoAnotherPackage {
 
 import ImportIntoAnotherPackage.*;
 
-var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "PackageDefinition" //Proved ECMA section titile or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions";       // provide a document reference (ie, Actionscript section)
+var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+var TITLE:*   = "PackageDefinition" //Proved ECMA section titile or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
 
-var a = new newA();
-var b = new newB();
-var c = new newC();
+var a:* = new newA();
+var b:* = new newB();
+var c:* = new newC();
 
 AddTestCase("Class imported into another package", "A", a.whoAmI());
 AddTestCase("Class implemented interface imported into another package", "B", b.whoAmI());

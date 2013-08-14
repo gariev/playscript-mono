@@ -42,17 +42,17 @@ package {
 	
 	public class DynamicClassSameMethPropNameTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";                   // Version of JavaScript or ECMA
-			var TITLE   = "Add function with the same name as a property to Dynamic Class";  // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";           // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";                   // Version of JavaScript or ECMA
+			var TITLE:*   = "Add function with the same name as a property to Dynamic Class";  // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
 			
 			
-			var Obj = new DynamicClassSameMethPropName();
-			var thisError = "no exception given";
+			var Obj:* = new DynamicClassSameMethPropName();
+			var thisError:* = "no exception given";
 			try{
 				Obj.pubBoolean = function () { return 100;}
 			} catch (e){

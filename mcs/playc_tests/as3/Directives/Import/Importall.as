@@ -88,19 +88,19 @@ package Importall {
 }
 
 
-var SECTION = "Directives";       				// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  				// Version of JavaScript or ECMA
-var TITLE   = "Import all public names in a package";       	// Provide ECMA section title or a description
-var BUGNUMBER = "";
+var SECTION:* = "Directives";       				// provide a document reference (ie, ECMA section)
+var VERSION:* = "ActionScript 3.0";  				// Version of JavaScript or ECMA
+var TITLE:*   = "Import all public names in a package";       	// Provide ECMA section title or a description
+var BUGNUMBER:* = "";
 
 startTest();                					// leave this alone
 
 
 import Importall.*
 
-var obj = new PublicClass();
+var obj:* = new PublicClass();
 
-var arr = new Array(1, 2, 3);
+var arr:* = new Array(1, 2, 3);
 date = new Date(0);
 func = new Function();
 num = new Number();

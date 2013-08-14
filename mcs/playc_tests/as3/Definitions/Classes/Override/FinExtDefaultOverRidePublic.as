@@ -41,15 +41,15 @@ package {
 	
 	public class FinExtDefaultOverRidePublicTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       							// provide a document reference (ie, ECMA section)
-			var VERSION = "AS 3.0";  								// Version of JavaScript or ECMA
-			var TITLE   = "Override public function in final class extending default class";    	// Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       							// provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS 3.0";  								// Version of JavaScript or ECMA
+			var TITLE:*   = "Override public function in final class extending default class";    	// Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                							// leave this alone
 			
 			
-			var CLASSDEFN = new FinExtDefaultOverRidePublic();
+			var CLASSDEFN:* = new FinExtDefaultOverRidePublic();
 			var booleanValue:Boolean = true;
 			
 			AddTestCase( "CLASSDEFN.setPubBoolean( booleanValue ); CLASSDEFN.getPubBoolean()", booleanValue, ( CLASSDEFN.setPubBoolean( booleanValue ), CLASSDEFN.getPubBoolean() ) );

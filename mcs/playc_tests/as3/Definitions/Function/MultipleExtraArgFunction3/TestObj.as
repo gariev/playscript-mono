@@ -40,7 +40,7 @@ package MultipleExtraArgFunction3 {
 			
 	   public function returnRest(obj:Object, arr:Array, ... rest):Number {
 		 
-	   var count = rest.length;
+	   var count:* = rest.length;
 		    
            var a:int = 0;
 	

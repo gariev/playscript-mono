@@ -37,28 +37,28 @@
 package {
 	public class eforeachin_001_500476Test extends BaseTest {
 		public static function Main():int {
-			    var SECTION = "forin-001";
-			    var VERSION = "ECMA_2";
-			    var TITLE   = "The for each in  statement";
-			    var BUGNUMBER="https://bugzilla.mozilla.org/show_bug.cgi?id=500476";
+			    var SECTION:* = "forin-001";
+			    var VERSION:* = "ECMA_2";
+			    var TITLE:*   = "The for each in  statement";
+			    var BUGNUMBER:*="https://bugzilla.mozilla.org/show_bug.cgi?id=500476";
 			
 			    startTest();
 			    writeHeaderToLog( SECTION + " "+ TITLE);
 			
-			    var tc = 0;
-			    var testcases = new Array();
+			    var tc:* = 0;
+			    var testcases:* = new Array();
 			
 			    ForIn_7({ length:4, company:"netscape", year:2000, 0:"zero" });
 			
 			    test();
 			
 			    function ForIn_7( object ) {
-			        var result1 = 0;
-			        var result2 = 0;
-			        var result3 = 0;
-			        var result4 = 0;
-			        var i = 0;
-			        var property = new Array();
+			        var result1:* = 0;
+			        var result2:* = 0;
+			        var result3:* = 0;
+			        var result4:* = 0;
+			        var i:* = 0;
+			        var property:* = new Array();
 			
 			        //bigredbird:
 			            for each( property[i++] in object ) {

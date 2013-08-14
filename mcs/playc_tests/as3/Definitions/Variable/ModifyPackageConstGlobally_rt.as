@@ -37,14 +37,14 @@
  
 package Package1
 {
-    public const item1;
+    public const item1:*;
 }
 
 import Package1.*;
 
 startTest();
 
-var thisError = "no error";
+var thisError:* = "no error";
 try
 {
     item1 = "updated";

@@ -38,10 +38,10 @@
 package {
 	public class eforeachin_002Test extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Statements";       // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";  // Version of JavaScript or ECMA
-			var TITLE   = "for each in";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Statements";       // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";  // Version of JavaScript or ECMA
+			var TITLE:*   = "for each in";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -61,10 +61,10 @@ package {
 			 x1 = {};
 			 x1.z = [obj1,obj2,obj3];
 			 
-			// var xmlDoc = "<L><z><A>1</A></z><z><A>2</A></z><z><A>3</A></z></L>";
-			// var x1 = new XML(xmlDoc);
+			// var xmlDoc:* = "<L><z><A>1</A></z><z><A>2</A></z><z><A>3</A></z></L>";
+			// var x1:* = new XML(xmlDoc);
 			 
-			 for each(var i in x1.z) {
+			 for each(var i:* in x1.z) {
 			       s += i.A;
 			 }
 			 

@@ -39,7 +39,7 @@ package GetSetProtectedExtended{
 
 	internal class GetSetProtectedInternal {
 	
-		private var _nt = "no type";
+		private var _nt:* = "no type";
 		private var _x:Array = [1,2,3];
 		private var _y:int = -10;
 		private var _b:Boolean = true;

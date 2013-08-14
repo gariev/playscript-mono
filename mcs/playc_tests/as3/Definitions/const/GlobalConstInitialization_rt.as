@@ -38,14 +38,14 @@
 package {
 	public class GlobalConstInitialization_rtTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-			var TITLE   = "Initialize a global const after its initializer";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION:* = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE:*   = "Initialize a global const after:* its initializer";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();
 			
-			const num1;
+			const num1:*;
 			
 			var thisError:String = "no error";
 			
@@ -59,7 +59,7 @@ package {
 			}
 			finally
 			{
-			    AddTestCase("Initialize a global const after its initializer.", "ReferenceError: Error #1074", referenceError(thisError));
+			    AddTestCase("Initialize a global const after:* its initializer.", "ReferenceError: Error #1074", referenceError(thisError));
 			}
 			
 			test();

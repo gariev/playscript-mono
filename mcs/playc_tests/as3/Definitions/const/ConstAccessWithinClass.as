@@ -39,10 +39,10 @@
 package {
 	public class ConstAccessWithinClassTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Directives\const";       				// provide a document reference (ie, ECMA section)
-			var VERSION = "ActionScript 3.0";  					// Version of JavaScript or ECMA
-			var TITLE   = "'const' inside a class access from outside the class";   // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Directives\const";       				// provide a document reference (ie, ECMA section)
+			var VERSION:* = "ActionScript 3.0";  					// Version of JavaScript or ECMA
+			var TITLE:*   = "'const' inside a class access from outside the class";   // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -52,14 +52,14 @@ package {
 			
 			class ConstClass {
 				
-				const myConst = 10;
+				const myConst:* = 10;
 			}
 			
-			var Obj = new ConstClass();
+			var Obj:* = new ConstClass();
 			myObjConst = Obj.myConst;
 			
 			
-			AddTestCase( "Testing the 'const' keywords access from an object of a class: const myConst = 10;", 10, myObjConst );
+			AddTestCase( "Testing the 'const' keywords access from an object of a class: const myConst:* = 10;", 10, myObjConst );
 			
 			
 			test();       		// Leave this function alone.

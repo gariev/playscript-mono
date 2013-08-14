@@ -37,14 +37,14 @@
 package {
 	public class Error1003RadixArgOutOfRangeTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1003; //	The radix argument must be between 2 and 36; got _.
+			var CODE:* = 1003; //	The radix argument must be between 2 and 36; got _.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var result = "no error";
+				var result:* = "no error";
 				var n:Number = new Number(1);
 				n.toString(1);
 			} catch (err) {

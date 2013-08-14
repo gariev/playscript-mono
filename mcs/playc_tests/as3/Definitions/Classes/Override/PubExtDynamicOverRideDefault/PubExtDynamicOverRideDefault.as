@@ -41,8 +41,8 @@ package DynamicClass {
 
 	public class PubExtDynamicOverRideDefault extends DynamicClass {
 
-		public var orSet = false;
-		public var orGet = false;
+		public var orSet:* = false;
+		public var orGet:* = false;
 
 		// *********************************
 		// override a default method

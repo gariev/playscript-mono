@@ -45,8 +45,8 @@
 package {
 	public class inTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = " ";
-			var VERSION = "AS3";
+			var SECTION:* = " ";
+			var VERSION:* = "AS3";
 			startTest();
 			writeHeaderToLog( SECTION + " Vector in statement");
 			

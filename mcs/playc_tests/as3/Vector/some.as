@@ -48,13 +48,13 @@
 package {
 	public class someTest extends BaseTest {
 		public static function Main():int {
-			var SECTION="";
-			var VERSION = "ECMA_1";
+			var SECTION:*="";
+			var VERSION:* = "ECMA_1";
 			
 			startTest();
 			
 			writeHeaderToLog(" Vector.some()");
-			var msg;
+			var msg:*;
 			function checker1(value,index,obj) {
 			  msg+="(value="+value+",index="+index+",object=["+obj+"])";
 			  if (value=='t')
@@ -62,8 +62,8 @@ package {
 			  return false;
 			}
 			
-			var v1=new Vector.<int>();
-			var errormsg="";
+			var v1:*=new Vector.<int>();
+			var errormsg:*="";
 			try {
 			  result=v1.some();
 			} catch (e) {
@@ -75,10 +75,10 @@ package {
 					parseError(errormsg,"ArgumentError: Error #1063".length));
 			
 			
-			var checker2="a string";
-			var v1=new Vector.<int>();
+			var checker2:*="a string";
+			var v1:*=new Vector.<int>();
 			v1.push(1);
-			var errormsg="";
+			var errormsg:*="";
 			try {
 			  result=v1.some(checker2);
 			} catch (e) {
@@ -89,9 +89,9 @@ package {
 					"TypeError: Error #1034",
 					parseError(errormsg,"TypeError: Error #1034".length));
 			
-			var msg="";
-			var v1=new Vector.<int>();
-			var result=v1.some(checker1);
+			var msg:*="";
+			var v1:*=new Vector.<int>();
+			var result:*=v1.some(checker1);
 			AddTestCase(
 			                "some empty vector result",
 			                false,
@@ -100,10 +100,10 @@ package {
 			                "some empty vector message empty",
 			                "",
 			                msg);
-			var msg="";
-			var v1=new Vector.<String>();
+			var msg:*="";
+			var v1:*=new Vector.<String>();
 			v1[0]='a';v1[1]='b';v1[2]='c';
-			var result=v1.some(checker1);
+			var result:*=v1.some(checker1);
 			AddTestCase(
 			                "some small vector result",
 			                false,
@@ -113,10 +113,10 @@ package {
 			                "(value=a,index=0,object=[a,b,c])(value=b,index=1,object=[a,b,c])(value=c,index=2,object=[a,b,c])",
 			                msg);
 			
-			var msg="";
-			var v1=new Vector.<String>();
+			var msg:*="";
+			var v1:*=new Vector.<String>();
 			v1[0]='a';v1[1]='b';v1[2]='t';v1[3]='c';v1[4]='d';
-			var result=v1.some(checker1);
+			var result:*=v1.some(checker1);
 			AddTestCase(
 			                "some small vector result with a true",
 			                true,

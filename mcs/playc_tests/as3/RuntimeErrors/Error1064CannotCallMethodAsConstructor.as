@@ -49,12 +49,12 @@ package {
 				function f() {}
 			}
 			
-			var a = new A();
-			var b = a.f;
+			var a:* = new A();
+			var b:* = a.f;
 			
 			try {
-				var z = "no error";
-				var c = new b();
+				var z:* = "no error";
+				var c:* = new b();
 			} catch (err) {
 				z = err.toString();
 			} finally {

@@ -42,11 +42,11 @@ package thisisthesecondempytpackagedefintition{}
 
 // import statement
 package testimportpackagesub{
-	public var ti = 'PASSED';
+	public var ti:* = 'PASSED';
 }
 package testimportpackage{
 	import testimportpackagesub.*;
-	public var testimport = ti;
+	public var testimport:* = ti;
 }
 
 // function defintion
@@ -76,7 +76,7 @@ package testnamespacedefinition{
 	public class myClass {
 		public namespace testnamespace;
 		use namespace testnamespace;
-		testnamespace var macaroni = "cheese";
+		testnamespace var macaroni:* = "cheese";
 		public function getCheese() {
 			return testnamespace::macaroni;
 		}
@@ -84,10 +84,10 @@ package testnamespacedefinition{
 }
 
 package foo{
-	public var a = 'PASSED';
+	public var a:* = 'PASSED';
 }
 package bar{
-	public var b = 'PASSED';
+	public var b:* = 'PASSED';
 }
 
 import testimportpackage.*;
@@ -98,17 +98,17 @@ import testnamespacedefinition.*;
 import foo.*;
 import bar.*;
 
-var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "PackageDefinition" //Proved ECMA section titile or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions";       // provide a document reference (ie, Actionscript section)
+var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+var TITLE:*   = "PackageDefinition" //Proved ECMA section titile or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
 
-var abc = new testclass();
-var def = new testinterface();
-var c = new myClass();
+var abc:* = new testclass();
+var def:* = new testinterface();
+var c:* = new myClass();
 AddTestCase( "multiple package definitions import", "PASSED", testimport );
 AddTestCase( "multiple package definitions function", "this is a function in the package", testfunction() );
 AddTestCase( "multiple package definitions interface", "this is an interface definition", def.testinterfacefunc() );

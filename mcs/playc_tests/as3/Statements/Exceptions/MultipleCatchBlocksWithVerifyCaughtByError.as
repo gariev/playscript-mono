@@ -38,10 +38,10 @@
 package {
 	public class MultipleCatchBlocksWithVerifyCaughtByErrorTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";                   // Version of JavaScript or ECMA
-			var TITLE   = "Testing try block with multiple catch blocks, the  catch block with parameter of type Error catching the Verify error When no catch block with parameter of type Verify Error is defined  Normally verifyError cannot be caught by try and catch block. As it is usually during the link time after the compiler parses the program and before runtime.  This testcase is to test what happens when the throw statement throws an error of type verifyError, whether the catch block ignores it/caught by the catch block with parameter of  some other error type other than verifyError. ";  // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";           // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";                   // Version of JavaScript or ECMA
+			var TITLE:*   = "Testing try block with multiple catch blocks, the  catch block with parameter of type Error catching the Verify error When no catch block with parameter of type Verify Error is defined  Normally verifyError cannot be caught by try and catch block. As it is usually during the link time after the compiler parses the program and before runtime.  This testcase is to test what happens when the throw statement throws an error of type verifyError, whether the catch block ignores it/caught by the catch block with parameter of  some other error type other than verifyError. ";  // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			

@@ -40,10 +40,10 @@ package {
 	
 	public class DictionaryTest extends BaseTest {
 		public static function Main():int {
-			    var SECTION = "Dictionary";
-			    var VERSION = "as3";
+			    var SECTION:* = "Dictionary";
+			    var VERSION:* = "as3";
 			    startTest();
-			    var TITLE   = "test Dictionary class";
+			    var TITLE:*   = "test Dictionary class";
 			
 			    writeHeaderToLog( SECTION + " "+ TITLE );
 			
@@ -143,8 +143,8 @@ package {
 			      obj1 in dict_weak
 			    );
 			
-			    var a;
-			    var out1=new Array();
+			    var a:*;
+			    var out1:*=new Array();
 			    for (a in dict_notweak) {
 			        out1.push(a.toString());
 			    }
@@ -154,7 +154,7 @@ package {
 			     "obj1,one",
 			     out1.toString());
 			
-			    var out2=new Array(0);
+			    var out2:*=new Array(0);
 			    for (a in dict_weak) {
 			        out2.push(a.toString());
 			    }
@@ -164,7 +164,7 @@ package {
 			     "obj1,one",
 			     out2.toString());
 			
-			    var out3=new Array();
+			    var out3:*=new Array();
 			    for each (a in dict_notweak) {
 			        out3.push(a.toString());
 			    }
@@ -174,7 +174,7 @@ package {
 			     "obj1_value,one_value",
 			     out3.toString()); 
 			
-			    var out4=new Array();
+			    var out4:*=new Array();
 			    for each (a in dict_weak) {
 			        out4.push(a.toString());
 			    }

@@ -41,8 +41,8 @@ package PublicClass {
 
 	dynamic class DynExtPublicOverRideDefaultInner extends PublicClass {
 
-		public var orSet = false;
-		public var orGet = false;
+		public var orSet:* = false;
+		public var orGet:* = false;
 
 		// *********************************
 		// override a default method

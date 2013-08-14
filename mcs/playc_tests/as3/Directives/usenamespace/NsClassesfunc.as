@@ -40,9 +40,9 @@ package {
 			package{
 			
 			 
-			var SECTION = "Directives";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-			var TITLE   = "Namespace functions inside a class";       // Provide ECMA section title or a description
+			var SECTION:* = "Directives";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+			var TITLE:*   = "Namespace functions inside a class";       // Provide ECMA section title or a description
 			
 			
 			startTest();                // leave this alone
@@ -62,7 +62,7 @@ package {
 			
 			
 			
-			var game = new Game();
+			var game:* = new Game();
 			
 			AddTestCase( "Who is going to play = 'Joe'", "Joe", game.Football::whoplay());
 			

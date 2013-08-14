@@ -106,12 +106,12 @@ package DefaultClass {
     // to be overloaded
     // *****************************
 
-    var overLoadVar;
-    public var pubOverLoadVar;
-    private var privOverLoadVar;
-    static var statOverLoadVar;
-    public static var pubStatOverLoadVar;
-    private static var privStatOverLoadVar;
+    var overLoadVar:*;
+    public var pubOverLoadVar:*;
+    private var privOverLoadVar:*;
+    static var statOverLoadVar:*;
+    public static var pubStatOverLoadVar:*;
+    private static var privStatOverLoadVar:*;
 
     // ****************
     // constructor

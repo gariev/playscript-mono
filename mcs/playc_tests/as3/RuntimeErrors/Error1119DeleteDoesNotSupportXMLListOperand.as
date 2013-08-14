@@ -37,14 +37,14 @@
 package {
 	public class Error1119DeleteDoesNotSupportXMLListOperandTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1119; //	Delete operator is not supported with operand of type _.
+			var CODE:* = 1119; //	Delete operator is not supported with operand of type _.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
-			var expected = "Error #" + CODE;
-			var result = "no error";
+			var expected:* = "Error #" + CODE;
+			var result:* = "no error";
 			try {
 				var books:XML =
 					<books>

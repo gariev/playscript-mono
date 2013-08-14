@@ -38,10 +38,10 @@
 package {
 	public class ConstInitializationInsideConstructorTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-			var TITLE   = "initialization of const inside function";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION:* = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE:*   = "initialization of const inside:* function";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();
 			
@@ -61,7 +61,7 @@ package {
 			
 			var bob:Person = new Person("bob");
 			
-			AddTestCase("Initialize instance const inside constructor", "bob", bob.getName());
+			AddTestCase("Initialize instance const inside:* constructor", "bob", bob.getName());
 			
 			test();
 			return results();

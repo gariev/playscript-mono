@@ -37,14 +37,14 @@
 package {
 	public class Error1034TypeCoercionFailedTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1034; //	Type Coercion failed: cannot convert _ to _.
+			var CODE:* = 1034; //	Type Coercion failed: cannot convert _ to _.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var result = "no error";
+				var result:* = "no error";
 				this.setTime = new Date().getDate;
 				this.setTime(-1);
 			} catch (err) {

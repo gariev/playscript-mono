@@ -50,26 +50,26 @@
 package {
 	public class sortTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "";
-			var VERSION = "ECMA_1";
+			var SECTION:* = "";
+			var VERSION:* = "ECMA_1";
 			startTest();
-			var TITLE   = "Vector.sort(comparefn)";
+			var TITLE:*   = "Vector.sort(comparefn)";
 			
 			writeHeaderToLog( SECTION + " "+ TITLE);
 			
-			var v1=new Vector.<int>();
-			for (var i=0;i<10;i++) v1[i]=9-i;
-			var v2=v1.sort(Compare);
+			var v1:*=new Vector.<int>();
+			for (var i:*=0;i<10;i++) v1[i]=9-i;
+			var v2:*=v1.sort(Compare);
 			CheckItems(v1,v2,"sort()");
 			
-			var vs1=new Vector.<String>();
-			for (var i=0;i<10;i++) vs1[i]="string"+(9-i);
-			var vs2=vs1.sort(Compare);
+			var vs1:*=new Vector.<String>();
+			for (var i:*=0;i<10;i++) vs1[i]="string"+(9-i);
+			var vs2:*=vs1.sort(Compare);
 			CheckItems(vs1,vs2,"sort()");
 			
-			var v1=new Vector.<int>();
-			for (var i=0;i<10;i++) v1[i]=9-i;
-			var errormsg="";
+			var v1:*=new Vector.<int>();
+			for (var i:*=0;i<10;i++) v1[i]=9-i;
+			var errormsg:*="";
 			try {
 			  v1.sort()
 			} catch (e) {
@@ -102,8 +102,8 @@ package {
 			    return -1
 			}
 			
-			var testClassVector = new Vector.<TestClass>();
-			for (var i=0; i<20; i++) {
+			var testClassVector:* = new Vector.<TestClass>();
+			for (var i:*=0; i<20; i++) {
 			    testClassVector.push(new TestClass(i));
 			}
 			// push one duplicate value
@@ -150,9 +150,9 @@ package {
 			function Sort( a ) {
 			  for ( i = 0; i < a.length; i++ ) {
 			    for ( j = i+1; j < a.length; j++ ) {
-			      var lo = a[i];
-			      var hi = a[j];
-			      var c = Compare( lo, hi );
+			      var lo:* = a[i];
+			      var hi:* = a[j];
+			      var c:* = Compare( lo, hi );
 			      if ( c == 1 ) {
 				a[i] = hi;
 				a[j] = lo;

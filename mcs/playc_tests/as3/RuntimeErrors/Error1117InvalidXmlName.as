@@ -37,16 +37,16 @@
 package {
 	public class Error1117InvalidXmlNameTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1117; //	Invalid XML name: _.
+			var CODE:* = 1117; //	Invalid XML name: _.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
-			var expected = "Error #" + CODE;
-			var result = "no error";
+			var expected:* = "Error #" + CODE;
+			var result:* = "no error";
 			try {
-				var xml = new XML("<a></a>");
+				var xml:* = new XML("<a></a>");
 				xml.setName(undefined);
 			} catch (err) {
 				result = grabError(err, err.toString());

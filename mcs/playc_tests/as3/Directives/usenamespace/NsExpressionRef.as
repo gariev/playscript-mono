@@ -36,9 +36,9 @@
  * ***** END LICENSE BLOCK ***** */
 package {
 
-var SECTION = "Directives";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript
-var TITLE   = "Qualified expression reference";       // Provide ECMA section title or a description
+var SECTION:* = "Directives";       // provide a document reference (ie, Actionscript section)
+var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript
+var TITLE:*   = "Qualified expression reference";       // Provide ECMA section title or a description
 
 startTest();                // leave this alone
 
@@ -46,12 +46,12 @@ public namespace Football
 public namespace Baseball
 
 public class Game {
-	Football var n =  "Joe"
-	Baseball var n =  "Steve"
+	Football var n:* =  "Joe"
+	Baseball var n:* =  "Steve"
 }
 
 
-var g = new Game();
+var g:* = new Game();
 
 AddTestCase( "Football::['n']", "Joe", g.Football::['n']);
 

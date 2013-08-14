@@ -45,11 +45,11 @@ package Bug118272Package {
 	
 	final class finClass { }
 	public class BugTest {
-            public var thisError="no error";
-            public var thisError1="no error";
-            public var thisError2="no error";
-            public var thisError3="no error";
-            public var thisError4="no error";
+            public var thisError:*="no error";
+            public var thisError1:*="no error";
+            public var thisError2:*="no error";
+            public var thisError3:*="no error";
+            public var thisError4:*="no error";
             public function BugTest(){
               try{
 		 pubClass = 0;

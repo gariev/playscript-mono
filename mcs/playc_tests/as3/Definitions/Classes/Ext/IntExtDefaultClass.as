@@ -39,10 +39,10 @@ package DefaultClass{
 
 //import DefaultClass.*;
 
-var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-var VERSION = "Clean AS2";  // Version of JavaScript or ECMA
-var TITLE   = "Extend Default Class";       // Provide ECMA section title or a description
-//var BUGNUMBER = "";
+var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+var VERSION:* = "Clean AS2";  // Version of JavaScript or ECMA
+var TITLE:*   = "Extend Default Class";       // Provide ECMA section title or a description
+//var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
@@ -55,10 +55,10 @@ startTest();                // leave this alone
  *
  * For example, a test might look like this:
  *
- * var helloWorld = "Hello World";
+ * var helloWorld:* = "Hello World";
  *
  * AddTestCase(
- * "var helloWorld = 'Hello World'",   // description of the test
+ * "var helloWorld:* = 'Hello World'",   // description of the test
  *  "Hello World",                     // expected result
  *  helloWorld );                      // actual result
  *
@@ -71,7 +71,7 @@ startTest();                // leave this alone
 //
 // ********************************************
 
-var arr = new Array(1,2,3);
+var arr:* = new Array(1,2,3);
 EXTDCLASS = new IntExtDefaultClass();
 AddTestCase( "access 'default' method from 'default' method of sub class", arr, (EXTDCLASS.testSubGetSetArray(arr)) );
 
@@ -152,7 +152,7 @@ AddTestCase( "access 'default' method from 'private virtual' method of sub class
 // method of sub class
 // ********************************************
 
-public var thisError10 = "no exception thrown";
+public var thisError10:* = "no exception thrown";
 try{
 	IntExtDefaultClass.pubStatSubGetArray();
 } catch (e1) {
@@ -249,7 +249,7 @@ AddTestCase( "access 'default' property from 'private virtual' method of sub cla
 // ********************************************
 
 //Add new property to parent through prototype object, verify child inherits it
-var child = new IntExtDefaultClassTest();
+var child:* = new IntExtDefaultClassTest();
 DefaultClassInner.prototype.fakeProp = 100;
 AddTestCase("*** Add new property to parent prototype object, verify child class inherits it ***", 100, child.fakeProp);
 

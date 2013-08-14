@@ -39,7 +39,7 @@ package GetSetStaticPackage {
 
 	public class GetSetStatic {
 
-		private static var _nt = "no type";
+		private static var _nt:* = "no type";
 		private static var _x:Array = [1,2,3];
 		private static var _y:int = -10;
 		private static var _b:Boolean = true;
@@ -128,11 +128,11 @@ package GetSetStaticPackage {
 		}
 
 		// define a getter for a property and call the undefined setter
-		private static var _nosetter = "FAILED";
+		private static var _nosetter:* = "FAILED";
 		public static function get noSetter(){ return _nosetter; }
 
 		// define a setter for a property and call the undefined getter
-		private static var _nogetter = "FAILED";
+		private static var _nogetter:* = "FAILED";
 		public static function set noGetter(s){ _nogetter = s; }
 		
 	}

@@ -37,16 +37,16 @@
 package {
 	public class eforeachin_001Test extends BaseTest {
 		public static function Main():int {
-			    var SECTION = "forin-001";
-			    var VERSION = "ECMA_2";
-			    var TITLE   = "The for each in  statement";
-			    var BUGNUMBER="";
+			    var SECTION:* = "forin-001";
+			    var VERSION:* = "ECMA_2";
+			    var TITLE:*   = "The for each in  statement";
+			    var BUGNUMBER:*="";
 			
 			    startTest();
 			    writeHeaderToLog( SECTION + " "+ TITLE);
 			
-			    var tc = 0;
-			    var testcases = new Array();
+			    var tc:* = 0;
+			    var testcases:* = new Array();
 			
 			    ForIn_1( { length:4, company:"netscape", year:2000, 0:"zero" } );
 			    ForIn_2( { length:4, company:"netscape", year:2000, 0:"zero" } );
@@ -74,7 +74,7 @@ package {
 					// need a hack to make sure that the order of test cases
 					// is constant... ecma stats that the order that for-each-in
 					// is run does not have to be constant 
-			        for ( var i = 0; i < PropertyArray.length; i++ ) {
+			        for ( var i:* = 0; i < PropertyArray.length; i++ ) {
 						switch( PropertyArray[i] ) {
 							case "company":
 			            		testcases[tcCompany] = new TestCase(
@@ -129,7 +129,7 @@ package {
 			    function ForIn_2( object ) {
 			        PropertyArray = new Array();
 			        ValueArray = new Array();
-			        var i = 0;
+			        var i:* = 0;
 			
 			        for each ( PropertyArray[i++] in object ) {
 			            ValueArray[ValueArray.length] =
@@ -144,7 +144,7 @@ package {
 					// need a hack to make sure that the order of test cases
 					// is constant... ecma stats that the order that for-each-in
 					// is run does not have to be constant 
-			        for ( var i = 0; i < PropertyArray.length; i++ ) {
+			        for ( var i:* = 0; i < PropertyArray.length; i++ ) {
 						switch( PropertyArray[i] ) {
 							case "company":
 			            		testcases[tcCompany] = new TestCase(
@@ -197,9 +197,9 @@ package {
 			    }
 			
 			    function ForIn_3( object ) {
-			        var checkBreak = "pass";
-			        var properties = new Array();
-			        var values = new Array();
+			        var checkBreak:* = "pass";
+			        var properties:* = new Array();
+			        var values:* = new Array();
 			
 			        for each ( properties[properties.length] in object ) {
 			            values[values.length] = object[properties[properties.length-1]];
@@ -221,7 +221,7 @@ package {
 			
 					// we don't know which one of the properties
 					// because we can't predict order
-					var myTest = "PASSED";
+					var myTest:* = "PASSED";
 					if( values[0] != object[properties[0]] ) 
 						myTest = "FAILED";
 			
@@ -233,12 +233,12 @@ package {
 			    }
 			
 			    function ForIn_4( object ) {
-			        var result1 = 0;
-			        var result2 = 0;
-			        var result3 = 0;
-			        var result4 = 0;
-			        var i = 0;
-			        var property = new Array();
+			        var result1:* = 0;
+			        var result2:* = 0;
+			        var result3:* = 0;
+			        var result4:* = 0;
+			        var i:* = 0;
+			        var property:* = new Array();
 			
 			        butterbean: {
 			            result1++;
@@ -277,12 +277,12 @@ package {
 			    }
 			
 			    function ForIn_5 (object) {
-			        var result1 = 0;
-			        var result2 = 0;
-			        var result3 = 0;
-			        var result4 = 0;
-			        var i = 0;
-			        var property = new Array();
+			        var result1:* = 0;
+			        var result2:* = 0;
+			        var result3:* = 0;
+			        var result4:* = 0;
+			        var i:* = 0;
+			        var property:* = new Array();
 			
 			        bigredbird: {
 			            result1++;
@@ -320,9 +320,9 @@ package {
 			    }
 			
 			    function ForIn_8( object ) {
-			        var checkBreak = "pass";
-			        var properties = new Array();
-			        var values = new Array();
+			        var checkBreak:* = "pass";
+			        var properties:* = new Array();
+			        var values:* = new Array();
 			
 			        for each ( properties[properties.length] in object ) {
 			            values[values.length] = object[properties[properties.length-1]];
@@ -344,7 +344,7 @@ package {
 			
 					// we don't know which one of the properties
 					// because we can't predict order
-					var myTest = "PASSED";
+					var myTest:* = "PASSED";
 					if( values[0] != object[properties[0]] ) 
 						myTest = "FAILED";
 			

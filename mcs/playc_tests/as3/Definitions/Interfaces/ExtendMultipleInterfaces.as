@@ -38,10 +38,10 @@
 package {
 	public class ExtendMultipleInterfacesTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";  // Version of JavaScript or ECMA
-			var TITLE   = "Interface Definition";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";  // Version of JavaScript or ECMA
+			var TITLE:*   = "Interface Definition";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -49,7 +49,7 @@ package {
 			
 			import ExtendMultipleInterfaces.*;
 			
-			var eg = new ExtendTest();
+			var eg:* = new ExtendTest();
 			AddTestCase("implements single, extends single", "x1.A::a()", eg.doTestX1());
 			AddTestCase("implements single, extends double", "x2.A::a(),x2.B::b()", eg.doTestX2());
 			AddTestCase("implements single, extends single and add", "x3.C::c(),x3.I3::d()", eg.doTestX3());

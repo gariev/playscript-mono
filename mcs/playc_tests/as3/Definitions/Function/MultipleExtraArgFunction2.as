@@ -38,21 +38,21 @@
 import MultipleExtraArgFunction2.*
 
 function returnRestNoPackage(str:String,n:Number,obj:Object,... rest):Number {
-    var count = rest.length;
+    var count:* = rest.length;
     var a:int = 0;
     return count;
 }
 
 
-var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";  // Version of JavaScript or ECMA
-var TITLE   = "Optional Argument test";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+var VERSION:* = "AS3";  // Version of JavaScript or ECMA
+var TITLE:*   = "Optional Argument test";       // Provide ECMA section title or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
-var TESTOBJ = new TestObj();
-var TESTOBJ1 = new MultipleExtraArgFunction2();
+var TESTOBJ:* = new TestObj();
+var TESTOBJ1:* = new MultipleExtraArgFunction2();
 
 // inside class inside package
 AddTestCase( "TESTOBJ.returnRest()", 6, TESTOBJ.returnRest([20,30],40,10,false,"hello",new Object(), [123],[345]) );

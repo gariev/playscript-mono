@@ -39,10 +39,10 @@
 package {
 	public class ExtDefaultImplDefDefTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-			var VERSION = "Clean AS2";  // Version of JavaScript or ECMA
-			var TITLE   = "Extend Default Class Implement 2 Default Interfaces";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION:* = "Clean AS2";  // Version of JavaScript or ECMA
+			var TITLE:*   = "Extend Default Class Implement 2 Default Interfaces";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -55,10 +55,10 @@ package {
 			 *
 			 * For example, a test might look like this:
 			 *
-			 * var helloWorld = "Hello World";
+			 * var helloWorld:* = "Hello World";
 			 *
 			 * AddTestCase(
-			 * "var helloWorld = 'Hello World'",   // description of the test
+			 * "var helloWorld:* = 'Hello World'",   // description of the test
 			 *  "Hello World",                     // expected result
 			 *  helloWorld );                      // actual result
 			 *
@@ -66,7 +66,7 @@ package {
 			
 			import DefaultClass.*;
 			
-			var THISTEST = new ExtDefaultImplDefDef();
+			var THISTEST:* = new ExtDefaultImplDefDef();
 			
 			
 			// *******************************************
@@ -109,8 +109,8 @@ package {
 			// of the class
 			//*******************************************
 			
-			var EXTDCLASS = new ExtDefaultImplDefDef();
-			var arr = new Array(1, 2, 3);
+			var EXTDCLASS:* = new ExtDefaultImplDefDef();
+			var arr:* = new Array(1, 2, 3);
 			
 			// ********************************************
 			// access default method from a default

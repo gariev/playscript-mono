@@ -46,13 +46,13 @@ package {
 		public static function Main():int {
 			function getVector() { return Vector; }
 			
-			var CODE = 1007; //  Instantiation attempted on a non-constructor.
+			var CODE:* = 1007; //  Instantiation attempted on a non-constructor.
 			
 			startTest();
-			var TITLE="Runtime specialization";
+			var TITLE:*="Runtime specialization";
 			writeHeaderToLog(TITLE);
 			
-			var x = getVector().<int>;
+			var x:* = getVector().<int>;
 			y = new x();
 			
 			y.push(1);
@@ -68,11 +68,11 @@ package {
 			                y[1]);
 			
 			
-			var neg_result = "Failed to catch invalid construct";
+			var neg_result:* = "Failed to catch invalid construct";
 			
 			try {
 			   unspecialized = getVector();
-			   var z = new unspecialized();
+			   var z:* = new unspecialized();
 			} catch ( ex )
 			{
 			    neg_result = String(ex);

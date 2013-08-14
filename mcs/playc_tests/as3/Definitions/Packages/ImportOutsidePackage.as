@@ -36,19 +36,19 @@
  * ***** END LICENSE BLOCK ***** */
 
 package test{
-	public var a = 'PASSED';
+	public var a:* = 'PASSED';
 	public function f() {
-		var g = "g";
+		var g:* = "g";
 		return g;
 	}
 }
 
 package test2{
 	public function g() {
-		var h = "h";
+		var h:* = "h";
 		return h;
 	}
-	public var b = "hello";
+	public var b:* = "hello";
 }
 
 class C {
@@ -60,21 +60,21 @@ class C {
 
 import test.*;
 
-var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "PackageDefinition" //Proved ECMA section titile or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions";       // provide a document reference (ie, Actionscript section)
+var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+var TITLE:*   = "PackageDefinition" //Proved ECMA section titile or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
 
-var d = a;
+var d:* = a;
 
 AddTestCase( "import outside of package, variable", "PASSED",d );
 
 AddTestCase( "import outside of package, function", "g", f());
 
-var c = new C();
+var c:* = new C();
 
 AddTestCase( "import outside of package, inside class", "hello", c.returnB());
 

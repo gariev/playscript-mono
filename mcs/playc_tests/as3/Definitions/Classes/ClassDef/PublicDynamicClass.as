@@ -42,32 +42,32 @@ package {
 	
 	public class PublicDynamicClassTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";                   // Version of JavaScript or ECMA
-			var TITLE   = "Access Class Properties & Methods";  // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";           // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";                   // Version of JavaScript or ECMA
+			var TITLE:*   = "Access Class Properties & Methods";  // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
 			
 			
-			var arr = new Array(1,2,3);
-			var arr2 = new Array(3,2,1);
-			var Obj = new PublicDynamicClass();
-			var d = new Date(0);
-			var d2 = new Date(1);
-			var f = new Function();
-			var str = "Test";
-			var ob = new Object();
-			var foo; 
+			var arr:* = new Array(1,2,3);
+			var arr2:* = new Array(3,2,1);
+			var Obj:* = new PublicDynamicClass();
+			var d:* = new Date(0);
+			var d2:* = new Date(1);
+			var f:* = new Function();
+			var str:* = "Test";
+			var ob:* = new Object();
+			var foo:*; 
 			
 			// ********************************************
 			// Basic Constructor tests
 			// ********************************************
 			AddTestCase( "*** No param constructor test ***", 1, 1 );
-			AddTestCase( "var foo = new PublicDynamicClass(), PublicDynamicClass.constructorCount", 2, (foo = new PublicDynamicClass(), PublicDynamicClass.constructorCount) );
+			AddTestCase( "var foo:* = new PublicDynamicClass(), PublicDynamicClass.constructorCount", 2, (foo = new PublicDynamicClass(), PublicDynamicClass.constructorCount) );
 			AddTestCase( "*** No param constructor test ***", 1, 1 );
-			AddTestCase( "var foo = new PublicDynamicClass, PublicDynamicClass.constructorCount", 3, (foo = new PublicDynamicClass, PublicDynamicClass.constructorCount) );
+			AddTestCase( "var foo:* = new PublicDynamicClass, PublicDynamicClass.constructorCount", 3, (foo = new PublicDynamicClass, PublicDynamicClass.constructorCount) );
 			
 			// ********************************************
 			// Access Default method

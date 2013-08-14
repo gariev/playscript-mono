@@ -37,7 +37,7 @@
 package ExtractMethPackage {
 	internal class InternalClass {
 		var x:String = "here";
-		static var xStat = "i'm here";
+		static var xStat:* = "i'm here";
 		
 		public function pubGetX():String {
 			return this.x;

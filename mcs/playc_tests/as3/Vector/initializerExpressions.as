@@ -49,12 +49,12 @@
 package {
 	public class initializerExpressionsTest extends BaseTest {
 		public static function Main():int {
-			var SECTION=""
-			var VERSION=""
+			var SECTION:*=""
+			var VERSION:*=""
 			
 			startTest();
 			
-			var v = new<int>[1,2];
+			var v:* = new<int>[1,2];
 			
 			AddTestCase(
 				"Initialize a variable with a Vector",
@@ -68,7 +68,7 @@ package {
 				"3,4", 
 				v2.toString());
 			
-			var msg="no exception";
+			var msg:*="no exception";
 			try {
 				var v3:Vector.<*> = new<int>[49];
 			} catch ( ex )

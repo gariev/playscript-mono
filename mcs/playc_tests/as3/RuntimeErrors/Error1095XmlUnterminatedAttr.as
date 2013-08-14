@@ -37,16 +37,16 @@
 package {
 	public class Error1095XmlUnterminatedAttrTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1095; //	XML parser failure: Unterminated attribute.
+			var CODE:* = 1095; //	XML parser failure: Unterminated attribute.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var result = "no error";
-				var y = "<a b='/>";
-				var z = new XML(y);
+				var result:* = "no error";
+				var y:* = "<a b='/>";
+				var z:* = new XML(y);
 			} catch (err) {
 				result = err.toString();
 			} finally {

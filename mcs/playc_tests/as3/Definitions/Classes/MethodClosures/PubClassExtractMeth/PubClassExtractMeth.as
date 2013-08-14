@@ -37,7 +37,7 @@
 package ExtractMethPackage {
 	public class PubClassExtractMeth {
 		var x:String = "here";
-		static var xStat = "i'm here";
+		static var xStat:* = "i'm here";
 		
 		public function pubGetX():String {
 			return this.x;

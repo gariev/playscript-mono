@@ -43,20 +43,20 @@
 package {
 	public class typecheckingTest extends BaseTest {
 		public static function Main():int {
-			var SECTION="";
-			var VERSION = "ECMA_4";
+			var SECTION:*="";
+			var VERSION:* = "ECMA_4";
 			
 			startTest();
 			
 			writeHeaderToLog( " Vector.typechecking");
 			
 			// untyped
-			var vs1=new Vector.<String>();
+			var vs1:*=new Vector.<String>();
 			// typed
 			var vs2:Vector.<String>=new Vector.<String>();
 			var v1:Vector.<Object>;
 			
-			var err1="no error";
+			var err1:*="no error";
 			try {
 			  v1=vs2;
 			} catch (e) {
@@ -90,7 +90,7 @@ package {
 					2,
 					v2.push(new A(),new B()));
 			
-			var err4="no error";
+			var err4:*="no error";
 			try {
 			  v2.push(new A(),new C());
 			} catch (e) {
@@ -113,8 +113,8 @@ package {
 					"[object A],[object B]",
 					v4.toString());
 			
-			var err5="no error";
-			var v5=new Vector.<A>();
+			var err5:*="no error";
+			var v5:*=new Vector.<A>();
 			try {
 			 v5.unshift(new A(),new B(),new C());
 			} catch (e) {
@@ -134,7 +134,7 @@ package {
 					"[object A],[object A],[object B],[object B]",
 					v6.concat(v6a).toString());
 			
-			var err7="no error";
+			var err7:*="no error";
 			var v7:Vector.<C>=new Vector.<C>();
 			v7.push(new C());
 			try {
@@ -148,7 +148,7 @@ package {
 					parseError(err7,"TypeError: Error #1034".length));
 			
 			var v8:Vector.<A>=new Vector.<A>();
-			var err8="no error";
+			var err8:*="no error";
 			try {
 			  v8[0]=new C();
 			} catch(e) {

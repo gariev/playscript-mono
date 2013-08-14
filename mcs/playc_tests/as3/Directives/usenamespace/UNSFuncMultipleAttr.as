@@ -38,10 +38,10 @@
 package {
 	public class UNSFuncMultipleAttrTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Directives";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript
-			var TITLE   = "multiple declaration namespaces in and outside of function";
-			var BUGNUMBER = "";
+			var SECTION:* = "Directives";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript
+			var TITLE:*   = "multiple declaration namespaces in and outside of function";
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -53,13 +53,13 @@ package {
 			    namespace Basketball;
 				namespace Public;
 			
-				Football var teamName = "Chargers";
+				Football var teamName:* = "Chargers";
 			
 				use namespace Baseball;
 			
-				Baseball var teamColor = "blue";
-			    Basketball var teamName = "basketball";
-			    Football var teamColor = "yellow";
+				Baseball var teamColor:* = "blue";
+			    Basketball var teamName:* = "basketball";
+			    Football var teamColor:* = "yellow";
 			
 				Football function getTeam(){
 				    use namespace Football;

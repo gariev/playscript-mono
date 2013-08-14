@@ -40,14 +40,14 @@ package {
 	
 	public class GetSetExtendedTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "FunctionAccessors";
-			var VERSION = "AS3"; 
-			var TITLE   = "Function Accessors";
-			var BUGNUMBER = "";
+			var SECTION:* = "FunctionAccessors";
+			var VERSION:* = "AS3"; 
+			var TITLE:*   = "Function Accessors";
+			var BUGNUMBER:* = "";
 			
 			startTest();
 			
-			var OBJ = new GetSetPrivate();
+			var OBJ:* = new GetSetPrivate();
 			
 			AddTestCase("Get private var:int", -10, OBJ.y);
 			AddTestCase("Set private var:int", 23334, (OBJ.y = 23334, OBJ.y));
@@ -64,7 +64,7 @@ package {
 			
 			// Attempt to access the private vars directly
 			try{
-				var res = "not run";
+				var res:* = "not run";
 				OBJ._x = 4;
 				res = "no exception";
 			} catch (e1) {
@@ -74,7 +74,7 @@ package {
 			}
 			
 			try{
-				var res = "not run";
+				var res:* = "not run";
 				OBJ._y = 4;
 				res = "no exception";
 			} catch (e2) {
@@ -84,7 +84,7 @@ package {
 			}
 			
 			try{
-				var res = "not run";
+				var res:* = "not run";
 				OBJ._b = 4;
 				res = "no exception";
 			} catch (e3) {
@@ -94,7 +94,7 @@ package {
 			}
 			
 			try{
-				var res = "not run";
+				var res:* = "not run";
 				OBJ._u = 4;
 				res = "no exception";
 			} catch (e4) {
@@ -104,7 +104,7 @@ package {
 			}
 			
 			try{
-				var res = "not run";
+				var res:* = "not run";
 				OBJ._s = 4;
 				res = "no exception";
 			} catch (e5) {
@@ -134,7 +134,7 @@ package {
 			
 			//define a getter for a property and call the undefined setter
 			try{
-				var res = "not run";
+				var res:* = "not run";
 				OBJ.noSetter = "test";
 				res = "no exception";
 			} catch (e6) {
@@ -145,7 +145,7 @@ package {
 			
 			//define a setter for a property and call the undefined getter
 			try{
-				var res = "not run";
+				var res:* = "not run";
 				OBJ.noGetter;
 				res = "no exception";
 			} catch (e7) {

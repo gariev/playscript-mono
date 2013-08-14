@@ -35,10 +35,10 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var SECTION = "8.6.1 Constructor Methods";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
-var TITLE   = "Implicit SuperStatement";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
+var SECTION:* = "8.6.1 Constructor Methods";       // provide a document reference (ie, Actionscript section)
+var VERSION:* = "AS3";        // Version of ECMAScript or ActionScript 
+var TITLE:*   = "Implicit SuperStatement";       // Provide ECMA section title or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
@@ -48,9 +48,9 @@ startTest();                // leave this alone
   
 import SuperRuntimeError.*
 
-var srte = new SuperRuntimeError();
-var result = "";
-var thisError = "";
+var srte:* = new SuperRuntimeError();
+var result:* = "";
+var thisError:* = "";
 
 thisError = "no exception thrown";
 try {

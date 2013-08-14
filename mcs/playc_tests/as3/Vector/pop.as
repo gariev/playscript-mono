@@ -44,14 +44,14 @@
 package {
 	public class popTest extends BaseTest {
 		public static function Main():int {
-			var SECTION="";
-			var VERSION = "ECMA_1";
+			var SECTION:*="";
+			var VERSION:* = "ECMA_1";
 			
 			startTest();
 			
 			writeHeaderToLog( " Vector.pop()");
 			
-			var v1=new Vector.<int>();
+			var v1:*=new Vector.<int>();
 			AddTestCase(
 					"pop empty vector",
 					0,
@@ -61,7 +61,7 @@ package {
 					"",
 					v1.toString());
 			
-			var v1=new Vector.<int>();
+			var v1:*=new Vector.<int>();
 			v1[0]=100;
 			AddTestCase(
 			                "pop single length vector element",
@@ -72,8 +72,8 @@ package {
 			                "",
 			                v1.toString());
 			
-			var v1=new Vector.<int>();
-			for (var i=0;i<10;i++) v1[i]=10-i;
+			var v1:*=new Vector.<int>();
+			for (var i:*=0;i<10;i++) v1[i]=10-i;
 			AddTestCase(
 			                "pop simple vector element",
 			                1,
@@ -82,7 +82,7 @@ package {
 			                "pop simple vector element, original vector changed",
 			                "10,9,8,7,6,5,4,3,2",
 			                v1.toString());
-			var v1=new Vector.<int>(10);
+			var v1:*=new Vector.<int>(10);
 			AddTestCase(
 			                "pop vector with initialized size",
 			                0,
@@ -92,8 +92,8 @@ package {
 			                "0,0,0,0,0,0,0,0,0",
 			                v1.toString());
 			
-			var v1=new Vector.<int>(10,true);
-			var errormsg="";
+			var v1:*=new Vector.<int>(10,true);
+			var errormsg:*="";
 			try {
 			  v1.pop();
 			} catch (e) {

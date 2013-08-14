@@ -37,19 +37,19 @@
 package {
 	public class Error1112ArgCountMismatchOnClassCoercionTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1112; //	Argument count mismatch on class coercion. Expected 1, got _.
+			var CODE:* = 1112; //	Argument count mismatch on class coercion. Expected 1, got _.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
-			var expected = "Error #" + CODE;
-			var result = "no error";
+			var expected:* = "Error #" + CODE;
+			var result:* = "no error";
 			try {
 				class a {
 					function a() {}
 				}
-				var b = a(1,2);
+				var b:* = a(1,2);
 			} catch (err) {
 				result = grabError(err, err.toString());
 			} finally {

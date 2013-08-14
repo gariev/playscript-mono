@@ -39,7 +39,7 @@ package Package1
 {
     public class Class1
     {
-        public static var item1;
+        public static var item1:*;
     }
 }
 
@@ -47,9 +47,9 @@ import Package1.*;
 
 startTest();
 
-var c1 = new Class1();
+var c1:* = new Class1();
 
-var thisError = "no error";
+var thisError:* = "no error";
 
 try
 {

@@ -42,10 +42,10 @@ package {
 	
 	public class PubFinExtDefaultClassTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       			// provide a document reference (ie, ECMA section)
-			var VERSION = "AS 3.0";  				// Version of JavaScript or ECMA
-			var TITLE   = "Public Final Class Extends Default Class";    // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       			// provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS 3.0";  				// Version of JavaScript or ECMA
+			var TITLE:*   = "Public Final Class Extends Default Class";    // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -55,8 +55,8 @@ package {
 			//  outside of class
 			// *******************************************
 			
-			var DYNEXTDCLASS = new PubFinExtDefaultClass();
-			var arr = new Array(10, 15, 20, 25, 30);
+			var DYNEXTDCLASS:* = new PubFinExtDefaultClass();
+			var arr:* = new Array(10, 15, 20, 25, 30);
 			
 			AddTestCase( "*** Access Default Method from Default method of sub class  ***", 1, 1 );
 			AddTestCase( "DYNEXTDCLASS.testSubGetSetArray(arr)", arr, (DYNEXTDCLASS.testSubGetSetArray(arr)) );
@@ -67,7 +67,7 @@ package {
 			// method of a sub class
 			//
 			// ********************************************
-			var arr = new Array(1, 5);
+			var arr:* = new Array(1, 5);
 			DYNEXTDCLASS = new PubFinExtDefaultClass();
 			AddTestCase( "*** Access default method from public method of sub class ***", 1, 1 );
 			AddTestCase( "DYNEXTDCLASS.pubSubSetArray(arr), DYNEXTDCLASS.pubSubGetArray()", arr, (DYNEXTDCLASS.pubSubSetArray(arr), DYNEXTDCLASS.pubSubGetArray()) );
@@ -78,7 +78,7 @@ package {
 			// method of a sub class
 			//
 			// ********************************************
-			var arr = new Array(2, 4, 6);
+			var arr:* = new Array(2, 4, 6);
 			DYNEXTDCLASS = new PubFinExtDefaultClass();
 			AddTestCase( "*** Access default method from private method of sub class ***", 1, 1 );
 			AddTestCase( "DYNEXTDCLASS.testPrivSubArray(arr)", arr, DYNEXTDCLASS.testPrivSubArray(arr) );
@@ -98,7 +98,7 @@ package {
 			//
 			// ********************************************
 			/*
-			var arr = new Array(1, 5);
+			var arr:* = new Array(1, 5);
 			DYNEXTDCLASS = new PubFinExtDefaultClass();
 			AddTestCase( "*** Access default method from static method of sub class ***", 1, 1 );
 			AddTestCase( "DYNEXTDCLASS.testStatSubArray(arr)", arr, (DYNEXTDCLASS.testStatSubArray(arr)) );

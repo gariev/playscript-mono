@@ -38,10 +38,10 @@
 package {
 	public class ConstVarInsideClassFunction2_rtTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions\const";       				// provide a document reference (ie, ECMA section)
-			var VERSION = "ActionScript 3.0";  					// Version of JavaScript or ECMA
-			var TITLE   = "Initialize const inside a class function after its initializer";     // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions\const";       				// provide a document reference (ie, ECMA section)
+			var VERSION:* = "ActionScript 3.0";  					// Version of JavaScript or ECMA
+			var TITLE:*   = "Initialize const inside:* a class function after its initializer";     // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			
 			
@@ -55,7 +55,7 @@ package {
 			
 			 	function myConstArgs( arg1, arg2 ) {
 			 
-			  		const arg3;
+			  		const arg3:*;
 			 		arg3 = arg1 + arg2;
 			  		arg3 = arg3 - 10;
 			  		arg3 = arg3 * 10;
@@ -66,7 +66,7 @@ package {
 			
 			
 			var thisError:String = "no error";
-			var Obj = new myTestConst();
+			var Obj:* = new myTestConst();
 			
 			try
 			{
@@ -78,7 +78,7 @@ package {
 			}
 			finally
 			{
-			    AddTestCase("Initialize local const inside a class function after its initializer", "Illegal write to local const arg3", thisError);
+			    AddTestCase("Initialize local const inside:* a class function after its initializer", "Illegal write to local const arg3", thisError);
 			}
 			
 			test();       		// Leave this function alone.

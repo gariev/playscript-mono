@@ -47,8 +47,8 @@
 package {
 	public class foreachInitializersTest extends BaseTest {
 		public static function Main():int {
-			var SECTION="";
-			var VERSION = "ECMA_1";
+			var SECTION:*="";
+			var VERSION:* = "ECMA_1";
 			
 			startTest();
 			
@@ -57,11 +57,11 @@ package {
 			function eacher(value,index,obj) {
 			  result+="("+value+":"+index+")";
 			}
-			var bad_eacher="astring";
+			var bad_eacher:*="astring";
 			
-			var errormsg="";
+			var errormsg:*="";
 			try {
-			  var result=new <int>[].forEach();
+			  var result:*=new <int>[].forEach();
 			} catch (e) {
 			  errormsg=e.toString();
 			}
@@ -69,9 +69,9 @@ package {
 					"ArgumentError: Error #1063",
 			    parseError(errormsg,"ArgumentError: Error #1063".length));
 			
-			var errormsg="";
+			var errormsg:*="";
 			try {
-			  var result=new <int>[0,1,2].forEach(bad_eacher);
+			  var result:*=new <int>[0,1,2].forEach(bad_eacher);
 			} catch (e) {
 			  errormsg=e.toString();
 			}
@@ -79,7 +79,7 @@ package {
 			         		"TypeError: Error #1034",
 			            parseError(errormsg,"TypeError: Error #1034".length));
 			
-			var result="";
+			var result:*="";
 			new <String>["s0","s1","s2"].forEach(eacher);
 			AddTestCase(	"forEach simple vector",
 					"(s0:0)(s1:1)(s2:2)",
@@ -95,7 +95,7 @@ package {
 			
 			
 			var str:String = "";
-			for each (var o in new <Object>[1,2,3,"hello",'out',"there",true, false, 3.14159])
+			for each (var o:* in new <Object>[1,2,3,"hello",'out',"there",true, false, 3.14159])
 			{
 			  str += o;
 			}

@@ -42,15 +42,15 @@ package {
 	
 	public class dynfinClassWithStrParamConsTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";                   // Version of JavaScript or ECMA
-			var TITLE   = "Constructors with parameters of a Dynamic class";  // Provide ECMA section                                                                   //title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";           // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";                   // Version of JavaScript or ECMA
+			var TITLE:*   = "Constructors with parameters of a Dynamic class";  // Provide ECMA section                                                                   //title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
 			
-			var x = "test"; 
+			var x:* = "test"; 
 			var y:Boolean = true;
 			var myArray:Array = new Array(4,6,5);
 			
@@ -64,7 +64,7 @@ package {
 			      }
 			
 			      public function Add(){
-			             private var z = x+y;
+			             private var z:* = x+y;
 			             return z;
 			
 			                           
@@ -74,7 +74,7 @@ package {
 			var pbClCons:publicClassCons = new publicClassCons();
 			
 			var MyDefaultClass:DefaultClass;               
-			var dynWithStrParamCons=new dynfinClassWithStrParamCons(x,y,myArray,pbClCons,MyDefaultClass);
+			var dynWithStrParamCons:*=new dynfinClassWithStrParamCons(x,y,myArray,pbClCons,MyDefaultClass);
 			//print (dynWithStrParamCons.myString());
 			//print(x);
 			//print (dynWithStrParamCons.myBoolean());

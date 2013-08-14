@@ -41,16 +41,16 @@ package {
 	
 	public class VoidEvaluationTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";  // Version of JavaScript or ECMA
-			var TITLE   = "Function Return Type";       // Provide ECMA section title or a description
-			var BUGNUMBER = "108487";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";  // Version of JavaScript or ECMA
+			var TITLE:*   = "Function Return Type";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "108487";
 			
 			startTest();                // leave this alone
 			
-			var TESTOBJ = new TestObj();
+			var TESTOBJ:* = new TestObj();
 			
-			var result = "exception";
+			var result:* = "exception";
 			try {
 				TESTOBJ.g();
 				result = "no exception";

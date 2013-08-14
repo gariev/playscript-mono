@@ -38,10 +38,10 @@
 package {
 	public class TraitsNotAccessibleTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";  // Version of JavaScript or ECMA
-			var TITLE   = "Interface Definition";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";  // Version of JavaScript or ECMA
+			var TITLE:*   = "Interface Definition";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -49,10 +49,10 @@ package {
 			
 			import TraitsNotAccessible.*;
 			
-			var eg = new TraitTest();
+			var eg:* = new TraitTest();
 			AddTestCase("call implemented method", "x.I::f()", eg.doCall());
 			var thisError : String = "no exception thrown";
-			var result = "";
+			var result:* = "";
 			try {
 				result = eg.doSuperCall();
 			} catch (e) {

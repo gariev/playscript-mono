@@ -37,14 +37,14 @@
 package {
 	public class Error1074IllegalWriteToReadOnlyPropTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1074; //	Illegal write to read-only property _ on _.
+			var CODE:* = 1074; //	Illegal write to read-only property _ on _.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var z = "no error";
+				var z:* = "no error";
 				Object = new Object();
 				Object.valueOf = Number.prototype.valueOf;
 			} catch (err) {

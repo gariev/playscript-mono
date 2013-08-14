@@ -40,26 +40,26 @@
  */
 
 package packOne {
-	public var var1="packOne:var1";
-	public var var2="packOne:var2";
-	public var var3="packOne:var3";
-	public var var4="packOne:var4";
+	public var var1:*="packOne:var1";
+	public var var2:*="packOne:var2";
+	public var var3:*="packOne:var3";
+	public var var4:*="packOne:var4";
 }
 
 package packTwo {
-	public var p2var1="packTwo:var1";
-	public var p2var2="packTwo:var2";
-	public var p2var3="packTwo:var3";
-	public var p2var4="packTwo:var4";
+	public var p2var1:*="packTwo:var1";
+	public var p2var2:*="packTwo:var2";
+	public var p2var3:*="packTwo:var3";
+	public var p2var4:*="packTwo:var4";
 }
 
 package {
-    public var str="imported string";
-    public var num=10;
+    public var str:*="imported string";
+    public var num:*=10;
 }
 
 class testClass {
-	var testClassVar1 = "Inside testClass";
+	var testClassVar1:* = "Inside testClass";
 	function func1() {
 		return "Inside func1()";
 	}
@@ -70,7 +70,7 @@ class testClass {
 }
 
 final class finClass {
-	var finClassVar1 = "Inside finClass";
+	var finClassVar1:* = "Inside finClass";
 	function finFunc1() {
 		return "Inside func1()";
 	}
@@ -87,7 +87,7 @@ interface inInterface {
 
 
 class accSpecClass {
-	var accSpec1 = "string";
+	var accSpec1:* = "string";
 	public function func1() {
 		return "Inside func1()-public function";
 	}
@@ -98,7 +98,7 @@ class accSpecClass {
 }
 
 dynamic class dynClass {
-	var dynSpec1 = "string";
+	var dynSpec1:* = "string";
 	public function func1() {
 		return "Inside func1()-public function";
 	}

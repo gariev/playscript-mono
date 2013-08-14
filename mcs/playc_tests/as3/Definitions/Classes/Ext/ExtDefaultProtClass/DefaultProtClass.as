@@ -63,8 +63,8 @@ package DefaultProtClass {
     // to be overloaded
     // *****************************
 
-    protected var protOverLoadVar;
-    protected static var protStatOverLoadVar;
+    protected var protOverLoadVar:*;
+    protected static var protStatOverLoadVar:*;
 
     // ****************
     // constructor

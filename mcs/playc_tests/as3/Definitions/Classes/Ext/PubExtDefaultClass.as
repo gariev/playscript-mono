@@ -38,10 +38,10 @@
 package DefaultClass{
 import DefaultClass.*;
 
-var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";                   // Version of JavaScript or ECMA
-var TITLE   = "Extend Default Class";  // Provide ECMA section title or a description
-//var BUGNUMBER = "";
+var SECTION:* = "Definitions";           // provide a document reference (ie, ECMA section)
+var VERSION:* = "AS3";                   // Version of JavaScript or ECMA
+var TITLE:*   = "Extend Default Class";  // Provide ECMA section title or a description
+//var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
@@ -54,10 +54,10 @@ startTest();                // leave this alone
  *
  * For example, a test might look like this:
  *
- * var helloWorld = "Hello World";
+ * var helloWorld:* = "Hello World";
  *
  * AddTestCase(
- * "var helloWorld = 'Hello World'",   // description of the test
+ * "var helloWorld:* = 'Hello World'",   // description of the test
  *  "Hello World",                     // expected result
  *  helloWorld );                      // actual result
  *
@@ -67,7 +67,7 @@ startTest();                // leave this alone
 // public class extends <empty> class
 // ************************************
 
-var arr = new Array(1,2,3);
+var arr:* = new Array(1,2,3);
 
 // ********************************************
 // access default method from outside of class
@@ -186,7 +186,7 @@ AddTestCase( "PUBEXTDCLASS.finSubSetDPArray(arr), PUBEXTDCLASS.finSubGetDPArray(
 // ********************************************
 
 //Add new property to parent through prototype object, verify child inherits it
-var child = new PubExtDefaultClass();
+var child:* = new PubExtDefaultClass();
 DefaultClassInner.prototype.fakeProp = 100;
 AddTestCase("*** Add new property to parent prototype object, verify child class inherits it ***", 100, child.fakeProp);
 

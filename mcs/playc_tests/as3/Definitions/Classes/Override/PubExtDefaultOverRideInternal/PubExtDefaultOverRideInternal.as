@@ -41,8 +41,8 @@ package DefaultClassPackage {
 
 	public class PubExtDefaultOverRideInternal extends DefaultClass {
 
-		public var orSet = false;
-		public var orGet = false;
+		public var orSet:* = false;
+		public var orGet:* = false;
 
 		// *******************************
 		// override a public method

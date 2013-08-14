@@ -42,9 +42,9 @@
 package {
 	public class typeAnnotationTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = " ";
-			var VERSION = "AS3";
-			var TITLE   = "import annoted type defined in .abc file";
+			var SECTION:* = " ";
+			var VERSION:* = "AS3";
+			var TITLE:*   = "import annoted type defined in .abc file";
 			
 			startTest();
 			writeHeaderToLog( SECTION + " "+ TITLE);

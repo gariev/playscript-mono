@@ -59,8 +59,8 @@ use namespace ns;
 
 	public class DefaultsubClassAccessor extends DefaultsubClass{
 
-                var DefSubClass = new DefaultsubClass();
-                var DefSupClass = new DefaultClass();
+                var DefSubClass:* = new DefaultsubClass();
+                var DefSupClass:* = new DefaultClass();
                 var i:PublicInt = DefSupClass;
 		public function accdeffunc(){return DefSubClass.deffunc();}
 		// access default function deffunc

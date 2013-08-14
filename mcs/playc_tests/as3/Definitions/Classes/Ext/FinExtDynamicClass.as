@@ -51,10 +51,10 @@ import DynamicClass.*;
 
 
 
-var SECTION = "Definitions\Ext";       			// provide a document reference (ie, ECMA section)
-var VERSION = "AS3";  					// Version of JavaScript or ECMA
-var TITLE   = "Final Class Extends Dynamic Class Default Methods";      // Provide ECMA section title or a description
-//var BUGNUMBER = "";
+var SECTION:* = "Definitions\Ext";       			// provide a document reference (ie, ECMA section)
+var VERSION:* = "AS3";  					// Version of JavaScript or ECMA
+var TITLE:*   = "Final Class Extends Dynamic Class Default Methods";      // Provide ECMA section title or a description
+//var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
@@ -67,10 +67,10 @@ startTest();                // leave this alone
  *
  * For example, a test might look like this:
  *
- * var helloWorld = "Hello World";
+ * var helloWorld:* = "Hello World";
  *
  * AddTestCase(
- * "var helloWorld = 'Hello World'",   // description of the test
+ * "var helloWorld:* = 'Hello World'",   // description of the test
  *  "Hello World",                     // expected result
  *  helloWorld );                      // actual result
  *
@@ -87,12 +87,12 @@ startTest();                // leave this alone
 
 // Can't create an instance because it's not public
 // Hence commenting out the lines where the class is initialized.
-// var EXTDCLASS = new FinExtDynamicClass();
+// var EXTDCLASS:* = new FinExtDynamicClass();
 
 
 // Create an array variable which will define the test array to be used
 // for the given output.
-var arr = new Array(1, 2, 3);
+var arr:* = new Array(1, 2, 3);
 
 
 // access default method from outside of the class
@@ -235,7 +235,7 @@ AddTestCase( "testPrivStatSubDPArray( arr )", arr, testPrivStatSubDPArray( arr )
 // ********************************************
 
 //Add new property to parent through prototype object, verify child inherits it
-var child = new FinExtDynamicClass();
+var child:* = new FinExtDynamicClass();
 DynamicClassInner.prototype.fakeProp = 100;
 AddTestCase("*** Add new property to parent prototype object, verify child class inherits it ***", 100, child.fakeProp);
 

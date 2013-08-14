@@ -38,9 +38,9 @@
 package {
 	public class ImplicitConversionsNullTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Types: Conversions";
-			var VERSION = "as3";
-			var TITLE   = "implicit type conversions";
+			var SECTION:* = "Types: Conversions";
+			var VERSION:* = "as3";
+			var TITLE:*   = "implicit type conversions";
 			
 			startTest();
 			
@@ -50,7 +50,7 @@ package {
 			var string:String = null;
 			AddTestCase( "var string:String =null", null, string );
 			
-			var thisError = "no exception thrown";
+			var thisError:* = "no exception thrown";
 			try{
 				var mynumber:Number = null;
 			} catch (e) {

@@ -37,7 +37,7 @@
 package {
 	public class Error1056CannotCreatePropInSealedClassTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1056; //	Cannot create property _ on _.
+			var CODE:* = 1056; //	Cannot create property _ on _.
 			
 			//-----------------------------------------------------------
 			startTest();
@@ -46,7 +46,7 @@ package {
 			class C {}
 			
 			try {
-				var result = "no error";
+				var result:* = "no error";
 				var c:C = new C();
 				c.c = 0;
 			} catch (err) {

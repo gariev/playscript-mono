@@ -47,8 +47,8 @@
 package {
 	public class filterTest extends BaseTest {
 		public static function Main():int {
-			var SECTION="";
-			var VERSION = "ECMA_1";
+			var SECTION:*="";
+			var VERSION:* = "ECMA_1";
 			
 			startTest();
 			
@@ -59,16 +59,16 @@ package {
 			    return true;
 			  return false;
 			}
-			var invalidchecker="a string";
+			var invalidchecker:*="a string";
 			function ThisChecker(value,index,obj):Boolean {
 			  msg+=this.message;
 			  return true;
 			}
 			
-			var v1=new Vector.<int>();
-			var errormsg="";
+			var v1:*=new Vector.<int>();
+			var errormsg:*="";
 			try {
-			  var result=v1.filter();
+			  var result:*=v1.filter();
 			} catch (e) {
 			  errormsg=e.toString();
 			}
@@ -77,10 +77,10 @@ package {
 			    parseError(errormsg,"ArgumentError: Error #1063".length));
 			
 			var v1:Vector.<int>=new Vector.<int>(10);
-			for (var i=0;i<10;i++) v1[i]=i;
-			var errormsg="";
+			for (var i:*=0;i<10;i++) v1[i]=i;
+			var errormsg:*="";
 			try {
-			  var result=v1.filter(invalidchecker);
+			  var result:*=v1.filter(invalidchecker);
 			} catch (e) {
 			  errormsg=e.toString();
 			}
@@ -89,24 +89,24 @@ package {
 			              parseError(errormsg,"TypeError: Error #1034".length));
 			
 			var v1:Vector.<int>=new Vector.<int>();
-			var result=v1.filter(EvenChecker);
+			var result:*=v1.filter(EvenChecker);
 			AddTestCase(	"filter empty vector",
 					"",
 					result.toString());
 			
 			var v1:Vector.<int>=new Vector.<int>();
-			for (var i=0;i<10;i++) v1[i]=i;
-			var result=v1.filter(EvenChecker);
+			for (var i:*=0;i<10;i++) v1[i]=i;
+			var result:*=v1.filter(EvenChecker);
 			AddTestCase(	"filter small vector",
 					"0,2,4,6,8",
 					result.toString());
 			
 			var v1:Vector.<int>=new Vector.<int>();
-			for (var i=0;i<3;i++) v1[i]=i;
-			var myobject=new Object();
+			for (var i:*=0;i<3;i++) v1[i]=i;
+			var myobject:*=new Object();
 			myobject.message="message";
-			var msg="";
-			var result=v1.filter(ThisChecker,myobject);
+			var msg:*="";
+			var result:*=v1.filter(ThisChecker,myobject);
 			AddTestCase(	"filter use thisobj",
 					"messagemessagemessage",
 					msg);
@@ -147,8 +147,8 @@ package {
 			    
 			}
 			
-			var v2 = new <TestClass> [new TestClass(150), new TestClass(40), new TestClass(-200), new TestClass(400)];
-			var v2filtered = v2.filter(TestClass.over100);
+			var v2:* = new <TestClass> [new TestClass(150), new TestClass(40), new TestClass(-200), new TestClass(400)];
+			var v2filtered:* = v2.filter(TestClass.over100);
 			
 			AddTestCase("Filtered custom class",
 			            "150,400",

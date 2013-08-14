@@ -41,10 +41,10 @@ package {
 	
 	public class GetSetDiffScopeTest extends BaseTest {
 		public static function Main():int {
-			 var SECTION = "FunctionAccessors";
-			 var VERSION = "AS3";
-			 var TITLE   = "Function Accessors";
-			 var BUGNUMBER = "143360";
+			 var SECTION:* = "FunctionAccessors";
+			 var VERSION:* = "AS3";
+			 var TITLE:*   = "Function Accessors";
+			 var BUGNUMBER:* = "143360";
 			
 			
 			startTest();

@@ -89,13 +89,13 @@ package Qualifiers {
 	}
 
 	public class QualifierTest {
-		var didibi = new defImplDefIntByInt;
-		var didibp = new defImplDefIntByPub;
-		var diiibi = new defImplIntIntByInt;
-		var diiibp = new defImplIntIntByPub;
+		var didibi:* = new defImplDefIntByInt;
+		var didibp:* = new defImplDefIntByPub;
+		var diiibi:* = new defImplIntIntByInt;
+		var diiibp:* = new defImplIntIntByPub;
 		
-		var dipibi = new defImplPubIntByInt;
-		var dipibp = new defImplPubIntByPub;
+		var dipibi:* = new defImplPubIntByInt;
+		var dipibp:* = new defImplPubIntByPub;
 		public function doDefByInt() : String {
 			return didibi.defInt::defFunc();
 		}

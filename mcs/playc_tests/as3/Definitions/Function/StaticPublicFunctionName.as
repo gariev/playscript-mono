@@ -38,15 +38,15 @@
 import StaticPublicFunctionName.*;
 
 
-var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";  // Version of JavaScript or ECMA
-var TITLE   = "Function Names";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+var VERSION:* = "AS3";  // Version of JavaScript or ECMA
+var TITLE:*   = "Function Names";       // Provide ECMA section title or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
 
-var TESTOBJ = new TestNameObj();
+var TESTOBJ:* = new TestNameObj();
 
 // inside class inside package
 AddTestCase( "inside class inside package function Name a1()", "a1", TESTOBJ.puba1() );

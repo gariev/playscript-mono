@@ -125,7 +125,7 @@ public class PubExtDefaultImplDefDefPub extends DefaultClass implements DefaultI
  }
 
 public class PubExtDefaultImplDefDefPubAccessor{
-var s = new PubExtDefaultImplDefDefPub();
+var s:* = new PubExtDefaultImplDefDefPub();
 var i:DefaultInt=s;
 var j:DefaultIntDef=s;
 

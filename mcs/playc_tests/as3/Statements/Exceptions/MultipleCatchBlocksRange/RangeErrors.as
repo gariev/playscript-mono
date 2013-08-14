@@ -42,7 +42,7 @@ package MultipleCatchBlocksRange
                                  
          public function MyArgumentError(a):Number
          {
-             var arr = new Array(-10);
+             var arr:* = new Array(-10);
              return 6;
                                                         
          }                            

@@ -45,13 +45,13 @@ package
 
 package B
 {
-    public var num2 = A();
+    public var num2:* = A();
 }
 
-var SECTION = "Definitions\Packages";       			// provide a document reference (ie, ECMA section)
-var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-var TITLE   = "access default package function in other package";       // Provide ECMA section title or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions\Packages";       			// provide a document reference (ie, ECMA section)
+var VERSION:* = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+var TITLE:*   = "access default package function in other package";       // Provide ECMA section title or a description
+var BUGNUMBER:* = "";
 
 import A.*;
 

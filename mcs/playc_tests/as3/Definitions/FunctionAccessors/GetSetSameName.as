@@ -42,20 +42,20 @@ package {
 	  
 	public class GetSetSameNameTest extends BaseTest {
 		public static function Main():int {
-			 var SECTION = "FunctionAccessors";
-			 var VERSION = "AS3"; 
-			 var TITLE   = "Function Accessors";
-			 var BUGNUMBER = "133108, 133828";
+			 var SECTION:* = "FunctionAccessors";
+			 var VERSION:* = "AS3"; 
+			 var TITLE:*   = "Function Accessors";
+			 var BUGNUMBER:* = "133108, 133828";
 			 
 			
 			startTest();
 			
-			var g = new GetSetSameNameArg();
+			var g:* = new GetSetSameNameArg();
 			AddTestCase("Calling getter of same name as argument", 4, g.e);
 			AddTestCase("Calling setter of same name as argument", 5, (g.e = 5, g.e));
 			
 			
-			var h = new GetSetSame();
+			var h:* = new GetSetSame();
 			
 			
 			try {

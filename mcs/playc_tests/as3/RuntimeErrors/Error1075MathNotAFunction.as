@@ -37,14 +37,14 @@
 package {
 	public class Error1075MathNotAFunctionTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1075; //	Math is not a function.
+			var CODE:* = 1075; //	Math is not a function.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var z = "no error";
+				var z:* = "no error";
 				Math();
 			} catch (err) {
 				z = err.toString();

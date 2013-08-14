@@ -41,7 +41,7 @@
 package {
 	public class Error1069PropertyNotFoundTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1069;
+			var CODE:* = 1069;
 			
 			//-----------------------------------------------------------
 			startTest();
@@ -50,8 +50,8 @@ package {
 			class C {}
 			
 			try {
-				var z = "no error";
-				var c = new C();
+				var z:* = "no error";
+				var c:* = new C();
 				c.d();
 			} catch (err) {
 				z = err.toString();

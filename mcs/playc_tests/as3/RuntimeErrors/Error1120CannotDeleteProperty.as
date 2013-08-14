@@ -37,14 +37,14 @@
 package {
 	public class Error1120CannotDeletePropertyTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1120; //	Cannot delete property _ on _.
+			var CODE:* = 1120; //	Cannot delete property _ on _.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
-			var expected = "Error #" + CODE;
-			var result = "no error";
+			var expected:* = "Error #" + CODE;
+			var result:* = "no error";
 			try {
 				delete "".length;
 			} catch (err) {

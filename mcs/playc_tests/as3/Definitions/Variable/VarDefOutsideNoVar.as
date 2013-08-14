@@ -38,10 +38,10 @@
 package {
 	public class VarDefOutsideNoVarTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";       // provide a document reference (ie, ECMA section)
-			var VERSION = "Clean AS2";  // Version of JavaScript or ECMA
-			var TITLE   = "Variable";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";       // provide a document reference (ie, ECMA section)
+			var VERSION:* = "Clean AS2";  // Version of JavaScript or ECMA
+			var TITLE:*   = "Variable";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -63,8 +63,8 @@ package {
 			
 			AddTestCase( "Variable Definition <empty> defined inside class", 1, 1);
 			
-			AddTestCase( "var Identifier = <empty>", "id", (id = "id", id));
-			AddTestCase( "var Identifier = AssignmentExpression", true, idAssignExpr); 
+			AddTestCase( "var Identifier:* = <empty>", "id", (id = "id", id));
+			AddTestCase( "var Identifier:* = AssignmentExpression", true, idAssignExpr); 
 			AddTestCase( "var VariableBindingList, Identifier = <empty> [1]", true, (id1 = true, id1)); 
 			AddTestCase( "var VariableBindingList, Identifier = <empty> [2]", true, (id2 = true, id2)); 
 			AddTestCase( "var VariableBindingList, Identifier = <empty> [3]", true, (id3 = true, id3)); 

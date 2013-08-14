@@ -41,14 +41,14 @@ package ns {
 	public namespace N4 = "flowershop.com";
 	
 	public class foo {
-		var a = 0;
+		var a:* = 0;
 		N1 function A(){
 			if(a!=1) { return N1.toString()}
 			else {return null}
 		}
 
-		N3 var flower1 = "Gerbera Daisy"; 
-		N4 var flower2 = "Rose";
+		N3 var flower1:* = "Gerbera Daisy"; 
+		N4 var flower2:* = "Rose";
 	}
 
 }

@@ -38,10 +38,10 @@
 package {
 	public class NestedTryWithMultipleCatchInsideSecondCatchWithoutMatchingCatchTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions"; // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3"; // Version of JavaScript or ECMA
-			var TITLE = "Testing nested try block with multiple catch blocks, the inner try and multiple catch block inside the second catch block of the outer try and multiple catch blocks"; // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions"; // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3"; // Version of JavaScript or ECMA
+			var TITLE:* = "Testing nested try block with multiple catch blocks, the inner try and multiple catch block inside the second catch block of the outer try and multiple catch blocks"; // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest(); // leave this alone
 			

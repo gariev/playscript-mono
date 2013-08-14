@@ -38,10 +38,10 @@
 package {
 	public class asOperatorMulitiTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Expressions";        // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS3";        		// Version of ECMAScript or ActionScript
-			var TITLE   = "as operator";        // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Expressions";        // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS3";        		// Version of ECMAScript or ActionScript
+			var TITLE:*   = "as operator";        // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			

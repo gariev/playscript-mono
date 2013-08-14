@@ -38,10 +38,10 @@
 package {
 	public class functionReturnTypesTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Function";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
-			var TITLE   = "ReturnTypes";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Function";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS3";        // Version of ECMAScript or ActionScript 
+			var TITLE:*   = "ReturnTypes";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -89,14 +89,14 @@ package {
 			funcArr[9]  = function (arg):TestClassC {return arg;}
 			funcArr[10] = function (arg):Date {return arg;}
 			
-			var result;
+			var result:*;
 			var resultArr:Array = new Array();
 			populateResults();
 			
-			var resultCounter = 0;
+			var resultCounter:* = 0;
 			//Error cases that try to return an incorrect return type.
-			for (var i=0; i<funcArr.length; i++) {  //loop through each function
-			    for (var j=0; j<valueArr.length; j++) {	//loop through each type
+			for (var i:*=0; i<funcArr.length; i++) {  //loop through each function
+			    for (var j:*=0; j<valueArr.length; j++) {	//loop through each type
 				try {
 				    result = funcArr[i](valueArr[j]) is typeArr[i];
 				} catch (e) {
@@ -116,7 +116,7 @@ package {
 			              // displays results.
 			
 			function populateResults() {
-			var x=0;
+			var x:*=0;
 			resultArr[x++] = true; // funcArr[0]({}) - return type: String
 			resultArr[x++] = true; // funcArr[0]("string") - return type: String
 			resultArr[x++] = true; // funcArr[0]("10") - return type: String

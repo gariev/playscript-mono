@@ -37,14 +37,14 @@
 package {
 	public class Error1040InvalidRHSOfInstanceofTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1040; //	The right-hand side of instanceof must be a class or function.
+			var CODE:* = 1040; //	The right-hand side of instanceof must be a class or function.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var result = "no error";
+				var result:* = "no error";
 				0 instanceof 0
 			} catch (err) {
 				result = err.toString();

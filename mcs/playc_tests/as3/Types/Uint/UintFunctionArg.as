@@ -70,8 +70,8 @@ package {
 			
 			function addNegUintInFunc(){
 				var a:uint;
-				var b = -100;
-				var c = 1;
+				var b:* = -100;
+				var c:* = 1;
 				return (a = b+c);
 			}
 			
@@ -80,7 +80,7 @@ package {
 			
 			// RangeError precision exceptions
 			
-			var pResult = null;
+			var pResult:* = null;
 			try{
 				Uint1Arg(-1);
 				pResult = "exception NOT caught";

@@ -37,16 +37,16 @@
 package {
 	public class Error1094XmlUnterminatedCommentTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1094; //	XML parser failure: Unterminated comment.
+			var CODE:* = 1094; //	XML parser failure: Unterminated comment.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var result = "no error";
-				var y = "<!--";
-				var z = new XML(y);
+				var result:* = "no error";
+				var y:* = "<!--";
+				var z:* = new XML(y);
 			} catch (err) {
 				result = err.toString();
 			} finally {

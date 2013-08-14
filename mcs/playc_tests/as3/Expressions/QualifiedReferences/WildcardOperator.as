@@ -38,18 +38,18 @@
 package {
 	public class WildcardOperatorTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Expressions";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript
-			var TITLE   = "Wildcard operator on non-XML object - runtime error";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Expressions";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript
+			var TITLE:*   = "Wildcard operator on non-XML object - runtime error";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
 			
 			
-			var employees = [{fname:"John",age:20},{fname:"Sue",age:30}]
+			var employees:* = [{fname:"John",age:20},{fname:"Sue",age:30}]
 			try {
-				var names = employees.*;
+				var names:* = employees.*;
 				result = "no exception";
 			} catch(e1) {
 				result = referenceError(e1.toString());
@@ -59,10 +59,10 @@ package {
 			
 			AddTestCase("Use wildcard operator on an array", expected, result);
 			
-			var object = {a:1, b:2, c:3};
+			var object:* = {a:1, b:2, c:3};
 			
 			try {
-				var names = object.*;
+				var names:* = object.*;
 				result = "no exception";
 			} catch(e2) {
 				result = referenceError(e2.toString());
@@ -72,10 +72,10 @@ package {
 			
 			AddTestCase("Use wildcard operator on an object", expected, result);
 			
-			var string = "this is a string";
+			var string:* = "this is a string";
 			
 			try {
-				var names = string.*;
+				var names:* = string.*;
 				result = "no exception";
 			} catch(e3) {
 				result = referenceError(e3.toString());

@@ -38,10 +38,10 @@
 package {
 	public class UNSInsideFunTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Directives";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-			var TITLE   = "namespace inside a function";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Directives";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+			var TITLE:*   = "namespace inside a function";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -53,8 +53,8 @@ package {
 			namespace HelloKitty;
 			
 			
-			Football var teamName = "Chargers";
-			Baseball var teamName = "Giants";
+			Football var teamName:* = "Chargers";
+			Baseball var teamName:* = "Giants";
 			
 			use namespace Baseball;
 			

@@ -47,8 +47,8 @@
 package {
 	public class mapInitializersTest extends BaseTest {
 		public static function Main():int {
-			var SECTION="";
-			var VERSION = "ECMA_1";
+			var SECTION:*="";
+			var VERSION:* = "ECMA_1";
 			
 			startTest();
 			
@@ -57,7 +57,7 @@ package {
 			function mapper1(value,index,obj) {
 			   return "("+value+":"+index+")";
 			}
-			var mapper2="a string";
+			var mapper2:*="a string";
 			function mapper3(value,index,obj) {
 			   return "("+this.message+")";
 			}
@@ -65,9 +65,9 @@ package {
 			   return value*value;
 			}
 			
-			var errormsg="";
+			var errormsg:*="";
 			try {
-			  var result=new <int>[1].map();
+			  var result:*=new <int>[1].map();
 			} catch (e) {
 			  errormsg=e.toString();
 			}
@@ -76,9 +76,9 @@ package {
 					"ArgumentError: Error #1063",
 					parseError(errormsg,"ArgumentError: Error #1063".length));
 			
-			var errormsg="";
+			var errormsg:*="";
 			try {
-			  var result=new<int>[1].map(mapper2);
+			  var result:*=new<int>[1].map(mapper2);
 			} catch (e) {
 			  errormsg=e.toString();
 			}

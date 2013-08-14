@@ -40,17 +40,17 @@
 package {
 	public class UnnamedPackageTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions/Packages";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-			var TITLE   = "UnNamedPackage" //Proved ECMA section titile or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions/Packages";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+			var TITLE:*   = "UnNamedPackage" //Proved ECMA section titile or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
 			
-			var a = new A();
-			var b = new B();
-			var c = new C();
+			var a:* = new A();
+			var b:* = new B();
+			var c:* = new C();
 			
 			AddTestCase("Function defined in unNamedPackage", "A", a.whoAmI());
 			AddTestCase("Interface defined in unNamedPackage", "B", b.whoAmI());

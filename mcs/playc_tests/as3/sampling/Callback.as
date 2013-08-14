@@ -40,11 +40,11 @@ package {
 import flash.sampler.*;
 import avmplus.*;
 
-var SECTION = "Sampling";
-var VERSION = "AS3";
-var TITLE   = "test the callback functionality when sampler memory is too high";
+var SECTION:* = "Sampling";
+var VERSION:* = "AS3";
+var TITLE:*   = "test the callback functionality when sampler memory is too high";
 
-var isdebugger=System.isDebugger();
+var isdebugger:*=System.isDebugger();
 
 startTest();
 writeHeaderToLog("Sampling api: callback");
@@ -58,7 +58,7 @@ class simpleobject {
 }
 function simpleLoop(n:int=10) {
     for (var i:int=0;i<n;i++) {
-        var s="0123456789";
+        var s:*="0123456789";
         objs.push(new simpleobject(s));
     }
 }
@@ -126,7 +126,7 @@ AddTestCase(
   callback2_num>0
 );
 
-var errstr2="";
+var errstr2:*="";
 
 try {
     setSamplerCallback(abc);

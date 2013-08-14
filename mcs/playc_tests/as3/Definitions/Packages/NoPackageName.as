@@ -36,9 +36,9 @@
  * ***** END LICENSE BLOCK ***** */
  
 package {
- 	public var a = "boo";
- 	//private var b = "hoo"; Changing private variable to default variable since
-        var b = "hoo";           //private attribute is allowed only on class property
+ 	public var a:* = "boo";
+ 	//private var b:* = "hoo"; Changing private variable to default variable since
+        var b:* = "hoo";           //private attribute is allowed only on class property
  	
  	public class PublicClass {
  		public function sayHi() {
@@ -63,24 +63,24 @@ package {
  	}
 }
 
-var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "PackageDefinition" //Proved ECMA section titile or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions";       // provide a document reference (ie, Actionscript section)
+var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+var TITLE:*   = "PackageDefinition" //Proved ECMA section titile or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
 
-var helloWorld = "Hello World";
-AddTestCase( "var helloWorld = 'Hello World'", "Hello World", helloWorld );
+var helloWorld:* = "Hello World";
+AddTestCase( "var helloWorld:* = 'Hello World'", "Hello World", helloWorld );
 
 AddTestCase("Access public variable in package with no name", "boo", a);
 
-var expected = 'error';
-var actual = 'no error';
+var expected:* = 'error';
+var actual:* = 'no error';
 
 try {
-	var internalVar = b;
+	var internalVar:* = b;
 } catch(e1) {
 	actual = 'error';
 }
@@ -90,11 +90,11 @@ AddTestCase("Access internal variable in package with no name", expected, actual
 
 AddTestCase("Access public class in package with no name", "hi", (c1 = new PublicClass(), c1.sayHi()));
 
-var expected = 'error';
-var actual = 'no error';
+var expected:* = 'error';
+var actual:* = 'no error';
 
 try {
-	var c2 = new PublicClass();
+	var c2:* = new PublicClass();
 	c2.sayBye();
 } catch(e2) {
 	actual = 'error';
@@ -102,11 +102,11 @@ try {
 
 AddTestCase("Try to access function not declared as public", expected, actual);
 
-var expected = 'error';
-var actual = 'no error';
+var expected:* = 'error';
+var actual:* = 'no error';
 
 /*try {
-	var c3 = new PrivateClass();
+	var c3:* = new PrivateClass();
 	c3.sayHi();
 } catch(e3) {
 	actual = 'error';
@@ -115,11 +115,11 @@ var actual = 'no error';
 AddTestCase("Try to access private variable", expected, actual);*/
 
 
-var expected = 'error';
-var actual = 'no error';
+var expected:* = 'error';
+var actual:* = 'no error';
 
 try {
-	var c4 = new NotAPublicClass();
+	var c4:* = new NotAPublicClass();
 	c4.sayHi();
 } catch(e4) {
 	actual = 'error';

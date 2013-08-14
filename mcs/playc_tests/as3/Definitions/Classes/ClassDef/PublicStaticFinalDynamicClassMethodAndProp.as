@@ -42,26 +42,26 @@ package {
 	
 	public class PublicStaticFinalDynamicClassMethodAndPropTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";                   // Version of JavaScript or ECMA
-			var TITLE   = "Access Class Properties & Methods";  // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";           // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";                   // Version of JavaScript or ECMA
+			var TITLE:*   = "Access Class Properties & Methods";  // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
 			
 			
-			var arr = new Array(1,2,3);
+			var arr:* = new Array(1,2,3);
 			
-			var Obj = new AccPubStatFinDynClassMAndP();
+			var Obj:* = new AccPubStatFinDynClassMAndP();
 			
-			var d = new Date(0);
+			var d:* = new Date(0);
 			
-			var f = new Function();
+			var f:* = new Function();
 			
-			var str = "Test";
+			var str:* = "Test";
 			
-			var ob = new Object();
+			var ob:* = new Object();
 			
 			
 			// ********************************************

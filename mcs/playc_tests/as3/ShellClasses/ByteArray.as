@@ -41,10 +41,10 @@ package {
 	
 	public class ByteArrayTest extends BaseTest {
 		public static function Main():int {
-			    var SECTION = "ByteArray";
-			    var VERSION = "as3";
+			    var SECTION:* = "ByteArray";
+			    var VERSION:* = "as3";
 			    startTest();
-			    var TITLE   = "test ByteArray class";
+			    var TITLE:*   = "test ByteArray class";
 			
 			    writeHeaderToLog( SECTION + " "+ TITLE );
 			
@@ -235,7 +235,7 @@ package {
 			     "bigEndian",
 			     bytearray.endian);
 			
-			    var err="none";
+			    var err:*="none";
 			    try {
 			        bytearray.endian="none";
 			    } catch (e) {
@@ -273,7 +273,7 @@ package {
 			     0,
 			     bytearray[9]);
 			
-			    var bytearray_shrink=new ByteArray;
+			    var bytearray_shrink:*=new ByteArray;
 			    bytearray_shrink.length=10;    
 			    bytearray_shrink.length=5;
 			    AddTestCase(
@@ -300,14 +300,14 @@ package {
 			     bytearray3.length);
 			
 			// writeBytes
-			    var bytearray4=new ByteArray;
+			    var bytearray4:*=new ByteArray;
 			    bytearray4.writeBytes(bytearray);
 			    AddTestCase(
 			     "ByteArray writeBytes",
 			     10,
 			     bytearray4.length);
 			
-			    var bytearray5=new ByteArray;
+			    var bytearray5:*=new ByteArray;
 			    bytearray5.writeBytes(bytearray,1,5);
 			    AddTestCase(
 			     "ByteArray writeBytes",
@@ -315,7 +315,7 @@ package {
 			     bytearray5.length);
 			
 			// hasAtomProperty
-			    var bytearray_atom=new ByteArray;
+			    var bytearray_atom:*=new ByteArray;
 			    bytearray_atom.writeByte(1);
 			    bytearray_atom.writeByte(2);
 			    bytearray_atom.writeByte(3);
@@ -330,15 +330,15 @@ package {
 			    
 			// read/write file
 			    bytearray_atom.writeFile('test.ba');
-			    var bytearray_read=ByteArray.readFile('test.ba');
+			    var bytearray_read:*=ByteArray.readFile('test.ba');
 			    AddTestCase(
 			      "ByteArray read/writeFile",
 			      3,
 			      bytearray_read.length);
 			
-			    var err2="";
+			    var err2:*="";
 			    try {
-			        var bytearray_badread=ByteArray.readFile('foo.ba');
+			        var bytearray_badread:*=ByteArray.readFile('foo.ba');
 			    } catch (e) {
 			        err2=e.toString();
 			    }
@@ -410,7 +410,7 @@ package {
 			      bytearray_bad.toString());
 			
 			// compress/uncompress
-			    var bytearray_compress = new ByteArray();
+			    var bytearray_compress:* = new ByteArray();
 			    bytearray_compress[0]=0xef;
 			    bytearray_compress[1]=0xbb;
 			    bytearray_compress[2]=0xbf;
@@ -419,20 +419,20 @@ package {
 			    bytearray_compress[5]=110;
 			    bytearray_compress[6]=33;
 			    // original length = 7
-			    var origlength=bytearray_compress.length;
+			    var origlength:*=bytearray_compress.length;
 			    bytearray_compress.compress();
 			    // test the compressed bytearray values are all different from the original
-			    var compressstate=(bytearray_compress[0]==0xef || 
+			    var compressstate:*=(bytearray_compress[0]==0xef || 
 			                       bytearray_compress[1]==0xbb ||
 			                       bytearray_compress[2]==0xbf ||
 			                       bytearray_compress[3]==100 ||
 			                       bytearray_compress[4]==97);
 			    // check the compressed length = 15 (small strings compress larger in zlib)
-			    var compresslength=bytearray_compress.length;
+			    var compresslength:*=bytearray_compress.length;
 			    bytearray_compress.uncompress();
 			    // check the uncompress/compress length should equal original length 7
-			    var restoredlength=bytearray_compress.length;
-			    var restorestate=(bytearray_compress[0]==0xef && 
+			    var restoredlength:*=bytearray_compress.length;
+			    var restorestate:*=(bytearray_compress[0]==0xef && 
 			                       bytearray_compress[1]==0xbb &&
 			                       bytearray_compress[2]==0xbf &&
 			                       bytearray_compress[3]==100 &&

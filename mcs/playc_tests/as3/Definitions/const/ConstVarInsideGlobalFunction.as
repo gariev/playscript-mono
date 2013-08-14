@@ -38,16 +38,16 @@
 package {
 	public class ConstVarInsideGlobalFunctionTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions\const";       			// provide a document reference (ie, ECMA section)
-			var VERSION = "ActionScript 3.0";  			// Version of JavaScript or ECMA
-			var TITLE   = "const inside a global function";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions\const";       			// provide a document reference (ie, ECMA section)
+			var VERSION:* = "ActionScript 3.0";  			// Version of JavaScript or ECMA
+			var TITLE:*   = "const inside:* a global function";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();
 			
 			function const1Arg( arg1 ) {
 			
-			 	const localVar = arg1;
+			 	const localVar:* = arg1;
 			 	return localVar;
 			}
 			

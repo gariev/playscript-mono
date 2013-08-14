@@ -38,10 +38,10 @@
 package {
 	public class SuperPropsTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "8.6.1 Constructor Methods";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS3";        // Version of ECMAScript or ActionScript 
-			var TITLE   = "Super Property Access";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "8.6.1 Constructor Methods";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS3";        // Version of ECMAScript or ActionScript 
+			var TITLE:*   = "Super Property Access";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -51,10 +51,10 @@ package {
 			  
 			import SuperProps.*
 			
-			var thisError;
-			var result;
+			var thisError:*;
+			var result:*;
 			
-			var spb = new SuperBase();
+			var spb:* = new SuperBase();
 			AddTestCase( "sanity check base object 1", "base::staticY", spb.baseProp );
 			AddTestCase( "sanity check base object 2", "base::dynamicX", spb.getBaseVal("x") );
 			// currently fails - finds undefined dynamic property instead of fixed property:
@@ -62,7 +62,7 @@ package {
 			spb.setBaseVal("dynamicProp","base::dynamicProp");
 			AddTestCase( "sanity check base object 4", "base::dynamicProp", spb.getBaseVal("dynamicProp") );
 			
-			var sp = new SuperProps();
+			var sp:* = new SuperProps();
 			AddTestCase( "sanity check derived object 1", "base::staticY", sp.inheritedProp );
 			AddTestCase( "sanity check derived object 2", "base::staticY", sp.superPropDot );
 			// superPropIndex returns X because we cannot test for it returning Y at the moment:

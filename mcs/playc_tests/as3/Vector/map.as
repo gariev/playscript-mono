@@ -47,8 +47,8 @@
 package {
 	public class mapTest extends BaseTest {
 		public static function Main():int {
-			var SECTION="";
-			var VERSION = "ECMA_1";
+			var SECTION:*="";
+			var VERSION:* = "ECMA_1";
 			
 			startTest();
 			
@@ -57,7 +57,7 @@ package {
 			function mapper1(value,index,obj) {
 			   return "("+value+":"+index+")";
 			}
-			var mapper2="a string";
+			var mapper2:*="a string";
 			function mapper3(value,index,obj) {
 			   return "("+this.message+")";
 			}
@@ -65,11 +65,11 @@ package {
 			   return value*value;
 			}
 			
-			var v1=new Vector.<int>();
+			var v1:*=new Vector.<int>();
 			v1.push(1);
-			var errormsg="";
+			var errormsg:*="";
 			try {
-			  var result=v1.map();
+			  var result:*=v1.map();
 			} catch (e) {
 			  errormsg=e.toString();
 			}
@@ -78,11 +78,11 @@ package {
 					"ArgumentError: Error #1063",
 					parseError(errormsg,"ArgumentError: Error #1063".length));
 			
-			var v1=new Vector.<int>();
+			var v1:*=new Vector.<int>();
 			v1.push(1);
-			var errormsg="";
+			var errormsg:*="";
 			try {
-			  var result=v1.map(mapper2);
+			  var result:*=v1.map(mapper2);
 			} catch (e) {
 			  errormsg=e.toString();
 			}
@@ -91,13 +91,13 @@ package {
 					"TypeError: Error #1034",
 					parseError(errormsg,"TypeError: Error #1034".length));
 			
-			var v1=new Vector.<int>();
+			var v1:*=new Vector.<int>();
 			AddTestCase(
 					"map empty vector",
 					"",
 					v1.map(mapper1).toString());
 			
-			var v1=new Vector.<String>();
+			var v1:*=new Vector.<String>();
 			v1[0]='a';
 			v1[1]='b';
 			v1[2]='c';
@@ -106,7 +106,7 @@ package {
 					"(a:0),(b:1),(c:2)",
 					v1.map(mapper1).toString());
 			
-			var v1=new Vector.<String>(3,true);
+			var v1:*=new Vector.<String>(3,true);
 			v1[0]='a';
 			v1[1]='b';
 			v1[2]='c';
@@ -117,13 +117,13 @@ package {
 			
 			testobj=new Object();
 			testobj.message="testobj";
-			var v1=new Vector.<String>();
+			var v1:*=new Vector.<String>();
 			v1.push('a');v1.push('b');
 			AddTestCase(   "map vector passing new object",
 			               "(testobj),(testobj)",
 			               v1.map(mapper3,testobj).toString());
 			
-			var v1=new Vector.<int>();
+			var v1:*=new Vector.<int>();
 			v1[0]=1;
 			v1[1]=2;
 			v1[2]=3;

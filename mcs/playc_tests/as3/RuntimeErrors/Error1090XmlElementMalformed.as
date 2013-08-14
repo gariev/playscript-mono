@@ -37,16 +37,16 @@
 package {
 	public class Error1090XmlElementMalformedTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1090; //	XML parser failure: element is malformed.
+			var CODE:* = 1090; //	XML parser failure: element is malformed.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var result = "no error";
-				var x = "<a/><b></b";
-				var y = new XML(x);
+				var result:* = "no error";
+				var x:* = "<a/><b></b";
+				var y:* = new XML(x);
 			} catch (err) {
 				result = err.toString();
 			} finally {

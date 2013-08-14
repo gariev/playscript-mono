@@ -37,15 +37,15 @@
 package {
 	public class Error1104XmlDuplicateAttrTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1104; //	Attribute "_" was already specified for element "_".
+			var CODE:* = 1104; //	Attribute "_" was already specified for element "_".
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var result = "no error";
-				var a = <a b="b" b="b"/>;
+				var result:* = "no error";
+				var a:* = <a b="b" b="b"/>;
 			} catch (err) {
 				result = err.toString();
 			} finally {

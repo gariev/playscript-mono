@@ -38,10 +38,10 @@
 import GetSetStaticPackage.*;
 import GetSetStaticSameName.*;
 
-var SECTION = "FunctionAccessors";
-var VERSION = "AS3";
-var TITLE   = "Function Accessors";
-var BUGNUMBER = "";
+var SECTION:* = "FunctionAccessors";
+var VERSION:* = "AS3";
+var TITLE:*   = "Function Accessors";
+var BUGNUMBER:* = "";
 
 startTest();
 
@@ -59,7 +59,7 @@ AddTestCase("Static setter var:String", "new string", (GetSetStatic.string = "ne
 // Attempt to access the private vars directly
 // New instances of vars will be created since the private vars are not accessible
 try{
-	var res = "not run";
+	var res:* = "not run";
 	AddTestCase("Access private var:Array", 4, GetSetStatic._x = 4);
 	res = "no exception";
 } catch (e1) {
@@ -69,7 +69,7 @@ try{
 }
 
 try{
-	var res = "not run";
+	var res:* = "not run";
 	AddTestCase("Access private var:int", 4, GetSetStatic._y = 4);
 	res = "no exception";
 } catch (e2) {
@@ -79,7 +79,7 @@ try{
 }
 
 try{
-	var res = "not run";
+	var res:* = "not run";
 	AddTestCase("Access private var:Boolean", 4, GetSetStatic._b = 4);
 	res = "no exception";
 } catch (e3) {
@@ -89,7 +89,7 @@ try{
 }
 
 try{
-	var res = "not run";
+	var res:* = "not run";
 	AddTestCase("Access private var:uint", 4, GetSetStatic._u = 4);
 	res = "no exception";
 } catch (e4) {
@@ -99,7 +99,7 @@ try{
 }
 
 try{
-	var res = "not run";
+	var res:* = "not run";
 	AddTestCase("Access private var:String", 4, GetSetStatic._s = 4);
 	res = "no exception";
 } catch (e5) {
@@ -130,7 +130,7 @@ AddTestCase("Call getter from getter", "PASSED", GetSetStatic.gfg2);
 // Try to access a getter in a class that's the same name as the package it's in
 // See bug 133422; test case needs to be updated when/if bug is fixed
 try{
-	var res = "not run";
+	var res:* = "not run";
 	trace(GetSetStaticSameName.y);
 	res = "no exception";
 } catch (e6) {
@@ -142,8 +142,8 @@ try{
 // Attempt to access non-static var
 // See bug 117661; test case needs to be updated when/if bug is fixed
 try{
-	var res = "not run";
-	var someVar = GetSetStatic.n;
+	var res:* = "not run";
+	var someVar:* = GetSetStatic.n;
 	res = "no exception";
 } catch (e7) {
 	res = "exception";
@@ -154,7 +154,7 @@ try{
 // Set non-static var
 // See bug 133468; test case needs to be updated when/if bug is fixed
 try{
-	var res = "not run";
+	var res:* = "not run";
 	GetSetStatic.n = 5.55;
 	res = GetSetStatic.n;
 } catch (e8) {

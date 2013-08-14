@@ -40,7 +40,7 @@ package GetSetStaticExtended {
 	
    	internal class GetSetStaticInternal {
 	
-		private static var _nt = "no type";
+		private static var _nt:* = "no type";
 		private static var _x:Array = [1,2,3];
 		private static var _y:int = -10;
 		private static var _b:Boolean = true;

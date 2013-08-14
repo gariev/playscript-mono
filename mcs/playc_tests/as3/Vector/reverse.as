@@ -55,8 +55,8 @@
 package {
 	public class reverseTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "";
-			var VERSION = "ECMA_1";
+			var SECTION:* = "";
+			var VERSION:* = "ECMA_1";
 			startTest();
 			
 			writeHeaderToLog( SECTION + " Vector.reverse()");
@@ -80,7 +80,7 @@ package {
 				      v1.toString());
 			
 			var v1:Vector.<int>=new Vector.<int>();
-			for (var i=0;i<20;i++) v1[i]=i;
+			for (var i:*=0;i<20;i++) v1[i]=i;
 			v1.reverse();
 			AddTestCase(
 				      "reverse vector of int",

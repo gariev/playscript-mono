@@ -47,8 +47,8 @@
 package {
 	public class everyTest extends BaseTest {
 		public static function Main():int {
-			var SECTION="";
-			var VERSION = "ECMA_1";
+			var SECTION:*="";
+			var VERSION:* = "ECMA_1";
 			
 			startTest();
 			
@@ -65,15 +65,15 @@ package {
 			  return true;
 			}
 			
-			var msg="";
-			var v1=new Vector.<int>();
+			var msg:*="";
+			var v1:*=new Vector.<int>();
 			AddTestCase(	"every empty array",
 					true,
 					v1.every(checker1));
 			
-			var msg="";
-			var v1=new Vector.<int>();
-			for (var i=0;i<3;i++) v1.push(i+1);
+			var msg:*="";
+			var v1:*=new Vector.<int>();
+			for (var i:*=0;i<3;i++) v1.push(i+1);
 			AddTestCase(	"every small array returns true",
 					true,
 					v1.every(checker1));
@@ -82,18 +82,18 @@ package {
 					"checker1(1,0,[1,2,3])checker1(2,1,[1,2,3])checker1(3,2,[1,2,3])",
 					msg);
 			
-			var msg="";
-			var v1=new Vector.<int>();
-			for (var i=0;i<3;i++) v1.push(2-i);
+			var msg:*="";
+			var v1:*=new Vector.<int>();
+			for (var i:*=0;i<3;i++) v1.push(2-i);
 			AddTestCase(    "every small array returns false on 0",
 			                false,
 			                v1.every(checker1));
 			
 			
-			var msg="";
-			var thisobj=new Object();
+			var msg:*="";
+			var thisobj:*=new Object();
 			thisobj.message="object";
-			var v1=new Vector.<int>(5);
+			var v1:*=new Vector.<int>(5);
 			v1.every(checker3,thisobj);
 			AddTestCase(	"every small array with a specified this object",
 					"objectobjectobjectobjectobject",
@@ -149,7 +149,7 @@ package {
 			            v4.every(thisObjectTest, TestClass)
 			            );
 			
-			var errorMsg = "";
+			var errorMsg:* = "";
 			try {
 			    v4.every(thisObjectTest, undefined);
 			} catch (e) {

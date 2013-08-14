@@ -41,11 +41,11 @@ package {
 	
 	public class PauseSamplingTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Sampling";
-			var VERSION = "AS3";
-			var TITLE   = "Sampling Basic Usage";
+			var SECTION:* = "Sampling";
+			var VERSION:* = "AS3";
+			var TITLE:*   = "Sampling Basic Usage";
 			
-			var isdebugger=System.isDebugger();
+			var isdebugger:*=System.isDebugger();
 			
 			startTest();
 			writeHeaderToLog("Sampling api");
@@ -82,10 +82,10 @@ package {
 			startSampling();
 			simpleLoop();
 			pauseSampling();
-			var time=getTimer();
+			var time:*=getTimer();
 			while (getTimer()<time+50) {}
-			var count=getSampleCount();
-			var newcount=getNewObjectCount();
+			var count:*=getSampleCount();
+			var newcount:*=getNewObjectCount();
 			
 			simpleLoop();
 			
@@ -124,7 +124,7 @@ package {
 			function getNewObjectCount():int {
 			    var ct:int=0;
 			    var nos:NewObjectSample;
-			    for each (var sample in getSamples()) {
+			    for each (var sample:* in getSamples()) {
 			        if ((nos=sample as NewObjectSample) != null) {
 			            ct++;
 			        }

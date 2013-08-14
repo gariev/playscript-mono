@@ -42,8 +42,8 @@
 package {
 	public class nestedTest extends BaseTest {
 		public static function Main():int {
-			var SECTION="";
-			var VERSION = "ECMA_1";
+			var SECTION:*="";
+			var VERSION:* = "ECMA_1";
 			
 			startTest();
 			
@@ -101,7 +101,7 @@ package {
 			    this.right=right;
 			  }
 			  static function depthfirst(t:tree):String {
-			    var out="";
+			    var out:*="";
 			    out+=t.value;
 			    if (t.left!=undefined) out+=","+depthfirst(t.left);
 			    if (t.right!=undefined) out+=","+depthfirst(t.right);
@@ -123,14 +123,14 @@ package {
 			    return ret;
 			  }
 			} 
-			var two=new tree("two",undefined,undefined);
-			var three=new tree("three",undefined,undefined);
-			var one=new tree("one",two,three);
-			var six=new tree("six",undefined,undefined);
-			var seven=new tree("seven",undefined,undefined);
-			var five=new tree("five",six,seven);
-			var four=new tree("four",five,undefined);
-			var root=new tree("root",one,four);
+			var two:*=new tree("two",undefined,undefined);
+			var three:*=new tree("three",undefined,undefined);
+			var one:*=new tree("one",two,three);
+			var six:*=new tree("six",undefined,undefined);
+			var seven:*=new tree("seven",undefined,undefined);
+			var five:*=new tree("five",six,seven);
+			var four:*=new tree("four",five,undefined);
+			var root:*=new tree("root",one,four);
 			
 			AddTestCase("test vector of custom classes",
 			           tree.printlist(tree.collect(root)).toString(),
@@ -147,11 +147,11 @@ package {
 			}
 			
 			// nested vector stress test
-			var nestedVectorType = Vector.<TestClass>;
-			var tempNestedVector = nestedVectorType([new TestClass(2), new TestClass(new Object()), new TestClass("hello")])
-			var expectedStr = "";
+			var nestedVectorType:* = Vector.<TestClass>;
+			var tempNestedVector:* = nestedVectorType([new TestClass(2), new TestClass(new Object()), new TestClass("hello")])
+			var expectedStr:* = "";
 			
-			for (var i=0; i<500; i++) {
+			for (var i:*=0; i<500; i++) {
 			    nestedVectorType = Vector.<nestedVectorType>;
 			    tempNestedVector = nestedVectorType([tempNestedVector]);
 			    expectedStr += ">";
@@ -176,7 +176,7 @@ package {
 			            expectedStr == nestedVectorType.toString().substr(-501)
 			           );
 			
-			var deeplyNestedVector = new nestedVectorType();
+			var deeplyNestedVector:* = new nestedVectorType();
 			
 			AddTestCase("Instantiate deeply nested vector",
 			            0,

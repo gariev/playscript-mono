@@ -37,14 +37,14 @@
 package {
 	public class Error1007InstantiationOnNonConstructorTest extends BaseTest {
 		public static function Main():int {
-			var CODE = 1007; //	Instantiation attempted on a non-constructor.
+			var CODE:* = 1007; //	Instantiation attempted on a non-constructor.
 			
 			//-----------------------------------------------------------
 			startTest();
 			//-----------------------------------------------------------
 			
 			try {
-				var result = "no error";
+				var result:* = "no error";
 				new this();
 			} catch (err) {
 				result = err.toString();

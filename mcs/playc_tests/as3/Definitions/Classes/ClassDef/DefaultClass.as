@@ -39,16 +39,16 @@
 
 import DefaultClassSame.*;
 
-var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-var VERSION = "AS3";                   // Version of JavaScript or ECMA
-var TITLE   = "Access Class Properties & Methods";  // Provide ECMA section title or a description
-var BUGNUMBER = "";
+var SECTION:* = "Definitions";           // provide a document reference (ie, ECMA section)
+var VERSION:* = "AS3";                   // Version of JavaScript or ECMA
+var TITLE:*   = "Access Class Properties & Methods";  // Provide ECMA section title or a description
+var BUGNUMBER:* = "";
 
 startTest();                // leave this alone
 
 
 
-var Obj = new DefaultClassAccessor();
+var Obj:* = new DefaultClassAccessor();
 
 // Properties
 
@@ -104,7 +104,7 @@ AddTestCase( "Access static public method from same package", 42, Obj.accPubStat
 // Error cases
 
 // access private property from same package not same class
-var thisError = "no error thrown";
+var thisError:* = "no error thrown";
 try{
 	Obj.accPrivPropErr();
 } catch (e) {

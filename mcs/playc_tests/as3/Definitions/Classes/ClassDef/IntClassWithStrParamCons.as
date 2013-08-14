@@ -42,15 +42,15 @@ package {
 	
 	public class IntClassWithStrParamConsTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "Definitions";           // provide a document reference (ie, ECMA section)
-			var VERSION = "AS3";                   // Version of JavaScript or ECMA
-			var TITLE   = "Constructors with parameters of a Dynamic class";  // Provide ECMA section                                                                   //title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "Definitions";           // provide a document reference (ie, ECMA section)
+			var VERSION:* = "AS3";                   // Version of JavaScript or ECMA
+			var TITLE:*   = "Constructors with parameters of a Dynamic class";  // Provide ECMA section                                                                   //title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
 			
-			//var x = "test"; 
+			//var x:* = "test"; 
 			//var y:Boolean = true;
 			//var myArray:Array = new Array(4,6,5);
 			//var pbClCons:publicClassCons = new publicClassCons();                   

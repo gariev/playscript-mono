@@ -44,24 +44,24 @@ package {
     import flash.sampler.*
     import avmplus.*
 
-    var SECTION = "Sampling";
-    var VERSION = "AS3";
-    var TITLE   = "backward branches";
+    var SECTION:* = "Sampling";
+    var VERSION:* = "AS3";
+    var TITLE:*   = "backward branches";
 
-    var isdebugger=System.isDebugger();
+    var isdebugger:*=System.isDebugger();
 
     startTest();
     writeHeaderToLog("Sampling backward branches tests");
 
     var callcount:uint=0;
     var samplescount:uint=0;    
-    var stoppagetime=0;
+    var stoppagetime:*=0;
 
     function calculatepi(n:uint):Number {
-        var sign=1;
-        var result=0;
-        var start=getTimer();
-        var i=1;
+        var sign:*=1;
+        var result:*=0;
+        var start:*=getTimer();
+        var i:*=1;
         while (true) {
            callcount+=1;
            result+=sign*4/(i*2-1);
@@ -73,7 +73,7 @@ package {
         return result;
     }
     function samplecallback() {
-        var time=getTimer();
+        var time:*=getTimer();
         samplescount+=getSampleCount();
         clearSamples();
         stoppagetime+=getTimer()-time;
@@ -83,8 +83,8 @@ package {
     setSamplerCallback(samplecallback);
     sampleInternalAllocs(false);
     startSampling();
-    var totaltime=getTimer();    
-    var result=calculatepi(1000);
+    var totaltime:*=getTimer();    
+    var result:*=calculatepi(1000);
     pauseSampling();
     totaltime=getTimer()-totaltime-stoppagetime;
     samplescount+=getSampleCount();

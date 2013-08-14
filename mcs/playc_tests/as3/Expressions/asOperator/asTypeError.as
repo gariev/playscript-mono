@@ -38,10 +38,10 @@
 package {
 	public class asTypeErrorTest extends BaseTest {
 		public static function Main():int {
-			var SECTION = "as operator";       // provide a document reference (ie, Actionscript section)
-			var VERSION = "AS3";        // Version of ECMAScript or ActionScript
-			var TITLE   = "test";       // Provide ECMA section title or a description
-			var BUGNUMBER = "";
+			var SECTION:* = "as operator";       // provide a document reference (ie, Actionscript section)
+			var VERSION:* = "AS3";        // Version of ECMAScript or ActionScript
+			var TITLE:*   = "test";       // Provide ECMA section title or a description
+			var BUGNUMBER:* = "";
 			
 			startTest();                // leave this alone
 			
@@ -49,9 +49,9 @@ package {
 			// add your tests here
 			
 			try {
-			    var x = 13;
+			    var x:* = 13;
 			    var y:String = "";
-			    var z = (x as notAValidType);
+			    var z:* = (x as notAValidType);
 			
 			} catch(e) {
 			    y = e;
@@ -61,7 +61,7 @@ package {
 			
 			try {
 			    x = 13;
-			    var temp = "hello";
+			    var temp:* = "hello";
 			    y = "";
 			    z = (x as temp);
 			

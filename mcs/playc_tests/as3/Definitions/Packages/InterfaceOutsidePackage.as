@@ -50,15 +50,15 @@ class erwin implements fletch {
 	public function lives(){return 'outside of package';}
 }
 
-var SECTION = "Definitions";       // provide a document reference (ie, Actionscript section)
-var VERSION = "AS 3.0";        // Version of ECMAScript or ActionScript 
-var TITLE   = "PackageDefinition" //Proved ECMA section titile or a description
-var BUGNUMBER = "123167";
+var SECTION:* = "Definitions";       // provide a document reference (ie, Actionscript section)
+var VERSION:* = "AS 3.0";        // Version of ECMAScript or ActionScript 
+var TITLE:*   = "PackageDefinition" //Proved ECMA section titile or a description
+var BUGNUMBER:* = "123167";
 
 startTest();                // leave this alone
 
 
-var FLETCHCLASS = new erwin(); 
+var FLETCHCLASS:* = new erwin(); 
 AddTestCase( "interface outside of package", "outside of package", FLETCHCLASS.lives() );
 
 test();       // leave this alone.  this executes the test cases and
