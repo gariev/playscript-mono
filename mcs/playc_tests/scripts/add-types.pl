@@ -11,6 +11,7 @@ foreach my $arg(@ARGV) {
 		# Add type defintions to variables
 		$line =~ s/var +([a-zA-Z_0-9]+)([ =;]+)(?!:)+/var $1:*$2/;
 		$line =~ s/const +([a-zA-Z_0-9]+)([ =;]+)(?!:)+/const $1:*$2/;
+		$line =~ s/(catch\s+)\((\s*[a-zA-Z0-9_]+\s*(?!:)+)\)/$1($2:*)/;
 
 		# Track which class names we've seen
 		if ($line =~ /class[ ]+([a-zA-Z_0-9]+)/) {
