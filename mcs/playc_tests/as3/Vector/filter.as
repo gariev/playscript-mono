@@ -69,7 +69,7 @@ package {
 			var errormsg:*="";
 			try {
 			  var result:*=v1.filter();
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase(	"filter checker is undefined",
@@ -81,7 +81,7 @@ package {
 			var errormsg:*="";
 			try {
 			  var result:*=v1.filter(invalidchecker);
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase(	"filter checker is not a function",

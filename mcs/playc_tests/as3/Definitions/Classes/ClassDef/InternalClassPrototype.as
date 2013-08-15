@@ -111,7 +111,7 @@ var thisError10:* = "no error thrown";
 var temp:Object = new Object();
 try{
 	InternalClass.prototype = temp;
-} catch (e) {
+} catch (e:*) {
 	thisError10 = e.toString();
 } finally {
 	AddTestCase( "Try to write to InternalClass' prototype object", "ReferenceError: Error #1074",

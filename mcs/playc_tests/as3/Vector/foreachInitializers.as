@@ -62,7 +62,7 @@ package {
 			var errormsg:*="";
 			try {
 			  var result:*=new <int>[].forEach();
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase( 	"forEach eacher is undefined",
@@ -72,7 +72,7 @@ package {
 			var errormsg:*="";
 			try {
 			  var result:*=new <int>[0,1,2].forEach(bad_eacher);
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase("forEach eacher is not a function",

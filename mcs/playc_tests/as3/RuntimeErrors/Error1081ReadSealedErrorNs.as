@@ -68,7 +68,7 @@ package {
 			
 			try {
 			    var m:* = new Main();
-			} catch (err) {
+			} catch (err:*) {
 				result = err.toString();
 			} finally {
 				AddTestCase("Reference Error", REFERENCEERROR + CODE, referenceError(result));

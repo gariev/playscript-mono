@@ -78,7 +78,7 @@ package {
 			var thisError:* = "Exception not thrown!";
 			try{
 				EXTDCLASS.finSetArray(arr);
-			} catch (e) {
+			} catch (e:*) {
 				thisError = e.toString();
 			} finally {
 				AddTestCase( "Access final method from outside of class",
@@ -125,7 +125,7 @@ package {
 			thisError = "Exception not thrown!";
 			try{
 				ExtPublicClassFin.pubStatSubGetArray();
-			} catch (e2) {
+			} catch (e2:*) {
 				thisError = e2.toString();
 			} finally {
 				AddTestCase( "Access final property from outside of class",
@@ -142,7 +142,7 @@ package {
 			thisError = "Exception not thrown!";
 			try{
 				EXTDCLASS.finArray;
-			} catch (e3) {
+			} catch (e3:*) {
 				thisError = e3.toString();
 			} finally {
 				AddTestCase( "Access final property from outside of class",

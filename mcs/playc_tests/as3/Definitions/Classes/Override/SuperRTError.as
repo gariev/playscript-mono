@@ -56,7 +56,7 @@ package {
 			var thisError:* = "no exception thrown";
 			try{
 				trace( obj.ns1::foo() );
-			} catch (e1) {
+			} catch (e1:*) {
 				thisError = e1.toString();
 			} finally {
 				AddTestCase( "Call a super method without specifying namespace",

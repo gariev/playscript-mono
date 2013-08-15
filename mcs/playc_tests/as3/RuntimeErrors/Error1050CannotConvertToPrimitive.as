@@ -48,7 +48,7 @@ package {
 			try {
 				var object1:* = { toString: function() { return this; } };
 				isXMLName(object1);
-			} catch (err) {
+			} catch (err:*) {
 				result = grabError(err, err.toString());
 			} finally {
 				AddTestCase("Runtime Error", expected, result);

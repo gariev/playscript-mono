@@ -121,7 +121,7 @@ package {
 					    result = true;
 					}
 					
-				    } catch (e) {
+				    } catch (e:*) {
 					result = e;
 				    } finally {
 			        if (valueArr[i]!=myDate || (typeArr[j]!=Date && typeArr[j]!=Object))

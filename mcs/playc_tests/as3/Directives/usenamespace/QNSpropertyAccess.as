@@ -71,7 +71,7 @@ package {
 			
 			try {
 			    testResult = myTest.x;
-			} catch (e) {
+			} catch (e:*) {
 			    testResult = e;
 			} finally {
 			    AddTestCase( ". Lookup", "public ns", testResult);
@@ -79,7 +79,7 @@ package {
 			
 			try {
 			    testResult = myTest['x'];
-			} catch (e) {
+			} catch (e:*) {
 			    testResult = e;
 			} finally {
 			    AddTestCase( "[] Lookup", "public ns", testResult);
@@ -87,7 +87,7 @@ package {
 			
 			try {
 			    testResult = myTest.public::x;
-			} catch (e) {
+			} catch (e:*) {
 			    testResult = e;
 			} finally {
 			    AddTestCase( "explicit public ns Lookup", "public ns", testResult);
@@ -107,7 +107,7 @@ package {
 			
 			try {
 			    testResult = myTest.T1::x;
-			} catch (e) {
+			} catch (e:*) {
 			    testResult = e;
 			} finally {
 			    AddTestCase( ". ns lookup", "T1 ns", testResult);
@@ -115,7 +115,7 @@ package {
 			
 			try {
 			    testResult = myTest.T1::['x'];
-			} catch (e) {
+			} catch (e:*) {
 			    testResult = e;
 			} finally {
 			    AddTestCase( "[] ns lookup", "T1 ns", testResult);
@@ -123,7 +123,7 @@ package {
 			
 			try {
 			    testResult = myTest.T1::o.y;
-			} catch (e) {
+			} catch (e:*) {
 			    testResult = e;
 			} finally {
 			    AddTestCase( "subobject lookup using .", "hello y", testResult);
@@ -131,7 +131,7 @@ package {
 			
 			try {
 			    testResult = myTest.T1::['o']['y'];
-			} catch (e) {
+			} catch (e:*) {
 			    testResult = e;
 			} finally {
 			    AddTestCase( "subobject lookup using []", "hello y", testResult);
@@ -139,7 +139,7 @@ package {
 			
 			try {
 			    testResult = myTest.T1::['o'].y;
-			} catch (e) {
+			} catch (e:*) {
 			    testResult = e;
 			} finally {
 			    AddTestCase( "subobject lookup using []. combo", "hello y", testResult);
@@ -147,7 +147,7 @@ package {
 			
 			try {
 			    testResult = myTest.T1::o['y'];
-			} catch (e) {
+			} catch (e:*) {
 			    testResult = e;
 			} finally {
 			    AddTestCase( "subobject lookup using obj[] combo", "hello y", testResult);

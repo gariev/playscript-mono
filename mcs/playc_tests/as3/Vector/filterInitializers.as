@@ -68,7 +68,7 @@ package {
 			var errormsg:*="";
 			try {
 			  var result:*=new <int>[].filter();
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase(	"filter checker is undefined",
@@ -78,7 +78,7 @@ package {
 			var errormsg:*="";
 			try {
 			  var result:*=new <int>[0,1,2,3,4,5,6,7,8,9].filter(invalidchecker);
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase(	"filter checker is not a function",

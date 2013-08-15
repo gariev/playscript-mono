@@ -71,7 +71,7 @@ package {
 			var msg:*="no exception";
 			try {
 				var v3:Vector.<*> = new<int>[49];
-			} catch ( ex )
+			} catch ( ex :*)
 			{
 				msg = ex.toString();
 			}

@@ -84,7 +84,7 @@ package {
 			try{
 				Uint1Arg(-1);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "Uint1Arg(-1)", "exception NOT caught" , pResult );
@@ -93,7 +93,7 @@ package {
 			try{
 				UintMultiArgs(-1,-1,-1);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "UintMultiArgs(-1,-1,-1)", "exception NOT caught" , pResult );
@@ -102,7 +102,7 @@ package {
 			try{
 				diffArgs(-1,-1,-1);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "diffArgs(-1,-1,-1)", "exception NOT caught" , pResult );
@@ -111,7 +111,7 @@ package {
 			try{
 				returnNegUint();
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "returnNegUint()", "exception NOT caught" , pResult );
@@ -123,7 +123,7 @@ package {
 			try{
 				Uint1Arg(n);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "var n:Number = -20; Uint1Arg(n)", "exception NOT caught" , pResult );
@@ -134,7 +134,7 @@ package {
 			try{
 				UintMultiArgs(n,n,n);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "var n:Number = -20; UintMultiArgs(n,n,n)", "exception NOT caught" , pResult );
@@ -143,7 +143,7 @@ package {
 			try{
 				diffArgs(n,n,n);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "var n:Number = -20; diffArgs(n,n,n)", "exception NOT caught" , pResult );
@@ -154,7 +154,7 @@ package {
 			try{
 				Uint1Arg(i);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "var i:int = -20; Uint1Arg(i)", "exception NOT caught" , pResult );
@@ -163,7 +163,7 @@ package {
 			try{
 				UintMultiArgs(i,i,i);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "var i:int = -20; UintMultiArgs(i,i,i)", "exception NOT caught" , pResult );
@@ -172,7 +172,7 @@ package {
 			try{
 				diffArgs(i,i,i);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "var i:int = -20; diffArgs(i,i,i)", "exception NOT caught" , pResult );
@@ -181,7 +181,7 @@ package {
 			try{
 				addNegUintInFunc();
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "add negitive number to uint in function", "exception NOT caught" , pResult );

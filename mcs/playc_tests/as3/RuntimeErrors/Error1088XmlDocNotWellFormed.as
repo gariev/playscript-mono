@@ -48,7 +48,7 @@ package {
 				var x:* = <a b="b" c="c"/>;
 				var y:* = x.attributes();
 				var z:* = new XML(y);
-			} catch (err) {
+			} catch (err:*) {
 				result = err.toString();
 			} finally {
 				AddTestCase("Runtime Error", TYPEERROR + CODE, typeError(result));

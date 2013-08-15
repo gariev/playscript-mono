@@ -67,7 +67,7 @@ package {
 				var res:* = "not run";
 				OBJ._x = new Array();
 				res = "no exception";
-			} catch (e1) {
+			} catch (e1:*) {
 				res = "exception";
 			} finally {
 				AddTestCase("Access private var:Array", "no exception", res);
@@ -77,7 +77,7 @@ package {
 				var res:* = "not run";
 				OBJ._y = 4;
 				res = "no exception";
-			} catch (e2) {
+			} catch (e2:*) {
 				res = "exception";
 			} finally {
 				AddTestCase("Access private var:int", "no exception", res);
@@ -87,7 +87,7 @@ package {
 				var res:* = "not run";
 				OBJ._b = true;
 				res = "no exception";
-			} catch (e3) {
+			} catch (e3:*) {
 				res = "exception";
 			} finally {
 				AddTestCase("Access private var:Boolean", "no exception", res);
@@ -97,7 +97,7 @@ package {
 				var res:* = "not run";
 				OBJ._u = 4;
 				res = "no exception";
-			} catch (e4) {
+			} catch (e4:*) {
 				res = "exception";
 			} finally {
 				AddTestCase("Access private var:uint", "no exception", res);
@@ -107,7 +107,7 @@ package {
 				var res:* = "not run";
 				OBJ._s = "test";
 				res = "no exception";
-			} catch (e5) {
+			} catch (e5:*) {
 				res = "exception";
 			} finally {
 				AddTestCase("Access private var:String", "no exception", res);
@@ -137,7 +137,7 @@ package {
 				var res:* = "not run";
 				OBJ.noSetter = "test";
 				res = "no exception";
-			} catch (e6) {
+			} catch (e6:*) {
 				res = "exception";
 			} finally {
 				AddTestCase("call undefined setter", "exception", res);
@@ -148,7 +148,7 @@ package {
 				var res:* = "not run";
 				OBJ.noGetter;
 				res = "no exception";
-			} catch (e7) {
+			} catch (e7:*) {
 				res = "exception";
 			} finally {
 				AddTestCase("call undefined getter", "exception", res);

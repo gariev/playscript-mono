@@ -47,7 +47,7 @@ package {
 				var result:* = "no error";
 				var y:* = "<!DOCTYPE greeting SYSTEM 'hello.dtd'";
 				var z:* = new XML(y);
-			} catch (err) {
+			} catch (err:*) {
 				result = err.toString();
 			} finally {
 				AddTestCase("Runtime Error", TYPEERROR + CODE, typeError(result));

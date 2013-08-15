@@ -152,7 +152,7 @@ package {
 			var errorMsg:* = "";
 			try {
 			    v4.every(thisObjectTest, undefined);
-			} catch (e) {
+			} catch (e:*) {
 			    errorMsg = e.toString();
 			}
 			
@@ -164,7 +164,7 @@ package {
 			errorMsg = "";
 			try {
 			    v4.every(thisObjectTest, NaN);
-			} catch (e) {
+			} catch (e:*) {
 			    errorMsg = e.toString();
 			}
 			
@@ -176,7 +176,7 @@ package {
 			errorMsg = "";
 			try {
 			    v4.every(thisObjectTest, false);
-			} catch (e) {
+			} catch (e:*) {
 			    errorMsg = e.toString();
 			}
 			

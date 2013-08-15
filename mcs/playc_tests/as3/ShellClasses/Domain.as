@@ -89,7 +89,7 @@ package {
     var err1:*;
     try {
         domain.load("unknown.abc");
-    } catch (e) {
+    } catch (e:*) {
         err1=e.toString();
     }
    

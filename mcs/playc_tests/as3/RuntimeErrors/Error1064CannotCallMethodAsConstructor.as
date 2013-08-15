@@ -55,7 +55,7 @@ package {
 			try {
 				var z:* = "no error";
 				var c:* = new b();
-			} catch (err) {
+			} catch (err:*) {
 				z = err.toString();
 			} finally {
 				AddTestCase("Runtime Error", "TypeError: Error #1064", typeError(z));

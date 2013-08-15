@@ -78,7 +78,7 @@ package {
 			       
 			       test();
 			  
-			} catch (e) { 
+			} catch (e:*) { 
 			      AddTestCase( "Make sure there is no error", false, true);
 			}
 			return results();

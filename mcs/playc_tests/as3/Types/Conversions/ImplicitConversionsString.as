@@ -53,7 +53,7 @@ package {
 			var thisError:* = "no exception thrown";
 			try{
 				var number:Number = "string";
-			} catch (e) {
+			} catch (e:*) {
 			//print( "hello?" );
 				thisError = e.toString();
 			} finally {
@@ -103,7 +103,7 @@ package {
 			thisError = "no exception thrown";
 			try{
 				var number:Number = "";
-			} catch (e) {
+			} catch (e:*) {
 				thisError = e.toString();
 			} finally {
 				AddTestCase("number:Number = ''", "no exception thrown", typeError(thisError) );

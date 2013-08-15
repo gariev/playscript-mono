@@ -112,7 +112,7 @@ var thisError10:* = "no error thrown";
 var temp:Object = new Object();
 try{
 	DynamicClass.prototype = temp;
-} catch (e) {
+} catch (e:*) {
 	thisError10 = e.toString();
 } finally {
 	AddTestCase( "Try to write to FinalClass' prototype object", "ReferenceError: Error #1074",

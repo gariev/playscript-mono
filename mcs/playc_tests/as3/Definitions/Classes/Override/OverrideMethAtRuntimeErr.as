@@ -56,7 +56,7 @@ package {
 			
 			try {
 			  obj.foo = function () { return "here"; }
-			} catch (e) {
+			} catch (e:*) {
 			  error = e.toString();
 			}
 			

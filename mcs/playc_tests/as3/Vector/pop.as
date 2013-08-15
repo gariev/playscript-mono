@@ -96,7 +96,7 @@ package {
 			var errormsg:*="";
 			try {
 			  v1.pop();
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase(

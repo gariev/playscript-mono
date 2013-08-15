@@ -46,7 +46,7 @@ package {
 			try {
 				var z:* = "no error";
 				new Date(x);
-			} catch (err) {
+			} catch (err:*) {
 				z = err.toString();
 			} finally {
 				AddTestCase("Runtime Error", REFERENCEERROR + CODE, referenceError(z));

@@ -65,7 +65,7 @@ package {
 			    var err:*="";
 			    try {
 			        File.read('unknown.txt');
-			    } catch (e) {
+			    } catch (e:*) {
 			        err=e.toString();
 			    }
 			    AddTestCase("File read on unknown file should throw exception",

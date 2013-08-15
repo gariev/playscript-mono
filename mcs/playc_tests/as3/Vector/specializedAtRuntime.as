@@ -73,7 +73,7 @@ package {
 			try {
 			   unspecialized = getVector();
 			   var z:* = new unspecialized();
-			} catch ( ex )
+			} catch ( ex :*)
 			{
 			    neg_result = String(ex);
 			}

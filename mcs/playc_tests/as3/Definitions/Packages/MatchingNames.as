@@ -108,7 +108,7 @@ result = "";
 try {
 	b.createB();
 	result = "no exception";
-} catch (e2) {
+} catch (e2:*) {
 	result = "exception";
 }
 
@@ -120,7 +120,7 @@ result = "";
 try {
 	b.createB2();
 	result = "no exception";
-} catch (e3) {
+} catch (e3:*) {
 	result = "exception";
 }
 

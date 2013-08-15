@@ -55,7 +55,7 @@ package {
 			var thisError:* = "no exception given";
 			try{
 				Obj.pubBoolean = function () { return 100;}
-			} catch (e){
+			} catch (e:*){
 				thisError = e.toString();
 			} finally {
 				AddTestCase( "attempt to assign a function to a boolean property", "no exception given",typeError(thisError) );

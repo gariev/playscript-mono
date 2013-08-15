@@ -75,7 +75,7 @@ package {
 			var thisError:* = "no exception thrown";
 			try{
 				obj.getBaseDate();
-			} catch (e1) {
+			} catch (e1:*) {
 				thisError = e1.toString();
 			} finally {
 				AddTestCase( "access static method of base class using 'super.foo()'",

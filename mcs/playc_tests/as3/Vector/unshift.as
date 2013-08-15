@@ -87,7 +87,7 @@ package {
 			var errormsg:*="";
 			try {
 			  v1.unshift(9);
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase(

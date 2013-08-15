@@ -167,7 +167,7 @@ package {
 			thisError = "no exception thrown";
 			try{
 				ExtPublicClassPub.pubStatSubGetDPArray();
-			} catch (e10){
+			} catch (e10:*){
 				thisError = e10.toString();
 			} finally {
 				AddTestCase( "Access public property from public static method of sub class",

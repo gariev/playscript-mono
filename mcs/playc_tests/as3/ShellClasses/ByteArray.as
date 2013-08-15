@@ -238,7 +238,7 @@ package {
 			    var err:*="none";
 			    try {
 			        bytearray.endian="none";
-			    } catch (e) {
+			    } catch (e:*) {
 			        err=e.toString();
 			    }
 			    AddTestCase(
@@ -339,7 +339,7 @@ package {
 			    var err2:*="";
 			    try {
 			        var bytearray_badread:*=ByteArray.readFile('foo.ba');
-			    } catch (e) {
+			    } catch (e:*) {
 			        err2=e.toString();
 			    }
 			    AddTestCase(

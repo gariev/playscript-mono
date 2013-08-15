@@ -54,7 +54,7 @@ package {
 			try {
 				TESTOBJ.g();
 				result = "no exception";
-			}  catch (e1) {
+			}  catch (e1:*) {
 				result = e1.toString();
 			}
 			

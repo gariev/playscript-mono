@@ -52,7 +52,7 @@ package {
 			try {
 				var a:* = new A();
 				a.f = function () {}
-			} catch (err) {
+			} catch (err:*) {
 				result = grabError(err, err.toString());
 			} finally {
 				AddTestCase("Runtime Error", expected, result);

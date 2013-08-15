@@ -63,7 +63,7 @@ package {
 			var errormsg:*="";
 			try {
 			  var result:*=v1.forEach();
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase( 	"forEach eacher is undefined",
@@ -75,7 +75,7 @@ package {
 			var errormsg:*="";
 			try {
 			  var result:*=v1.forEach(bad_eacher);
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase("forEach eacher is not a function",

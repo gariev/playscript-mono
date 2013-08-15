@@ -58,7 +58,7 @@ package {
 			
 			try {
 			  out.baseClass();
-			} catch (e) {
+			} catch (e:*) {
 			  error = e.toString();
 			}
 			

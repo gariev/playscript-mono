@@ -60,7 +60,7 @@ package {
 			var errormsg:*="";
 			try {
 			  new<int>[4,92,1].sort()
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase(

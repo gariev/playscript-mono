@@ -52,7 +52,7 @@ package {
 			            <item>soda</item>
 			        </menu>;
 				xml.insertChildAfter(xml.item[0], xml);
-			} catch (err) {
+			} catch (err:*) {
 				result = grabError(err, err.toString());
 			} finally {
 				AddTestCase("Runtime Error", expected, result);

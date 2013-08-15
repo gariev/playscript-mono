@@ -46,7 +46,7 @@ package {
 			try {
 				var z:* = "no error";
 				ns = new Namespace ("prefix", "");
-			} catch (err) {
+			} catch (err:*) {
 				z = err.toString();
 			} finally {
 				AddTestCase("Runtime Error", "TypeError: Error #" + CODE, typeError(z));

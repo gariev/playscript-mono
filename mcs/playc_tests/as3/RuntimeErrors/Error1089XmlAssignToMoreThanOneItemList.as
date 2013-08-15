@@ -48,7 +48,7 @@ package {
 			try {
 				var x1:* = new XMLList("<a>1</a><a>2</a><a>3</a>");
 				x1.length = 0;
-			} catch (err) {
+			} catch (err:*) {
 				result = grabError(err, err.toString());
 			} finally {
 				AddTestCase("Runtime Error", expected, result);

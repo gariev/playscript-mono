@@ -99,7 +99,7 @@ package {
 			var errormsg:*="";
 			try {
 			  v1.shift();
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase(

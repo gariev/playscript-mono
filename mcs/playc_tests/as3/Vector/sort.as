@@ -72,7 +72,7 @@ package {
 			var errormsg:*="";
 			try {
 			  v1.sort()
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase(

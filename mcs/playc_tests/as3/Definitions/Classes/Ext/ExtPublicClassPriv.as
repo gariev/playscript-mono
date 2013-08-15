@@ -78,7 +78,7 @@ package {
 			var thisError:* = "no exception thrown!";
 			try {
 				EXTDCLASS.testSubGetSetArray(arr);
-			} catch (e1) {
+			} catch (e1:*) {
 				thisError = e1.toString();
 			} finally {
 				AddTestCase( "Access private method from a default method of a sub class",
@@ -97,7 +97,7 @@ package {
 			thisError = "no exception thrown!";
 			try {
 				EXTDCLASS.pubSubSetArray(arr);
-			} catch (e2) {
+			} catch (e2:*) {
 				thisError = e2.toString();
 			} finally {
 				AddTestCase( "Access private method from a public method of a sub class",
@@ -117,7 +117,7 @@ package {
 			thisError = "no exception thrown!";
 			try {
 				EXTDCLASS.testPrivSubArray(arr);
-			} catch (e3) {
+			} catch (e3:*) {
 				thisError = e3.toString();
 			} finally {
 				AddTestCase( "Access private method from a private method of a sub class",
@@ -136,7 +136,7 @@ package {
 			thisError = "no exception thrown!";
 			try {
 				EXTDCLASS.testSubGetSetDPArray(arr);
-			} catch (e4) {
+			} catch (e4:*) {
 				thisError = e4.toString();
 			} finally {
 				AddTestCase( "Access private method from a public method of a sub class",
@@ -154,7 +154,7 @@ package {
 			thisError = "no exception thrown!";
 			try {
 				EXTDCLASS.pubSubGetDPArray();
-			} catch (e5) {
+			} catch (e5:*) {
 				thisError = e5.toString();
 			} finally {
 				AddTestCase( "Access private method from a public method of a sub class",
@@ -174,7 +174,7 @@ package {
 			thisError = "no Exception thrown!";
 			try{
 				ExtPublicClass.pubStatSubGetDPArray();
-			} catch (e10){
+			} catch (e10:*){
 				thisError = e10.toString();
 			} finally {
 				AddTestCase( "access private property from public static method of sub class",

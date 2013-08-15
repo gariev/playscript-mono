@@ -47,7 +47,7 @@ package {
 				var result:* = "no error";
 				this.setTime = new Date().getDate;
 				this.setTime(-1);
-			} catch (err) {
+			} catch (err:*) {
 				result = err.toString();
 				trace(err);
 			} finally {

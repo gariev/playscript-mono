@@ -48,7 +48,7 @@ package {
 			try {
 				var xml:* = new XML("<a></a>");
 				xml.setName(undefined);
-			} catch (err) {
+			} catch (err:*) {
 				result = grabError(err, err.toString());
 			} finally {
 				AddTestCase("Runtime Error", expected, result);

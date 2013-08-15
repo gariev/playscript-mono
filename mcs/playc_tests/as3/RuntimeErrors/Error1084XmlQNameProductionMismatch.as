@@ -47,7 +47,7 @@ package {
 				var result:* = "no error";
 				var x:* = "<::/>";
 				var y:* = new XML(x);
-			} catch (err) {
+			} catch (err:*) {
 				result = err.toString();
 			} finally {
 				AddTestCase("Runtime Error", TYPEERROR + CODE, typeError(result));

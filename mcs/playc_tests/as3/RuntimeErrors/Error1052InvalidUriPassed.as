@@ -48,7 +48,7 @@ package {
 			try {
 				var uri:* = String.fromCharCode(56320); //0xDC00
 				encodeURI(uri);
-			} catch (err) {
+			} catch (err:*) {
 				result = grabError(err, err.toString());
 			} finally {
 				AddTestCase("Runtime Error", expected, result);

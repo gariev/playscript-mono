@@ -51,7 +51,7 @@ package {
 			        	<book publisher="Adobe" name="Flash Player QA" />
 			        </books>;
 				delete books.book.(@publisher == "Adobe");
-			} catch (err) {
+			} catch (err:*) {
 				result = grabError(err, err.toString());
 			} finally {
 				AddTestCase("Runtime Error", expected, result);

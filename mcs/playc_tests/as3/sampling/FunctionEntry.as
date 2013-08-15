@@ -83,7 +83,7 @@ package {
         if (getTimer()-start<200) {
             result=ackermann(3,8);
         }
-    } catch (e) {
+    } catch (e:*) {
         print("exception, result="+result);
         print(e.getStackTrace());
     }

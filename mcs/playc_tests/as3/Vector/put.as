@@ -69,7 +69,7 @@ package {
 			var errormsg:*="";
 			try {
 			  v1[1]=10;
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase("set [1] element on empty vector, throws exception",
@@ -84,7 +84,7 @@ package {
 			var errormsg:*="";
 			try {
 			  v1[5]=10;
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase("set fixed vector past fixed length throws exception",

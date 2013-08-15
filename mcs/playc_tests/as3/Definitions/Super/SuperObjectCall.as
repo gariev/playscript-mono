@@ -55,7 +55,7 @@ package {
 			var thisException:* = "no exception thrown";
 			try {
 				var s:* = soc.whatIsIt();
-			} catch (e) {
+			} catch (e:*) {
 				thisException = e.toString();
 			} finally {
 				AddTestCase( "super call to Object toString() should fail", REFERENCEERROR+1070, referenceError( thisException ) );

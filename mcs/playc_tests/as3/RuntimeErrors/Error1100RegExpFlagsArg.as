@@ -47,7 +47,7 @@ package {
 				var result:* = "no error";
 				var re:RegExp = new RegExp("ali", "/s");
 				var re2:RegExp = new RegExp(re, "i");
-			} catch (err) {
+			} catch (err:*) {
 				result = err.toString();
 			} finally {
 				AddTestCase("Runtime Error", TYPEERROR + CODE, typeError(result));

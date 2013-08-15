@@ -117,7 +117,7 @@ package {
 			 try {
 			 	AddTestCase("c.v++", 1, (c.v++, c.v));
 			 	result = "no exception";
-			 } catch (e1) {
+			 } catch (e1:*) {
 			 	result = "exception";
 			 }
 			 AddTestCase("Increment in setter", "no exception", result);
@@ -125,7 +125,7 @@ package {
 			 try {
 			 	AddTestCase("C.sv++", 1, (C.sv++, C.sv));
 			 	result = "no exception";
-			 } catch (e2) {
+			 } catch (e2:*) {
 			 	result = "exception";
 			 }
 			 AddTestCase("Increment in static setter", "no exception", result);

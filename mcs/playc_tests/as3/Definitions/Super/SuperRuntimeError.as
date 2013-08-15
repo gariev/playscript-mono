@@ -55,7 +55,7 @@ var thisError:* = "";
 thisError = "no exception thrown";
 try {
 	result = srte.missingSuperMethod();
-} catch (e) {
+} catch (e:*) {
 	thisError = e.toString();
 } finally {
 	AddTestCase( "call missing base method via super", REFERENCEERROR+1070, referenceError( thisError ) );
@@ -64,7 +64,7 @@ try {
 thisError = "no exception thrown";
 try {
 	result = srte.callSuperPrivate();
-} catch (e) {
+} catch (e:*) {
 	thisError = e.toString();
 } finally {
 	AddTestCase( "call private base method via super", REFERENCEERROR+1070, referenceError( thisError ) );
@@ -73,7 +73,7 @@ try {
 thisError = "no exception thrown";
 try {
 	result = srte.callSuperOtherPackage();
-} catch (e) {
+} catch (e:*) {
 	thisError = e.toString();
 } finally {
 	AddTestCase( "call internal base method from different package via super", REFERENCEERROR+1070, referenceError( thisError ) );

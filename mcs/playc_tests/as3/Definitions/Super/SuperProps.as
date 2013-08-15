@@ -75,7 +75,7 @@ package {
 			// currently fails - throws exception instead of finding fixed property:
 			try {
 				result = sp.getSuperVal("y");	// super["y"] *should* find base::staticY
-			} catch (e) {
+			} catch (e:*) {
 				result = referenceError( e.toString() );
 			} finally {
 				AddTestCase( "sanity check derived object 8", "base::staticY", result );

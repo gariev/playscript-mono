@@ -60,7 +60,7 @@ package {
 			var errormsg:*="";
 			try {
 			  result=new <int>[].some();
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			
@@ -73,7 +73,7 @@ package {
 			var errormsg:*="";
 			try {
 			  result=new<int>[1,2,3].some(checker2);
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase(

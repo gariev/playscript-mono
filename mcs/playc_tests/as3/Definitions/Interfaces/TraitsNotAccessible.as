@@ -55,7 +55,7 @@ package {
 			var result:* = "";
 			try {
 				result = eg.doSuperCall();
-			} catch (e) {
+			} catch (e:*) {
 				thisError = e.toString();
 			} finally {
 				AddTestCase("call super method", REFERENCEERROR+1070, referenceError(thisError));

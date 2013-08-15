@@ -50,7 +50,7 @@ package {
 			/*var thisError:* = "no exception thrown";
 			try{
 				var string:String = NaN;
-			} catch (e0) {
+			} catch (e0:*) {
 				thisError = e0.toString();
 			} finally {
 				AddTestCase( "var string:String = NaN", "no exception thrown", typeError(thisError));

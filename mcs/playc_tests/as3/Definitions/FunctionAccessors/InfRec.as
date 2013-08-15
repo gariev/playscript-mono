@@ -59,7 +59,7 @@ package {
 				var res:* = "not run";
 				OBJ.inf; // should cause infinite recursion
 				res = "no exception";
-			} catch (e) {
+			} catch (e:*) {
 				res = "exception";
 			} finally {
 				AddTestCase("Infinite recursion getter calling getter", "exception", res);

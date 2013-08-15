@@ -53,7 +53,7 @@ package {
 			var thisError:* = "no exception thrown";
 			try{
 				var mynumber:Number = null;
-			} catch (e) {
+			} catch (e:*) {
 				thisError = e.toString();
 			} finally {
 				AddTestCase("number:Number = null", "no exception thrown", typeError(thisError) );

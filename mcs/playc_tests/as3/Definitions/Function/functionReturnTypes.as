@@ -99,7 +99,7 @@ package {
 			    for (var j:*=0; j<valueArr.length; j++) {	//loop through each type
 				try {
 				    result = funcArr[i](valueArr[j]) is typeArr[i];
-				} catch (e) {
+				} catch (e:*) {
 				    result = e;
 				} finally {
 				   AddTestCase("return type: "+ typeDescArr[i] + " arg: "+valueDescArr[j], String(resultArr[resultCounter++]), String(result).substr(0,22));

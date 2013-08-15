@@ -66,7 +66,7 @@ package {
 			var errormsg:*="";
 			try {
 			  result=v1.some();
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase(
@@ -81,7 +81,7 @@ package {
 			var errormsg:*="";
 			try {
 			  result=v1.some(checker2);
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase(

@@ -46,7 +46,7 @@ package {
 			try {
 				var result:* = "no error";
 				var f:* = new Function( "a","b", "c", "return f.length");
-			} catch (err) {
+			} catch (err:*) {
 				result = err.toString();
 			} finally {
 				AddTestCase("Runtime Error", "EvalError: Error #" + CODE, typeError(result));

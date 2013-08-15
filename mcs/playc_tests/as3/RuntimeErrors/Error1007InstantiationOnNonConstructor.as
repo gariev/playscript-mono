@@ -46,7 +46,7 @@ package {
 			try {
 				var result:* = "no error";
 				new this();
-			} catch (err) {
+			} catch (err:*) {
 				result = err.toString();
 			} finally {
 				AddTestCase("Runtime Error", TYPEERROR + CODE, typeError(result));

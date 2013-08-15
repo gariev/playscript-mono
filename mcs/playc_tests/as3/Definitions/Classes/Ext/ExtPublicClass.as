@@ -128,7 +128,7 @@ package {
 			var thisError:* = "no Exception thrown!";
 			try{
 				ExtPublicClass.pubStatSubGetDPArray();
-			} catch (e){
+			} catch (e:*){
 				thisError = e.toString();
 			} finally {
 				AddTestCase( "access default property from public static method of sub class",

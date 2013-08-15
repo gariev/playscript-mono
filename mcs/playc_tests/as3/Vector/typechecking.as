@@ -59,7 +59,7 @@ package {
 			var err1:*="no error";
 			try {
 			  v1=vs2;
-			} catch (e) {
+			} catch (e:*) {
 			  err1=e.toString();
 			}
 			
@@ -76,7 +76,7 @@ package {
 			var v3:Vector.<B>=new Vector.<B>();
 			try {
 			  v2=v3;
-			} catch (e) {
+			} catch (e:*) {
 			  err3=e.toString();
 			}
 			AddTestCase(
@@ -93,7 +93,7 @@ package {
 			var err4:*="no error";
 			try {
 			  v2.push(new A(),new C());
-			} catch (e) {
+			} catch (e:*) {
 			  err4=e.toString();
 			}
 			AddTestCase(
@@ -117,7 +117,7 @@ package {
 			var v5:*=new Vector.<A>();
 			try {
 			 v5.unshift(new A(),new B(),new C());
-			} catch (e) {
+			} catch (e:*) {
 			 err5=e.toString();
 			}
 			AddTestCase(
@@ -139,7 +139,7 @@ package {
 			v7.push(new C());
 			try {
 			  v6.concat(v7);
-			} catch (e) {
+			} catch (e:*) {
 			  err7=e.toString();
 			}
 			AddTestCase(

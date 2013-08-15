@@ -114,7 +114,7 @@ package {
 				somevar = t.doGet();
 				errorNumber = -1;
 				errorType = undefined;
-			} catch (e1) {
+			} catch (e1:*) {
 				errorNumber = referenceError(e1.toString());
 				errorType = e1 is ReferenceError;
 			}
@@ -126,7 +126,7 @@ package {
 				somevar = t.doSet();
 				errorNumber = -1;
 				errorType = undefined;
-			} catch (e2) {
+			} catch (e2:*) {
 				errorNumber = referenceError(e2.toString());
 				errorType = e2 is ReferenceError;
 			}

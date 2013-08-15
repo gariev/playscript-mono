@@ -47,7 +47,7 @@ package {
 				var result:* = "no error";
 				var n:Number = new Number(1);
 				n.toString(1);
-			} catch (err) {
+			} catch (err:*) {
 				result = err.toString();
 			} finally {
 				AddTestCase("Runtime Error", RANGEERROR + CODE, rangeError(result));

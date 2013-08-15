@@ -157,7 +157,7 @@ package {
 			var thisError:* = "no exception thrown";
 			try{
 				ExtDefaultClass.pubStatSubGetArray();
-			} catch (e1) {
+			} catch (e1:*) {
 				thisError = e1.toString();
 			} finally {
 				AddTestCase( "access 'default' method from 'static' method of the sub class",

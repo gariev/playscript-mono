@@ -50,7 +50,7 @@ package {
 			var thisError:* = "no exception thrown";
 			try{
 				var string:String = undefined;
-			} catch (e0) {
+			} catch (e0:*) {
 				thisError = e0.toString();
 			} finally {
 				AddTestCase( "var string:String =null", "no exception thrown", typeError(thisError));
@@ -60,7 +60,7 @@ package {
 			thisError = "no exception thrown";
 			try{
 				var mynumber:Number = undefined;
-			} catch (e) {
+			} catch (e:*) {
 				thisError = e.toString();
 			} finally {
 				AddTestCase("number:Number = undefined", "no exception thrown", typeError(thisError) );

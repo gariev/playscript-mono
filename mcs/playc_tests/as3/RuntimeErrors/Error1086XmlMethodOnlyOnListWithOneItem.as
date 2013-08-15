@@ -47,7 +47,7 @@ package {
 				var result:* = "no error";
 				var a:* = new XMLList();
 				a.name();
-			} catch (err) {
+			} catch (err:*) {
 				result = err.toString();
 			} finally {
 				AddTestCase("Runtime Error", TYPEERROR + CODE, typeError(result));

@@ -50,7 +50,7 @@ package {
 					function a() {}
 				}
 				var b:* = a(1,2);
-			} catch (err) {
+			} catch (err:*) {
 				result = grabError(err, err.toString());
 			} finally {
 				AddTestCase("Runtime Error", expected, result);

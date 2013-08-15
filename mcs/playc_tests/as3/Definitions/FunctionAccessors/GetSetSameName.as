@@ -60,7 +60,7 @@ package {
 			
 			try {
 				result = h.GetSetSameName.toString();
-			} catch (e1) {
+			} catch (e1:*) {
 				result = "exception";
 				
 			}
@@ -74,7 +74,7 @@ package {
 				h.GetSetSameName = [7,8,9];
 			
 				result = h.GetSetSameName.toString();
-			} catch (e2) {
+			} catch (e2:*) {
 				result = "exception";
 				
 			}
@@ -86,7 +86,7 @@ package {
 			try {
 				ff = GetSetSameName.GetSetSameName.x.toString();
 			
-			} catch (e3) {
+			} catch (e3:*) {
 				ff = "exception";
 			}
 			
@@ -96,7 +96,7 @@ package {
 			try { 	
 				GetSetSameName.GetSetSameName.x = [4,5,6];
 				ff = GetSetSameName.GetSetSameName.x.toString();
-			} catch (e4) {
+			} catch (e4:*) {
 				ff = "exception";
 			}
 			

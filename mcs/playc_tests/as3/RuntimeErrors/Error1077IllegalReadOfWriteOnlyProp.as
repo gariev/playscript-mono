@@ -54,7 +54,7 @@ package {
 				var result:* = "no error";
 				var c:* = new C();
 				c.a();
-			} catch (err) {
+			} catch (err:*) {
 				result = err.toString();
 			} finally {
 				AddTestCase("Runtime Error", REFERENCEERROR + CODE, referenceError(result));

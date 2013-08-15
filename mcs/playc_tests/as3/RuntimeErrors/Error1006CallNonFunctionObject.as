@@ -48,7 +48,7 @@ package {
 			try {
 				var x:Number = 0;
 				x.toString()();
-			} catch (err) {
+			} catch (err:*) {
 				result = grabError(err, err.toString());
 			} finally {
 				AddTestCase("Runtime Error", expected, result);

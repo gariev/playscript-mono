@@ -46,7 +46,7 @@ package {
 			try {
 				var result:* = "no error";
 				Function.prototype.apply(1, 1);
-			} catch (err) {
+			} catch (err:*) {
 				result = err.toString();
 			} finally {
 				AddTestCase("Runtime Error", TYPEERROR + CODE, typeError(result));

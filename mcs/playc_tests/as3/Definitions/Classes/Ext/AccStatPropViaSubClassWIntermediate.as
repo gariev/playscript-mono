@@ -76,7 +76,7 @@ package {
 			var thisError:* = "no exception thrown";
 			try{
 				var str:* = obj.string;
-			} catch (e1) {
+			} catch (e1:*) {
 				thisError = e1.toString();
 			} finally {
 				AddTestCase( "access static property of base class using sub and intermediate",

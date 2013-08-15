@@ -52,7 +52,7 @@ try{
 	var res:* = "not run";
 	OBJ.y;
 	res = "no exception";
-} catch (e1) {
+} catch (e1:*) {
 	res = "exception";
 } finally {
 	AddTestCase("Get package private var:int", "exception", res);
@@ -63,7 +63,7 @@ try{
 	OBJ.y = 23334;
 	OBJ.y;
 	res = "no exception";
-} catch (e2) {
+} catch (e2:*) {
 	res = "exception";
 } finally {
 	AddTestCase("Set package private var:int", "exception", res);
@@ -73,7 +73,7 @@ try{
 	var res:* = "not run";
 	OBJ.x.toString();
 	res = "no exception";
-} catch (e3) {
+} catch (e3:*) {
 	res = "exception";
 } finally {
 	AddTestCase("Get package private var:Array", "exception", res);
@@ -84,7 +84,7 @@ try{
 	OBJ.x = new Array(4,5,6); 
 	OBJ.x.toString();
 	res = "no exception";
-} catch (e3) {
+} catch (e3:*) {
 	res = "exception";
 } finally {
 	AddTestCase("Set package private var:Array", "exception", res);
@@ -94,7 +94,7 @@ try{
 	var res:* = "not run";
 	OBJ.boolean;
 	res = "no exception";
-} catch (e4) {
+} catch (e4:*) {
 	res = "exception";
 } finally {
 	AddTestCase("Get package private var:Boolean", "exception", res);
@@ -105,7 +105,7 @@ try{
 	OBJ.boolean = false;
 	OBJ.boolean;
 	res = "no exception";
-} catch (e5) {
+} catch (e5:*) {
 	res = "exception";
 } finally {
 	AddTestCase("Set package private var:Boolean", "exception", res);
@@ -116,7 +116,7 @@ try{
 	var res:* = "not run";
 	OBJ.u;
 	res = "no exception";
-} catch (e2) {
+} catch (e2:*) {
 	res = "exception";
 } finally {
 	AddTestCase("Get package private var:uint", "exception", res);
@@ -127,7 +127,7 @@ try{
 	OBJ.u = 42;
 	OBJ.u;
 	res = "no exception";
-} catch (e3) {
+} catch (e3:*) {
 	res = "exception";
 } finally {
 	AddTestCase("Set package private var:uint", "exception", res);
@@ -137,7 +137,7 @@ try{
 	var res:* = "not run";
 	OBJ.string;
 	res = "no exception";
-} catch (e3) {
+} catch (e3:*) {
 	res = "exception";
 } finally {
 	AddTestCase("Get package private var:String", "exception", res);
@@ -148,7 +148,7 @@ try{
 	OBJ.string = "new string"; 
 	OBJ.string;
 	res = "no exception";
-} catch (e4) {
+} catch (e4:*) {
 	res = "exception";
 } finally {
 	AddTestCase("Set package private var:String", "exception", res);
@@ -158,7 +158,7 @@ try{
 	var res:* = "not run";
 	OBJ.noType;
 	res = "no exception";
-} catch (e3) {
+} catch (e3:*) {
 	res = "exception";
 } finally {
 	AddTestCase("Get package private untyped var", "exception", res);
@@ -169,7 +169,7 @@ try{
 	OBJ.noType = "new value"; 
 	OBJ.noType;
 	res = "no exception";
-} catch (e4) {
+} catch (e4:*) {
 	res = "exception";
 } finally {
 	AddTestCase("Set package private untyped var", "exception", res);

@@ -77,7 +77,7 @@ startTest();                // leave this alone
 try {
 	var a:* = new A();
 	result = "no exception";
-} catch (e1) {
+} catch (e1:*) {
 	result = "exception";
 }
 

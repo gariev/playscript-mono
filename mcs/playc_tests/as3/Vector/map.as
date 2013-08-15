@@ -70,7 +70,7 @@ package {
 			var errormsg:*="";
 			try {
 			  var result:*=v1.map();
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase(
@@ -83,7 +83,7 @@ package {
 			var errormsg:*="";
 			try {
 			  var result:*=v1.map(mapper2);
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase(

@@ -50,7 +50,7 @@ package {
 			try {
 				var z:* = "no error";
 				var a:* = null.a;
-			} catch (err) {
+			} catch (err:*) {
 				z = err.toString();
 			} finally {
 				AddTestCase("Runtime Error", "TypeError: Error #" + CODE, typeError(z));

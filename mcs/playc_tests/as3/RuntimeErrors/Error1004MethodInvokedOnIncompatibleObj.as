@@ -48,7 +48,7 @@ package {
 				var object:* = new Object();
 				object.valueOf = Number.prototype.valueOf;
 				var result:* = object.valueOf();
-			} catch (err) {
+			} catch (err:*) {
 				z = err.toString();
 			} finally {
 				AddTestCase("Runtime Error", "TypeError: Error #" + CODE, typeError(z));

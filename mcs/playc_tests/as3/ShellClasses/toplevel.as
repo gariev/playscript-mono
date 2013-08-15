@@ -95,7 +95,7 @@ package {
 			    var err:*="";
 			    try {
 			        System.exec();
-			    } catch (e) {
+			    } catch (e:*) {
 			        err=e.toString();
 			    }
 			    AddTestCase("System.exec no params throws exception",

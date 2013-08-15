@@ -50,7 +50,7 @@ package {
 			/*var thisError:* = "no exception thrown";
 			try{
 				var string:String = 1.23;
-			} catch (e0) {
+			} catch (e0:*) {
 				thisError = e0.toString();
 			} finally {
 				AddTestCase( "var string:String = 1.23", "no exception thrown", typeError(thisError));

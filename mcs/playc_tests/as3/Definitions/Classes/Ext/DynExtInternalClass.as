@@ -122,7 +122,7 @@ package {
 			var thisError:* = "no Exception thrown";
 			try{
 				DYNEXTDCLASS.testStatSubArray(arr);
-			} catch (e) {
+			} catch (e:*) {
 				thisError = e.toString();
 			} finally {
 				AddTestCase( "access 'default' method from 'static' method of sub class", 

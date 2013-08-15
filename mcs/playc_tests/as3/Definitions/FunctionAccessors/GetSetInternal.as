@@ -63,7 +63,7 @@ package {
 			try {
 				internObj = new GetSetInternalInternal();
 				res = "no exception";
-			} catch (e1) {
+			} catch (e1:*) {
 				res = "exception";
 			}
 			AddTestCase("Try to instantiate internal class from outside package", "exception", res);

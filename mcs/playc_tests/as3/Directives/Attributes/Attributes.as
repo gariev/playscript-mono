@@ -50,7 +50,7 @@ var ATTRS:* = new Attrs();
 // Variables
 AddTestCase("var, empty         :", "var, empty         ", ATTRS.emptyVar);
 AddTestCase("var, public        :", "var, public        ", ATTRS.pubVar);
-var privateVarErr:*="no error"; try { ATTRS.privVar } catch (e) { privateVarErr=e.toString(); }
+var privateVarErr:*="no error"; try { ATTRS.privVar } catch (e:*) { privateVarErr=e.toString(); }
 AddTestCase("var, private       :", "ReferenceError: Error #1069", privateVarErr.substr(0,27));
 //AddTestCase("var, private       :", "var, private       ", ATTRS.privVar);
 AddTestCase("var, static        :", "var, static        ", ATTRS.getStatVar());
@@ -62,7 +62,7 @@ AddTestCase("var, static private:", "var, static private", ATTRS.getStatPrivVar(
 // Functions
 AddTestCase("func, empty         :", "func, empty         ", ATTRS.emptyFunc());
 AddTestCase("func, public        :", "func, public        ", ATTRS.pubFunc());
-var privFunc:*="no error"; try { ATTRS.privFunc(); } catch (e) { privFunc=e.toString(); }
+var privFunc:*="no error"; try { ATTRS.privFunc(); } catch (e:*) { privFunc=e.toString(); }
 AddTestCase("func, private       :", "ReferenceError: Error #1069", privateVarErr.substr(0,27));
 //AddTestCase("func, private       :", "func, private       ", ATTRS.privFunc());
 AddTestCase("func, static        :", "func, static        ", ATTRS.getStatFunc());

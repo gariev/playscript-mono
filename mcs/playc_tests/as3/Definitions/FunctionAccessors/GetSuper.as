@@ -74,7 +74,7 @@ package {
 				var res:* = "not run";
 				b.v; // should cause infinite recursion
 				res = "no exception";
-			} catch (e) {
+			} catch (e:*) {
 				res = "exception";
 			} finally {
 				AddTestCase("Getter calling super", "no exception", res);
@@ -85,7 +85,7 @@ package {
 				b.v = 1;
 				res = "no exception";
 				AddTestCase("Setting value whose getter calls super", 2, b.v);
-			} catch (e) {
+			} catch (e:*) {
 				res = "exception";
 			} finally {
 				AddTestCase("Infinite recursion getter calling super", "no exception", res);

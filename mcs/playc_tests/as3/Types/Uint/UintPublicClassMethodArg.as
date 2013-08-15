@@ -62,7 +62,7 @@ package {
 			try{
 				obj.oneArg(-1);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "Precision runtime error one arg", "exception NOT caught", pResult );
@@ -71,7 +71,7 @@ package {
 			try{
 				obj.twoArg(1,-2);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "Precision runtime error two args", "exception NOT caught", pResult );
@@ -80,7 +80,7 @@ package {
 			try{
 				obj.threeArg(1,-2);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "Precision runtime error three args", "exception caught", pResult );
@@ -89,7 +89,7 @@ package {
 			try{
 				obj.diffArg(-1,-2,-3);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "Precision runtime error diffArg", "exception NOT caught", pResult );
@@ -98,7 +98,7 @@ package {
 			try{
 				obj.diffArg2(-1,-2,-3);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "Precision runtime error diffArg2", "exception NOT caught", pResult );
@@ -107,7 +107,7 @@ package {
 			try{
 				obj.diffArg3(-1,-2,-3);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "Precision runtime error diffArg3", "exception NOT caught", pResult );
@@ -118,7 +118,7 @@ package {
 			try{
 				obj.oneArg(n);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "var n:Number = -20; obj.oneArg(n);", "exception NOT caught", pResult );
@@ -127,7 +127,7 @@ package {
 			try{
 				obj.twoArg(n);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "var n:Number = -20; obj.twoArg(n);", "exception caught", pResult );
@@ -136,7 +136,7 @@ package {
 			try{
 				obj.twoArg(n,n);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "var n:Number = -20; obj.twoArg(n,n);", "exception NOT caught", pResult );
@@ -145,7 +145,7 @@ package {
 			try{
 				obj.threeArg(n,n,n);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "var n:Number = -20; obj.threeArg(n,n,n);", "exception NOT caught", pResult );
@@ -154,7 +154,7 @@ package {
 			try{
 				obj.diffArg(n,n,n);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "var n:Number = -20; obj.diffArg(n,n,n)", "exception NOT caught", pResult );
@@ -163,7 +163,7 @@ package {
 			try{
 				obj.diffArg2(n,n,n);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "var n:Number = -20; obj.diffArg2(n,n,n)", "exception NOT caught", pResult );
@@ -172,7 +172,7 @@ package {
 			try{
 				obj.diffArg3(n,n,n);
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "var n:Number = -20; obj.diffArg3(n,n,n)", "exception NOT caught", pResult );
@@ -184,7 +184,7 @@ package {
 			try{
 				obj.pubProp = -1;
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "obj.pubProp = -1", "exception NOT caught", pResult );
@@ -194,7 +194,7 @@ package {
 			try{
 				UintPublicClass.pubStatProp = -1;
 				pResult = "exception NOT caught";
-			} catch (e) {
+			} catch (e:*) {
 				pResult = "exception caught";
 			}
 			AddTestCase( "UintPublicClass.pubStatProp = -1", "exception NOT caught", pResult );

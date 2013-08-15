@@ -72,7 +72,7 @@ package {
 			var errormsg:*="";
 			try {
 			  v7.push(10);
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase( "constructor fixed parameter set to true write beyond length-1 throws exception", 
@@ -83,7 +83,7 @@ package {
 			var errormsg:*="";
 			try {
 			  v8[10];
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			
@@ -122,7 +122,7 @@ package {
 			var errormsg:*="";
 			try {
 			  v16.push(c2inst);
-			} catch (e) {
+			} catch (e:*) {
 			  errormsg=e.toString();
 			}
 			AddTestCase("constructor type custom class class mismatch", 

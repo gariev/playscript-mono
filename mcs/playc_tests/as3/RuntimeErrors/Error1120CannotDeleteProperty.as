@@ -47,7 +47,7 @@ package {
 			var result:* = "no error";
 			try {
 				delete "".length;
-			} catch (err) {
+			} catch (err:*) {
 				result = grabError(err, err.toString());
 			} finally {
 				AddTestCase("Runtime Error", expected, result);

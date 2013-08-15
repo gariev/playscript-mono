@@ -132,7 +132,7 @@ try {
     setSamplerCallback(abc);
     startSampling();
     simpleLoop(80000);
-} catch (e) {
+} catch (e:*) {
     errstr2=e.toString();
 }
 pauseSampling();

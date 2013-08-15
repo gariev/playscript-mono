@@ -47,7 +47,7 @@ package {
 				var z:* = "no error";
 				var OBJECT:* = new Object();
 				var o:* = new OBJECT();
-			} catch (err) {
+			} catch (err:*) {
 				z = err.toString();
 			} finally {
 				AddTestCase("Runtime Error", "TypeError: Error #" + CODE, typeError(z));
