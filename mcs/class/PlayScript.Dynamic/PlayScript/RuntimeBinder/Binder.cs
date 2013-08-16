@@ -137,19 +137,21 @@ namespace PlayScript.RuntimeBinder
 			Stats.Increment(StatsCounter.ConvertBinderCreated);
 			return new PSConvertBinder(type, context, flags);
 		}
-		
+
+#if false
 		public static CallSiteBinder GetIndex (CSharpBinderFlags flags, Type context, IEnumerable<CSharpArgumentInfo> argumentInfo)
 		{
 			Stats.Increment(StatsCounter.GetIndexBinderCreated);
 			return new PSGetIndexBinder(context, argumentInfo);
 		}
-		
+
 		public static CallSiteBinder GetMember (CSharpBinderFlags flags, string name, Type context, IEnumerable<CSharpArgumentInfo> argumentInfo)
 		{
 			Stats.Increment(StatsCounter.GetMemberBinderCreated);
 			return new PSGetMemberBinder(name, context, argumentInfo);
 		}
-		
+#endif
+
 		public static CallSiteBinder Invoke (CSharpBinderFlags flags, Type context, IEnumerable<CSharpArgumentInfo> argumentInfo)
 		{
 			Stats.Increment(StatsCounter.InvokeBinderCreated);
@@ -173,19 +175,20 @@ namespace PlayScript.RuntimeBinder
 			Stats.Increment(StatsCounter.IsEventBinderCreated);
 			return new PSIsEventBinder(flags, name, context);
 		}
-		
+
+#if false
 		public static CallSiteBinder SetIndex (CSharpBinderFlags flags, Type context, IEnumerable<CSharpArgumentInfo> argumentInfo)
 		{
 			Stats.Increment(StatsCounter.SetIndexBinderCreated);
 			return new PSSetIndexBinder(flags, context, argumentInfo);
 		}
-		
+
 		public static CallSiteBinder SetMember (CSharpBinderFlags flags, string name, Type context, IEnumerable<CSharpArgumentInfo> argumentInfo)
 		{
 			Stats.Increment(StatsCounter.SetMemberBinderCreated);
 			return new PSSetMemberBinder(flags, name, context, argumentInfo);
 		}
-		
+#endif
 		public static CallSiteBinder UnaryOperation (CSharpBinderFlags flags, ExpressionType operation, Type context, IEnumerable<CSharpArgumentInfo> argumentInfo)
 		{
 			Stats.Increment(StatsCounter.UnaryOperationBinderCreated);

@@ -161,11 +161,10 @@ namespace PlayScript
 			sInvokerInfoByMethodSignature.Add(methodSignature, new InvokerInfo(invokerFactory));
 		}
 
-		public static Func<ToT> CreatePropertyGetAction<ToT>(object target, PropertyInfo propertyInfo)
+		public static Func<ToT> CreatePropertyGetAction<ToT>(object target, MethodInfo methodInfo)
 		{
 			Func<ToT> funcTo;
 
-			MethodInfo methodInfo = propertyInfo.GetGetMethod();
 			Type propertyType = methodInfo.ReturnType;
 			if (propertyType == typeof(ToT))
 			{
@@ -193,11 +192,10 @@ namespace PlayScript
 			return funcTo;
 		}
 
-		public static Action<FromT> CreatePropertySetAction<FromT>(object target, PropertyInfo propertyInfo)
+		public static Action<FromT> CreatePropertySetAction<FromT>(object target, MethodInfo methodInfo)
 		{
 			Action<FromT> actionFrom;
 
-			MethodInfo methodInfo = propertyInfo.GetSetMethod();
 			Type propertyType = methodInfo.GetParameters()[0].ParameterType;
 			if (propertyType == typeof(FromT))
 			{

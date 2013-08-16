@@ -77,22 +77,15 @@ namespace PlayScript.DynamicRuntime
 			if (otype == mType)
 			{
 				// use cached resolve
-				if (mProperty != null) {
+				if (mPropertySetter != null) {
 					Action<T> action;
 					if (o == mPreviousTarget) {
 						action = (Action<T>)mPreviousAction;
 					} else {
-						mPreviousAction = action = ActionCreator.CreatePropertySetAction<T>(o, mProperty);
+						mPreviousAction = action = ActionCreator.CreatePropertySetAction<T>(o, mPropertySetter);
 						mPreviousTarget = o;
 					}
 					action(value);
-					return value;
-				}
-
-				// use cached resolve
-				if (mProperty != null) {
-					mArgs[0] = value;
-					mPropertySetter.Invoke(o, BindingFlags.SuppressChangeType, null, mArgs, null);
 					return value;
 				}
 
@@ -116,23 +109,18 @@ namespace PlayScript.DynamicRuntime
 			Stats.Increment(StatsCounter.SetMemberBinder_Resolve_Invoked);
 
 			// resolve as property
-			var property = otype.GetProperty(mName);
-			if (property != null)
+			MethodInfo setter = PSMethodCache.GetPropertySet(otype, mName, isStatic);
+			if (setter != null)
 			{
 				// found property
-				var setter = property.GetSetMethod();
-				if (setter != null && setter.IsPublic && setter.IsStatic == isStatic) 
-				{
-					// setup binding to property
-					mType     = otype;
-					mProperty = property;
-					mPropertySetter = property.GetSetMethod();
-					mField    = null;
+				// setup binding to property
+				mType     = otype;
+				mPropertySetter = setter;
+				mField    = null;
 
-					mArgs[0] = PlayScript.Dynamic.ConvertValue(value, property.PropertyType);
-					mPropertySetter.Invoke(o, mArgs);
-					return value;
-				}
+				mArgs[0] = PlayScript.Dynamic.ConvertValue(value, setter.GetParameters()[0].ParameterType);
+				mPropertySetter.Invoke(o, mArgs);
+				return value;
 			}
 
 			// resolve as field
@@ -143,7 +131,7 @@ namespace PlayScript.DynamicRuntime
 				if (field.IsPublic && field.IsStatic == isStatic) {
 					// setup binding to field
 					mType     = otype;
-					mProperty = null;
+					mPropertySetter = null;
 					mField    = field;
 
 					// resolve conversion function
@@ -157,7 +145,7 @@ namespace PlayScript.DynamicRuntime
 			{
 				// dynamic class
 				mType     = otype;
-				mProperty = null;
+				mPropertySetter = null;
 				mField    = null;
 				((IDynamicClass)o).__SetDynamicValue(mName, value);
 				return value;
@@ -171,7 +159,6 @@ namespace PlayScript.DynamicRuntime
 
 		private string			mName;
 		private Type			mType;
-		private PropertyInfo	mProperty;
 		private FieldInfo		mField;
 		private MethodInfo		mPropertySetter;
 		private object[]		mArgs = new object[1];

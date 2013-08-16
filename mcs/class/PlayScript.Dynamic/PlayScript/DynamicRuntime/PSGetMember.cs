@@ -97,12 +97,12 @@ namespace PlayScript.DynamicRuntime
 			if (otype == mType)
 			{
 				// use cached resolve
-				if (mProperty != null) {
+				if (mPropertyGetter != null) {
 					Func<T> func;
 					if (o == mPreviousTarget) {
 						func = (Func<T>)mPreviousFunc;
 					} else {
-						mPreviousFunc = func = ActionCreator.CreatePropertyGetAction<T>(o, mProperty);
+						mPreviousFunc = func = ActionCreator.CreatePropertyGetAction<T>(o, mPropertyGetter);
 						mPreviousTarget = o;
 					}
 					return func();
@@ -132,22 +132,16 @@ namespace PlayScript.DynamicRuntime
 			Stats.Increment(StatsCounter.GetMemberBinder_Resolve_Invoked);
 
 			// resolve as property
-			var property = otype.GetProperty(mName);
-			if (property != null)
+			MethodInfo getter = PSMethodCache.GetPropertyGet(otype, mName, isStatic);
+			if (getter != null)
 			{
-				// found property
-				var getter = property.GetGetMethod();
-				if (getter != null && getter.IsPublic && getter.IsStatic == isStatic) 
-				{
-					// setup binding to property
-					mType     = otype;
-					mProperty = property;
-					mPropertyGetter = property.GetGetMethod();
-					mField    = null;
-					mMethod   = null;
-					mTargetType = property.PropertyType;
-					return PlayScript.Dynamic.ConvertValue<T>(mPropertyGetter.Invoke(o, null));
-				}
+				// setup binding to property
+				mType     = otype;
+				mPropertyGetter = getter;
+				mField    = null;
+				mMethod   = null;
+				mTargetType = getter.ReturnType;
+				return PlayScript.Dynamic.ConvertValue<T>(mPropertyGetter.Invoke(o, null));
 			}
 
 			// resolve as field
@@ -158,7 +152,7 @@ namespace PlayScript.DynamicRuntime
 				if (field.IsPublic && field.IsStatic == isStatic) {
 					// setup binding to field
 					mType     = otype;
-					mProperty = null;
+					mPropertyGetter = null;
 					mField    = field;
 					mMethod   = null;
 					mTargetType = field.FieldType;
@@ -178,7 +172,7 @@ namespace PlayScript.DynamicRuntime
 			{
 				// setup binding to method
 				mType     = otype;
-				mProperty = null;
+				mPropertyGetter = null;
 				mField    = null;
 				mMethod   = method;
 				mTargetType = PlayScript.Dynamic.GetDelegateTypeForMethod(mMethod);
@@ -191,7 +185,7 @@ namespace PlayScript.DynamicRuntime
 			{
 				// dynamic class
 				mType     = otype;
-				mProperty = null;
+				mPropertyGetter = null;
 				mField    = null;
 				mMethod   = null;
 				object result = ((IDynamicClass)o).__GetDynamicValue(mName);
@@ -204,7 +198,6 @@ namespace PlayScript.DynamicRuntime
 
 		private string			mName;
 		private Type			mType;
-		private PropertyInfo	mProperty;
 		private FieldInfo		mField;
 		private MethodInfo		mMethod;
 		private MethodInfo		mPropertyGetter;
