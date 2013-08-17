@@ -12,6 +12,8 @@ foreach my $arg(@ARGV) {
 		$line =~ s/var +([a-zA-Z_0-9]+)([ =;]+)(?!:)+/var $1:*$2/;
 		$line =~ s/const +([a-zA-Z_0-9]+)([ =;]+)(?!:)+/const $1:*$2/;
 		$line =~ s/(catch\s+)\((\s*[a-zA-Z0-9_]+\s*(?!:)+)\)/$1($2:*)/;
+		$line =~ s/(for\s*\(var\s+[a-zA-Z0-9_]+)(\s*(?!:)+in\s+)/$1:*$2/;
+		$line =~ s/(for\s+each\s*\(var\s+[a-zA-Z0-9_]+)(\s*(?!:)+in\s+)/$1:*$2/;
 
 		# Track which class names we've seen
 		if ($line =~ /class[ ]+([a-zA-Z_0-9]+)/) {
@@ -24,7 +26,7 @@ foreach my $arg(@ARGV) {
 			$_ =~ /function[ ]+([a-zA-Z_0-9]+)/;
 			if (!exists $classes{$1}) {
 				$line =~ s/(function[ ]+[a-zA-Z_0-9]+)(\(.*\))([ ]*){(.*$)/$1$2:*$3\{$4/;
-				$line =~ s/(function[ ]+[a-zA-Z_0-9]+)(\(.*\))([ ]*);(.*$)/$1$2:*$3\;$4/; # interfaces too
+				$line =~ s/(function[ ]+[a-zA-Z_0-9]+)(\([\sa-zA-Z0-9_,:]*\))([ ]*);(.*$)/$1$2:*$3\;$4/; # interfaces too
 			}
 		}
 
