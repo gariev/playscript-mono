@@ -28,6 +28,7 @@ namespace PlayScript.DynamicRuntime
 	public class PSGetIndex 
 	{
 		private PSGetMember	mGetMember;
+		private string		mPreviousString;
 		private int			mHintDictionaryStringID = -1;
 		private int			mHintDictionaryIndex = -1;
 
@@ -90,10 +91,16 @@ namespace PlayScript.DynamicRuntime
 			Stats.Increment(StatsCounter.GetIndexBinder_Key_Invoked);
 
 			// First let's look if we can cast to a specific primitive
-/*
 			IFastDictionaryLookup<T> fastLookupT = o as IFastDictionaryLookup<T>;
 			if (fastLookupT != null)
 			{
+				if (key != mPreviousString)
+				{
+					mHintDictionaryStringID = -1;
+					mHintDictionaryIndex = -1;
+					mPreviousString = key;
+				}
+
 				return fastLookupT.GetValue(key, ref mHintDictionaryStringID, ref mHintDictionaryIndex);
 			}
 
@@ -101,13 +108,20 @@ namespace PlayScript.DynamicRuntime
 			IFastDictionaryLookup<object> fastLookupObject = o as IFastDictionaryLookup<object>;
 			if (fastLookupObject != null)
 			{
+				if (key != mPreviousString)
+				{
+					mHintDictionaryStringID = -1;
+					mHintDictionaryIndex = -1;
+					mPreviousString = key;
+				}
+
 				object value = fastLookupObject.GetValue(key, ref mHintDictionaryStringID, ref mHintDictionaryIndex);
 				if (value is T)
 					return (T)value;
 				else
 					return PlayScript.Dynamic.ConvertValue<T>(value);
 			}
-*/
+
 			// handle dictionaries
 			var dict = o as IDictionary;
 			if (dict != null) {

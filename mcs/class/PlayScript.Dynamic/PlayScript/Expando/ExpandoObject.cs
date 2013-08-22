@@ -1760,7 +1760,7 @@ namespace PlayScript.Expando {
 					return true;
 				}
 
-				// Index does not match, use the first lookup to initiate the binary seach
+				// Index does not match, use the first lookup to initiate the binary search
 				if (stringIDAtIndex > hintStringID)
 				{
 					startIndex = 0;
@@ -2036,7 +2036,7 @@ namespace PlayScript.Expando {
 			}
 			set {
 				Stats.Increment(StatsCounter.Expando_GetFromIDictionary);
-				this[(string)key] = value;
+				this[KeyToString(key)] = value;
 			}
 		}
 
