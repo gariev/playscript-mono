@@ -61,6 +61,9 @@ namespace Telemetry
 		public const string Version = "3,2";
 
 
+		public static bool 	Stage3DCapture = true;
+
+
 		// returns true if a session is active
 		public static bool Connected
 		{

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Linq;
 using Amf;
 
 namespace Telemetry
@@ -34,13 +35,23 @@ namespace Telemetry
 				return sb.ToString();
 			} else if (o is _root.Vector<int>){
 				var a = o as _root.Vector<int>;
-				return "(int)[" + o.ToString() + "]";
+				return "(int)[" + a.ToString() + "]";
 			} else if (o is _root.Vector<uint>){
 				var a = o as _root.Vector<uint>;
-				return "(uint)[" + o.ToString() + "]";
+				return "(uint)[" + a.ToString() + "]";
 			} else if (o is _root.Vector<double>){
 				var a = o as _root.Vector<double>;
-				return "(number)[" + o.ToString() + "]";
+				return "(number)[" + a.ToString() + "]";
+			} else if (o is flash.utils.ByteArray){
+				var a = o as flash.utils.ByteArray;
+				var sb = new System.Text.StringBuilder();
+				sb.Append("(ByteArray[" + a.length + "])");
+				sb.Append("[");
+				for (int i=0; i < 64 && i < a.length; i++) {
+					sb.AppendFormat("{0:X2}", a[i]);
+				}
+				sb.Append("]");
+				return sb.ToString();
 			} else if (o is double){
 				return "(number)" + o.ToString();
 			} else {

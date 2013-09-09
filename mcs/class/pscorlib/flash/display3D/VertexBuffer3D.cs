@@ -11,6 +11,7 @@
 //      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //      See the License for the specific language governing permissions and
 //      limitations under the License.
+#define STAGE3D_CAPTURE
 
 using System;
 using flash.utils;
@@ -54,6 +55,14 @@ namespace flash.display3D
 
 			// update stats
 			mContext.statsIncrement(Context3D.Stats.Count_VertexBuffer);
+
+#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				Telemetry.Session.WriteValue(".3d.as.Context3D.createVertexBuffer", new Telemetry.Protocol.Context3D_createVertexBuffer() {
+					count = numVertices, dwordsPerVertex = dataPerVertex, resultId = (int)this.id
+				});
+			}
+#endif
 		}
 
 		public void dispose() {
@@ -103,6 +112,20 @@ namespace flash.display3D
 				                        new IntPtr(byteCount), 
 				                        data);
 			}
+
+			#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				double[] vd = new double[numVertices * mVertexSize];
+				for (int i=0; i < numVertices * mVertexSize; i++)
+				{
+					vd[i] = (double) data[i];
+				}
+
+				Telemetry.Session.WriteValue(".3d.as.VertexBuffer.uploadDouble", new Telemetry.Protocol.VertexBuffer3D_uploadDouble() {
+					vertexBufferId =  (int)this.id, startVertex =  startVertex, countVertices = numVertices, source = ByteArray.cloneFromArray(vd, vd.Length)
+				});
+			}
+			#endif
 		}
 
 		public void uploadFromVector(float[] data, int startVertex, int numVertices) 
@@ -132,7 +155,11 @@ namespace flash.display3D
 
 			uploadFromArray(mData, startVertex, numVertices);
 		}
-		
+
+		public int count { 
+			get {return mNumVertices;}
+		}
+
 		public int stride { 
 			get {return mVertexSize * sizeof(float);}
 		}

@@ -52,10 +52,23 @@ namespace flash.display3D {
 		public Program3D(Context3D context3D)
 		{
 			mContext = context3D;
+			mId = sNextId++;
+
+			#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				Telemetry.Session.WriteValue(".3d.as.Context3D.createProgram", new Telemetry.Protocol.Context3D_createProgram() {
+					resultId =  this.id
+				});
+			}
+			#endif
 		}
 		
 		public void dispose() {
 			deleteShaders();
+		}
+
+		public int id {
+			get { return mId;}
 		}
 
 		private void deleteShaders ()
@@ -101,6 +114,14 @@ namespace flash.display3D {
 			for (int i=0; i < samplerStates.Length; i++) {
 				setSamplerState(i, samplerStates[i]);
 			}
+
+			#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				Telemetry.Session.WriteValueImmediate(".3d.as.Context3D.Program3D_upload", new Telemetry.Protocol.Program3D_upload() {
+					programId = id, vertexProgram = vertexProgram, fragmentProgram = fragmentProgram
+				});
+			}
+			#endif
 		}
 
 		public void uploadFromGLSL (string vertexShaderSource, string fragmentShaderSource)
@@ -357,6 +378,7 @@ namespace flash.display3D {
 		private readonly Context3D mContext;
 		private int 			   mMemUsage;
 
+		private readonly int       mId; // unique id for program
 		private int 			   mVertexShaderId = 0;
 		private int 			   mFragmentShaderId = 0;
 		private int 			   mProgramId = 0;
@@ -375,6 +397,8 @@ namespace flash.display3D {
 		// sampler state information
 		private SamplerState[]     mSamplerStates = new SamplerState[Context3D.MaxSamplers];
 		private int				   mSamplerUsageMask = 0; 	
+
+		private static int sNextId = 1;
 
 #else
 

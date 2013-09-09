@@ -164,6 +164,14 @@ namespace flash.display3D {
 
 			// restore depth mask
 			GL.DepthMask(oldDepthWriteMask);
+
+#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				Telemetry.Session.WriteValue(".3d.as.Context3D.clear", new Telemetry.Protocol.Context3D_clear() {
+					red = red, green = green, blue= blue, alpha = alpha, depth = depth, stencil = (int)stencil, mask = (double)mask
+				});
+			}
+#endif
 		}
 		
 		public void configureBackBuffer(int width, int height, int antiAlias, 
@@ -217,6 +225,14 @@ namespace flash.display3D {
 			if (status != FramebufferErrorCode.FramebufferComplete) {
 				Console.Error.WriteLine("FrameBuffer configuration error: {0}", status);
 			}
+
+#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				Telemetry.Session.WriteValue(".3d.as.Context3D.configureBackBuffer", new Telemetry.Protocol.Context3D_configureBackBuffer() {
+					width = width, height = height, antialias = antiAlias, depthstencil = enableDepthAndStencil
+				});
+			}
+#endif
 		}
 	
 		public CubeTexture createCubeTexture(int size, string format, bool optimizeForRenderToTexture, int streamingLevels = 0) {
@@ -284,6 +300,14 @@ namespace flash.display3D {
 
 			// increment draw call count
 			statsIncrement(Stats.DrawCalls);
+
+			#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				Telemetry.Session.WriteValue(".3d.as.Context3D.drawTriangles", new Telemetry.Protocol.Context3D_drawTriangles() {
+					indexBufferId =  (int)indexBuffer.id, firstIndex = firstIndex, numTriangles = numTriangles
+				});
+			}
+			#endif
 		}
 
 		public void present() {
@@ -303,6 +327,13 @@ namespace flash.display3D {
 
 			// increment frame count
 			mFrameCount++;
+
+#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				Telemetry.Session.WriteValue(".3d.as.Context3D.present", new Telemetry.Protocol.Context3D_present() {
+				});
+			}
+#endif
 		}
 
 		public void setBlendFactors (string sourceFactor, string destinationFactor)
@@ -352,6 +383,15 @@ namespace flash.display3D {
 
 			GL.Enable(EnableCap.Blend);
 			GL.BlendFunc(src, dest);
+
+			#if STAGE3D_CAPTURE
+//			if (Telemetry.Session.Stage3DCapture) {
+//				Telemetry.Session.WriteValue(".3d.as.Context3D.setBlendFactors", new Telemetry.Protocol.Context3D_setBlendFactors() {
+//					 sourceFactor =  1, destFactor = 2
+//				});
+//			}
+			#endif
+
 		}
  	 	
 		public void setColorMask(bool red, bool green, bool blue, bool alpha) {
@@ -360,25 +400,37 @@ namespace flash.display3D {
  	 	
 		public void setCulling (string triangleFaceToCull)
 		{
+			int cullModeInt;
 			switch (triangleFaceToCull) {
 			case Context3DTriangleFace.NONE:
 				GL.Disable(EnableCap.CullFace);
+				cullModeInt =0;
 				break;
 			case Context3DTriangleFace.BACK:
 				GL.Enable(EnableCap.CullFace);
 				GL.CullFace (CullFaceMode.Front);		// oddly this is inverted
+				cullModeInt =1;
 				break;
 			case Context3DTriangleFace.FRONT:
 				GL.Enable(EnableCap.CullFace);
 				GL.CullFace (CullFaceMode.Back);		// oddly this is inverted
+				cullModeInt =2;
 				break;
 			case Context3DTriangleFace.FRONT_AND_BACK:
 				GL.Enable(EnableCap.CullFace);
 				GL.CullFace (CullFaceMode.FrontAndBack);
+				cullModeInt =3;
 				break;
 			default:
 				throw new NotImplementedException();
 			}
+			#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				Telemetry.Session.WriteValue(".3d.as.Context3D.setCulling", new Telemetry.Protocol.Context3D_setCulling() {
+					triangleFaceToCull = cullModeInt
+				});
+			}
+			#endif
 		}
  	 	
 		public void setDepthTest (bool depthMask, string passCompareMode)
@@ -386,35 +438,53 @@ namespace flash.display3D {
 			GL.Enable (EnableCap.DepthTest);
 			GL.DepthMask(depthMask);
 
+			int passCompareModeInt;
 			switch (passCompareMode) {
 			case Context3DCompareMode.ALWAYS:
 				GL.DepthFunc(DepthFunction.Always);
+				passCompareModeInt = 0;
 				break;
 			case Context3DCompareMode.EQUAL:
 				GL.DepthFunc(DepthFunction.Equal);
+				passCompareModeInt = 4;
 				break;
 			case Context3DCompareMode.GREATER:
 				GL.DepthFunc(DepthFunction.Greater);
+				passCompareModeInt = 6;
 				break;
 			case Context3DCompareMode.GREATER_EQUAL:
 				GL.DepthFunc(DepthFunction.Gequal);
+				passCompareModeInt = 5;
 				break;
 			case Context3DCompareMode.LESS:
 				GL.DepthFunc(DepthFunction.Less);
+				passCompareModeInt = 2;
 				break;
 			case Context3DCompareMode.LESS_EQUAL:
 				GL.DepthFunc(DepthFunction.Lequal);
+				passCompareModeInt = 3;
 				break;
 			case Context3DCompareMode.NEVER:
 				GL.DepthFunc(DepthFunction.Never);
+				passCompareModeInt = 1;
 				break;
 			case Context3DCompareMode.NOT_EQUAL:
 				GL.DepthFunc(DepthFunction.Notequal);
+				passCompareModeInt = 7;
 				break;
 			default:
 				throw new NotImplementedException();
 			}
+
+#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				Telemetry.Session.WriteValue(".3d.as.Context3D.setDepthTest", new Telemetry.Protocol.Context3D_setDepthTest() {
+					depthMask = depthMask, passCompareMode = passCompareModeInt
+				});
+			}
+#endif
 		}
+
  	 	
 		public void setProgram (Program3D program)
 		{
@@ -431,6 +501,14 @@ namespace flash.display3D {
 
 			// mark all samplers that this program uses as dirty
 			mSamplerDirty |= mProgram.samplerUsageMask;
+
+#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				Telemetry.Session.WriteValue(".3d.as.Context3D.setProgram", new Telemetry.Protocol.Context3D_setProgram() {
+					 programId = program.id
+				});
+			}
+#endif
 		}
  	 	
 		public void setProgramConstantsFromByteArray(string programType, int firstRegister, 
@@ -495,6 +573,14 @@ namespace flash.display3D {
 			if (uniform != null)
 			{
 				GL.UniformMatrix4(uniform.Location, 1, false, mTemp);
+
+				#if STAGE3D_CAPTURE
+				if (Telemetry.Session.Stage3DCapture) {
+					Telemetry.Session.WriteValue(".3d.as.Context3D.setProgramConstants", new Telemetry.Protocol.Context3D_setProgramConstants() {
+						programType = isVertex ? 0 : 1, firstRegister =  firstRegister, numRegisters = 4, data = ByteArray.cloneFromArray(mTemp, 16)
+					});
+				}
+				#endif
 			}
 			else
 			{
@@ -514,6 +600,14 @@ namespace flash.display3D {
 			}
 
 			bool isVertex = (programType == "vertex");
+
+#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				Telemetry.Session.WriteValue(".3d.as.Context3D.setProgramConstantsDouble", new Telemetry.Protocol.Context3D_setProgramConstantsDouble() {
+					programType = isVertex ? 0 : 1, firstRegister = firstRegister, numRegisters = numRegisters, data = ByteArray.cloneFromArray(data._GetInnerArray(), numRegisters * 4)
+				});
+			}
+#endif
 
 			// set all registers
 			int register = firstRegister;
@@ -630,11 +724,28 @@ namespace flash.display3D {
 
 		public void setScissorRectangle (Rectangle rectangle)
 		{
+			int x, y, w, h;
 			if (rectangle != null) {
-				GL.Scissor((int)rectangle.x, (int)rectangle.y, (int)rectangle.width, (int)rectangle.height);
+				x = (int)rectangle.x;
+				y = (int)rectangle.y;
+				w = (int)rectangle.width;
+				h = (int)rectangle.height;
 			} else {
-				GL.Scissor(0, 0, mBackBufferWidth, mBackBufferHeight);
+				x = 0;
+				y = 0;
+				w = mBackBufferWidth;
+				h = mBackBufferHeight;
 			}
+
+			GL.Scissor(x,y,w,h);
+
+#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				Telemetry.Session.WriteValue(".3d.as.Context3D.setScissorRectangle", new Telemetry.Protocol.Context3D_setScissorRectangle() {
+					x = x, y = y, w = w, h = h
+				});
+			}
+#endif
 		}
 
 		public void setStencilActions(string triangleFace = "frontAndBack", string compareMode = "always", string actionOnBothPass = "keep", 
@@ -657,6 +768,14 @@ namespace flash.display3D {
 				// set flag indicating that this sampler is dirty
 				mSamplerDirty |= (1 << sampler);
 			}
+
+			#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				Telemetry.Session.WriteValue(".3d.as.Context3D.setTextureAt", new Telemetry.Protocol.Context3D_setTextureAt() {
+					sampler = sampler, textureId = texture!=null ? texture.textureId : 0
+				});
+			}
+			#endif
 		}
 
 		public void setVertexBufferAt (int index, VertexBuffer3D buffer, int bufferOffset = 0, string format = "float4")
@@ -664,6 +783,14 @@ namespace flash.display3D {
 			if (buffer == null) {
 				GL.DisableVertexAttribArray (index);
 				GL.BindBuffer (BufferTarget.ArrayBuffer, 0);
+
+				#if STAGE3D_CAPTURE
+				if (Telemetry.Session.Stage3DCapture) {
+					Telemetry.Session.WriteValue(".3d.as.Context3D.setVertexBufferAt", new Telemetry.Protocol.Context3D_setVertexBufferAt() {
+						index = index, vertexBufferId = 0
+					});
+				}
+				#endif
 				return;
 			}
 		
@@ -674,22 +801,35 @@ namespace flash.display3D {
 			IntPtr byteOffset = new IntPtr(bufferOffset * 4); // buffer offset is in 32-bit words
 
 			// set attribute pointer within vertex buffer
+			int formatInt;
 			switch (format) {
 			case "float4":
 				GL.VertexAttribPointer(index, 4, VertexAttribPointerType.Float, false, buffer.stride, byteOffset);
+				formatInt = 64;
 				break;
 			case "float3":
 				GL.VertexAttribPointer(index, 3, VertexAttribPointerType.Float, false, buffer.stride, byteOffset);
+				formatInt = 48;
 				break;
 			case "float2":
 				GL.VertexAttribPointer(index, 2, VertexAttribPointerType.Float, false, buffer.stride, byteOffset);
+				formatInt = 32;
 				break;
 			case "float1":
 				GL.VertexAttribPointer(index, 1, VertexAttribPointerType.Float, false, buffer.stride, byteOffset);
+				formatInt = 16;
 				break;
 			default:
 				throw new NotImplementedException();
 			}
+
+			#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				Telemetry.Session.WriteValue(".3d.as.Context3D.setVertexBufferAt", new Telemetry.Protocol.Context3D_setVertexBufferAt() {
+					index = index, vertexBufferId = (int)buffer.id, bufferOffset = bufferOffset, format = formatInt
+				});
+			}
+			#endif
 		}
 
 		/// <summary>

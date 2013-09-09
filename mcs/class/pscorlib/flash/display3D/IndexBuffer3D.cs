@@ -51,6 +51,14 @@ namespace flash.display3D {
 
 			// update stats
 			mContext.statsIncrement(Context3D.Stats.Count_IndexBuffer);
+
+#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				Telemetry.Session.WriteValue(".3d.as.Context3D.createIndexBuffer", new Telemetry.Protocol.Context3D_createIndexBuffer() {
+					count = numIndices, resultId = (int)this.id
+				});
+			}
+#endif
 		}
 
 		public void dispose() {
@@ -84,6 +92,14 @@ namespace flash.display3D {
 				mContext.statsAdd(Context3D.Stats.Mem_IndexBuffer, byteCount - mMemoryUsage);
 				mMemoryUsage = byteCount;
 			}
+
+			#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				Telemetry.Session.WriteValue(".3d.as.IndexBuffer.upload32", new Telemetry.Protocol.IndexBuffer3D_upload32() {
+					indexBufferId = (int)this.id, offset = startOffset, count = count, source = ByteArray.cloneFromArray(data, count)
+				});
+			}
+			#endif
 		}
 
 		public void uploadFromVector(Vector<uint> data, int startOffset, int count) {

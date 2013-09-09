@@ -61,6 +61,14 @@ namespace flash.display3D.textures {
 				uploadFromBitmapData(clearData);
 				clearData.dispose();
 			}
+
+#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				Telemetry.Session.WriteValue(".3d.as.Context3D.createTexture", new Telemetry.Protocol.Context3D_createTexture() {
+					width = width, height = height, format = 1, optimizeForRenderToTexture = optimizeForRenderToTexture, streamingLevels = 0, resultId = (int)this.textureId
+				});
+			}
+#endif
 		}
 
 		private static int sColor = 0;
@@ -293,10 +301,28 @@ namespace flash.display3D.textures {
 			// unbind texture and pixel buffer
 			GL.BindTexture (textureTarget, 0);
 
+			
+			#if STAGE3D_CAPTURE
+			if (Telemetry.Session.Stage3DCapture) {
+				Telemetry.Session.WriteValue(".3d.as.Texture.Upload", new Telemetry.Protocol.Texture3D_upload() {
+					textureId = (int)this.textureId,
+					inverted = false,
+					miplevel = (int)miplevel,
+					srcw = source.width,
+					srch = source.height,
+					srcbytesperline = source.width * 4,
+					srccompressedformat = 0,
+					srcformat = 1,
+					srcdata =  ByteArray.cloneFromArray(source.getRawData(), source.getRawData().Length)
+				});
+			}
+			#endif
+
 			source.dispose();
 
 			// store memory usaged by texture
 			trackMemoryUsage(memUsage);
+
 		}
 		
 		public void uploadFromByteArray(ByteArray data, uint byteArrayOffset, uint miplevel = 0) {

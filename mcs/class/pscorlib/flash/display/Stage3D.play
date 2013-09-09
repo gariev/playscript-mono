@@ -52,6 +52,13 @@ package flash.display {
 			var timer:Timer = new Timer(1, 1);
 			timer.addEventListener(TimerEvent.TIMER, doCreateContext);
 			timer.start();
+
+			if (Telemetry.Session.Connected) {
+				var value = new Telemetry.Protocol.Stage3D_requestContext3D();
+				value.mode = 0;
+				value.profile = 0;
+				Telemetry.Session.WriteValue(".3d.as.Stage3D.requestContext3D", value );
+			}
 		}
 		
 		
