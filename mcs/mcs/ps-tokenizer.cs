@@ -1299,11 +1299,43 @@ namespace Mono.PlayScript
 		}
 
 		//
-		// Open parens micro parser. Only detects simple open parens at the moment.
+		// Open parens micro parser. Detects both simple open parens and open parens for expression series.
 		//	
 		int TokenizeOpenParens ()
 		{
-			return Token.OPEN_PARENS;
+			current_token = -1;
+			current_token_line = 0;
+
+			int parens_level = 0;
+
+			while (true) {
+				token ();
+
+				switch (current_token) {
+					case Token.OPEN_PARENS:
+					++parens_level;
+					continue;
+
+					case Token.CLOSE_PARENS:
+					if (parens_level > 0) {
+						--parens_level;
+						continue;
+					}
+
+					return Token.OPEN_PARENS;
+
+					case Token.COLON:
+					if (parens_level == 0)
+						return Token.OPEN_PARENS;
+
+					continue;
+					case Token.COMMA:
+					if (parens_level == 0)
+						return Token.OPEN_PARENS_EXPR_LIST;
+
+					continue;
+				}
+			}
 		}
 
 		public static bool IsValidIdentifier (string s)
@@ -3601,27 +3633,19 @@ namespace Mono.PlayScript
 						// is not special
 						//
 						switch (current_token) {
+						case Token.NEW:
+						case Token.SUPER:
+						case Token.THIS:
 						case Token.IDENTIFIER:
+						case Token.FUNCTION:
 						case Token.IF:
+						case Token.WHILE:
+						case Token.DO:
 						case Token.FOR:
 						case Token.FOR_EACH:
-						case Token.TYPEOF:
-						case Token.WHILE:
-						case Token.USING:
-						case Token.DEFAULT:
-						case Token.DELEGATE:
+						case Token.SWITCH:
+						case Token.CATCH:
 						case Token.OP_GENERICS_GT:
-							return Token.OPEN_PARENS;
-						}
-
-						// Optimize using peek
-						int xx = peek_char ();
-						switch (xx) {
-						case '(':
-						case '\'':
-						case '"':
-						case '0':
-						case '1':
 							return Token.OPEN_PARENS;
 						}
 

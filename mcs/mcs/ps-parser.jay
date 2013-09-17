@@ -382,6 +382,7 @@ namespace Mono.PlayScript
 %token IDENTIFIER
 %token IDENTIFIER_MODIFIER
 %token IDENTIFIER_CONFIG
+%token OPEN_PARENS_EXPR_LIST
 %token GENERIC_DIMENSION
 %token DEFAULT_COLON
 %token OPEN_BRACKET_EXPR
@@ -3753,6 +3754,14 @@ primary_expression
 //	| undocumented_expressions
 	| array_initializer
 	| object_or_collection_initializer
+	| expression_series
+	;
+
+expression_series
+	: OPEN_PARENS_EXPR_LIST expression_list CLOSE_PARENS
+	  {
+	  	$$ = new ExpressionSeries ((List<Expression>)$2, GetLocation ($1));
+	  }
 	;
 
 primary_expression_or_type
@@ -8804,6 +8813,7 @@ static string GetTokenName (int token)
 		return "[";
 	case Token.CLOSE_BRACKET:
 		return "]";
+	case Token.OPEN_PARENS_EXPR_LIST:
 	case Token.OPEN_PARENS:
 		return "(";
 	case Token.CLOSE_PARENS:
