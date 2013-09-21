@@ -304,44 +304,48 @@ namespace flash.display3D {
 
 		public void setBlendFactors (string sourceFactor, string destinationFactor)
 		{
+			// convert string to enums
+			Context3DBlendFactor.Enum sourceFactorEnum = (Context3DBlendFactor.Enum)(sourceFactor[0] - '0');
+			Context3DBlendFactor.Enum destinationFactorEnum = (Context3DBlendFactor.Enum)(destinationFactor[0] - '0');
+
 			BlendingFactorSrc src;
 			BlendingFactorDest dest;
 
-			// translate strings into enums
-			switch (sourceFactor) {
-			case Context3DBlendFactor.ONE: 							src = BlendingFactorSrc.One; break;
-			case Context3DBlendFactor.ZERO: 						src = BlendingFactorSrc.Zero; break;
-			case Context3DBlendFactor.SOURCE_ALPHA: 				src = BlendingFactorSrc.SrcAlpha; break;
+			// translate stage3D enums into GL enums
+			switch (sourceFactorEnum) {
+			case Context3DBlendFactor.Enum.ONE: 							src = BlendingFactorSrc.One; break;
+			case Context3DBlendFactor.Enum.ZERO: 						src = BlendingFactorSrc.Zero; break;
+			case Context3DBlendFactor.Enum.SOURCE_ALPHA: 				src = BlendingFactorSrc.SrcAlpha; break;
 #if PLATFORM_MONOTOUCH
-			case Context3DBlendFactor.SOURCE_COLOR: 				src = BlendingFactorSrc.SrcColor; break;
+			case Context3DBlendFactor.Enum.SOURCE_COLOR: 				src = BlendingFactorSrc.SrcColor; break;
 #endif
-			case Context3DBlendFactor.DESTINATION_ALPHA: 			src = BlendingFactorSrc.DstAlpha; break;
-			case Context3DBlendFactor.DESTINATION_COLOR: 			src = BlendingFactorSrc.DstColor; break;
-			case Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA: 		src = BlendingFactorSrc.OneMinusSrcAlpha; break;
+			case Context3DBlendFactor.Enum.DESTINATION_ALPHA: 			src = BlendingFactorSrc.DstAlpha; break;
+			case Context3DBlendFactor.Enum.DESTINATION_COLOR: 			src = BlendingFactorSrc.DstColor; break;
+			case Context3DBlendFactor.Enum.ONE_MINUS_SOURCE_ALPHA: 		src = BlendingFactorSrc.OneMinusSrcAlpha; break;
 #if PLATFORM_MONOTOUCH
-			case Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR: 		src = BlendingFactorSrc.OneMinusSrcColor; break;
+			case Context3DBlendFactor.Enum.ONE_MINUS_SOURCE_COLOR: 		src = BlendingFactorSrc.OneMinusSrcColor; break;
 #endif
-			case Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA: 	src = BlendingFactorSrc.OneMinusDstAlpha; break;
-			case Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR: 	src = BlendingFactorSrc.OneMinusDstColor; break;
+			case Context3DBlendFactor.Enum.ONE_MINUS_DESTINATION_ALPHA: 	src = BlendingFactorSrc.OneMinusDstAlpha; break;
+			case Context3DBlendFactor.Enum.ONE_MINUS_DESTINATION_COLOR: 	src = BlendingFactorSrc.OneMinusDstColor; break;
 			default:
 				throw new NotImplementedException();
 			}
 
-			// translate strings into enums
-			switch (destinationFactor) {
-			case Context3DBlendFactor.ONE: 							dest = BlendingFactorDest.One; break;
-			case Context3DBlendFactor.ZERO: 						dest = BlendingFactorDest.Zero; break;
-			case Context3DBlendFactor.SOURCE_ALPHA: 				dest = BlendingFactorDest.SrcAlpha; break;
-			case Context3DBlendFactor.SOURCE_COLOR: 				dest = BlendingFactorDest.SrcColor; break;
-			case Context3DBlendFactor.DESTINATION_ALPHA: 			dest = BlendingFactorDest.DstAlpha; break;
+			// translate stage3D enums into GL enums
+			switch (destinationFactorEnum) {
+			case Context3DBlendFactor.Enum.ONE: 							dest = BlendingFactorDest.One; break;
+			case Context3DBlendFactor.Enum.ZERO: 						dest = BlendingFactorDest.Zero; break;
+			case Context3DBlendFactor.Enum.SOURCE_ALPHA: 				dest = BlendingFactorDest.SrcAlpha; break;
+			case Context3DBlendFactor.Enum.SOURCE_COLOR: 				dest = BlendingFactorDest.SrcColor; break;
+			case Context3DBlendFactor.Enum.DESTINATION_ALPHA: 			dest = BlendingFactorDest.DstAlpha; break;
 #if PLATFORM_MONOTOUCH
-			case Context3DBlendFactor.DESTINATION_COLOR: 			dest = BlendingFactorDest.DstColor; break;
+			case Context3DBlendFactor.Enum.DESTINATION_COLOR: 			dest = BlendingFactorDest.DstColor; break;
 #endif
-			case Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA: 		dest = BlendingFactorDest.OneMinusSrcAlpha; break;
-			case Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR: 		dest = BlendingFactorDest.OneMinusSrcColor; break;
-			case Context3DBlendFactor.ONE_MINUS_DESTINATION_ALPHA: 	dest = BlendingFactorDest.OneMinusDstAlpha; break;
+			case Context3DBlendFactor.Enum.ONE_MINUS_SOURCE_ALPHA: 		dest = BlendingFactorDest.OneMinusSrcAlpha; break;
+			case Context3DBlendFactor.Enum.ONE_MINUS_SOURCE_COLOR: 		dest = BlendingFactorDest.OneMinusSrcColor; break;
+			case Context3DBlendFactor.Enum.ONE_MINUS_DESTINATION_ALPHA: 	dest = BlendingFactorDest.OneMinusDstAlpha; break;
 #if PLATFORM_MONOTOUCH
-			case Context3DBlendFactor.ONE_MINUS_DESTINATION_COLOR: 	dest = BlendingFactorDest.OneMinusDstColor; break;
+			case Context3DBlendFactor.Enum.ONE_MINUS_DESTINATION_COLOR: 	dest = BlendingFactorDest.OneMinusDstColor; break;
 #endif
 			default:
 				throw new NotImplementedException();

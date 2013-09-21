@@ -20,14 +20,10 @@ package flash.display3D {
  		// Constants
  		//
  		
-		public static const BACK : String = "back";
-
- 	 	public static const FRONT : String = "front";
-
- 	 	public static const FRONT_AND_BACK : String = "frontAndBack";
-
- 	 	public static const NONE : String = "none";
-	
+		public static const NONE : String = "0";
+		public static const BACK : String = "1";
+ 	 	public static const FRONT : String = "2";
+ 	 	public static const FRONT_AND_BACK : String = "3";
 	}
 
 }

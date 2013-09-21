@@ -16,6 +16,40 @@ package flash.display3D {
 
 	public static class Context3DBlendFactor {
 
+		//
+		// Constants
+		//
+
+		public static const ZERO : String = "0";
+		public static const ONE : String = "1";
+		public static const SOURCE_COLOR : String = "2";
+		public static const SOURCE_ALPHA : String = "3";
+		public static const ONE_MINUS_SOURCE_ALPHA : String = "4";
+		public static const ONE_MINUS_SOURCE_COLOR : String = "5";
+		public static const DESTINATION_COLOR : String = "6";
+		public static const DESTINATION_ALPHA : String = "7";
+		public static const ONE_MINUS_DESTINATION_ALPHA : String = "8";
+		public static const ONE_MINUS_DESTINATION_COLOR : String = "9";
+
+		public enum Enum {
+			ZERO = 0,
+			ONE = 1,
+			SOURCE_COLOR = 2,
+			SOURCE_ALPHA = 3,
+			ONE_MINUS_SOURCE_ALPHA = 4,
+			ONE_MINUS_SOURCE_COLOR = 5,
+			DESTINATION_COLOR = 6,
+			DESTINATION_ALPHA = 7,
+			ONE_MINUS_DESTINATION_ALPHA = 8,
+			ONE_MINUS_DESTINATION_COLOR = 9
+		}	
+	}
+
+
+
+	#if STRING_CONSTANTS
+	public static class Context3DBlendFactor {
+
  		//
  		// Constants
  		//
@@ -39,8 +73,34 @@ package flash.display3D {
  	 	public static const SOURCE_COLOR : String = "sourceColor";
 
  	 	public static const ZERO : String = "zero";
-	
 	}
+	#elif INT_CONSTANTS
+	public static class Context3DBlendFactor {
+		public static const ZERO : int = 0;
+		public static const ONE : int = 1;
+		public static const SOURCE_COLOR : int = 2;
+		public static const SOURCE_ALPHA : int = 3;
+		public static const ONE_MINUS_SOURCE_ALPHA : int = 4;
+		public static const ONE_MINUS_SOURCE_COLOR : int = 5;
+		public static const DESTINATION_COLOR : int = 6;
+		public static const DESTINATION_ALPHA : int = 7;
+		public static const ONE_MINUS_DESTINATION_ALPHA : int = 8;
+		public static const ONE_MINUS_DESTINATION_COLOR : int = 9;
+	}
+#elif false
+	public enum Context3DBlendFactor {
+		ZERO = 0,
+		ONE = 1,
+		SOURCE_COLOR = 2,
+		SOURCE_ALPHA = 3,
+		ONE_MINUS_SOURCE_ALPHA = 4,
+		ONE_MINUS_SOURCE_COLOR = 5,
+		DESTINATION_COLOR = 6,
+		DESTINATION_ALPHA = 7,
+		ONE_MINUS_DESTINATION_ALPHA = 8,
+		ONE_MINUS_DESTINATION_COLOR = 9
+	}	
+	#endif
 
 }
 
