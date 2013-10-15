@@ -349,6 +349,34 @@ namespace _root {
 			}
 		}
 
+		//
+		// Treat floating point as a string. It will be considered an indexed access if
+		// the value is an integer, otherwise it will be a dynamic property access.
+		//
+		public T this[double d]
+		{
+			get {
+				return this [d.ToString ()];
+			}
+			set {
+				this [d.ToString ()] = value;
+			}
+		}
+
+		//
+		// Treat floating point as a string. It will be considered an indexed access if
+		// the value is an integer, otherwise it will be a dynamic property access.
+		//
+		public T this[float f]
+		{
+			get {
+				return this [f.ToString ()];
+			}
+			set {
+				this [f.ToString ()] = value;
+			}
+		}
+
 		public T[] ToArray()
 		{
 			T[] ret = new T[mCount];
@@ -667,7 +695,7 @@ namespace _root {
 			}
 			
 			private dynamic mFunc;
-		};
+		}
 		
 		private class OptionsSorter : System.Collections.Generic.IComparer<T>
 		{
@@ -691,7 +719,7 @@ namespace _root {
 			}
 			
 			// private uint mOptions;
-		};
+		}
 
 		private class DefaultSorter : System.Collections.Generic.IComparer<T>
 		{

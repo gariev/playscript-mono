@@ -152,7 +152,6 @@ namespace _root
 
 		private object[] mArray;
 		private uint mCount;
-		private bool mFixed = false;
 		private PlayScript.IDynamicClass __dynamicProps = null;		// By default it is not created as it is not commonly used (nor a good practice).
 																	// We create it only if there is a dynamic set.
 
@@ -198,8 +197,13 @@ namespace _root
 
 		public Array(IEnumerable e)
 		{
-			mArray = sEmptyArray;
-			this.append(e);
+			if (e is string) {
+				mArray = sEmptyArray;
+				push ((string)e);
+			} else {
+				mArray = sEmptyArray;
+				this.append (e);
+			}
 		}
 
 		public Array(uint length)
@@ -431,8 +435,6 @@ namespace _root
 		private void EnsureCapacity(uint size)
 		{
 			if (mArray.Length < size) {
-				if (mFixed)
-					throw new InvalidOperationException(ERROR_RESIZING_FIXED);
 				int newSize = mArray.Length * 2;
 				if (newSize == 0) newSize = 4;
 				while (newSize < size)
@@ -677,7 +679,7 @@ namespace _root
 				}
 				return mDescending ? -result : result;
 			}
-		};
+		}
 
 		private class DefaultSorterOn : System.Collections.Generic.IComparer<object>
 		{
@@ -803,13 +805,12 @@ namespace _root
 		{
 			var sb = new System.Text.StringBuilder();
 			bool needsSeperator = false;
-			foreach (var item in this)
-			{
+			for (var i = 0; i < mCount; i++) {
+				var item = mArray [i];
 				if (needsSeperator) {
 					sb.Append(sep);
 				}
-				if (item != null)
-				{
+				if (item != null) {
 					sb.Append(item.ToString());
 				}
 				needsSeperator = true;
@@ -829,8 +830,6 @@ namespace _root
 
 		public dynamic pop() 
 		{
-			if (mFixed)
-				throw new InvalidOperationException(ERROR_RESIZING_FIXED);
 			if (mCount == 0) {
 				return PlayScript.Undefined._undefined;
 			}
@@ -845,10 +844,6 @@ namespace _root
 		#endif
 		public uint push(object value)
 		{
-			#if !PERFORMANCE_MODE || DEBUG
-			if (mFixed)
-				throw new InvalidOperationException(ERROR_RESIZING_FIXED);
-			#endif
 			if (mCount >= mArray.Length)
 				EnsureCapacity((uint)(1.25 * (mCount + 1)));
 			mArray[mCount] = value;
@@ -858,8 +853,6 @@ namespace _root
 
 		public uint push(object value, params object[] args) 
 		{
-			if (mFixed)
-				throw new InvalidOperationException(ERROR_RESIZING_FIXED);
 			uint len = (uint)args.Length;
 			if (mArray.Length < mCount + 1 + len)
 				EnsureCapacity((uint)(1.25 * (mCount + len)));
@@ -882,9 +875,6 @@ namespace _root
 
 		public dynamic shift() 
 		{
-			if (mFixed)
-				throw new InvalidOperationException(ERROR_RESIZING_FIXED);
-
 			if (mCount == 0)
 			{
 				return PlayScript.Undefined._undefined;
@@ -951,7 +941,7 @@ namespace _root
 
 			private Func<object,object,int> mDelegate;
 			private dynamic mFunc;
-		};
+		}
 
 		private class OptionsSorter : System.Collections.Generic.IComparer<object>
 		{
@@ -975,7 +965,7 @@ namespace _root
 			}
 
 			// private uint mOptions;
-		};
+		}
 
 		private class DefaultSorter : System.Collections.Generic.IComparer<object>
 		{
@@ -992,9 +982,6 @@ namespace _root
 		public Array splice(int startIndex = 0, uint deleteCount = 4294967295) 
 		{
 			Array removed = null;
-
-			if (mFixed)
-				throw new InvalidOperationException(ERROR_RESIZING_FIXED);
 
 			if (startIndex < 0) 
 				throw new InvalidOperationException("splice error");
@@ -1028,9 +1015,6 @@ namespace _root
 		public Array splice(int startIndex, uint deleteCount = 4294967295, params object[] items) 
 		{
 			Array removed = null;
-
-			if (mFixed)
-				throw new InvalidOperationException(ERROR_RESIZING_FIXED);
 
 			if (startIndex < 0) 
 				throw new InvalidOperationException("splice error");
@@ -1086,8 +1070,6 @@ namespace _root
 
 		public uint unshift(object item) 
 		{
-			if (mFixed)
-				throw new InvalidOperationException(ERROR_RESIZING_FIXED);
 			if (mCount >= mArray.Length)
 				EnsureCapacity(mCount + 1);
 			if (mCount > 0)
@@ -1099,8 +1081,6 @@ namespace _root
 
 		public uint unshift(object item, params object[] args) 
 		{
-			if (mFixed)
-				throw new InvalidOperationException(ERROR_RESIZING_FIXED);
 			uint argsLen = (uint)args.Length;
 			EnsureCapacity(mCount + 1 + argsLen);
 			if (mCount > 0)
@@ -1722,6 +1702,11 @@ namespace _root
 			mList.expand((uint)size);
 		}
 
+		public Array(string s)
+		{
+			mList.push (s);
+		}
+
 		public Array(object arg1, params object[] args)
 		{
 			if (args.Length == 0 && (arg1 is int || arg1 is uint || arg1 is double)) {
@@ -1992,7 +1977,7 @@ namespace _root
 				}
 				return mDescending ? -result : result;
 			}
-		};
+		}
 
 		private class DefaultSorterOn : System.Collections.Generic.IComparer<object>
 		{
