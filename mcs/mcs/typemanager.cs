@@ -280,6 +280,7 @@ namespace Mono.CSharp
 		private bool isAsDynamicMode = false;
 		private bool isAsAotMode = false;
 
+
 		public PredefinedTypes (ModuleContainer module)
 		{
 			TypedReference = new PredefinedType (module, MemberKind.Struct, "System", "TypedReference");

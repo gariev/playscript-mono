@@ -1690,6 +1690,13 @@ namespace Mono.CSharp {
 
 		public readonly PredefinedAttribute NumberIsFloatAttribute;
 
+		// PlayScript tooling attributes
+		public readonly PredefinedAttribute RootAssetAttribute;
+		public readonly PredefinedAttribute AssetAttribute;
+		public readonly PredefinedAttribute NonAssetAttribute;
+		public readonly PredefinedAttribute CollectionAccessorAttribute;
+		public readonly PredefinedAttribute FieldInfoAttribute;
+
 		// Mono.Optimization attributes
 		public readonly PredefinedAttribute InlineAttribute;
 
@@ -1761,6 +1768,13 @@ namespace Mono.CSharp {
 			AsForbidDynamicAttribute = new PredefinedAttribute (module, PsConsts.PsRootNamespace, "ForbidDynamicAttribute");
 
 			NumberIsFloatAttribute = new PredefinedAttribute (module, "PlayScript", "NumberIsFloatAttribute");
+
+			// Tooling attributes
+			RootAssetAttribute = new PredefinedAttribute (module, "PlayScript.Tooling", "RootAssetAttribute");
+			AssetAttribute = new PredefinedAttribute (module, "PlayScript.Tooling", "AssetAttribute");
+			NonAssetAttribute = new PredefinedAttribute (module, "PlayScript.Tooling", "NonAssetAttribute");
+			CollectionAccessorAttribute = new PredefinedAttribute (module, "PlayScript.Tooling", "CollectionAccessorAttribute");
+			FieldInfoAttribute = new PredefinedAttribute (module, "PlayScript.Tooling", "FieldInfoAttribute");
 
 			// Mono.Optimization
 			InlineAttribute = new PredefinedAttribute (module, "Mono.Optimization", "InlineAttribute");

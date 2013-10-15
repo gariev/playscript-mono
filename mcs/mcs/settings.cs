@@ -63,6 +63,13 @@ namespace Mono.CSharp {
 		Any
 	}
 
+	public enum ToolingMode
+	{
+		None,
+		Runtime,
+		Editor
+	}
+
 	public class CompilerSettings
 	{
 		public Target Target;
@@ -255,6 +262,12 @@ namespace Mono.CSharp {
 		//
 
 		public InliningMode Inlining = InliningMode.None;
+
+		//
+		// Tooling mode for generating tools augmented classes
+		//
+
+		public ToolingMode Tooling = ToolingMode.None;
 
 		public CompilerSettings ()
 		{
@@ -1396,6 +1409,29 @@ namespace Mono.CSharp {
 				}
 				return ParseResult.Success;
 
+			case "/tooling":
+				if (value.Length == 0) {
+					Error_RequiresArgument (option);
+					return ParseResult.Error;
+				}
+
+				switch (value.ToLowerInvariant ()) {
+					case "none":
+					settings.Tooling = ToolingMode.None;
+					break;
+					case "runtime":
+					settings.Tooling = ToolingMode.Runtime;
+					break;
+					case "editor":
+					settings.Tooling = ToolingMode.Editor;
+					break;
+					default:
+					report.Error (1672, "Invalid -tooling option `{0}'. Valid options are `none', `runtime', `editor'",
+					              value);
+					return ParseResult.Error;
+				}
+
+				return ParseResult.Success;
 			default:
 				return ParseResult.UnknownOption;
 			}
