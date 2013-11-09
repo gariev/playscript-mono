@@ -324,7 +324,7 @@ namespace playscript.utils {
 	public unsafe class BinJsonObject : _root.Object,
 		IGetIndexProvider<string>, IGetIndexProvider<int>, IGetIndexProvider<uint>, IGetIndexProvider<double>, IGetIndexProvider<bool>, IGetIndexProvider<object>, IGetIndexProvider<float>,
 		IGetMemberProvider<string>, IGetMemberProvider<int>, IGetMemberProvider<uint>, IGetMemberProvider<double>, IGetMemberProvider<bool>, IGetMemberProvider<object>, IGetMemberProvider<float>,
-		IKeyEnumerable, IEnumerable, IStaticObject, IStaticCrcObject
+		IKeyEnumerable, IEnumerable, IStaticObject, IStaticCrcObject, IDictionary<string, object>, IDictionary
 	{
 		protected BinJsonDocument doc;
 		protected byte* list;
@@ -1293,6 +1293,255 @@ namespace playscript.utils {
 
 		#endregion
 
+		#region IDictionary implementation
+
+		void IDictionary<string, object>.Add (string key, object value)
+		{
+			throw new NotImplementedException ();
+		}
+
+		bool IDictionary<string, object>.ContainsKey (string key)
+		{
+			return HasMember (key);
+		}
+
+		bool IDictionary<string, object>.Remove (string key)
+		{
+			throw new NotImplementedException ();
+		}
+
+		bool IDictionary<string, object>.TryGetValue (string key, out object value)
+		{
+			value = null;
+			if (!HasMember(key))
+				return false;
+			value = GetObject(key);
+			return true;
+		}
+
+		object IDictionary<string, object>.this [string index] {
+			get {
+				return GetObject(index);
+			}
+			set {
+				throw new NotImplementedException ();
+			}
+		}
+
+		ICollection<string> IDictionary<string, object>.Keys {
+			get {
+				return KeyPairs.keys;
+			}
+		}
+
+		ICollection<object> IDictionary<string, object>.Values {
+			get {
+				var values = new object[Count];
+				int len = Count;
+				var keyPairs = KeyPairs;
+				for (var i = 0; i < len; i++)
+					values [i] = GetObject (keyPairs.crcs [i]);
+				return values;
+			}
+		}
+
+		#endregion
+
+		#region ICollection implementation
+
+		void ICollection<KeyValuePair<string, object>>.Add (KeyValuePair<string, object> item)
+		{
+			throw new NotImplementedException ();
+		}
+
+		void ICollection<KeyValuePair<string, object>>.Clear ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		bool ICollection<KeyValuePair<string, object>>.Contains (KeyValuePair<string, object> item)
+		{
+			return HasMember (item.Key);
+		}
+
+		void ICollection<KeyValuePair<string, object>>.CopyTo (KeyValuePair<string, object>[] array, int arrayIndex)
+		{
+			throw new NotImplementedException ();
+		}
+
+		bool ICollection<KeyValuePair<string, object>>.Remove (KeyValuePair<string, object> item)
+		{
+			throw new NotImplementedException ();
+		}
+
+		bool ICollection<KeyValuePair<string, object>>.IsReadOnly {
+			get {
+				return true;
+			}
+		}
+
+		#endregion
+
+		#region IEnumerable implementation
+
+		IEnumerator<KeyValuePair<string, object>> IEnumerable<KeyValuePair<string, object>>.GetEnumerator ()
+		{
+			var keyPairs = KeyPairs;
+			int len = Count;
+			for (var i = 0; i < len; i++) {
+				yield return new KeyValuePair<string, object> (keyPairs.keys [i], GetObject (keyPairs.crcs [i]));
+			}
+		}
+
+		#endregion
+
+		#region IDictionary implementation
+
+		void IDictionary.Add (object key, object value)
+		{
+			throw new NotImplementedException ();
+		}
+
+		void IDictionary.Clear ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		private class DictionaryEnumerator : IDictionaryEnumerator {
+
+			private BinJsonObject _jsonObj;
+			private KeyCrcPairs _keyPairs;
+			private int _index;
+			private string _key;
+			private object _value;
+
+			public DictionaryEnumerator(BinJsonObject jsonObj)
+			{
+				_jsonObj = jsonObj;
+				_keyPairs = jsonObj.KeyPairs;
+				_index = -1;
+			}
+
+			#region IEnumerator implementation
+
+			public bool MoveNext ()
+			{
+				if (_index + 1 >= _jsonObj.Count) {
+					return false;
+				}
+				_index++;
+				_key = _keyPairs.keys [_index];
+				_value = _jsonObj.GetObject (_keyPairs.crcs [_index]);
+				return true;
+			}
+
+			public void Reset ()
+			{
+				_index = -1;
+			}
+
+			public object Current {
+				get {
+					return this.Entry;
+				}
+			}
+
+			#endregion
+
+			#region IDictionaryEnumerator implementation
+
+			public DictionaryEntry Entry {
+				get {
+					return new DictionaryEntry (_key, _value);
+				}
+			}
+
+			public object Key {
+				get {
+					return _key;
+				}
+			}
+
+			public object Value {
+				get {
+					return _value;
+				}
+			}
+
+			#endregion
+		}
+
+		IDictionaryEnumerator IDictionary.GetEnumerator ()
+		{
+			return new DictionaryEnumerator (this);
+		}
+
+		void IDictionary.Remove (object key)
+		{
+			throw new NotImplementedException ();
+		}
+
+		bool IDictionary.IsFixedSize {
+			get {
+				return true;
+			}
+		}
+
+		ICollection IDictionary.Keys {
+			get {
+				return KeyPairs.keys;
+			}
+		}
+
+		ICollection IDictionary.Values {
+			get {
+				var values = new object[Count];
+				int len = Count;
+				var keyPairs = KeyPairs;
+				for (var i = 0; i < len; i++)
+					values [i] = GetObject (keyPairs.crcs [i]);
+				return values;
+			}
+		}
+
+		bool IDictionary.IsReadOnly {
+			get { 
+				return true;
+			}
+		}
+
+		object IDictionary.this [object key]
+		{
+			get {
+				return this.GetObject((string)key);
+			}
+			set {
+				throw new NotImplementedException ();
+			}
+		}
+
+		#endregion
+
+		#region ICollection implementation
+
+		void ICollection.CopyTo (System.Array array, int index)
+		{
+			throw new NotImplementedException ();
+		}
+
+		bool ICollection.IsSynchronized {
+			get {
+				return false;
+			}
+		}
+
+		object ICollection.SyncRoot {
+			get {
+				return this;
+			}
+		}
+
+		#endregion
 	}
 
 	//
