@@ -69,16 +69,15 @@ MCS_OPTS		+= /psstrict-
 MCS_OPTS		+= /define:DEBUG
 MCS_OPTS		+= /t:exe
 
-ALL_AS_TEST_FILES	:= $(shell find tests -name '*.as')
+ALL_AS_TEST_FILES	?= $(shell find tests -name '*.as')
 BAD_AS_TEST_FILES	:= 
 AS_TEST_FILES		:= $(filter-out $(BAD_AS_TEST_FILES),$(ALL_AS_TEST_FILES))
 AS_TEST_FILE_NAMES	:= $(AS_TEST_FILES:%.as=%)
 
-ALL_PS_TEST_FILES	:= $(shell find tests -name '*.play')
+ALL_PS_TEST_FILES	?= $(shell find tests -name '*.play')
 BAD_PS_TEST_FILES	:= tests/test-ps-004.play
 BAD_PS_TEST_FILES	+= tests/test-ps-006.play
-BAD_PS_TEST_FILES	+= tests/test-ps-010.play
-BAD_PS_TEST_FILES	+= tests/test-ps-015.play
+BAD_PS_TEST_FILES	+= tests/test-ps-010.play # this test passes locally but fails for Jenkins
 BAD_PS_TEST_FILES	+= tests/test-ps-016.play
 BAD_PS_TEST_FILES	+= tests/test-ps-017.play
 BAD_PS_TEST_FILES	+= tests/test-ps-018.play
@@ -103,7 +102,12 @@ BAD_PS_TEST_FILES	+= tests/test-ps-040.play
 PS_TEST_FILES		:= $(filter-out $(BAD_PS_TEST_FILES),$(ALL_PS_TEST_FILES))
 PS_TEST_FILE_NAMES	:= $(PS_TEST_FILES:%.play=%)
 
-ALL_TEST_FILE_NAMES	:= $(AS_TEST_FILE_NAMES) $(PS_TEST_FILE_NAMES)
+ALL_CS_TEST_FILES   ?= $(shell find tests -name '*.cs')
+BAD_CS_TEST_FILES   :=
+CS_TEST_FILES       := $(filter-out $(BAD_CS_TEST_FILES),$(ALL_CS_TEST_FILES))
+CS_TEST_FILE_NAMES  := $(CS_TEST_FILES:%.cs=%)
+
+ALL_TEST_FILE_NAMES	:= $(AS_TEST_FILE_NAMES) $(PS_TEST_FILE_NAMES) $(CS_TEST_FILE_NAMES)
 
 .PHONY: test  # build, but don't run, all tests
 test:
@@ -134,6 +138,7 @@ endef
 
 $(foreach test,$(AS_TEST_FILE_NAMES),$(eval $(call define_compile_test,$(test),as)))
 $(foreach test,$(PS_TEST_FILE_NAMES),$(eval $(call define_compile_test,$(test),play)))
+$(foreach test,$(CS_TEST_FILE_NAMES),$(eval $(call define_compile_test,$(test),cs)))
 
 # define_copy_libs
 #
@@ -159,7 +164,7 @@ $(foreach folder,$(sort $(dir $(ALL_TEST_FILE_NAMES))),$(eval $(call define_copy
 #
 define define_run_test
 
-.PHONY .NOTPARALLEL: run-$(1)
+.PHONY: run-$(1)
 run-test: run-$(1)
 run-$(1): $(DESTDIR)/$(1).exe
 run-$(1):

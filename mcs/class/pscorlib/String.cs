@@ -70,18 +70,25 @@ namespace _root
 		}
 
 		public static int indexOf(this string s, string val, double startIndex = 0) {
-			if (s == null) return -1;
-			if (val == null) return -1;
+			if (s == null || val == null || startIndex >= s.Length) {
+				return -1;
+			}
+			if (startIndex < 0) {
+				startIndex = 0;
+			}
 			return s.IndexOf(val, (int)startIndex, StringComparison.Ordinal);
 		}
-						
+
 		public static int lastIndexOf(this string s, string val, double startIndex = 0x7FFFFFFF) {
-			if (startIndex == 0x7FFFFFFF) {
+			if (startIndex < 0) {
+				return -1;
+			}
+			if (startIndex == 0x7FFFFFFF || startIndex > s.Length) {
 				startIndex = s.Length;
 			}
 			return s.LastIndexOf(val, (int)startIndex, StringComparison.Ordinal);
 		}
-						
+
 		public static int localeCompare(this string s, string other, params object[] values) {
 			throw new NotImplementedException();
 		}
@@ -103,13 +110,17 @@ namespace _root
 				return null;
 			}
 
-			if (repl is System.Delegate) {
-				throw new NotSupportedException("Replacing function is not supported.");
+			var re = pattern as RegExp;
+
+			if (repl is Delegate) {
+				if (re == null) {
+					re = new RegExp (pattern.ToString ());
+				}
+				return re.replace (s, repl as Delegate);
 			}
 
-			if (pattern is RegExp) {
+			if (re != null) {
 				// pattern is a regexp
-				var re = pattern as RegExp;
 				return re.replace(s, repl.ToString());
 			} else {
 				// pattern is a string or other object
@@ -137,6 +148,9 @@ namespace _root
 		}
 
 		public static string slice(this string s, int startIndex, int endIndex) {
+			if (startIndex < 0) {
+				startIndex = s.Length + startIndex;
+			}
 			if (endIndex < 0) {
 				endIndex = s.Length + endIndex;
 			}
@@ -203,7 +217,7 @@ namespace _root
 		}
 
 		public static string toLocaleLowerCase(this string s) {
-			throw new NotImplementedException();
+			return s.toLowerCase();
 		}
 
 		public static string toLocaleUpperCase(this string s) {

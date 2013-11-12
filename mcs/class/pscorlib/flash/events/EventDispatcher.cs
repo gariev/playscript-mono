@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace flash.events
 {
@@ -35,6 +36,7 @@ namespace flash.events
 		private IEventDispatcher _evRedirect; // this is used for redirecting all event handling, not sure if this is needed
 		private IEventDispatcher _evTarget;
 		private Dictionary<string, List<EventListener>> _events;
+		private static bool		 _traceEventDispatch = false;
 
 		public EventDispatcher() {
 			_evTarget = this;
@@ -119,22 +121,39 @@ namespace flash.events
 						EventListener listener = evList[i];
 						try
 						{
+							TraceEventDispatchBefore(listener.invoker);
+
 							var span = Telemetry.Session.BeginSpan();
 							listener.invoker.InvokeOverrideA1(ev);
 							Telemetry.Session.EndSpanValue(sNameAsEvent, span, ev.type);
+
+							TraceEventDispatchAfter(listener.invoker);
 						}
 						catch (Exception e)
 						{
-							// If you have an exception here, big chance that you did not turn on exception catching in Xamarin
-							// Or that Xamarin is being naughty with you, and removed exceptions catching every few days behind your back.
-							if (e.InnerException != null)
+							_root.trace_fn.trace (e.Message);
+							// This catch is where exceptions usually trigger the Xamarin debugger IDE to halt the program and display the
+							// exception. But this is not the code that originally threw the exception, so what you need to now is to find a 
+							// spot during execution where you can add the exception(s) (sometimes adding all of them is a good idea) to stop
+							// on in the IDE "Run/Exceptions..." menu item so that the debugger will break right where the exception is
+							// first thrown.  
+							var inner = e.InnerException;
+							if (inner != null) 
 							{
-								throw e.InnerException;
+								while ((e = inner.InnerException) != null) 
+								{
+									inner = e;
+								}
+
+								throw inner;
 							}
 							else
 							{
 								throw e;
 							}
+						}
+						if (ev._stopImmediateProp) {
+							break;
 						}
                     }
 					dispatched = (l != 0);
@@ -350,6 +369,21 @@ namespace flash.events
 
 			evList.Insert(i, el);
 			return el;
+		}
+
+		[Conditional("DEBUG")]
+		private void TraceEventDispatchBefore(PlayScript.InvokerBase invoker)
+		{
+			if (_traceEventDispatch)
+			{
+				string debugName = invoker.GetDebugName();
+				System.Console.WriteLine("    " + debugName);
+			}
+		}
+
+		[Conditional("DEBUG")]
+		private void TraceEventDispatchAfter(PlayScript.InvokerBase invoker)
+		{
 		}
 
 		private static readonly Amf.Amf3String sNameAsEvent = new Amf.Amf3String(".as.event");

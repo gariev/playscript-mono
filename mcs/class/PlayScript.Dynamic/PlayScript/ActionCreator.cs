@@ -1439,7 +1439,7 @@ namespace PlayScript
 								IConverter<double, int>, IConverter<double, uint>, IConverter<double, double>, IConverter<double, bool>, IConverter<double, string>,
 								IConverter<bool, int>,  IConverter<bool, uint>, IConverter<bool, double>, IConverter<bool, bool>, IConverter<bool, string>,
 								IConverter<string, int>, IConverter<string, uint>, IConverter<string, double>, IConverter<string, bool>, IConverter<string, string>,
-								IConverter<int>, IConverter<uint>, IConverter<double>, IConverter<bool>, IConverter<string>, IConverter<object>
+								IConverter<int>, IConverter<uint>, IConverter<double>, IConverter<bool>, IConverter<string>, IConverter<object>, IConverter<float>
 	{
 		public static Converter Instance = new Converter();
 
@@ -1686,6 +1686,37 @@ namespace PlayScript
 		{
 			return value;
 		}
+
+		float IConverter<float>.ConvertFromObject(object value)
+		{
+			if (value is double)
+			{
+				return (float)(double)value;
+			}
+			else if (value is int)
+			{
+				return (float)(int)value;
+			}
+			else if (value is string)
+			{
+				return float.Parse((string)value);
+			}
+			else if (value is uint)
+			{
+				return (float)(uint)value;
+			}
+			else if (value is bool)
+			{
+				return (bool)value ? 1.0f : 0.0f;
+			}
+			else if (value is float)
+			{
+				// This is the target type, but it should have been tested already earlier
+				// So we test it last (just in case) before we do the slow conversion
+				return (float)value;
+			}
+			return Convert.ToSingle(value);
+		}
 	}
 
 	public static class Convert<ToT>
@@ -1706,7 +1737,12 @@ namespace PlayScript
 				return (ToT)value;
 			}
 
-			if (value == null) {
+			if (Dynamic.IsNullOrUndefined(value))
+			{
+				if (value == null)
+					return default(ToT);
+				if (IsNumeric ())
+					return FromObject (double.NaN);
 				return default(ToT);
 			}
 
@@ -1719,6 +1755,27 @@ namespace PlayScript
 			// We assume these are various classes and structs (and not primitive types)
 			// We don't have other choice than boxing and cast - for classes it should be pretty quick
 			return (ToT)value;
+		}
+
+		static bool IsNumeric()
+		{
+			switch (Type.GetTypeCode (typeof (ToT)))
+			{
+			case TypeCode.Byte:
+			case TypeCode.SByte:
+			case TypeCode.UInt16:
+			case TypeCode.UInt32:
+			case TypeCode.UInt64:
+			case TypeCode.Int16:
+			case TypeCode.Int32:
+			case TypeCode.Int64:
+			case TypeCode.Decimal:
+			case TypeCode.Double:
+			case TypeCode.Single:
+				return true;
+			default:
+				return false;
+			}
 		}
 	}
 

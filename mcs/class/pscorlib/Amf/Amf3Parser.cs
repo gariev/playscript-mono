@@ -21,10 +21,14 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using _root;
+using System.Reflection;
+using PlayScript;
+using System.Runtime.CompilerServices;
 
 namespace Amf
 {
@@ -32,35 +36,95 @@ namespace Amf
     {
 		private static readonly Amf.DataConverter conv = Amf.DataConverter.BigEndian;
 
-        private Stream stream;
-		private readonly byte[] tempData = new byte[8];
+		private byte[] 	mData;
+		private int 	mPosition;
+		private int		mLength;
 
         private List<string> stringTable = new List<string>();
         private List<object> objectTable = new List<object>();
         private List<Amf3ClassDef> traitTable = new List<Amf3ClassDef>();
 
-        public Amf3Parser(Stream stream)
+		private static readonly object sBoolTrue = (object)true;
+		private static readonly object sBoolFalse = (object)false;
+		private static readonly object sIntNegOne = (object)(int)-1;
+		private static readonly object sIntZero = (object)(int)0;
+		private static readonly object sIntOne = (object)(int)1;
+		private static readonly object sNumberZero = (object)(double)0.0;
+		private static readonly object sNumberOne = (object)(double)1.0;
+
+		public IAmf3Serializer DefaultSerializer;
+		public IAmf3Serializer OverrideSerializer;
+
+		// if true, all unregistered class aliases will use Expandos, if false they will use Amf3Objects
+		// this can be overridden by changing the DefaultSerializer
+		public static bool UseExpandoAsDefault = true;
+
+        public Amf3Parser(Stream stream, bool autoSetCapacity = true)
+			: this(stream.Read((int)stream.Length), 0, (int)stream.Length, autoSetCapacity)	// read stream into byte array
         {
-            if (stream == null)
-                throw new ArgumentNullException("stream");
-
-            this.stream = stream;
-        }
-
-		// this method is used by the deserialization code for an object
-		public void Read<T>(out T o)
-		{
-			// TODO: make a version that does not box values
-			object next = ReadNextObject();
-			o = (T)next;
 		}
+
+		public Amf3Parser(byte[] data, int offset, int length, bool autoSetCapacity = true)
+		{
+			// set data source
+			mData   = data;
+			mPosition = offset;
+			mLength = length;
+
+			// set default serializer
+			if (UseExpandoAsDefault) {
+				this.DefaultSerializer = new ExpandoSerializer();
+			} else {
+				this.DefaultSerializer = new Amf3Object.Serializer();
+			}
+
+			if (autoSetCapacity) 
+			{
+				AutoSetCapacity();
+			}
+		}
+
+		public void AutoSetCapacity()
+		{
+			// use some simple tests to set capacity automatically
+			if (mLength > 1024 * 1024)
+			{
+				// large file
+				SetCapacity(32 * 1024, 80 * 1024, 1024);
+			} 
+			else if (mLength > 128 * 1024)
+			{
+				// medium file
+				SetCapacity(2048, 16 * 1024, 128);
+			} 
+			else 
+			{
+				// small file
+				SetCapacity(1024, 4 * 1024, 64);
+			}
+		}
+
+		public void SetCapacity(int stringTableCapacity, int objectTableCapacity, int traitTableCapacity)
+		{
+			stringTable.Capacity = stringTableCapacity;
+			objectTable.Capacity = objectTableCapacity;
+			traitTable.Capacity = traitTableCapacity;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private byte ReadByte()
+		{
+			if (mPosition >= mLength) {
+				throw new EndOfStreamException();
+			}
+
+			return mData[mPosition++];
+		}
+
 
         public object ReadNextObject()
         {
-            int b = stream.ReadByte();
-
-            if (b < 0)
-                throw new EndOfStreamException();
+            byte b = ReadByte();
 
             Amf3TypeCode type = (Amf3TypeCode) b;
 
@@ -70,16 +134,27 @@ namespace Amf
                 return null;
 
             case Amf3TypeCode.False:
-                return false;
+                return sBoolFalse;
 
             case Amf3TypeCode.True:
-                return true;
+                return sBoolTrue;
 
             case Amf3TypeCode.Integer:
-                return ReadInteger();
+				{
+					int i = ReadInteger();
+					if (i == 0) return sIntZero;
+					if (i == 1) return sIntOne;
+					if (i ==-1) return sIntNegOne;
+					return (object)i;
+				}
 
             case Amf3TypeCode.Number:
-                return ReadNumber();
+				{
+					double d = ReadNumber();
+					if (d == 0.0) return sNumberZero;
+					if (d == 1.0) return sNumberOne;
+					return (object)d;
+				}
 
             case Amf3TypeCode.String:
                 return ReadString();
@@ -116,15 +191,87 @@ namespace Amf
             }
         }
 
+		// this read the next object into a value structure
+		// this avoids unnecessary boxing/unboxing of value types and speeds up deserialization
+		public void ReadNextObject(ref Variant value)
+        {
+			byte b = ReadByte();
+			Amf3TypeCode type = (Amf3TypeCode) b;
+            switch (type) {
+            case Amf3TypeCode.Undefined:
+				value = Variant.Undefined;
+				return;
+            case Amf3TypeCode.Null:
+				value = Variant.Null;
+				return;
+			case Amf3TypeCode.False:
+				value = false;
+				return;
+			case Amf3TypeCode.True:
+				value = true;
+				return;
+
+            case Amf3TypeCode.Integer:
+                value = ReadInteger();
+				break;
+
+            case Amf3TypeCode.Number:
+                value = ReadNumber();
+				break;
+
+            case Amf3TypeCode.String:
+				value = ReadString();
+				break;
+
+            case Amf3TypeCode.Date:
+				value = new Variant(ReadDate());
+				break;
+
+            case Amf3TypeCode.Array:
+				value = new Variant(ReadArray());
+				break;
+
+            case Amf3TypeCode.Object:
+				value = new Variant(ReadAmf3Object());
+				break;
+
+			case Amf3TypeCode.ByteArray:
+				value = new Variant(ReadByteArray());
+				break;
+
+			case Amf3TypeCode.VectorInt:
+				value = new Variant(ReadVectorInt());
+				break;
+
+			case Amf3TypeCode.VectorUInt:
+				value = new Variant(ReadVectorUInt());
+				break;
+
+			case Amf3TypeCode.VectorDouble:
+				value = new Variant(ReadVectorDouble());
+				break;
+
+			case Amf3TypeCode.Dictionary:
+				value = new Variant(ReadDictionary());
+				break;
+
+			case Amf3TypeCode.VectorObject:
+				value = new Variant(ReadVectorObject());
+				break;
+
+			default:
+				throw new NotImplementedException("Cannot parse type " + type.ToString());
+            }
+        }
+
+
         public int ReadInteger()
         {
             int integer = 0;
             int seen = 0;
 
             for (;;) {
-                int b = stream.ReadByte();
-                if (b < 0)
-                    throw new EndOfStreamException();
+                int b = (int)ReadByte();
 
                 if (seen == 3) {
                     integer = (integer << 8) | b;
@@ -148,20 +295,23 @@ namespace Amf
 
 		public int ReadInt32()
 		{
-			stream.Read(tempData, 0, sizeof(Int32));
-			return conv.GetInt32(tempData, 0);
+			int value = conv.GetInt32(mData, mPosition);
+			mPosition += sizeof(Int32);
+			return value;
 		}
 
 		public uint ReadUInt32()
 		{
-			stream.Read(tempData, 0, sizeof(UInt32));
-			return conv.GetUInt32(tempData, 0);
+			uint value = conv.GetUInt32(mData, mPosition);
+			mPosition += sizeof(UInt32);
+			return value;
 		}
 
         public double ReadNumber()
         {
-			stream.Read(tempData, 0, sizeof(double));
-            return conv.GetDouble(tempData, 0);
+			double value = conv.GetDouble(mData, mPosition);
+			mPosition += sizeof(double);
+			return value;
         }
 
         private static T GetTableEntry<T>(IList<T> table, int index)
@@ -184,7 +334,9 @@ namespace Amf
                 return GetTableEntry(stringTable, num >> 1);
             }
 
-            string str = Encoding.UTF8.GetString(stream.Read(num >> 1));
+			int count = num >> 1;
+            string str = Encoding.UTF8.GetString(mData, mPosition, count);
+			mPosition += count;
 
             if (str != "")
                 stringTable.Add(str);
@@ -247,7 +399,7 @@ namespace Amf
 			}
 
 			num >>= 1;
-			bool isFixed = stream.ReadByteOrThrow() != 0;
+			bool isFixed = ReadByte() != 0;
 			var vector = new Vector<double>((uint)num, isFixed);
 
 			objectTable.Add(vector);
@@ -269,7 +421,7 @@ namespace Amf
 			}
 
 			num >>= 1;
-			bool isFixed = stream.ReadByteOrThrow() != 0;
+			bool isFixed = ReadByte() != 0;
 			var vector = new Vector<int>((uint)num, isFixed);
 
 			objectTable.Add(vector);
@@ -291,7 +443,7 @@ namespace Amf
 			}
 
 			num >>= 1;
-			bool isFixed = stream.ReadByteOrThrow() != 0;
+			bool isFixed = ReadByte() != 0;
 			var vector = new Vector<uint>((uint)num, isFixed);
 
 			objectTable.Add(vector);
@@ -304,22 +456,32 @@ namespace Amf
 			return vector;
 		}
 
-		public Vector<dynamic> ReadVectorObject()
+		public object ReadVectorObject()
 		{
 			int num = ReadInteger();
 			if ((num & 1) == 0) {
-				return (Vector<dynamic>)GetTableEntry(objectTable, num >> 1);
+				return GetTableEntry(objectTable, num >> 1);
 			}
 
 			num >>= 1;
-			bool isFixed = stream.ReadByteOrThrow() != 0;
+			bool isFixed = ReadByte() != 0;
 
-			// read object type name 
-			// this class definition is not known until the first object has been read
-			// (TODO: we need to construct the right vector type based on this)
+			// read object type name
+			// this class definition is not known until the first object has been read, but we don't need it here
 			string objectTypeName = ReadString();
 
-			var vector = new Vector<dynamic>((uint)num, isFixed);
+			// get serializer for class alias
+			IAmf3Serializer serializer = GetSerializerFromAlias(objectTypeName);
+
+			IList vector;
+			if (serializer != null) {
+				// create vector using serializer
+				vector = serializer.NewVector((uint)num, isFixed);
+			} else {
+				// create a new vector of dynamic
+				vector = new _root.Vector<dynamic>((uint)num, isFixed);
+			}
+
 			objectTable.Add(vector);
 
 			// read all values
@@ -329,7 +491,6 @@ namespace Amf
 
 			return vector;
 		}
-
 
 		public flash.utils.ByteArray ReadByteArray()
 		{
@@ -343,7 +504,9 @@ namespace Amf
 
 			// read all data into byte array
 			byte[] data = new byte[num];
-			stream.ReadFully(data, 0, num);
+			for (int i=0; i < num; i++) {
+				data[i] = ReadByte();
+			}
 
 			var array = flash.utils.ByteArray.fromArray(data);
 			objectTable.Add(array);
@@ -360,7 +523,7 @@ namespace Amf
 			num >>= 1;
 
 			// weak keys?
-			bool weakKeys = stream.ReadByteOrThrow()!=0;
+			bool weakKeys = ReadByte()!=0;
 
 			// create dictionary
 			var dict = new flash.utils.Dictionary(weakKeys);
@@ -378,60 +541,126 @@ namespace Amf
 			return dict;
 		}
 
+		private Amf3ClassDef ReadAmf3ClassDef(Amf3Object.Flags flags)
+		{
+			bool externalizable = ((flags & Amf3Object.Flags.Externalizable) != 0);
+			bool dynamic = ((flags & Amf3Object.Flags.Dynamic) != 0);
+			string name = ReadString();
 
+			if (externalizable && dynamic)
+				throw new InvalidOperationException("Serialized objects cannot be both dynamic and externalizable");
 
-        public Amf3Object ReadAmf3Object()
+			List<string> properties = new List<string>();
+
+			int members = ((int) flags) >> 4;
+
+			for (int i = 0; i < members; i++) {
+				properties.Add(ReadString());
+			}
+
+			Amf3ClassDef classDef = new Amf3ClassDef(name, properties.ToArray(), dynamic, externalizable);
+
+			// lookup serializer to use for this class definition
+			classDef.Serializer = GetSerializerFromAlias(classDef.Name);
+
+			traitTable.Add(classDef);
+			return classDef;
+		}
+
+		// gets serializer for a class alias string
+		private IAmf3Serializer GetSerializerFromAlias(string alias)
+		{
+			IAmf3Serializer serializer = Amf3ClassDef.GetSerializerFromAlias(alias);
+			if (serializer == null) {
+				var type = Amf3ClassDef.GetTypeFromAlias(alias);
+				if (type != null) {
+					// create reflection serializer
+					serializer = new ReflectionSerializer(alias, type, true, false);
+					// automatically register it
+					Amf3ClassDef.RegisterSerializer(alias, serializer);
+				} 
+			}
+			return serializer;
+		}
+
+        public object ReadAmf3Object()
         {
             Amf3Object.Flags flags = (Amf3Object.Flags)ReadInteger();
 
             if ((flags & Amf3Object.Flags.Inline) == 0) {
-                return (Amf3Object)GetTableEntry(objectTable, ((int)flags) >> 1);
+                return GetTableEntry(objectTable, ((int)flags) >> 1);
             }
 
             Amf3ClassDef classDef;
-
             if ((flags & Amf3Object.Flags.InlineClassDef) == 0) {
                 classDef = GetTableEntry(traitTable, ((int)flags) >> 2);
             } else {
-                bool externalizable = ((flags & Amf3Object.Flags.Externalizable) != 0);
-                bool dynamic = ((flags & Amf3Object.Flags.Dynamic) != 0);
-                string name = ReadString();
-
-                if (externalizable && dynamic)
-                    throw new InvalidOperationException("Serialized objects cannot be both dynamic and externalizable");
-
-                List<string> properties = new List<string>();
-
-                int members = ((int) flags) >> 4;
-
-                for (int i = 0; i < members; i++) {
-                    properties.Add(ReadString());
-                }
-
-                classDef = new Amf3ClassDef(name, properties, dynamic, externalizable);
-                traitTable.Add(classDef);
+				classDef = ReadAmf3ClassDef(flags);
             }
 
-            Amf3Object obj = new Amf3Object(classDef);
-            objectTable.Add(obj);
+			// get the serializer to use (start with the override serializer)
+			IAmf3Serializer serializer = OverrideSerializer;
+			if (serializer == null) {
+				// no override? get serializer from class definition
+				serializer = classDef.Serializer;
+				if (serializer == null) {
+					// no serializer for class definition? use default serializer 
+					serializer = DefaultSerializer;
+				}
+			}
 
-            if (classDef.Externalizable) {
-                obj.Properties["inner"] = ReadNextObject();
-                return obj;
-            }
+			// fast path the Amf3Object serializer
+			if (serializer is Amf3Object.Serializer) {
+				var obj = new Amf3Object(classDef);
 
-            foreach (string i in classDef.Properties) {
-                obj.Properties[i] = ReadNextObject();
-            }
+				// add to object table
+				objectTable.Add(obj);
 
-            if (classDef.Dynamic) {
-                string key = ReadString();
-                while (key != "") {
-                    obj.Properties[key] = ReadNextObject();
-                    key = ReadString();
-                }
-            }
-            return obj;
+				// read all properties into object
+				int count = classDef.Properties.Length;
+				for(int i=0; i < count; i++) {
+					ReadNextObject(ref obj.Values[i]);
+				}
+				
+				// read dynamic properties
+				if (classDef.Dynamic) {
+					string key = ReadString();
+					while (key != "") {
+						var value  = ReadNextObject();
+						obj.SetPropertyValueAsObject(key, value);
+						key = ReadString();
+					}
+				}
+				return obj;
+			} else {
+				// create object instance using serializer
+				object obj = serializer.NewInstance(classDef);
+
+				// add to object table
+	            objectTable.Add(obj);
+
+				// begin property remapping
+				var reader = classDef.CreatePropertyReader();
+				reader.BeginRead(this);
+				// read object using serializer
+				serializer.ReadObject(reader, obj);
+				// end property remapping
+				classDef.ReleasePropertyReader(reader);
+
+				// read dynamic properties
+				if (classDef.Dynamic) {
+					var dc = obj as PlayScript.IDynamicClass;
+					string key = ReadString();
+					while (key != "") {
+						var value  = ReadNextObject();
+						if (dc != null) {
+							dc.__SetDynamicValue(key, value);
+						}
+						key = ReadString();
+					}
+				}
+				return obj;
+			}
         }
 
 		// returns all the class definitions that have been found while parsing
@@ -445,6 +674,6 @@ namespace Amf
 		{
 			return objectTable.ToArray();
 		}
-
     }
+
 }

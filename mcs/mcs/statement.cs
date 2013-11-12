@@ -346,7 +346,7 @@ namespace Mono.CSharp {
 					visitor.Skip = false;
 					return ret;
 				}
-				if (visitor.Continue)
+				if (visitor.Continue && this.expr != null)
 					this.expr.Accept (visitor);
 				if (visitor.Continue && this.TrueStatement != null)
 					this.TrueStatement.Accept (visitor);
@@ -469,7 +469,7 @@ namespace Mono.CSharp {
 				}
 				if (visitor.Continue && this.EmbeddedStatement != null)
 					this.EmbeddedStatement.Accept (visitor);
-				if (visitor.Continue)
+				if (visitor.Continue && this.expr != null)
 					this.expr.Accept (visitor);
 			}
 
@@ -621,7 +621,7 @@ namespace Mono.CSharp {
 					visitor.Skip = false;
 					return ret;
 				}
-				if (visitor.Continue)
+				if (visitor.Continue && this.expr != null)
 					this.expr.Accept (visitor);
 				if (visitor.Continue && this.Statement != null)
 					this.Statement.Accept (visitor);
@@ -880,7 +880,7 @@ namespace Mono.CSharp {
 					visitor.Skip = false;
 					return ret;
 				}
-				if (visitor.Continue)
+				if (visitor.Continue && this.Expr != null)
 					this.Expr.Accept (visitor);
 			}
 
@@ -931,7 +931,7 @@ namespace Mono.CSharp {
 					visitor.Skip = false;
 					return ret;
 				}
-				if (visitor.Continue)
+				if (visitor.Continue && this.Expr != null)
 					this.Expr.Accept (visitor);
 			}
 
@@ -1272,7 +1272,7 @@ namespace Mono.CSharp {
 					visitor.Skip = false;
 					return ret;
 				}
-				if (visitor.Continue)
+				if (visitor.Continue && this.Expr != null)
 					this.Expr.Accept (visitor);
 			}
 
@@ -1545,7 +1545,7 @@ namespace Mono.CSharp {
 					visitor.Skip = false;
 					return ret;
 				}
-				if (visitor.Continue)
+				if (visitor.Continue && this.Expr != null)
 					this.Expr.Accept (visitor);
 			}
 
@@ -1625,7 +1625,7 @@ namespace Mono.CSharp {
 					visitor.Skip = false;
 					return ret;
 				}
-				if (visitor.Continue)
+				if (visitor.Continue && this.Expr != null)
 					this.Expr.Accept (visitor);
 			}
 
@@ -4400,7 +4400,7 @@ namespace Mono.CSharp {
 					visitor.Skip = false;
 					return ret;
 				}
-				if (visitor.Continue)
+				if (visitor.Continue && this.label != null)
 					this.label.Accept (visitor);
 			}
 
@@ -5296,9 +5296,9 @@ namespace Mono.CSharp {
 					visitor.Skip = false;
 					return ret;
 				}
-				if (visitor.Continue)
+				if (visitor.Continue && this.Expr != null)
 					this.Expr.Accept (visitor);
-				if (visitor.Continue)
+				if (visitor.Continue && this.Block != null)
 					this.Block.Accept (visitor);
 			}
 
@@ -5723,7 +5723,7 @@ namespace Mono.CSharp {
 					visitor.Skip = false;
 					return ret;
 				}
-				if (visitor.Continue)
+				if (visitor.Continue && this.expr != null)
 					this.expr.Accept (visitor);
 			}
 
@@ -5770,7 +5770,7 @@ namespace Mono.CSharp {
 					visitor.Skip = false;
 					return ret;
 				}
-				if (visitor.Continue)
+				if (visitor.Continue && this.Block != null)
 					this.Block.Accept (visitor);
 			}
 
@@ -5816,7 +5816,7 @@ namespace Mono.CSharp {
 					visitor.Skip = false;
 					return ret;
 				}
-				if (visitor.Continue)
+				if (visitor.Continue && this.Block != null)
 					this.Block.Accept (visitor);
 			}
 
@@ -5864,7 +5864,7 @@ namespace Mono.CSharp {
 					visitor.Skip = false;
 					return ret;
 				}
-				if (visitor.Continue)
+				if (visitor.Continue && this.Block != null)
 					this.Block.Accept (visitor);
 			}
 
@@ -6160,7 +6160,7 @@ namespace Mono.CSharp {
 					visitor.Skip = false;
 					return ret;
 				}
-				if (visitor.Continue)
+				if (visitor.Continue && this.Statement != null)
 					this.Statement.Accept (visitor);
 			}
 
@@ -6397,9 +6397,9 @@ namespace Mono.CSharp {
 					visitor.Skip = false;
 					return ret;
 				}
-				if (visitor.Continue)
+				if (visitor.Continue && this.Statement != null)
 					this.Statement.Accept (visitor);
-				if (visitor.Continue)
+				if (visitor.Continue && this.fini != null)
 					this.fini.Accept (visitor);
 			}
 
@@ -6528,7 +6528,7 @@ namespace Mono.CSharp {
 					visitor.Skip = false;
 					return ret;
 				}
-				if (visitor.Continue)
+				if (visitor.Continue && this.Block != null)
 					this.Block.Accept (visitor);
 				if (visitor.Continue) {
 					if (clauses != null) {
@@ -6814,9 +6814,9 @@ namespace Mono.CSharp {
 					visitor.Skip = false;
 					return ret;
 				}
-				if (visitor.Continue)
+				if (visitor.Continue && this.Expr != null)
 					this.Expr.Accept (visitor);
-				if (visitor.Continue)
+				if (visitor.Continue && this.Statement != null)
 					this.Statement.Accept (visitor);
 			}
 
@@ -7570,15 +7570,19 @@ namespace Mono.CSharp {
 				statement = new CollectionForeach (this, variable, expr);
 			}
 
-			// PlayScript - always check if enumerable var is null before doing loop
+			// PlayScript - always check if var is enumerable before doing loop
 			if (ec.FileType == SourceFileType.PlayScript && expr != null && 
 			    (expr.Type.IsClass || expr.Type.IsInterface || expr.Type.BuiltinType == BuiltinTypeSpec.Type.Dynamic)) {
+
+				//
+				// For dynamics, check that it's enumerable. For classes, just check
+				// against null.
+				//
 				if (expr.Type.BuiltinType == BuiltinTypeSpec.Type.Dynamic) {
-					statement = new If (
-						new Binary(Binary.Operator.LogicalAnd, 
-							new Binary(Binary.Operator.Inequality, new As(expr, new Mono.CSharp.TypeExpression(ec.BuiltinTypes.Object, loc), loc), new NullLiteral(loc)),
-					        new Binary(Binary.Operator.Inequality, new As(expr, new Mono.CSharp.TypeExpression(ec.BuiltinTypes.Object, loc), loc), new AsUndefinedLiteral(loc))),
-					           statement, loc);
+					if (asForEachType == AsForEachType.ForEachKey)
+						statement = new If (new Is (expr, new TypeExpression (ec.Module.PredefinedTypes.AsIKeyEnumerable.Resolve (), loc), loc), statement, loc);
+					else
+						statement = new If (new Is (expr, new TypeExpression (ec.Module.Compiler.BuiltinTypes.IEnumerable, loc), loc), statement, loc);
 				} else {
 					statement = new If (new Binary(Binary.Operator.Inequality, expr, new NullLiteral(loc)), statement, loc);
 				}
@@ -7622,11 +7626,11 @@ namespace Mono.CSharp {
 					visitor.Skip = false;
 					return ret;
 				}
-				if (visitor.Continue)
+				if (visitor.Continue && this.Expr != null)
 					this.Expr.Accept (visitor);
-				if (visitor.Continue)
+				if (visitor.Continue && this.statement != null)
 					this.statement.Accept (visitor);
-				if (visitor.Continue)
+				if (visitor.Continue && this.body != null)
 					this.body.Accept (visitor);
 			}
 

@@ -76,6 +76,8 @@ namespace PlayScript
 		Dynamic_CastObjectToBoolInvoked,
 		Dynamic_InvokeStaticInvoked,
 		Dynamic_ObjectIsClassInvoked,
+		Dynamic_IsNullOrUndefinedInvoked,
+		Dynamic_IsUndefinedInvoked,
 		Dynamic_HasOwnPropertyInvoked,
 
 		// other
@@ -105,6 +107,16 @@ namespace PlayScript
 			for (int i=0; i < Counters.Length; i++) {
 				Counters[i] -= other.Counters[i];
 			}
+		}
+
+		public void AddAt(Stats other, StatsCounter counter)
+		{
+			Counters[(int)counter] += other.Counters[(int)counter];
+		}
+
+		public void SubtractAt(Stats other, StatsCounter counter)
+		{
+			Counters[(int)counter] -= other.Counters[(int)counter];
 		}
 
 		public void CopyFrom(Stats other)

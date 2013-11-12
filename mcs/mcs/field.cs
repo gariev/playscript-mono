@@ -257,6 +257,9 @@ namespace Mono.CSharp
 
 		public override void Emit ()
 		{
+			if (member_type == Module.Compiler.BuiltinTypes.AsUntyped)
+				Module.PredefinedAttributes.AsUntypedAttribute.EmitAttribute (FieldBuilder);
+
 			if (member_type.BuiltinType == BuiltinTypeSpec.Type.Dynamic) {
 				Module.PredefinedAttributes.Dynamic.EmitAttribute (FieldBuilder);
 			} else if (!Parent.IsCompilerGenerated && member_type.HasDynamicElement) {
@@ -657,7 +660,7 @@ namespace Mono.CSharp
 					this.Initializer.Accept (visitor);
 				if (visitor.Continue && declarators != null && visitor.Depth >= VisitDepth.Initializers) {
 					foreach (var decl in declarators) {
-						if (visitor.Continue && decl.Initializer != null && decl.Initializer != null) {
+						if (visitor.Continue && decl.Initializer != null) {
 							decl.Initializer.Accept (visitor);
 						}
 					}

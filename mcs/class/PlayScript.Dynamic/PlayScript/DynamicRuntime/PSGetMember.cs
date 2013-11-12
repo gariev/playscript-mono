@@ -30,19 +30,36 @@ namespace PlayScript.DynamicRuntime
 			mName = name;
 		}
 
-		public T GetNamedMember<T>(object o, string name )
+		public T GetNamedMember<T>(object o, string name)
 		{
 			if (name != mName)
 			{
 				mName = name;
+				mNameHint = 0; // invalidate name hint when name changes
 				mType = null;
 			}
 
 			return GetMember<T>(o);
 		}
 
-		public object GetMemberAsObject(object o)
+		public dynamic GetMemberAsObject(object o)
 		{
+			var result = GetMember<object>(o);
+			// Need to check for undefined if we're not returning AsUntyped
+			if (Dynamic.IsUndefined (result))
+				result = null;
+			return result;
+		}
+
+		[return: AsUntyped]
+		public dynamic GetMemberAsUntyped(object o)
+		{
+			// get accessor for untyped 
+			var accessor = o as IDynamicAccessorUntyped;
+			if (accessor != null) {
+				return accessor.GetMember(mName, ref mNameHint, null);
+			}
+
 			return GetMember<object>(o);
 		}
 
@@ -56,6 +73,24 @@ namespace PlayScript.DynamicRuntime
 			Stats.Increment(StatsCounter.GetMemberBinderInvoked);
 
 			TypeLogger.LogType(o);
+
+			// get accessor for value type T
+			var accessor = o as IDynamicAccessor<T>;
+			if (accessor != null) {
+				return accessor.GetMember(mName, ref mNameHint, default(T));
+			}
+
+			// fallback on object accessor and cast it to T
+			var untypedAccessor = o as IDynamicAccessorUntyped;
+			if (untypedAccessor != null) {
+				object value = untypedAccessor.GetMember(mName, ref mNameHint, default(T));
+				if (value == null) return default(T);
+				if (value is T) {
+					return (T)value;
+				} else {
+					return PlayScript.Dynamic.ConvertValue<T>(value);
+				}
+			}
 
 			// resolve as dictionary (this is usually an expando)
 			var dict = o as IDictionary<string, object>;
@@ -78,7 +113,7 @@ namespace PlayScript.DynamicRuntime
 				return default(T);
 			}
 
-			if (o == null) {
+			if (PlayScript.Dynamic.IsNullOrUndefined(o)) {
 				return default(T);
 			}
 
@@ -127,11 +162,28 @@ namespace PlayScript.DynamicRuntime
 					return PlayScript.Dynamic.ConvertValue<T>(result);
 				}
 
+				if (mName == "constructor") {
+					return PlayScript.Dynamic.ConvertValue<T> (otype);
+				}
+
 				throw new System.InvalidOperationException("Unhandled member type in PSGetMemberBinder");
 			}
 
 			// resolve name
 			Stats.Increment(StatsCounter.GetMemberBinder_Resolve_Invoked);
+
+			// The constructor is a special synthetic property - we have to handle this for AS compatibility
+			if (mName == "constructor") {
+				// setup binding to field
+				mType = otype;
+				mPreviousFunc = null;
+				mPreviousTarget = null;
+				mProperty = null;
+				mField = null;
+				mMethod = null;
+				mTargetType = typeof(Type);
+				return PlayScript.Dynamic.ConvertValue<T> (otype);
+			}
 
 			// resolve as property
 			// TODO: we allow access to non-public properties for simplicity,
@@ -194,6 +246,8 @@ namespace PlayScript.DynamicRuntime
 				mField    = null;
 				mMethod   = method;
 				mTargetType = PlayScript.Dynamic.GetDelegateTypeForMethod(mMethod);
+				if (mTargetType == null) {
+				}
 
 				// construct method delegate
 				return PlayScript.Dynamic.ConvertValue<T>(Delegate.CreateDelegate(mTargetType, o, mMethod));
@@ -217,6 +271,7 @@ namespace PlayScript.DynamicRuntime
 
 
 		private string			mName;
+		private uint 			mNameHint;
 		private Type			mType;
 		private PropertyInfo	mProperty;
 		private FieldInfo		mField;

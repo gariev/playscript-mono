@@ -1684,15 +1684,22 @@ namespace Mono.CSharp {
 
 		// ActionScript attributes
 		public readonly PredefinedAttribute AsDynamicClassAttribute;
+		public readonly PredefinedAsUntypedAttribute AsUntypedAttribute;
 		public readonly PredefinedAttribute AsBindableAttribute;
 		public readonly PredefinedAttribute AsAllowDynamicAttribute;
 		public readonly PredefinedAttribute AsForbidDynamicAttribute;
 
+		public readonly PredefinedAttribute NumberIsFloatAttribute;
+
 		// Mono.Optimization attributes
 		public readonly PredefinedAttribute InlineAttribute;
 
+		ModuleContainer module;
+
 		public PredefinedAttributes (ModuleContainer module)
 		{
+			this.module = module;
+
 			ParamArray = new PredefinedAttribute (module, "System", "ParamArrayAttribute");
 			Out = new PredefinedAttribute (module, "System.Runtime.InteropServices", "OutAttribute");
 			ParamArray.Resolve ();
@@ -1754,9 +1761,12 @@ namespace Mono.CSharp {
 
 			// ActionScript
 			AsDynamicClassAttribute = new PredefinedAttribute (module, "PlayScript", "DynamicClassAttribute");
+			AsUntypedAttribute = new PredefinedAsUntypedAttribute (module, "PlayScript", "AsUntypedAttribute");
 			AsBindableAttribute = new PredefinedAttribute (module, PsConsts.PsRootNamespace, "BindableAttribute");
 			AsAllowDynamicAttribute = new PredefinedAttribute (module, PsConsts.PsRootNamespace, "AllowDynamicAttribute");
 			AsForbidDynamicAttribute = new PredefinedAttribute (module, PsConsts.PsRootNamespace, "ForbidDynamicAttribute");
+
+			NumberIsFloatAttribute = new PredefinedAttribute (module, "PlayScript", "NumberIsFloatAttribute");
 
 			// Mono.Optimization
 			InlineAttribute = new PredefinedAttribute (module, "Mono.Optimization", "InlineAttribute");
@@ -1767,6 +1777,12 @@ namespace Mono.CSharp {
 
 			foreach (var fi in GetType ().GetFields (all_fields)) {
 				((PredefinedAttribute) fi.GetValue (this)).Define ();
+			}
+		}
+
+		public ModuleContainer Module {
+			get {
+				return module;
 			}
 		}
 	}
@@ -2073,8 +2089,26 @@ namespace Mono.CSharp {
 			if (tctor != null)
 				return true;
 
-			tctor = module.PredefinedMembers.DynamicAttributeCtor.Resolve (loc);
+			tctor = GetTransformationCtor ().Resolve (loc);
 			return tctor != null;
+		}
+
+		virtual protected PredefinedMember<MethodSpec> GetTransformationCtor ()
+		{
+			return module.PredefinedMembers.DynamicAttributeCtor;
+		}
+	}
+
+	public class PredefinedAsUntypedAttribute : PredefinedDynamicAttribute
+	{
+		public PredefinedAsUntypedAttribute (ModuleContainer module, string ns, string name)
+			: base (module, ns, name)
+		{
+		}
+
+		override protected PredefinedMember<MethodSpec> GetTransformationCtor ()
+		{
+			return module.PredefinedMembers.AsUntypedAttributeCtor;
 		}
 	}
 }

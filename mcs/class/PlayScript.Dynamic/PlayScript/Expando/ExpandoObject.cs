@@ -63,6 +63,12 @@ namespace PlayScript.Expando {
             LockObject = new object();
         }
 
+		/// <summary>
+		/// Creates a new ExpandoObject with specified capacity
+		/// </summary>
+		public ExpandoObject(int capacity) : base() {
+		}
+
         #region Get/Set/Delete Helpers
 
         /// <summary>
@@ -1470,6 +1476,7 @@ using System.Security.Permissions;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using PlayScript;
+using PlayScript.DynamicRuntime;
 
 namespace PlayScript.Expando {
 
@@ -1482,11 +1489,12 @@ namespace PlayScript.Expando {
 		public int Next;
 	}
 
+	[DynamicClass]
 	[ComVisible(false)]
 	[Serializable]
 	[DebuggerDisplay ("Count = {Count}")]
 	[DebuggerTypeProxy (typeof (ExpandoDebugView))]
-	public class ExpandoObject : IDictionary<string, object>, IDictionary, ISerializable, IDeserializationCallback, IDynamicClass, IKeyEnumerable
+	public class ExpandoObject : IDictionary<string, object>, IDictionary, ISerializable, IDeserializationCallback, IDynamicClass, IKeyEnumerable, IDynamicAccessor<object>, IDynamicAccessorUntyped
 #if NET_4_5
 		, IReadOnlyDictionary<string, object>
 #endif
@@ -1564,10 +1572,12 @@ namespace PlayScript.Expando {
 		}
 		
 		public dynamic this [string key] {
+			[return: AsUntyped]
 			get {
+				key = PlayScript.Dynamic.FormatKeyForAs (key);
 				if (key == null)
 					throw new ArgumentNullException ("key");
-				
+
 				// get first item of linked list corresponding to given key
 				int hashCode = hcp.GetHashCode (key) | HASH_FLAG;
 				int cur = table [(hashCode & int.MaxValue) % table.Length] - 1;
@@ -1580,15 +1590,14 @@ namespace PlayScript.Expando {
 						return valueSlots [cur];
 					cur = linkSlots [cur].Next;
 				}
-				// this is not an exceptional condition although we should be returning undefined instead of null
-				return null;
-				//throw new KeyNotFoundException ();
+				return PlayScript.Undefined._undefined;
 			}
 			
 			set {
+				key = PlayScript.Dynamic.FormatKeyForAs (key);
 				if (key == null)
 					throw new ArgumentNullException ("key");
-				
+
 				// get first item of linked list corresponding to given key
 				int hashCode = hcp.GetHashCode (key) | HASH_FLAG;
 				int index = (hashCode & int.MaxValue) % table.Length;
@@ -1843,9 +1852,10 @@ namespace PlayScript.Expando {
 		
 		public void Add (string key, object value)
 		{
+			key = PlayScript.Dynamic.FormatKeyForAs (key);
 			if (key == null)
 				throw new ArgumentNullException ("key");
-			
+
 			// get first item of linked list corresponding to given key
 			int hashCode = hcp.GetHashCode (key) | HASH_FLAG;
 			int index = (hashCode & int.MaxValue) % table.Length;
@@ -1907,9 +1917,15 @@ namespace PlayScript.Expando {
 			touchedSlots = 0;
 			generation++;
 		}
-		
+
+		public override string ToString ()
+		{
+			return "[object Object]";
+		}
+
 		public bool ContainsKey (string key)
 		{
+			key = PlayScript.Dynamic.FormatKeyForAs (key);
 			if (key == null)
 				return false;
 			
@@ -2011,9 +2027,10 @@ namespace PlayScript.Expando {
 		
 		public bool Remove (string key)
 		{
+			key = PlayScript.Dynamic.FormatKeyForAs (key);
 			if (key == null)
 				throw new ArgumentNullException ("key");
-			
+
 			// get first item of linked list corresponding to given key
 			int hashCode = hcp.GetHashCode (key) | HASH_FLAG;
 			int index = (hashCode & int.MaxValue) % table.Length;
@@ -2062,9 +2079,10 @@ namespace PlayScript.Expando {
 		
 		public bool TryGetValue (string key, out object value)
 		{
+			key = PlayScript.Dynamic.FormatKeyForAs (key);
 			if (key == null)
 				throw new ArgumentNullException ("key");
-			
+
 			// get first item of linked list corresponding to given key
 			int hashCode = hcp.GetHashCode (key) | HASH_FLAG;
 			int cur = table [(hashCode & int.MaxValue) % table.Length] - 1;
@@ -2081,7 +2099,7 @@ namespace PlayScript.Expando {
 			}
 			
 			// we did not find the slot
-			value = default (object);
+			value = PlayScript.Undefined._undefined;
 			return false;
 		}
 
@@ -2136,6 +2154,8 @@ namespace PlayScript.Expando {
 		
 		static string Tostring (object key)
 		{
+			key = PlayScript.Dynamic.FormatKeyForAs (key);
+
 			// Optimize for the most common case - strings
 			string keyString = key as string;
 			if (keyString != null) {
@@ -2720,30 +2740,181 @@ namespace PlayScript.Expando {
 		}
 
 		#region IDynamicClass implementation
+
 		dynamic IDynamicClass.__GetDynamicValue(string name)
 		{
 			return this[name];
 		}
+
 		bool IDynamicClass.__TryGetDynamicValue(string name, out object value)
 		{
 			return this.TryGetValue(name, out value);
 		}
+
 		void IDynamicClass.__SetDynamicValue(string name, object value)
 		{
 			this[name] = value;
 		}
+
 		bool IDynamicClass.__DeleteDynamicValue(object name)
 		{
 			return this.Remove((string)name);
 		}
+
 		bool IDynamicClass.__HasDynamicValue(string name)
 		{
 			return this.ContainsKey(name);
 		}
+
 		IEnumerable IDynamicClass.__GetDynamicNames()
 		{
 			return this.Keys;
 		}
+
+		#endregion
+
+		private string ConvertKey(string key)
+		{
+			if (key == null)
+				return "null";
+			return key;
+		}
+
+		private string ConvertKey(int key)
+		{
+			return key.ToString();
+		}
+
+		private string ConvertKey(object key)
+		{
+			if (key == null)
+				return "null";
+			if (Object.ReferenceEquals(key, PlayScript.Undefined._undefined))
+				return "undefined";
+			return key.ToString();
+		}
+
+		#region IDynamicAccessor implementation
+
+		object IDynamicAccessor<object>.GetMember(string name, ref uint hint, object defaultValue)
+		{
+			return this[name] ?? defaultValue;
+		}
+
+		void IDynamicAccessor<object>.SetMember(string name, ref uint hint, object value)
+		{
+			this[name] = value;
+		}
+
+		object IDynamicAccessor<object>.GetIndex(string key)
+		{
+			return this[ConvertKey(key)];
+		}
+
+		void IDynamicAccessor<object>.SetIndex(string key, object value)
+		{
+			this[ConvertKey(key)] = value;
+		}
+
+		object IDynamicAccessor<object>.GetIndex(int key)
+		{
+			return this[ConvertKey(key)];
+		}
+
+		void IDynamicAccessor<object>.SetIndex(int key, object value)
+		{
+			this[ConvertKey(key)] = value;
+		}
+
+		object IDynamicAccessor<object>.GetIndex(object key)
+		{
+			return this[ConvertKey(key)];
+		}
+
+		void IDynamicAccessor<object>.SetIndex(object key, object value)
+		{
+			this[ConvertKey(key)] = value;
+		}
+
+		#endregion
+
+		#region IDynamicAccessorUntyped implementation
+
+		object IDynamicAccessorUntyped.GetMember(string name, ref uint hint, object defaultValue)
+		{
+			return this[name] ?? defaultValue;
+		}
+
+		void IDynamicAccessorUntyped.SetMember(string name, ref uint hint, object value)
+		{
+			this[name] = value;
+		}
+
+		object IDynamicAccessorUntyped.GetIndex(string key)
+		{
+			return this[ConvertKey(key)];
+		}
+
+		void IDynamicAccessorUntyped.SetIndex(string key, object value)
+		{
+			this[ConvertKey(key)] = value;
+		}
+
+		object IDynamicAccessorUntyped.GetIndex(int key)
+		{
+			return this[ConvertKey(key)];
+		}
+
+		void IDynamicAccessorUntyped.SetIndex(int key, object value)
+		{
+			this[ConvertKey(key)] = value;
+		}
+
+		object IDynamicAccessorUntyped.GetIndex(object key)
+		{
+			return this[ConvertKey(key)];
+		}
+
+		void IDynamicAccessorUntyped.SetIndex(object key, object value)
+		{
+			this[ConvertKey(key)] = value;
+		}
+
+		bool IDynamicAccessorUntyped.HasMember(string name)
+		{
+			return this.ContainsKey(name);
+		}
+
+		bool IDynamicAccessorUntyped.HasMember(string name, ref uint hint)
+		{
+			return this.ContainsKey(name);
+		}
+
+		bool IDynamicAccessorUntyped.DeleteMember(string name)
+		{
+			return this.Remove(name);
+		}
+
+		bool IDynamicAccessorUntyped.HasIndex(int key)
+		{
+			return this.ContainsKey(ConvertKey(key));
+		}
+
+		bool IDynamicAccessorUntyped.DeleteIndex(int key)
+		{
+			return this.Remove(ConvertKey(key));
+		}
+
+		bool IDynamicAccessorUntyped.HasIndex(object key)
+		{
+			return this.ContainsKey(ConvertKey(key));
+		}
+
+		bool IDynamicAccessorUntyped.DeleteIndex(object key)
+		{
+			return this.Remove(ConvertKey(key));
+		}
+
 		#endregion
 	}
 }

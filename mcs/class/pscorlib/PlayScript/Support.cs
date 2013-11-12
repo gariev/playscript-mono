@@ -10,6 +10,9 @@ namespace PlayScript
 		// Simple method to convert a .NET array to AS Array for var arg list methods.
 		public static _root.Array CreateArgListArray(object[] argList) {
 			// If this is optimized, vararg method calls will run faster.
+			if (argList == null) {
+				argList = new object[1] { null };
+			}
 			return new _root.Array(argList);
 		}
 
@@ -21,7 +24,7 @@ namespace PlayScript
 
 		// Perform non static "is" check with target type
 		public static bool IsCheck(object value, object type) {
-			if (value == null) {
+			if (PlayScript.Dynamic.IsNullOrUndefined (value)) {
 				return false;
 			}
 			return ((Type)type).IsAssignableFrom (value.GetType ());
@@ -29,7 +32,7 @@ namespace PlayScript
 
 		// Perform non static "as" operation with target type
 		public static dynamic DynamicAs(object value, object type) {
-			if (value == null) {
+			if (PlayScript.Dynamic.IsNullOrUndefined (value)) {
 				return null;
 			}
 			if (type == null) {
@@ -39,7 +42,8 @@ namespace PlayScript
 		}
 
 		public static bool DynamicIn(object value, object key) {
-			if (value == null || key == null) {
+			key = PlayScript.Dynamic.FormatKeyForAs (key);
+			if (PlayScript.Dynamic.IsNullOrUndefined (value) || key == null) {
 				return false;
 			}
 			string keyStr = key as string;
@@ -59,6 +63,7 @@ namespace PlayScript
 			}
 			return false;
 		}
+
 
 	}
 }

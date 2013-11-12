@@ -16,6 +16,8 @@ using System;
 using System.Collections.Generic;
 using flash.events;
 
+#if PLATFORM_MONOMAC
+
 namespace flash.media {
 
 	// We use a partial C# class for platform specific logic
@@ -34,6 +36,12 @@ namespace flash.media {
 			return channel;
         }
 
+		public static void AsyncDispatchEvents()
+		{
+			Console.WriteLine ("Sound AsyncDispatchEvents is not implemented for this platform");
+		}
 	}
 
 }
+
+#endif

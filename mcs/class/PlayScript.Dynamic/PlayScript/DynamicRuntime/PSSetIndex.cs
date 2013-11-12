@@ -31,6 +31,20 @@ namespace PlayScript.DynamicRuntime
 
 			TypeLogger.LogType(o);
 
+			// get accessor for value type T
+			var accessor = o as IDynamicAccessor<T>;
+			if (accessor != null) {
+				accessor.SetIndex(index, value);
+				return value;
+			}
+
+			// fallback on untyped accessor
+			var untypedAccessor = o as IDynamicAccessorUntyped;
+			if (untypedAccessor != null) {
+				untypedAccessor.SetIndex(index, (object)value);
+				return value;
+			}
+
 			var l = o as IList<T>;
 			if (l != null) {
 				l [index] = value;
@@ -40,7 +54,17 @@ namespace PlayScript.DynamicRuntime
 
 			var l2 = o as IList;
 			if (l2 != null) {
-				l2 [index] = value;
+				int count = l2.Count;
+				if (index < count)
+					l2 [index] = value;
+				else if (index == count)
+					l2.Add (value);
+				else {
+					while (l2.Count < index) {
+						l2.Add (default(T));
+					}
+					l2 [index] = value;
+				}
 				return value;
 			} 
 
@@ -69,10 +93,29 @@ namespace PlayScript.DynamicRuntime
 			return SetIndexAs<T>(o, (int)index, value);
 		}
 
+		public T SetIndexAs<T> (object o, float index, T value)
+		{
+			return SetIndexAs<T>(o, (int)index, value);
+		}
+
 		public T SetIndexAs<T> (object o, string key, T value)
 		{
 			Stats.Increment(StatsCounter.SetIndexBinderInvoked);
 			Stats.Increment(StatsCounter.SetIndexBinder_Key_Invoked);
+
+			// get accessor for value type T
+			var accessor = o as IDynamicAccessor<T>;
+			if (accessor != null) {
+				accessor.SetIndex(key, value);
+				return value;
+			}
+
+			// fallback on untyped accessor
+			var untypedAccessor = o as IDynamicAccessorUntyped;
+			if (untypedAccessor != null) {
+				untypedAccessor.SetIndex(key, (object)value);
+				return value;
+			}
 
 			// handle dictionaries
 			var dict = o as IDictionary;
@@ -98,6 +141,7 @@ namespace PlayScript.DynamicRuntime
 
 		public T SetIndexAs<T> (object o, object key, T value)
 		{
+			key = PlayScript.Dynamic.FormatKeyForAs (key);
 			if (key is int) {
 				SetIndexAs<T>(o, (int)key, value);
 			} else if (key is string) {
@@ -106,6 +150,8 @@ namespace PlayScript.DynamicRuntime
 				SetIndexAs<T>(o, (uint)key, value);
 			} else  if (key is double) {
 				SetIndexAs<T>(o, (double)key, value);
+			} else  if (key is float) {
+				SetIndexAs<T>(o, (float)key, value);
 			} else {
 				throw new InvalidOperationException("Cannot index object with key of type: " + key.GetType());
 			}

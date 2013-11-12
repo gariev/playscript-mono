@@ -1425,7 +1425,7 @@ namespace Mono.CSharp {
 
 		public static Expression RemoveDynamic(ResolveContext rc, Expression child)
 		{
-			if (child.Type == rc.BuiltinTypes.Dynamic) {
+			if (child.Type.IsDynamic) {
 				if (child.eclass == ExprClass.Unresolved) {
 					// dont really like this, but sometimes its needed
 					return new BoxedCast(child, rc.BuiltinTypes.Object);
@@ -2900,27 +2900,8 @@ namespace Mono.CSharp {
 					} else if (name == "Class") {
 						return new TypeExpression(rc.BuiltinTypes.Type, loc);
 					} else if (name == "arguments" && rc is BlockContext) {
-						var paramBlock = rc.CurrentBlock.ParametersBlock;
-						var li = new LocalVariable (paramBlock, "arguments", paramBlock.loc);
-						li.Type = rc.Module.PredefinedTypes.AsArray.Resolve();
-						var decl = new BlockVariable(new Mono.CSharp.TypeExpression(rc.Module.PredefinedTypes.AsArray.Resolve(), paramBlock.loc), li);
-						if (rc.PsExtended) { // PlayScript uses a normal array for 'arguments'
-							var initializers = new List<Expression>();
-							foreach (Parameter param in paramBlock.Parameters.FixedParameters) {
-								initializers.Add (new SimpleName(param.Name, paramBlock.loc));
-							}
-							decl.Initializer = new AsArrayInitializer(initializers, paramBlock.loc);
-						} else {			 // ActionScript uses an actionscript Array
-							var arguments = new Arguments(paramBlock.Parameters.FixedParameters.Length);
-							foreach (Parameter param in paramBlock.Parameters.FixedParameters) {
-								arguments.Add (new Argument(new SimpleName(param.Name, paramBlock.loc)));
-							}
-							decl.Initializer = new New(new TypeExpression(rc.Module.PredefinedTypes.AsArray.Resolve(), paramBlock.loc), arguments, paramBlock.loc);
-						}
-						paramBlock.AddLocalName (li);
-						decl.Resolve ((BlockContext)rc);
-						paramBlock.ParametersBlock.TopBlock.AddScopeStatement (decl);
-						return LookupNameExpression (rc, restrictions);
+						rc.Report.Error (7009, loc, "The `arguments' magic variable is not currently supported in PlayScript");
+						return null;
 					}
 				}
 
@@ -6605,9 +6586,6 @@ namespace Mono.CSharp {
 		MethodSpec getter, setter;
 		protected T best_candidate;
 
-		// Resolve method can set getter/setter directly to a pair of methodspecs (allows get/set implemented as separate methods vs property).
-		protected MethodSpec method_pair_getter, method_pair_setter;
-
 		protected LocalTemporary temp;
 		protected bool emitting_compound_assignment;
 		protected bool has_await_arguments;
@@ -6734,15 +6712,9 @@ namespace Mono.CSharp {
 
 		bool ResolveGetter (ResolveContext rc)
 		{
-			// Resolve provided us with a getter setter pair (instead of a property/indexer)
-			if (method_pair_getter != null) {
-				getter = CandidateToBaseOverride (rc, method_pair_getter);
-				return true;
-			}
-
 			if (best_candidate == null || !best_candidate.HasGet) {
 				if (InstanceExpression != EmptyExpression.Null) {
-					MemberSpec ms = (MemberSpec)best_candidate ?? (MemberSpec)method_pair_setter;
+					MemberSpec ms = (MemberSpec)best_candidate;
 					if (ms != null) {
 						rc.Report.SymbolRelatedToPreviousError (ms);
 						rc.Report.Error (154, loc, "The property or indexer `{0}' cannot be used in this context because it lacks the `get' accessor",
@@ -6773,14 +6745,8 @@ namespace Mono.CSharp {
 
 		bool ResolveSetter (ResolveContext rc)
 		{
-			// Resolve provided us with a getter setter pair (instead of a property/indexer)
-			if (method_pair_setter != null) {
-				setter = CandidateToBaseOverride (rc, method_pair_setter);
-				return true;
-			}
-
 			if (best_candidate == null || !best_candidate.HasSet) {
-				MemberSpec ms = (MemberSpec)best_candidate ?? (MemberSpec)method_pair_getter;
+				MemberSpec ms = (MemberSpec)best_candidate;
 				if (ms != null) {
 					rc.Report.Error (200, loc, "Property or indexer `{0}' cannot be assigned to (it is read-only)",
 						ms.GetSignatureForError ());
@@ -7150,6 +7116,15 @@ namespace Mono.CSharp {
 					type.GetSignatureForError ());
 				return false;
 			}
+
+			//
+			// We provide a mechanism to use single precision floats instead of
+			// doubles for the PlayScript Number type via the [NumberIsFloat]
+			// attribute. For VarExpr types we must do the conversion from double
+			// to float here.
+			//
+			if (ec.PsNumberIsFloat && type.BuiltinType == BuiltinTypeSpec.Type.Double)
+				type = ec.BuiltinTypes.Float;
 
 			eclass = ExprClass.Variable;
 			return true;

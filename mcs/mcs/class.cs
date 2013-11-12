@@ -953,12 +953,12 @@ namespace Mono.CSharp
 			MemberCore mc = null;
 			if (this.FileType == SourceFileType.PlayScript) {
 				if ((modifiers & Modifiers.STATIC) != 0) {
-					defined_static_names.TryGetValue (name, out mc);
+					PartialContainer.defined_static_names.TryGetValue (name, out mc);
 				} else {
-					defined_instance_names.TryGetValue (name, out mc);
+					PartialContainer.defined_instance_names.TryGetValue (name, out mc);
 				}
 			} else {
-				defined_names.TryGetValue (name, out mc);
+				PartialContainer.defined_names.TryGetValue (name, out mc);
 			}
 
 			return mc;
@@ -3044,6 +3044,15 @@ namespace Mono.CSharp
 
 		protected override bool DoDefineMembers ()
 		{
+			//
+			// We provide a mechanism to use single precision floats instead of
+			// doubles for the PlayScript Number type via the [NumberIsFloat]
+			// attribute. This is a class/interface level attribute that we apply
+			// recursively using a visitor.
+			//
+			if (OptAttributes != null && OptAttributes.Contains (Module.PredefinedAttributes.NumberIsFloatAttribute))
+				Accept (new DoubleToFloatConverter (this));
+
 			if ((ModFlags & Modifiers.ABSTRACT) == Modifiers.ABSTRACT && (ModFlags & (Modifiers.SEALED | Modifiers.STATIC)) != 0) {
 				Report.Error (418, Location, "`{0}': an abstract class cannot be sealed or static", GetSignatureForError ());
 			}
@@ -3181,6 +3190,105 @@ namespace Mono.CSharp
 
 			caching_flags |= Flags.Excluded;
 			return conditions;
+		}
+	}
+
+	public sealed class DoubleToFloatConverter : StructuralVisitor
+	{
+		TypeContainer tc;
+
+		public DoubleToFloatConverter (TypeContainer root)
+		{
+			AutoVisit = true;
+			tc = root;
+		}
+
+		public override void Visit (Constructor c)
+		{
+			base.Visit (c);
+
+			if (c.ParameterInfo != null)
+				VisitParameters (c.ParameterInfo.FixedParameters as Parameter[]);
+		}
+
+		public override void Visit (Field f)
+		{
+			base.Visit (f);
+
+			if (ConvertToFloat (f.TypeExpression))
+				ConvertToFloat (f.Initializer);
+		}
+
+		public override void Visit (Const c)
+		{
+			base.Visit (c);
+
+			if (ConvertToFloat (c.TypeExpression)) {
+				if (c.Initializer is ConstInitializer) {
+					var initializer = c.Initializer as ConstInitializer;
+					ConvertToFloat (initializer.Expr);
+				}
+			}
+		}
+
+		public override void Visit (Property p)
+		{
+			base.Visit (p);
+
+			ConvertToFloat (p.TypeExpression);
+			if (p.Get != null && p.Get.ParameterInfo != null)
+				VisitParameters (p.Get.ParameterInfo.FixedParameters as Parameter[]);
+			if (p.Set != null && p.Set.ParameterInfo != null)
+				VisitParameters (p.Set.ParameterInfo.FixedParameters as Parameter[]);
+		}
+
+		public override void Visit (Method m)
+		{
+			base.Visit (m);
+
+			ConvertToFloat (m.TypeExpression);
+			if (m.ParameterInfo != null)
+				VisitParameters (m.ParameterInfo.FixedParameters as Parameter[]);
+		}
+
+		private void VisitParameters (Parameter[] parameters)
+		{
+			if (parameters != null) {
+				foreach (Parameter param in parameters)
+					ConvertToFloat (param.TypeExpression);
+			}
+		}
+
+		public override object Visit (BlockVariable b)
+		{
+			var result = base.Visit (b);
+
+			ConvertToFloat (b.TypeExpression);
+			if (b.Declarators != null) {
+				foreach (BlockVariableDeclarator declarator in b.Declarators)
+					ConvertToFloat (declarator.TypeExpression);
+			}
+
+			return result;
+		}
+
+		public override object Visit (BlockConstant b)
+		{
+			var result = base.Visit (b);
+
+			ConvertToFloat (b.TypeExpression);
+			ConvertToFloat (b.Initializer);
+
+			return result;
+		}
+
+		private bool ConvertToFloat (Expression e)
+		{
+			if (e != null && e.Type != null && e.Type.BuiltinType == BuiltinTypeSpec.Type.Double) {
+				e.Type = tc.Compiler.BuiltinTypes.Float;
+				return true;
+			}
+			return false;
 		}
 	}
 
@@ -3436,6 +3544,20 @@ namespace Mono.CSharp
 		}
 
 		#endregion
+
+		protected override bool DoDefineMembers ()
+		{
+			//
+			// We provide a mechanism to use single precision floats instead of
+			// doubles for the PlayScript Number type via the [NumberIsFloat]
+			// attribute. This is a class/interface level attribute that we apply
+			// recursively using a visitor.
+			//
+			if (OptAttributes != null && OptAttributes.Contains (Module.PredefinedAttributes.NumberIsFloatAttribute))
+				Accept (new DoubleToFloatConverter (this));
+
+			return base.DoDefineMembers ();
+		}
 
 		public override void Accept (StructuralVisitor visitor)
 		{
@@ -4122,6 +4244,19 @@ namespace Mono.CSharp
 				throw new InternalErrorException ("Multi-resolve");
 
 			member_type = type_expr.ResolveAsType (this);
+
+			//
+			// Switch the type from dynamic to "*" if the AsUntyped attribute is present.
+			// This is required to use the "*" type in C# code.
+			//
+			if (member_type == Module.Compiler.BuiltinTypes.Dynamic) {
+				if (OptAttributes != null) {
+					var a = OptAttributes.Search (Module.PredefinedAttributes.AsUntypedAttribute);
+					if (a != null && a.ExplicitTarget == "return")
+						member_type = Module.Compiler.BuiltinTypes.AsUntyped;
+				}
+			}
+
 			return member_type != null;
 		}
 	}

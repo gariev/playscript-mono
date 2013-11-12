@@ -6,10 +6,8 @@ using Amf;
 using _root;
 using flash.utils;
 
-namespace Telemetry
+namespace Telemetry.Protocol
 {
-	public static class Protocol
-	{
 		[Amf3Serializable(".value")]
 		public class Value : IAmf3Serializable
 		{
@@ -23,9 +21,10 @@ namespace Telemetry
 				writer.Write(value);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out name);
-				reader.Read(out value);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref name);
+				reader.Read(ref value);
 			}
 
 			#endregion
@@ -47,10 +46,11 @@ namespace Telemetry
 				writer.Write(delta);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out name);
-				reader.Read(out span);
-				reader.Read(out delta);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref name);
+				reader.Read(ref span);
+				reader.Read(ref delta);
 			}
 
 			#endregion
@@ -74,11 +74,12 @@ namespace Telemetry
 				writer.Write(value);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out name);
-				reader.Read(out span);
-				reader.Read(out delta);
-				reader.Read(out value);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref name);
+				reader.Read(ref span);
+				reader.Read(ref delta);
+				reader.Read(ref value);
 			}
 
 			#endregion
@@ -102,11 +103,12 @@ namespace Telemetry
 				writer.Write(ymax);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out xmin);
-				reader.Read(out xmax);
-				reader.Read(out ymin);
-				reader.Read(out ymax);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref xmin);
+				reader.Read(ref xmax);
+				reader.Read(ref ymin);
+				reader.Read(ref ymax);
 			}
 
 			#endregion
@@ -136,14 +138,15 @@ namespace Telemetry
 				writer.Write(modified);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out xmin);
-				reader.Read(out xmax);
-				reader.Read(out ymin);
-				reader.Read(out ymax);
-				reader.Read(out name);
-				reader.Read(out symbolname);
-				reader.Read(out modified);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref xmin);
+				reader.Read(ref xmax);
+				reader.Read(ref ymin);
+				reader.Read(ref ymax);
+				reader.Read(ref name);
+				reader.Read(ref symbolname);
+				reader.Read(ref modified);
 			}
 
 			#endregion
@@ -169,12 +172,13 @@ namespace Telemetry
 				writer.Write(type);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out time);
-				reader.Read(out id);
-				reader.Read(out size);
-				reader.Read(out stackid);
-				reader.Read(out type);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref time);
+				reader.Read(ref id);
+				reader.Read(ref size);
+				reader.Read(ref stackid);
+				reader.Read(ref type);
 			}
 
 			#endregion
@@ -194,9 +198,10 @@ namespace Telemetry
 				writer.Write(id);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out time);
-				reader.Read(out id);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref time);
+				reader.Read(ref id);
 			}
 
 			#endregion
@@ -216,9 +221,10 @@ namespace Telemetry
 				writer.Write(delta);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out name);
-				reader.Read(out delta);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref name);
+				reader.Read(ref delta);
 			}
 
 			#endregion
@@ -244,12 +250,13 @@ namespace Telemetry
 				writer.Write(id);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out xmin);
-				reader.Read(out xmax);
-				reader.Read(out ymin);
-				reader.Read(out ymax);
-				reader.Read(out id);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref xmin);
+				reader.Read(ref xmax);
+				reader.Read(ref ymin);
+				reader.Read(ref ymax);
+				reader.Read(ref id);
 			}
 
 			#endregion
@@ -269,9 +276,10 @@ namespace Telemetry
 				writer.Write(profile);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out mode);
-				reader.Read(out profile);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref mode);
+				reader.Read(ref profile);
 			}
 
 			#endregion
@@ -295,11 +303,12 @@ namespace Telemetry
 				writer.Write(callstack);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out time);
-				reader.Read(out numticks);
-				reader.Read(out ticktimes);
-				reader.Read(out callstack);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref time);
+				reader.Read(ref numticks);
+				reader.Read(ref ticktimes);
+				reader.Read(ref callstack);
 			}
 
 			#endregion
@@ -323,11 +332,12 @@ namespace Telemetry
 				writer.Write(depthstencil);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out width);
-				reader.Read(out height);
-				reader.Read(out antialias);
-				reader.Read(out depthstencil);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref width);
+				reader.Read(ref height);
+				reader.Read(ref antialias);
+				reader.Read(ref depthstencil);
 			}
 
 			#endregion
@@ -357,14 +367,15 @@ namespace Telemetry
 				writer.Write(mask);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out red);
-				reader.Read(out green);
-				reader.Read(out blue);
-				reader.Read(out alpha);
-				reader.Read(out depth);
-				reader.Read(out stencil);
-				reader.Read(out mask);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref red);
+				reader.Read(ref green);
+				reader.Read(ref blue);
+				reader.Read(ref alpha);
+				reader.Read(ref depth);
+				reader.Read(ref stencil);
+				reader.Read(ref mask);
 			}
 
 			#endregion
@@ -384,9 +395,10 @@ namespace Telemetry
 				writer.Write(passCompareMode);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out depthMask);
-				reader.Read(out passCompareMode);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref depthMask);
+				reader.Read(ref passCompareMode);
 			}
 
 			#endregion
@@ -410,11 +422,12 @@ namespace Telemetry
 				writer.Write(h);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out x);
-				reader.Read(out y);
-				reader.Read(out w);
-				reader.Read(out h);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref x);
+				reader.Read(ref y);
+				reader.Read(ref w);
+				reader.Read(ref h);
 			}
 
 			#endregion
@@ -434,9 +447,10 @@ namespace Telemetry
 				writer.Write(destFactor);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out sourceFactor);
-				reader.Read(out destFactor);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref sourceFactor);
+				reader.Read(ref destFactor);
 			}
 
 			#endregion
@@ -460,11 +474,12 @@ namespace Telemetry
 				writer.Write(stackid);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out time);
-				reader.Read(out id);
-				reader.Read(out size);
-				reader.Read(out stackid);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref time);
+				reader.Read(ref id);
+				reader.Read(ref size);
+				reader.Read(ref stackid);
 			}
 
 			#endregion
@@ -482,8 +497,9 @@ namespace Telemetry
 				writer.Write(resultId);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out resultId);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref resultId);
 			}
 
 			#endregion
@@ -505,10 +521,11 @@ namespace Telemetry
 				writer.Write(fragmentProgram);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out programId);
-				reader.Read(out vertexProgram);
-				reader.Read(out fragmentProgram);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref programId);
+				reader.Read(ref vertexProgram);
+				reader.Read(ref fragmentProgram);
 			}
 
 			#endregion
@@ -526,8 +543,9 @@ namespace Telemetry
 				writer.Write(programId);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out programId);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref programId);
 			}
 
 			#endregion
@@ -545,8 +563,9 @@ namespace Telemetry
 				writer.Write(triangleFaceToCull);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out triangleFaceToCull);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref triangleFaceToCull);
 			}
 
 			#endregion
@@ -570,11 +589,12 @@ namespace Telemetry
 				writer.Write(numRegisters);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out programType);
-				reader.Read(out firstRegister);
-				reader.Read(out data);
-				reader.Read(out numRegisters);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref programType);
+				reader.Read(ref firstRegister);
+				reader.Read(ref data);
+				reader.Read(ref numRegisters);
 			}
 
 			#endregion
@@ -602,13 +622,14 @@ namespace Telemetry
 				writer.Write(resultId);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out width);
-				reader.Read(out height);
-				reader.Read(out format);
-				reader.Read(out optimizeForRenderToTexture);
-				reader.Read(out streamingLevels);
-				reader.Read(out resultId);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref width);
+				reader.Read(ref height);
+				reader.Read(ref format);
+				reader.Read(ref optimizeForRenderToTexture);
+				reader.Read(ref streamingLevels);
+				reader.Read(ref resultId);
 			}
 
 			#endregion
@@ -642,16 +663,17 @@ namespace Telemetry
 				writer.Write(miplevel);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out textureId);
-				reader.Read(out srcdata);
-				reader.Read(out srcbytesperline);
-				reader.Read(out srcformat);
-				reader.Read(out srccompressedformat);
-				reader.Read(out srcw);
-				reader.Read(out srch);
-				reader.Read(out inverted);
-				reader.Read(out miplevel);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref textureId);
+				reader.Read(ref srcdata);
+				reader.Read(ref srcbytesperline);
+				reader.Read(ref srcformat);
+				reader.Read(ref srccompressedformat);
+				reader.Read(ref srcw);
+				reader.Read(ref srch);
+				reader.Read(ref inverted);
+				reader.Read(ref miplevel);
 			}
 
 			#endregion
@@ -671,9 +693,10 @@ namespace Telemetry
 				writer.Write(textureId);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out sampler);
-				reader.Read(out textureId);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref sampler);
+				reader.Read(ref textureId);
 			}
 
 			#endregion
@@ -695,10 +718,11 @@ namespace Telemetry
 				writer.Write(resultId);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out count);
-				reader.Read(out dwordsPerVertex);
-				reader.Read(out resultId);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref count);
+				reader.Read(ref dwordsPerVertex);
+				reader.Read(ref resultId);
 			}
 
 			#endregion
@@ -722,11 +746,12 @@ namespace Telemetry
 				writer.Write(countVertices);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out vertexBufferId);
-				reader.Read(out source);
-				reader.Read(out startVertex);
-				reader.Read(out countVertices);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref vertexBufferId);
+				reader.Read(ref source);
+				reader.Read(ref startVertex);
+				reader.Read(ref countVertices);
 			}
 
 			#endregion
@@ -750,11 +775,12 @@ namespace Telemetry
 				writer.Write(countVertices);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out vertexBufferId);
-				reader.Read(out source);
-				reader.Read(out startVertex);
-				reader.Read(out countVertices);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref vertexBufferId);
+				reader.Read(ref source);
+				reader.Read(ref startVertex);
+				reader.Read(ref countVertices);
 			}
 			#endregion
 
@@ -778,11 +804,12 @@ namespace Telemetry
 				writer.Write(format);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out index);
-				reader.Read(out vertexBufferId);
-				reader.Read(out bufferOffset);
-				reader.Read(out format);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref index);
+				reader.Read(ref vertexBufferId);
+				reader.Read(ref bufferOffset);
+				reader.Read(ref format);
 			}
 
 			#endregion
@@ -806,11 +833,12 @@ namespace Telemetry
 				writer.Write(numRegisters);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out programType);
-				reader.Read(out firstRegister);
-				reader.Read(out data);
-				reader.Read(out numRegisters);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref programType);
+				reader.Read(ref firstRegister);
+				reader.Read(ref data);
+				reader.Read(ref numRegisters);
 			}
 
 			#endregion
@@ -830,9 +858,10 @@ namespace Telemetry
 				writer.Write(resultId);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out count);
-				reader.Read(out resultId);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref count);
+				reader.Read(ref resultId);
 			}
 
 			#endregion
@@ -856,11 +885,12 @@ namespace Telemetry
 				writer.Write(count);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out indexBufferId);
-				reader.Read(out source);
-				reader.Read(out offset);
-				reader.Read(out count);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref indexBufferId);
+				reader.Read(ref source);
+				reader.Read(ref offset);
+				reader.Read(ref count);
 			}
 
 			#endregion
@@ -882,10 +912,11 @@ namespace Telemetry
 				writer.Write(numTriangles);
 			}
 
-			public void Serialize(Amf3Parser reader) {
-				reader.Read(out indexBufferId);
-				reader.Read(out firstIndex);
-				reader.Read(out numTriangles);
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
+				reader.Read(ref indexBufferId);
+				reader.Read(ref firstIndex);
+				reader.Read(ref numTriangles);
 			}
 
 			#endregion
@@ -901,13 +932,12 @@ namespace Telemetry
 				writer.WriteObjectHeader(ClassDef);
 			}
 
-			public void Serialize(Amf3Parser reader) {
+			public void Serialize(Amf3Reader reader) {
+				reader.ReadObjectHeader(ClassDef);
 			}
 
 			#endregion
 			public static Amf3ClassDef ClassDef = new Amf3ClassDef("Context3D_present", new string[] {} );
 		}
-
-	}
 }
 

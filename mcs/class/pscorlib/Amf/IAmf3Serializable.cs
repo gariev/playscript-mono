@@ -21,13 +21,37 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections;
 using System.IO;
 
 namespace Amf
 {
-    public interface IAmf3Serializable
+	// this interface applies to an object that can be written to an AMF stream
+	public interface IAmf3Writable
+	{
+		void Serialize(Amf3Writer writer);
+	}
+
+	// this interface applies to an object that can be read from an AMF stream
+	public interface IAmf3Readable
+	{
+		void Serialize(Amf3Reader reader);
+	}
+
+	// this interface applies to an object that can be read from or written to an AMF stream
+    public interface IAmf3Serializable : IAmf3Readable, IAmf3Writable
     {
-        void Serialize(Amf3Writer writer);
-		void Serialize(Amf3Parser reader);
     }
+
+	// this is an interface to a specialized serializer for a particular class
+	// it can serialize an object's properties to and from an amf stream
+	// it can construct an instance or a vector of instances
+	// a serializer can be registered to a class using RegisterSerializer in Amf3ClassDef
+	public interface IAmf3Serializer
+	{
+		object NewInstance(Amf3ClassDef classDef);
+		IList  NewVector(uint num, bool isFixed);
+		void   WriteObject(Amf3Writer writer, object obj);
+		void   ReadObject(Amf3Reader reader, object obj);
+	}
 }
