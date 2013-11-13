@@ -37,7 +37,7 @@ namespace PlayScript
 	public struct Variant : IEquatable<Variant>
 	{
 		// type code for variant
-		public enum TypeCode
+		public enum TypeCode : byte
 		{
 			Undefined,
 			Null,
@@ -557,6 +557,37 @@ namespace PlayScript
 				return new Variant(o);
 			default:
 				throw new InvalidCastException ("Invalid cast to type:" + o.GetType().ToString());
+			}
+		}
+
+		// gets the typecode for a referenced object
+		public static TypeCode GetTypeCodeFromObject(object o)
+		{
+			if (o == null) {
+				return TypeCode.Null;
+			}
+			if (o == PlayScript.Undefined._undefined) {
+				return TypeCode.Undefined;
+			}
+
+			var typeCode = System.Type.GetTypeCode (o.GetType());
+			switch (typeCode) {
+			case System.TypeCode.Int32:
+				return TypeCode.Int;
+			case System.TypeCode.Single:
+				return TypeCode.Number;
+			case System.TypeCode.Double:
+				return TypeCode.Number;
+			case System.TypeCode.Boolean:
+				return TypeCode.Boolean;
+			case System.TypeCode.UInt32:
+				return TypeCode.UInt;
+			case System.TypeCode.String:
+				return TypeCode.String;
+			case System.TypeCode.Object:
+				return TypeCode.Object;
+			default:
+				throw new InvalidCastException ("Unknown object type");
 			}
 		}
 

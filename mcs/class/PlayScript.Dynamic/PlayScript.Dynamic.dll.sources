@@ -67,4 +67,5 @@
 ./PlayScript/Stats.cs
 ./PlayScript/Undefined.cs
 ./PlayScript/Variant.cs
+./PlayScript/VariantArray.cs
 ./System/Runtime/CompilerServices/DynamicAttribute.cs
