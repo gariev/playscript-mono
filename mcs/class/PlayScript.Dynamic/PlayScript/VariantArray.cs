@@ -46,13 +46,73 @@ namespace PlayScript
 		// clones the variant array, if this array is immutable then the same object can be returned
 		IVariantArray			Clone();
 
-		// copies all values into an object array
+		// copies all values into an untyped object array (some objects may be PlayScript.Undefined._undefined)
 		// note: this function may perform boxing of value types
-		object[]				ToObjectArray();
+		object[]				ToUntypedArray();
 	}
 
+	// helper static methods for creating compact variant arrays from
+	public static class VariantArray
+	{
+		public static IVariantArray CreateArray(int length)
+		{
+			if (length == 0) {
+				return UndefinedVariantArray.Empty;
+			} else {
+				return new VariantArrayFull(length);
+			}
+		}
+
+		// this creates an array with the best storage by examining the source types
+		public static IVariantArray CreateArray(Variant[] source, bool clone)
+		{
+			if (source.Length == 0) {
+				return UndefinedVariantArray.Empty;
+			}
+
+			// check array uniformity
+			bool uniform = true;
+			Variant.TypeCode type = source[0].Type;
+			for (int i=1; i < source.Length; i++) {
+				if (source[i].Type != type) {
+					uniform = false;
+					break;
+				}
+			}
+
+			if (!uniform) {
+				// not uniform, just use a full array
+				// TODO: create a mixed mode array here
+				return new VariantArrayFull(source, clone);
+			}
+
+			switch (type)
+			{
+				case Variant.TypeCode.Undefined:
+					return UndefinedVariantArray.Empty;
+				case Variant.TypeCode.Null:
+					return new NullVariantArray(source.Length);
+				case Variant.TypeCode.Boolean:
+					return new BooleanVariantArray(source);
+				case Variant.TypeCode.Int:
+					return new IntVariantArray(source);
+				case Variant.TypeCode.UInt:
+					return new UIntVariantArray(source);
+				case Variant.TypeCode.Number:
+					return new NumberVariantArray(source);
+				case Variant.TypeCode.String:
+					return new StringVariantArray(source);
+				case Variant.TypeCode.Object:
+					return new UntypedVariantArray(source);
+				default:
+					throw new Exception();
+			}
+		}
+	}
 	// helper base class for all variant arrays
-	public abstract class VariantArray : IVariantArray
+	[DebuggerDisplay("length = {Length}")]
+	[DebuggerTypeProxy(typeof(VariantArrayDebugView))]
+	abstract class VariantArrayBase : IVariantArray
 	{
 		// these are implemented in derived classes
 		public abstract int 				Length {get;}
@@ -89,63 +149,20 @@ namespace PlayScript
 
 		public abstract IVariantArray Clone();
 
-		public virtual object[] ToObjectArray()
+		public virtual object[] ToUntypedArray()
 		{
 			// clone ourselves into an object array
 			int length = Length;
 			var array = new object[length];
 			for (int i=0; i < length; i++) {
-				array[i] = GetIndexAsVariant(i).AsObject();
+				array[i] = GetIndexAsUntyped(i);
 			}
 			return array;
 		}
-
-		// this creates an array with the best storage by examining the source types
-		public static IVariantArray CreateArray(Variant[] source, bool clone)
-		{
-			if (source.Length == 0) {
-				return VariantArrayEmpty.Empty;
-			}
-
-			// check array uniformity
-			bool uniform = true;
-			Variant.TypeCode type = source[0].Type;
-			for (int i=1; i < source.Length; i++) {
-				if (source[i].Type != type) {
-					uniform = false;
-					break;
-				}
-			}
-
-			if (!uniform) {
-				// not uniform, just use a full array
-				// TODO: create a mixed mode array here
-				return new VariantArrayFull(source, clone);
-			}
-
-			switch (type)
-			{
-				case Variant.TypeCode.Int:
-					return new IntVariantArray(source);
-				case Variant.TypeCode.Number:
-					return new NumberVariantArray(source);
-				case Variant.TypeCode.Boolean:
-					return new BooleanVariantArray(source);
-				case Variant.TypeCode.Object:
-				case Variant.TypeCode.String:
-				case Variant.TypeCode.Null:
-					return new UntypedVariantArray(source);
-				case Variant.TypeCode.Undefined:
-					return VariantArrayEmpty.Empty;
-				default:
-					throw new Exception();
-			}
-		}
-
 	}
 
 	// empty variant array, all values undefined
-	public class VariantArrayEmpty : VariantArray
+	class UndefinedVariantArray : VariantArrayBase
 	{
 		public override int 				Length {get {return 0;}}
 		public override Variant.TypeCode 	GetTypeCodeAt(int index) {return Variant.TypeCode.Undefined;}
@@ -153,14 +170,34 @@ namespace PlayScript
 		public override object 				GetIndexAsUntyped(int index) {return PlayScript.Undefined._undefined;}
 		public override IVariantArray Clone()
 		{
-			return Empty;
+			return this;
 		}
 
-		public static readonly VariantArrayEmpty Empty = new VariantArrayEmpty();
+		public static readonly UndefinedVariantArray Empty = new UndefinedVariantArray();
+	}
+
+	// null variant array, all values null
+	class NullVariantArray : VariantArrayBase
+	{
+		public override int 				Length {get {return mLength;}}
+		public override Variant.TypeCode 	GetTypeCodeAt(int index) {return Variant.TypeCode.Null;}
+		public override Variant 			GetIndexAsVariant(int index) {return Variant.Null;}
+		public override object 				GetIndexAsUntyped(int index) {return null;}
+		public override IVariantArray Clone()
+		{
+			return this;
+		}
+
+		public NullVariantArray(int length)
+		{
+			mLength = length;
+		}
+
+		private int mLength;
 	}
 
 	// uniform variant array, all values are the same type T
-	public abstract class VariantArrayUniform<T> : VariantArray
+	abstract class VariantArrayUniform<T> : VariantArrayBase
 	{
 		public override int Length 
 		{
@@ -186,7 +223,7 @@ namespace PlayScript
 	};
 
 	// uniform variant array, all values are "*"
-	public class UntypedVariantArray : VariantArrayUniform<object>
+	class UntypedVariantArray : VariantArrayUniform<object>
 	{
 		public override Variant.TypeCode GetTypeCodeAt(int index)
 		{
@@ -222,7 +259,7 @@ namespace PlayScript
 			return new UntypedVariantArray(mData, true);
 		}
 
-		public override object[] ToObjectArray()
+		public override object[] ToUntypedArray()
 		{
 			return mData;
 		}
@@ -250,7 +287,7 @@ namespace PlayScript
 	};
 
 	// uniform variant array, all values are int
-	public class IntVariantArray : VariantArrayUniform<int>
+	class IntVariantArray : VariantArrayUniform<int>
 	{
 		public override Variant.TypeCode GetTypeCodeAt(int index)
 		{
@@ -293,7 +330,7 @@ namespace PlayScript
 	};
 
 	// uniform variant array, all values are uint
-	public class UIntVariantArray : VariantArrayUniform<uint>
+	class UIntVariantArray : VariantArrayUniform<uint>
 	{
 		public override Variant.TypeCode GetTypeCodeAt(int index)
 		{
@@ -336,7 +373,7 @@ namespace PlayScript
 	};
 
 	// uniform variant array, all values are number
-	public class NumberVariantArray : VariantArrayUniform<double>
+	class NumberVariantArray : VariantArrayUniform<double>
 	{
 		public override Variant.TypeCode GetTypeCodeAt(int index)
 		{
@@ -379,7 +416,7 @@ namespace PlayScript
 	};
 
 	// uniform variant array, all values are boolean
-	public class BooleanVariantArray : VariantArrayUniform<bool>
+	class BooleanVariantArray : VariantArrayUniform<bool>
 	{
 		public override Variant.TypeCode GetTypeCodeAt(int index)
 		{
@@ -421,9 +458,53 @@ namespace PlayScript
 		}
 	};
 
+	// uniform variant array, all values are string
+	class StringVariantArray : VariantArrayUniform<string>
+	{
+		public override Variant.TypeCode GetTypeCodeAt(int index)
+		{
+			return Variant.TypeCode.String;
+		}
+
+		public override Variant GetIndexAsVariant(int index)
+		{
+			return new Variant(mData[index]);
+		}
+
+		public override IVariantArray SetIndexAsVariant(int index, Variant value)
+		{
+			if (value.Type == Variant.TypeCode.String) {
+				mData[index] = value.AsString();
+				return this;
+			} else {
+				return base.SetIndexAsVariant(index, value);
+			}
+		}
+
+		public override IVariantArray Clone()
+		{
+			// clone ourselves
+			return new StringVariantArray(mData, true);
+		}
+
+		public StringVariantArray(string[] source, bool clone) 
+			: base(source, clone)
+		{
+		}
+
+		public StringVariantArray(Variant[] source) 
+			: base(source.Length)
+		{
+			for (int i=0; i < source.Length; i++) {
+				mData[i] = source[i].AsString();
+			}
+		}
+	};
+
+
 	// all values are variant
 	// this array must support reading and writing of any variant type
-	public class VariantArrayFull : VariantArrayUniform<Variant>
+	class VariantArrayFull : VariantArrayUniform<Variant>
 	{
 		public override Variant.TypeCode GetTypeCodeAt(int index)
 		{
@@ -476,5 +557,24 @@ namespace PlayScript
 			}
 		}
 	};
+
+	// this class is used to display a custom view of the array values to the debugger
+	internal class VariantArrayDebugView
+	{
+		private VariantArrayBase  mArray;
+		public VariantArrayDebugView(VariantArrayBase array)
+		{
+			this.mArray = array;
+		}
+
+		[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+		public object[] Values
+		{
+			get
+			{
+				return mArray.ToUntypedArray();
+			}
+		}
+	}
 
 }
