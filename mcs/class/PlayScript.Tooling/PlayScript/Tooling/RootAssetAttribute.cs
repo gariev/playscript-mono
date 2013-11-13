@@ -20,6 +20,10 @@ namespace PlayScript.Tooling
 		/// The file extension of the asset in '.ext' format.
 		/// </summary>
 		public string Extension;
+		/// <summary>
+		/// Is this asset static (immutable) data when used at runtime.
+		/// </summary>
+		public bool Static;
 
 		public RootAssetAttribute ()
 		{

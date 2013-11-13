@@ -8,8 +8,8 @@ namespace PlayScript.Tooling
 	public enum CollectionAccessorType {
 		/// <summary>Method which adds an element to the collection.</summary>
 		Add,
-		/// <summary>Method which removes an element from the collection.</summary>
-		Remove,
+		/// <summary>Method which removes an element from the collection at a given index.</summary>
+		RemoveAt,
 		/// <summary>Method which gets an element from the collection.</summary>
 		Get,
 		/// <summary>Method which sets an element in the collection.</summary>
@@ -18,8 +18,6 @@ namespace PlayScript.Tooling
 		Insert,
 		/// <summary>Method which returns the index of an element in the collection.</summary>
 		IndexOf,
-		/// <summary>Method which returns true if an element is contained in the collection.</summary>
-		Contains,
 		/// <summary>Method which is used to initialize a new collection with a vector of initial items.</summary>
 		Initialize
 	}
@@ -39,6 +37,8 @@ namespace PlayScript.Tooling
 		public string Name;
 		/// <summary>The accessor method type.</summary>
 		public CollectionAccessorType AccessorType;
+		/// <summary>The index of the element parameter.</summary>
+		public int ElementParam;
 
 		public CollectionAccessorAttribute ()
 		{

@@ -238,6 +238,7 @@ namespace PlayScript.Tooling
 		/// <param name="index">Index.</param>
 		public void GetValue(IEditable obj, int fieldId, ref Value value, int index = -1)
 		{
+			return obj.GetValue (fieldId, ref value, index);
 		}
 
 		/// <summary>
@@ -249,6 +250,25 @@ namespace PlayScript.Tooling
 		/// <param name="index">Index.</param>
 		public void SetValue(IEditable obj, int fieldId, ref Value value, int index = -1)
 		{
+			Value oldValue = new Value();
+			if (RecordUndo) {
+				oldValue = obj.GetValue (fieldId, ref value, index);
+				AddUndo( new UndoRecord("Set Value", 
+				                        () => { obj.SetValue(fieldId, oldValue, index); }, 
+										() => { obj.SetValue(fieldId, value, index); }));
+				RecordUndo = false;
+				bool saveEditMode = EditMode;
+				EditMode = false;
+				try {
+					obj.SetValue (fieldId, value, index);
+				} finally {
+					RecordUndo = true;
+					EditMode = saveEditMode;
+				}
+			} else {
+				obj.SetValue (fieldId, value, index);
+			}
+			
 		}
 
 	}

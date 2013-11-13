@@ -42,6 +42,7 @@
     <Folder Include="PlayScript\" />
     <Folder Include="PlayScript\Tooling\" />
     <Folder Include="PlayScript\Tooling\Editor\" />
+    <Folder Include="PlayScript\Tooling\Schema\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,5 +65,11 @@
     <Compile Include="PlayScript\Tooling\EditorOnlyAttribute.cs" />
     <Compile Include="PlayScript\Tooling\RuntimeOnlyAttribute.cs" />
     <Compile Include="PlayScript\Tooling\DefaultValueAttribute.cs" />
+    <Compile Include="PlayScript\Tooling\Editor\EditorHelpers.cs" />
+    <Compile Include="PlayScript\Tooling\Schema\BlockDef.cs" />
+    <Compile Include="PlayScript\Tooling\Schema\FieldDef.cs" />
+    <Compile Include="PlayScript\Tooling\Schema\FieldType.cs" />
+    <Compile Include="PlayScript\Tooling\Schema\Schema.cs" />
+    <Compile Include="PlayScript\Tooling\Crc32.cs" />
   </ItemGroup>
 </Project>
