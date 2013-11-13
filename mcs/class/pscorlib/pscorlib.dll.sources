@@ -7,11 +7,13 @@
 ./Amf/Amf3SerializableAttribute.cs
 ./Amf/Amf3String.cs
 ./Amf/Amf3TypeCode.cs
-./Amf/Amf3Variant.cs
+./Amf/Amf3Utils.cs
 ./Amf/Amf3Writer.cs
 ./Amf/DataConverter.cs
+./Amf/ExpandoSerializer.cs
 ./Amf/IAmf3Serializable.cs
 ./Amf/ReferenceEqualityComparer.cs
+./Amf/ReflectionSerializer.cs
 ./Amf/Rocks.cs
 ./ArgumentError.play
 ./Array.cs
@@ -99,6 +101,7 @@
 ./flash/display3D/Context3DProfile.play
 ./flash/display3D/Context3DProgramType.play
 ./flash/display3D/Context3DRenderMode.play
+./flash/display3D/Context3DStateCache.cs
 ./flash/display3D/Context3DStencilAction.play
 ./flash/display3D/Context3DTextureFormat.play
 ./flash/display3D/Context3DTriangleFace.play
@@ -256,6 +259,7 @@
 ./int.cs
 ./JSON.play
 ./Math.play
+./MiniJson/Json.cs
 ./mx/graphics/codec/IImageEncoder.play
 ./mx/graphics/codec/JPEGEncoder.play
 ./mx/graphics/codec/PNGEncoder.play
@@ -263,11 +267,13 @@
 ./Number.cs
 ./Object.cs
 ./PartialAttribute.cs
+./PlayScript/BinJSON.cs
 ./PlayScript/EmbedLoader.cs
 ./PlayScript/Hardware.cs
 ./PlayScript/ParamsDelegateTypes.cs
 ./PlayScript/Player.cs
 ./PlayScript/Profiler.cs
+./PlayScript/ProfilerData.cs
 ./PlayScript/Support.cs
 ./QName.play
 ./RangeError.play
