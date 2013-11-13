@@ -25,7 +25,7 @@ namespace PlayScript
 {
 	// interface for an array of variants
 	// it has a length, each element has a type and a value
-	public interface IVariantArray
+	public interface IVariantArray : IDisposable
 	{
 		// returns length of array
 		int 					Length {get;}
@@ -38,6 +38,7 @@ namespace PlayScript
 		IVariantArray			SetIndexAsVariant(int index, Variant value);
 
 		// gets the value at index, returns PlayScript.Undefined._undefined if value does not exist
+		[return: AsUntyped]
 		// note: this function may perform boxing of value types
 		object					GetIndexAsUntyped(int index);
 		// sets the value at index, this can return a new variant array to support the newly added value
@@ -110,8 +111,6 @@ namespace PlayScript
 		}
 	}
 	// helper base class for all variant arrays
-	[DebuggerDisplay("length = {Length}")]
-	[DebuggerTypeProxy(typeof(VariantArrayDebugView))]
 	abstract class VariantArrayBase : IVariantArray
 	{
 		// these are implemented in derived classes
@@ -119,6 +118,7 @@ namespace PlayScript
 		public abstract Variant.TypeCode 	GetTypeCodeAt(int index);
 		public abstract Variant 			GetIndexAsVariant(int index);
 
+		[return: AsUntyped]
 		public virtual object 			GetIndexAsUntyped(int index)
 		{
 			return GetIndexAsVariant(index).AsObject();
@@ -159,14 +159,21 @@ namespace PlayScript
 			}
 			return array;
 		}
+
+		public virtual void	Dispose()
+		{
+			// do nothing now, but in the future we can recycle arrays
+		}
 	}
 
 	// empty variant array, all values undefined
+	[DebuggerTypeProxy(typeof(VariantArrayDebugView))]
 	class UndefinedVariantArray : VariantArrayBase
 	{
 		public override int 				Length {get {return 0;}}
 		public override Variant.TypeCode 	GetTypeCodeAt(int index) {return Variant.TypeCode.Undefined;}
 		public override Variant 			GetIndexAsVariant(int index) {return Variant.Undefined;}
+		[return: AsUntyped]
 		public override object 				GetIndexAsUntyped(int index) {return PlayScript.Undefined._undefined;}
 		public override IVariantArray Clone()
 		{
@@ -177,11 +184,13 @@ namespace PlayScript
 	}
 
 	// null variant array, all values null
+	[DebuggerTypeProxy(typeof(VariantArrayDebugView))]
 	class NullVariantArray : VariantArrayBase
 	{
 		public override int 				Length {get {return mLength;}}
 		public override Variant.TypeCode 	GetTypeCodeAt(int index) {return Variant.TypeCode.Null;}
 		public override Variant 			GetIndexAsVariant(int index) {return Variant.Null;}
+		[return: AsUntyped]
 		public override object 				GetIndexAsUntyped(int index) {return null;}
 		public override IVariantArray Clone()
 		{
@@ -197,6 +206,7 @@ namespace PlayScript
 	}
 
 	// uniform variant array, all values are the same type T
+	[DebuggerTypeProxy(typeof(VariantArrayDebugView))]
 	abstract class VariantArrayUniform<T> : VariantArrayBase
 	{
 		public override int Length 
@@ -223,6 +233,7 @@ namespace PlayScript
 	};
 
 	// uniform variant array, all values are "*"
+	[DebuggerTypeProxy(typeof(VariantArrayDebugView))]
 	class UntypedVariantArray : VariantArrayUniform<object>
 	{
 		public override Variant.TypeCode GetTypeCodeAt(int index)
@@ -242,6 +253,7 @@ namespace PlayScript
 			return this;
 		}
 
+		[return: AsUntyped]
 		public override object GetIndexAsUntyped(int index)
 		{
 			return mData[index];
@@ -287,6 +299,7 @@ namespace PlayScript
 	};
 
 	// uniform variant array, all values are int
+	[DebuggerTypeProxy(typeof(VariantArrayDebugView))]
 	class IntVariantArray : VariantArrayUniform<int>
 	{
 		public override Variant.TypeCode GetTypeCodeAt(int index)
@@ -330,6 +343,7 @@ namespace PlayScript
 	};
 
 	// uniform variant array, all values are uint
+	[DebuggerTypeProxy(typeof(VariantArrayDebugView))]
 	class UIntVariantArray : VariantArrayUniform<uint>
 	{
 		public override Variant.TypeCode GetTypeCodeAt(int index)
@@ -373,6 +387,7 @@ namespace PlayScript
 	};
 
 	// uniform variant array, all values are number
+	[DebuggerTypeProxy(typeof(VariantArrayDebugView))]
 	class NumberVariantArray : VariantArrayUniform<double>
 	{
 		public override Variant.TypeCode GetTypeCodeAt(int index)
@@ -416,6 +431,7 @@ namespace PlayScript
 	};
 
 	// uniform variant array, all values are boolean
+	[DebuggerTypeProxy(typeof(VariantArrayDebugView))]
 	class BooleanVariantArray : VariantArrayUniform<bool>
 	{
 		public override Variant.TypeCode GetTypeCodeAt(int index)
@@ -459,6 +475,7 @@ namespace PlayScript
 	};
 
 	// uniform variant array, all values are string
+	[DebuggerTypeProxy(typeof(VariantArrayDebugView))]
 	class StringVariantArray : VariantArrayUniform<string>
 	{
 		public override Variant.TypeCode GetTypeCodeAt(int index)
@@ -504,6 +521,7 @@ namespace PlayScript
 
 	// all values are variant
 	// this array must support reading and writing of any variant type
+	[DebuggerTypeProxy(typeof(VariantArrayDebugView))]
 	class VariantArrayFull : VariantArrayUniform<Variant>
 	{
 		public override Variant.TypeCode GetTypeCodeAt(int index)
