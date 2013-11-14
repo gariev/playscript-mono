@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
+using PlayScript.DynamicRuntime;
 
 namespace PlayScript
 {
@@ -867,12 +868,12 @@ namespace PlayScript
 		// From string
 		class ConverterThenInvokerStringToInt : ConverterThenInvoker<string, int>
 		{
-			public override void ConvertThenInvoke(string value)	{ mActionTo(int.Parse(value)); }
+			public override void ConvertThenInvoke(string value)	{ mActionTo(PSConverter.ConvertStringToInt(value)); }
 		}
 
 		class InvokerThenConverterStringToInt : InvokerThenConverter<string, int>
 		{
-			public override int InvokeThenConvert() { return int.Parse(mFuncFrom()); }
+			public override int InvokeThenConvert() { return PSConverter.ConvertStringToInt(mFuncFrom()); }
 		}
 
 		class ConverterStringToInt : ParamConverter<string, int>
@@ -884,18 +885,18 @@ namespace PlayScript
 
 			public static int Convert(string value)
 			{
-				return int.Parse(value);
+				return PSConverter.ConvertStringToInt(value);
 			}
 		}
 
 		class ConverterThenInvokerStringToUint : ConverterThenInvoker<string, uint>
 		{
-			public override void ConvertThenInvoke(string value) { mActionTo(uint.Parse(value)); }
+			public override void ConvertThenInvoke(string value) { mActionTo(PSConverter.ConvertStringToUInt(value)); }
 		}
 
 		class InvokerThenConverterStringToUint : InvokerThenConverter<string, uint>
 		{
-			public override uint InvokeThenConvert() { return uint.Parse(mFuncFrom()); }
+			public override uint InvokeThenConvert() { return PSConverter.ConvertStringToUInt(mFuncFrom()); }
 		}
 
 		class ConverterStringToUint : ParamConverter<string, uint>
@@ -907,18 +908,18 @@ namespace PlayScript
 
 			public static uint Convert(string value)
 			{
-				return uint.Parse(value);
+				return PSConverter.ConvertStringToUInt(value);
 			}
 		}
 
 		class ConverterThenInvokerStringToDouble : ConverterThenInvoker<string, double>
 		{
-			public override void ConvertThenInvoke(string value) { mActionTo(double.Parse(value)); }
+			public override void ConvertThenInvoke(string value) { mActionTo(PSConverter.ConvertStringToDouble(value)); }
 		}
 
 		class InvokerThenConverterStringToDouble : InvokerThenConverter<string, double>
 		{
-			public override double InvokeThenConvert() { return double.Parse(mFuncFrom()); }
+			public override double InvokeThenConvert() { return PSConverter.ConvertStringToDouble(mFuncFrom()); }
 		}
 
 		class ConverterStringToDouble : ParamConverter<string, double>
@@ -930,18 +931,18 @@ namespace PlayScript
 
 			public static double Convert(string value)
 			{
-				return double.Parse(value);
+				return PSConverter.ConvertStringToDouble(value);
 			}
 		}
 
 		class ConverterThenInvokerStringToBool : ConverterThenInvoker<string, bool>
 		{
-			public override void ConvertThenInvoke(string value) { mActionTo(bool.Parse(value)); }
+			public override void ConvertThenInvoke(string value) { mActionTo(PSConverter.ConvertStringToBool(value)); }
 		}
 
 		class InvokerThenConverterStringToBool : InvokerThenConverter<string, bool>
 		{
-			public override bool InvokeThenConvert() { return bool.Parse(mFuncFrom()); }
+			public override bool InvokeThenConvert() { return PSConverter.ConvertStringToBool(mFuncFrom()); }
 		}
 
 		class ConverterStringToBool : ParamConverter<string, bool>
@@ -953,7 +954,7 @@ namespace PlayScript
 
 			public static bool Convert(string value)
 			{
-				return bool.Parse(value);
+				return PSConverter.ConvertStringToBool(value);
 			}
 		}
 
@@ -985,23 +986,7 @@ namespace PlayScript
 
 			public static int Convert(object value)
 			{
-				// Change this to use the common convert method?
-				if (value is int)
-				{
-					return (int)value;
-				}
-				else if (value is uint)
-				{
-					return (int)(uint)value;
-				}
-				else if (value is double)
-				{
-					return (int)(double)value;
-				}
-				else
-				{
-					return System.Convert.ToInt32(value);
-				}
+				return PSConverter.ConvertToInt(value);
 			}
 		}
 
@@ -1032,23 +1017,7 @@ namespace PlayScript
 
 			public static uint Convert(object value)
 			{
-				// Change this to use the common convert method?
-				if (value is uint)
-				{
-					return (uint)value;
-				}
-				else if (value is int)
-				{
-					return (uint)(int)value;
-				}
-				else if (value is double)
-				{
-					return (uint)(double)value;
-				}
-				else
-				{
-					return System.Convert.ToUInt32(value);
-				}
+				return PSConverter.ConvertToUInt(value);
 			}
 		}
 
@@ -1079,23 +1048,7 @@ namespace PlayScript
 
 			public static double Convert(object value)
 			{
-				// Change this to use the common convert method?
-				if (value is double)
-				{
-					return (double)value;
-				}
-				else if (value is int)
-				{
-					return (double)(int)value;
-				}
-				else if (value is uint)
-				{
-					return (double)(uint)value;
-				}
-				else
-				{
-					return System.Convert.ToDouble(value);
-				}
+				return PSConverter.ConvertToDouble(value);
 			}
 		}
 
@@ -1126,27 +1079,7 @@ namespace PlayScript
 
 			public static bool Convert(object value)
 			{
-				// Change this to use the common convert method?
-				if (value is bool)
-				{
-					return (bool)value;
-				}
-				if (value is int)
-				{
-					return ((int)value != 0);
-				}
-				else if (value is uint)
-				{
-					return ((uint)value != 0);
-				}
-				else if (value is double)
-				{
-					return ((double)value != 0.0);
-				}
-				else
-				{
-					return System.Convert.ToBoolean(value);
-				}
+				return PSConverter.ConvertToBool(value);
 			}
 		}
 
@@ -1545,22 +1478,22 @@ namespace PlayScript
 
 		int IConverter<string, int>.Convert(string value)
 		{
-			return int.Parse(value);
+			return PSConverter.ConvertStringToInt(value);
 		}
 
 		uint IConverter<string, uint>.Convert(string value)
 		{
-			return uint.Parse(value);
+			return PSConverter.ConvertStringToUInt(value);
 		}
 
 		double IConverter<string, double>.Convert(string value)
 		{
-			return double.Parse(value);
+			return PSConverter.ConvertStringToDouble(value);
 		}
 
 		bool IConverter<string, bool>.Convert(string value)
 		{
-			return bool.Parse(value);
+			return PSConverter.ConvertStringToBool(value);
 		}
 
 		string IConverter<string, string>.Convert(string value)
@@ -1570,116 +1503,27 @@ namespace PlayScript
 
 		int IConverter<int>.ConvertFromObject(object value)
 		{
-			if (value is double)
-			{
-				return (int)(double)value;
-			}
-			else if (value is uint)
-			{
-				return (int)(uint)value;
-			}
-			else if (value is string)
-			{
-				return int.Parse((string)value);
-			}
-			else if (value is bool)
-			{
-				return (bool)value ? 1 : 0;
-			}
-			else if (value is int)
-			{
-				// This is the target type, but it should have been tested already earlier
-				// So we test it last (just in case) before we do the slow conversion
-				return (int)value;
-			}
-
-			return Convert.ToInt32(value);
+			return PSConverter.ConvertToInt(value);
 		}
 
 		uint IConverter<uint>.ConvertFromObject(object value)
 		{
-			if (value is int)
-			{
-				return (uint)(int)value;
-			}
-			else if (value is double)
-			{
-				return (uint)(double)value;
-			}
-			else if (value is string)
-			{
-				return uint.Parse((string)value);
-			}
-			else if (value is bool)
-			{
-				return (bool)value ? 1u : 0u;
-			}
-			else if (value is uint)
-			{
-				// This is the target type, but it should have been tested already earlier
-				// So we test it last (just in case) before we do the slow conversion
-				return (uint)value;
-			}
-			return Convert.ToUInt32(value);
+			return PSConverter.ConvertToUInt(value);
 		}
 
 		double IConverter<double>.ConvertFromObject(object value)
 		{
-			if (value is int)
-			{
-				return (double)(int)value;
-			}
-			else if (value is string)
-			{
-				return double.Parse((string)value);
-			}
-			else if (value is uint)
-			{
-				return (double)(uint)value;
-			}
-			else if (value is bool)
-			{
-				return (bool)value ? 1.0 : 0.0;
-			}
-			else if (value is double)
-			{
-				// This is the target type, but it should have been tested already earlier
-				// So we test it last (just in case) before we do the slow conversion
-				return (double)value;
-			}
-			return Convert.ToDouble(value);
+			return PSConverter.ConvertToDouble(value);
 		}
 
 		bool IConverter<bool>.ConvertFromObject(object value)
 		{
-			if (value is int)
-			{
-				return ((int)value != 0);
-			}
-			else if (value is double)
-			{
-				return ((double)value != 0.0);
-			}
-			else if (value is string)
-			{
-				return bool.Parse((string)value);
-			}
-			else if (value is uint)
-			{
-				return ((uint)value != 0);
-			}
-			else if (value is bool)
-			{
-				// This is the target type, but it should have been tested already earlier
-				// So we test it last (just in case) before we do the slow conversion
-				return (bool)value;
-			}
-			return Convert.ToBoolean(value);
+			return PSConverter.ConvertToBool(value);
 		}
 
 		string IConverter<string>.ConvertFromObject(object value)
 		{
-			return value.ToString();
+			return PSConverter.ConvertToString(value);
 		}
 
 		object IConverter<object>.ConvertFromObject(object value)
@@ -1689,33 +1533,7 @@ namespace PlayScript
 
 		float IConverter<float>.ConvertFromObject(object value)
 		{
-			if (value is double)
-			{
-				return (float)(double)value;
-			}
-			else if (value is int)
-			{
-				return (float)(int)value;
-			}
-			else if (value is string)
-			{
-				return float.Parse((string)value);
-			}
-			else if (value is uint)
-			{
-				return (float)(uint)value;
-			}
-			else if (value is bool)
-			{
-				return (bool)value ? 1.0f : 0.0f;
-			}
-			else if (value is float)
-			{
-				// This is the target type, but it should have been tested already earlier
-				// So we test it last (just in case) before we do the slow conversion
-				return (float)value;
-			}
-			return Convert.ToSingle(value);
+			return PSConverter.ConvertToFloat(value);
 		}
 	}
 

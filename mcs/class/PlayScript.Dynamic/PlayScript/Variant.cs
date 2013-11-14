@@ -323,25 +323,26 @@ namespace PlayScript
 			if (mType == TypeCode.Int) {
 				return mIntValue;
 			}
-			if (mType == TypeCode.Number) {
-				return (int)mNumberValue;
-			}
-			if (mType == TypeCode.UInt) {
-				return (int)UIntValue;
-			}
-			if (mType == TypeCode.Undefined) {
+
+			switch (mType) {
+			case TypeCode.Undefined:
 				return defaultValue;
+			case TypeCode.Null:
+				return 0;
+			case TypeCode.Boolean:
+				return mBoolValue ? 1 : 0;
+			case TypeCode.Int:
+				return mIntValue;
+			case TypeCode.UInt:
+				return (int)UIntValue;
+			case TypeCode.Number:
+				return (int)mNumberValue;
+			case TypeCode.String:
+				return PSConverter.ConvertStringToInt((string)mObject);
+			case TypeCode.Object:
+			default:
+				throw new InvalidCastException("Cannot cast to Int");
 			}
-			if (mType == TypeCode.String) {
-				string s =(string)mObject;
-				if (s.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase)) {
-					// Hex number - Use Convert.ToInt32() so we don't have to strip "0x" from the string.
-					return Convert.ToInt32(s, 16);
-				} else {
-					return int.Parse(s);
-				}
-			}
-			throw new InvalidCastException("Cannot cast to Int");
 		}
 
 		public uint AsUInt(uint defaultValue = 0)
@@ -349,25 +350,25 @@ namespace PlayScript
 			if (mType == TypeCode.UInt) {
 				return UIntValue;
 			}
-			if (mType == TypeCode.Int) {
-				return (uint)mIntValue;
-			}
-			if (mType == TypeCode.Number) {
-				return (uint)mNumberValue;
-			}
-			if (mType == TypeCode.Undefined) {
+			switch (mType) {
+			case TypeCode.Undefined:
 				return defaultValue;
+			case TypeCode.Null:
+				return 0u;
+			case TypeCode.Boolean:
+				return mBoolValue ? 1u : 0u;
+			case TypeCode.Int:
+				return (uint)mIntValue;
+			case TypeCode.UInt:
+				return UIntValue;
+			case TypeCode.Number:
+				return (uint)mNumberValue;
+			case TypeCode.String:
+				return PSConverter.ConvertStringToUInt((string)mObject);
+			case TypeCode.Object:
+			default:
+				throw new InvalidCastException("Cannot cast to UInt");
 			}
-			if (mType == TypeCode.String) {
-				string s =(string)mObject;
-				if (s.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase)) {
-					// Hex number - Use Convert.ToUInt32() so we don't have to strip "0x" from the string.
-					return Convert.ToUInt32(s, 16);
-				} else {
-					return uint.Parse(s);
-				}
-			}
-			throw new InvalidCastException("Cannot cast to UInt");
 		}
 
 		public bool AsBoolean(bool defaultValue = false)
@@ -375,22 +376,26 @@ namespace PlayScript
 			if (mType == TypeCode.Boolean) {
 				return mBoolValue;
 			}
-			if (mType == TypeCode.Null) {
-				return false;
-			}
-			if (mType == TypeCode.Undefined) {
+			switch (mType) {
+			case TypeCode.Undefined:
 				return defaultValue;
-			}
-			if (mType == TypeCode.Int) {
+			case TypeCode.Null:
+				return false;
+			case TypeCode.Boolean:
+				return mBoolValue;
+			case TypeCode.Int:
 				return mIntValue != 0;
-			}
-			if (mType == TypeCode.Number) {
+			case TypeCode.UInt:
+				return UIntValue != 0u;
+			case TypeCode.Number:
 				return mNumberValue != 0.0;
+			case TypeCode.String:
+				return PSConverter.ConvertStringToBool((string)mObject);
+			case TypeCode.Object:
+				return mObject != null;
+			default:
+				throw new InvalidCastException("Cannot cast to UInt");
 			}
-			if (mType == TypeCode.UInt) {
-				return UIntValue != 0;
-			}
-			throw new InvalidCastException("Cannot cast to Boolean");
 		}
 
 		public double AsNumber(double defaultValue = double.NaN)
@@ -398,19 +403,25 @@ namespace PlayScript
 			if (mType == TypeCode.Number) {
 				return (double)mNumberValue;
 			}
-			if (mType == TypeCode.Int) {
-				return (double)mIntValue;
-			}
-			if (mType == TypeCode.Undefined) {
+			switch (mType) {
+			case TypeCode.Undefined:
 				return defaultValue;
-			}
-			if (mType == TypeCode.String) {
-				return double.Parse((string)mObject);
-			}
-			if (mType == TypeCode.UInt) {
+			case TypeCode.Null:
+				return 0.0;
+			case TypeCode.Boolean:
+				return mBoolValue ? 1.0 : 0.0;
+			case TypeCode.Int:
+				return (double)mIntValue;
+			case TypeCode.UInt:
 				return (double)UIntValue;
+			case TypeCode.Number:
+				return mNumberValue;
+			case TypeCode.String:
+				return PSConverter.ConvertStringToDouble((string)mObject);
+			case TypeCode.Object:
+			default:
+				throw new InvalidCastException("Cannot cast to Number");
 			}
-			throw new InvalidCastException("Cannot cast to Number");
 		}
 
 		public float AsFloat(float defaultValue = float.NaN)
@@ -418,19 +429,25 @@ namespace PlayScript
 			if (mType == TypeCode.Number) {
 				return (float)mNumberValue;
 			}
-			if (mType == TypeCode.Int) {
-				return (float)mIntValue;
-			}
-			if (mType == TypeCode.Undefined) {
+			switch (mType) {
+			case TypeCode.Undefined:
 				return defaultValue;
-			}
-			if (mType == TypeCode.String) {
-				return float.Parse((string)mObject);
-			}
-			if (mType == TypeCode.UInt) {
+			case TypeCode.Null:
+				return 0.0f;
+			case TypeCode.Boolean:
+				return mBoolValue ? 1.0f : 0.0f;
+			case TypeCode.Int:
+				return (float)mIntValue;
+			case TypeCode.UInt:
 				return (float)UIntValue;
+			case TypeCode.Number:
+				return (float)mNumberValue;
+			case TypeCode.String:
+				return (float)PSConverter.ConvertStringToDouble((string)mObject);
+			case TypeCode.Object:
+			default:
+				throw new InvalidCastException("Cannot cast to Float");
 			}
-			throw new InvalidCastException("Cannot cast to float");
 		}
 
 		public string AsString(string defaultValue = null)
@@ -451,6 +468,8 @@ namespace PlayScript
 				return UIntValue.ToString();
 			case TypeCode.Number:
 				return mNumberValue.ToString();
+			case TypeCode.String:
+				return (string)mObject;
 			case TypeCode.Object:
 				return mObject.ToString();
 			default:
