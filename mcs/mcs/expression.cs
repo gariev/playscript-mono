@@ -1814,7 +1814,7 @@ namespace Mono.CSharp
 				// handle (obj as Number) or (obj as int) as a regular dynamic cast
 				Arguments args = new Arguments (1);
 				args.Add (new Argument (expr));
-				return new DynamicConversion (etype, 0, args, expr.Location).Resolve (ec);
+				return new DynamicConversion (type, 0, args, expr.Location).Resolve (ec);
 			}
 
 			// Always "Object" for dynamic type when evaluating PlayScript AS operator (not dynamic CONV call).
