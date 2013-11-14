@@ -41,12 +41,6 @@ namespace PlayScript
 			return ((Type)type).IsAssignableFrom (value.GetType ()) ? value : null;
 		}
 
-		// Perform value "as" string
-		// returns null if value is not a string, does not try to coerce value or call toString()
-		public static string DynamicAsString(object value) {
-			return (value as string);
-		}
-
 		public static bool DynamicIn(object value, object key) {
 			key = PlayScript.Dynamic.FormatKeyForAs (key);
 			if (PlayScript.Dynamic.IsNullOrUndefined (value) || key == null) {

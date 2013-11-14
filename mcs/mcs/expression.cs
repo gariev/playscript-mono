@@ -1852,9 +1852,8 @@ namespace Mono.CSharp
 				// Special case for as check with strings in PlayScript, since there is an implicit
 				// conversion from everything to string.
 				if (isPlayScript && type.BuiltinType == BuiltinTypeSpec.Type.String) {
-					var arguments = new Arguments (1);
-					arguments.Add (new Argument (expr));
-					return new Invocation (new MemberAccess (new MemberAccess (new SimpleName ("PlayScript", loc), "Support", loc), "DynamicAsString", loc), arguments).Resolve (ec);
+					// this automatically does a (expr as string)
+					return this;
 				}
 
 				Expression e = Convert.ImplicitConversionStandard (ec, expr, type, loc);
