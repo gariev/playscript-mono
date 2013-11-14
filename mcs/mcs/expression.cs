@@ -500,11 +500,10 @@ namespace Mono.CSharp
 
 			if (Expr.Type.BuiltinType == BuiltinTypeSpec.Type.Dynamic) {
 				if (ec.FileType == SourceFileType.PlayScript && Oper == Operator.LogicalNot) {
-					// PlayScript: Call the "Boolean()" static method to convert a dynamic to a bool.  EXPENSIVE, but hey..
+					// Use a dynamic conversion where possible to take advantage of type hints
 					Arguments args = new Arguments (1);
-					args.Add (new Argument(EmptyCast.RemoveDynamic(ec, Expr)));
-//					ec.Report.Warning (7164, 1, loc, "Expensive reference conversion to bool");
-					Expr = new Invocation(new MemberAccess(new MemberAccess(new SimpleName(PsConsts.PsRootNamespace, loc), "Boolean_fn", loc), "Boolean", loc), args).Resolve (ec);
+					args.Add (new Argument (Expr));
+					Expr = new DynamicConversion (ec.BuiltinTypes.Bool, 0, args, loc).Resolve (ec);
 				} else {
 					Arguments args = new Arguments (1);
 					args.Add (new Argument (Expr));
@@ -5795,10 +5794,10 @@ namespace Mono.CSharp
 
 			if (expr.Type.BuiltinType == BuiltinTypeSpec.Type.Dynamic) {
 				if (ec.FileType == SourceFileType.PlayScript) {
-					// PlayScript: Call the "Boolean()" static method to convert a dynamic to a bool.  EXPENSIVE, but hey..
+					// Use a dynamic conversion where possible to take advantage of type hints
 					Arguments args = new Arguments (1);
-					args.Add (new Argument(EmptyCast.RemoveDynamic(ec, expr)));
-					expr = new Invocation(new MemberAccess(new MemberAccess(new SimpleName(PsConsts.PsRootNamespace, loc), "Boolean_fn", loc), "Boolean", loc), args).Resolve (ec);
+					args.Add (new Argument (expr));
+					return new DynamicConversion (ec.BuiltinTypes.Bool, 0, args, expr.Location).Resolve (ec);
 				} else {
 					Arguments args = new Arguments (1);
 					args.Add (new Argument (expr));
