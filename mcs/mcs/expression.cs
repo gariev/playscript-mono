@@ -1811,6 +1811,13 @@ namespace Mono.CSharp
 
 			bool isRefType = TypeSpec.IsReferenceType (type) || type.IsNullableType;
 
+			if (isPlayScript && !isRefType && etype.IsDynamic) {
+				// handle (obj as Number) or (obj as int) as a regular dynamic cast
+				Arguments args = new Arguments (1);
+				args.Add (new Argument (expr));
+				return new DynamicConversion (etype, 0, args, expr.Location).Resolve (ec);
+			}
+
 			// Always "Object" for dynamic type when evaluating PlayScript AS operator (not dynamic CONV call).
 			if (isPlayScript && etype.BuiltinType == BuiltinTypeSpec.Type.Dynamic) {
 				expr = new Cast(new TypeExpression(ec.BuiltinTypes.Object, expr.Location), expr, expr.Location).Resolve(ec);
@@ -1846,10 +1853,9 @@ namespace Mono.CSharp
 				// Special case for as check with strings in PlayScript, since there is an implicit
 				// conversion from everything to string.
 				if (isPlayScript && type.BuiltinType == BuiltinTypeSpec.Type.String) {
-					var arguments = new Arguments (2);
+					var arguments = new Arguments (1);
 					arguments.Add (new Argument (expr));
-					arguments.Add (new Argument (new TypeOf (new TypeExpression (ec.BuiltinTypes.String, expr.Location), expr.Location)));
-					return new Invocation (new MemberAccess (new MemberAccess (new SimpleName ("PlayScript", loc), "Support", loc), "DynamicAs", loc), arguments).Resolve (ec);
+					return new Invocation (new MemberAccess (new MemberAccess (new SimpleName ("PlayScript", loc), "Support", loc), "DynamicAsString", loc), arguments).Resolve (ec);
 				}
 
 				Expression e = Convert.ImplicitConversionStandard (ec, expr, type, loc);

@@ -399,6 +399,13 @@ namespace Mono.CSharp {
 					return new BoolConstant(opt_ec.BuiltinTypes, false, expr.Location);
 				}
 
+				// Use a dynamic conversion where possible to take advantage of type hints
+				if (expr_type.IsDynamic) {
+					Arguments args = new Arguments (1);
+					args.Add (new Argument (expr));
+					return new DynamicConversion (target_type, 0, args, expr.Location).Resolve (opt_ec);
+				}
+
 				// if its a class or interface reference then just compare against null, else call the more expensive boolean conversion function
 				// strings and objects still have to go through the more expensive test
 				if ((expr_type.IsClass || expr_type.IsInterface) && (expr_type.BuiltinType != BuiltinTypeSpec.Type.String) && (expr_type.BuiltinType != BuiltinTypeSpec.Type.Object)) {
