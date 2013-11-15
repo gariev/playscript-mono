@@ -6872,11 +6872,15 @@ namespace Mono.CSharp
 					// note its important to resolve argument 0 or else the cast will fail
 					// this cast supports the Vector.<T>([1,2,3]) syntax with Arguments[0] being an AsArrayInitializer
 					var cast_expr = Arguments [0].Expr.Resolve (ec);
-#if !DISABLE_AS3_NULL_STRINGS
 					// In PlayScript, the string value of null is "null"
-					if (cast_expr.IsNull && member_expr.Type != null && member_expr.Type.BuiltinType == BuiltinTypeSpec.Type.String)
-						return new StringConstant (ec.BuiltinTypes, "null", loc);
-#endif
+					if (cast_expr.IsNull && member_expr.Type != null && member_expr.Type.BuiltinType == BuiltinTypeSpec.Type.String) {
+						// invoke CastToString so the app can decide the appropriate return value
+						var args = new Arguments (1);
+						args.Add (new Argument (cast_expr));
+						var function = new MemberAccess (new MemberAccess (
+							new SimpleName (PsConsts.PsRootNamespace, expr.Location), "String_fn", expr.Location), "CastToString", expr.Location);
+						return new Invocation (function, args).Resolve (ec);
+					}
 					return (new Cast (member_expr, cast_expr, loc)).Resolve (ec);
 				} 
 			}
