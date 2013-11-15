@@ -369,11 +369,8 @@ namespace PlayScript.DynamicRuntime
 			if (o is string) {
 				return (string)o;
 			}
-			if (o == null) {
-				return "null";
-			}
-			if (o == PlayScript.Undefined._undefined) {
-				return "undefined";
+			if (Dynamic.IsNullOrUndefined(o)) {
+				return null;
 			}
 			return o.ToString();
 		}
