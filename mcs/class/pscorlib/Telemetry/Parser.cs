@@ -20,7 +20,7 @@ namespace Telemetry
 
 		private static string Format(Variant value)
 		{
-			object o = value.AsObject();
+			object o = value.ToObject();
 			if (o == null) {
 				return "null";
 			} else if (o is string) {
@@ -29,8 +29,8 @@ namespace Telemetry
 				var sb = new System.Text.StringBuilder();
 				var ao = (Amf3Object)o; 
 				sb.AppendFormat("[{0} ", ao.ClassDef.Name);
-				for (int i=0; i < ao.ClassDef.Properties.Length; i++) {
-					sb.AppendFormat("{0}:{1} ", ao.ClassDef.Properties[i], Format(ao.Values[i]));
+				foreach (var kvp in (IEnumerable<KeyValuePair<string, Variant>>)ao) {
+					sb.AppendFormat("{0}:{1} ", kvp.Key, Format(kvp.Value));
 				}
 				sb.AppendFormat("]");
 				return sb.ToString();
@@ -64,7 +64,7 @@ namespace Telemetry
 				if (!v.IsDefined)
 					break;
 
-				var amfObj = v.AsObject() as Amf3Object;
+				var amfObj = v.ToObject() as Amf3Object;
 				if (amfObj == null)
 					break;
 
@@ -82,7 +82,7 @@ namespace Telemetry
 						}
 					case ".span":
 						{
-							time += amfObj["delta"].AsInt();
+							time += amfObj["delta"].ToInt();
 							output.WriteLine("WriteSpan({0}, {1}, {2});", 
 							                Format(amfObj["name"]), 
 							                amfObj["span"],
@@ -90,9 +90,9 @@ namespace Telemetry
 							);
 
 							// handle end of frame
-							string name = amfObj["name"].AsString();
+							string name = amfObj["name"].ToString();
 							if (name == ".exit") {
-								int span = amfObj["span"].AsInt();
+								int span = amfObj["span"].ToInt();
 								int deltas = time - enterTime;
 								output.WriteLine("// frame deltas:{0} span:{1} diff:{2}", deltas, span, deltas - span);
 							}
@@ -101,7 +101,7 @@ namespace Telemetry
 						}
 					case ".spanValue":
 						{
-							time += amfObj["delta"].AsInt();
+							time += amfObj["delta"].ToInt();
 							output.WriteLine("WriteSpanValue({0}, {1}, {2}, {3});", 
 							                Format(amfObj["name"]), 
 							                amfObj["span"],
@@ -112,14 +112,14 @@ namespace Telemetry
 						}
 					case ".time":
 						{
-							time += amfObj["delta"].AsInt();
+							time += amfObj["delta"].ToInt();
 							output.WriteLine("WriteTime({0}, {1});", 
 							                Format(amfObj["name"]), 
 							                amfObj["delta"]
 							);
 
 							// handle start of frame
-							string name = amfObj["name"].AsString();
+							string name = amfObj["name"].ToString();
 							if (name == ".enter") {
 								enterTime = time;
 							}

@@ -55,7 +55,7 @@ namespace Amf
 			// read class properties
 			while (!reader.Done){
 				string name = reader.Name;
-				object value = reader.ReadAsObject();
+				object value = reader.ReadObject();
 				expando[name] = value;
 			}
 		}

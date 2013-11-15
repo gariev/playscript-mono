@@ -261,25 +261,25 @@ namespace PlayScript
 		// conversion operators (variant -> system types)
 		//
 
-		public dynamic AsDynamic()
+		public dynamic ToDynamic()
 		{
-			return (dynamic)AsObject();
+			return (dynamic)ToObject();
 		}
 
 		// returns an object or a reference to undefined
 		[return: AsUntyped]
-		public object AsUntyped()
+		public object ToUntyped()
 		{
 			if (mType == TypeCode.Undefined) {
 				return PlayScript.Undefined._undefined;
 			} else {
-				return AsObject();
+				return ToObject();
 			}
 		}
 
 		// returns a boxed object
 		// will return null if undefined
-		public object AsObject(object defaultValue = null)
+		public object ToObject(object defaultValue = null)
 		{
 			// return referenced or boxed object if we have it
 			if (mObject != null) {
@@ -304,8 +304,8 @@ namespace PlayScript
 					mObject = (object)mIntValue;	// box integer
 				break;
 			case TypeCode.UInt:
-				if (UIntValue == 0) mObject = sUIntZero; else 
-				if (UIntValue == 1) mObject = sUIntOne; else
+				if (UIntValue == 0u) mObject = sUIntZero; else 
+				if (UIntValue == 1u) mObject = sUIntOne; else
 					mObject = (object)UIntValue;	// box integer
 				break;
 			case TypeCode.Number:
@@ -318,122 +318,139 @@ namespace PlayScript
 			return mObject;
 		}
 
-		public int AsInt(int defaultValue = 0)
+		public int ToInt(int defaultValue = 0)
 		{
 			if (mType == TypeCode.Int) {
 				return mIntValue;
 			}
-			if (mType == TypeCode.Number) {
-				return (int)mNumberValue;
-			}
-			if (mType == TypeCode.UInt) {
-				return (int)UIntValue;
-			}
-			if (mType == TypeCode.Undefined) {
+
+			switch (mType) {
+			case TypeCode.Undefined:
 				return defaultValue;
+			case TypeCode.Null:
+				return 0;
+			case TypeCode.Boolean:
+				return mBoolValue ? 1 : 0;
+			case TypeCode.Int:
+				return mIntValue;
+			case TypeCode.UInt:
+				return (int)UIntValue;
+			case TypeCode.Number:
+				return (int)mNumberValue;
+			case TypeCode.String:
+				return PSConverter.ToInt((string)mObject);
+			case TypeCode.Object:
+			default:
+				throw new InvalidCastException("Cannot cast to Int");
 			}
-			if (mType == TypeCode.String) {
-				string s =(string)mObject;
-				if (s.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase)) {
-					// Hex number - Use Convert.ToInt32() so we don't have to strip "0x" from the string.
-					return Convert.ToInt32(s, 16);
-				} else {
-					return int.Parse(s);
-				}
-			}
-			throw new InvalidCastException("Cannot cast to Int");
 		}
 
-		public uint AsUInt(uint defaultValue = 0)
+		public uint ToUInt(uint defaultValue = 0)
 		{
 			if (mType == TypeCode.UInt) {
 				return UIntValue;
 			}
-			if (mType == TypeCode.Int) {
-				return (uint)mIntValue;
-			}
-			if (mType == TypeCode.Number) {
-				return (uint)mNumberValue;
-			}
-			if (mType == TypeCode.Undefined) {
+			switch (mType) {
+			case TypeCode.Undefined:
 				return defaultValue;
+			case TypeCode.Null:
+				return 0u;
+			case TypeCode.Boolean:
+				return mBoolValue ? 1u : 0u;
+			case TypeCode.Int:
+				return (uint)mIntValue;
+			case TypeCode.UInt:
+				return UIntValue;
+			case TypeCode.Number:
+				return (uint)mNumberValue;
+			case TypeCode.String:
+				return PSConverter.ToUInt((string)mObject);
+			case TypeCode.Object:
+			default:
+				throw new InvalidCastException("Cannot cast to UInt");
 			}
-			if (mType == TypeCode.String) {
-				string s =(string)mObject;
-				if (s.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase)) {
-					// Hex number - Use Convert.ToUInt32() so we don't have to strip "0x" from the string.
-					return Convert.ToUInt32(s, 16);
-				} else {
-					return uint.Parse(s);
-				}
-			}
-			throw new InvalidCastException("Cannot cast to UInt");
 		}
 
-		public bool AsBoolean(bool defaultValue = false)
+		public bool ToBoolean(bool defaultValue = false)
 		{
 			if (mType == TypeCode.Boolean) {
 				return mBoolValue;
 			}
-			if (mType == TypeCode.Null) {
-				return false;
-			}
-			if (mType == TypeCode.Undefined) {
+			switch (mType) {
+			case TypeCode.Undefined:
 				return defaultValue;
-			}
-			if (mType == TypeCode.Int) {
+			case TypeCode.Null:
+				return false;
+			case TypeCode.Boolean:
+				return mBoolValue;
+			case TypeCode.Int:
 				return mIntValue != 0;
-			}
-			if (mType == TypeCode.Number) {
+			case TypeCode.UInt:
+				return UIntValue != 0u;
+			case TypeCode.Number:
 				return mNumberValue != 0.0;
+			case TypeCode.String:
+				return PSConverter.ToBool((string)mObject);
+			case TypeCode.Object:
+				return mObject != null;
+			default:
+				throw new InvalidCastException("Cannot cast to UInt");
 			}
-			if (mType == TypeCode.UInt) {
-				return UIntValue != 0;
-			}
-			throw new InvalidCastException("Cannot cast to Boolean");
 		}
 
-		public double AsNumber(double defaultValue = double.NaN)
+		public double ToNumber(double defaultValue = double.NaN)
 		{
 			if (mType == TypeCode.Number) {
 				return (double)mNumberValue;
 			}
-			if (mType == TypeCode.Int) {
-				return (double)mIntValue;
-			}
-			if (mType == TypeCode.Undefined) {
+			switch (mType) {
+			case TypeCode.Undefined:
 				return defaultValue;
-			}
-			if (mType == TypeCode.String) {
-				return double.Parse((string)mObject);
-			}
-			if (mType == TypeCode.UInt) {
+			case TypeCode.Null:
+				return 0.0;
+			case TypeCode.Boolean:
+				return mBoolValue ? 1.0 : 0.0;
+			case TypeCode.Int:
+				return (double)mIntValue;
+			case TypeCode.UInt:
 				return (double)UIntValue;
+			case TypeCode.Number:
+				return mNumberValue;
+			case TypeCode.String:
+				return PSConverter.ToDouble((string)mObject);
+			case TypeCode.Object:
+			default:
+				throw new InvalidCastException("Cannot cast to Number");
 			}
-			throw new InvalidCastException("Cannot cast to Number");
 		}
 
-		public float AsFloat(float defaultValue = float.NaN)
+		public float ToFloat(float defaultValue = float.NaN)
 		{
 			if (mType == TypeCode.Number) {
 				return (float)mNumberValue;
 			}
-			if (mType == TypeCode.Int) {
-				return (float)mIntValue;
-			}
-			if (mType == TypeCode.Undefined) {
+			switch (mType) {
+			case TypeCode.Undefined:
 				return defaultValue;
-			}
-			if (mType == TypeCode.String) {
-				return float.Parse((string)mObject);
-			}
-			if (mType == TypeCode.UInt) {
+			case TypeCode.Null:
+				return 0.0f;
+			case TypeCode.Boolean:
+				return mBoolValue ? 1.0f : 0.0f;
+			case TypeCode.Int:
+				return (float)mIntValue;
+			case TypeCode.UInt:
 				return (float)UIntValue;
+			case TypeCode.Number:
+				return (float)mNumberValue;
+			case TypeCode.String:
+				return (float)PSConverter.ToDouble((string)mObject);
+			case TypeCode.Object:
+			default:
+				throw new InvalidCastException("Cannot cast to Float");
 			}
-			throw new InvalidCastException("Cannot cast to float");
 		}
 
-		public string AsString(string defaultValue = null)
+		public string ToString(string defaultValue = null)
 		{
 			if (mType == TypeCode.String) {
 				return (string)mObject;
@@ -451,6 +468,8 @@ namespace PlayScript
 				return UIntValue.ToString();
 			case TypeCode.Number:
 				return mNumberValue.ToString();
+			case TypeCode.String:
+				return (string)mObject;
 			case TypeCode.Object:
 				return mObject.ToString();
 			default:
@@ -458,24 +477,24 @@ namespace PlayScript
 			}
 		}
 
-		public object AsType(System.Type type)
+		public object ToType(System.Type type)
 		{
 			var typeCode = System.Type.GetTypeCode (type);
 			switch (typeCode) {
 			case System.TypeCode.Int32:
-				return AsInt();
+				return ToInt();
 			case System.TypeCode.Double:
-				return AsNumber();
+				return ToNumber();
 			case System.TypeCode.Boolean:
-				return AsBoolean();
+				return ToBoolean();
 			case System.TypeCode.UInt32:
-				return AsUInt();
+				return ToUInt();
 			case System.TypeCode.Single:
-				return AsFloat();
+				return ToFloat();
 			case System.TypeCode.String:
-				return AsString();
+				return ToString();
 			case System.TypeCode.Object:
-				return AsObject();
+				return ToObject();
 			default:
 				throw new InvalidCastException ("Invalid cast to type:" + type.ToString());
 			}
@@ -510,23 +529,23 @@ namespace PlayScript
 		// conversions from variant (should these be implicit or explicit?
 		public static explicit operator bool(Variant variant)
 		{
-			return variant.AsBoolean();
+			return variant.ToBoolean();
 		}
 		public static explicit operator int(Variant variant)
 		{
-			return variant.AsInt();
+			return variant.ToInt();
 		}
 		public static explicit operator uint(Variant variant)
 		{
-			return variant.AsUInt();
+			return variant.ToUInt();
 		}
 		public static explicit operator double(Variant variant)
 		{
-			return variant.AsNumber();
+			return variant.ToNumber();
 		}
 		public static explicit operator string(Variant variant)
 		{
-			return variant.AsString();
+			return variant.ToString();
 		}
 
 		// creates a variant from an object, examining the object's type appropriately
@@ -566,7 +585,7 @@ namespace PlayScript
 			if (this.mType != other.mType) {
 				// compare numeric values by promoting them
 				if (this.IsNumeric && other.IsNumeric) {
-					return this.AsNumber() == other.AsNumber();
+					return this.ToNumber() == other.ToNumber();
 				}
 
 				// TODO we should do some type conversion here

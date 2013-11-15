@@ -826,7 +826,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & 0xFF000000);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<string>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<string>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<string>)this).GetMemberOrDefault(index.ToString(), ref crc, null);
@@ -846,7 +846,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & 0xFF000000);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<string>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<string>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<string>)this).GetMemberOrDefault(index.ToString(), ref crc, null);
@@ -889,7 +889,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & 0xFF000000);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<int>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<int>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<int>)this).GetMember(index.ToString(), ref crc);
@@ -909,7 +909,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & 0xFF000000);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<int>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<int>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<int>)this).GetMember(index.ToString(), ref crc);
@@ -952,7 +952,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & 0xFF000000);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<double>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<double>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<double>)this).GetMember(index.ToString(), ref crc);
@@ -972,7 +972,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & 0xFF000000);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<double>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<double>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<double>)this).GetMember(index.ToString(), ref crc);
@@ -1015,7 +1015,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & 0xFF000000);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<uint>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<uint>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<uint>)this).GetMember(index.ToString(), ref crc);
@@ -1035,7 +1035,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & 0xFF000000);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<uint>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<uint>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<uint>)this).GetMember(index.ToString(), ref crc);
@@ -1078,7 +1078,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & 0xFF000000);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<bool>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<bool>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<bool>)this).GetMember(index.ToString(), ref crc);
@@ -1098,7 +1098,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & 0xFF000000);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<bool>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<bool>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<bool>)this).GetMember(index.ToString(), ref crc);
@@ -1141,7 +1141,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & 0xFF000000);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<object>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<object>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<object>)this).GetMember(index.ToString(), ref crc);
@@ -1161,7 +1161,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & 0xFF000000);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<object>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<object>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<object>)this).GetMember(index.ToString(), ref crc);
@@ -1193,7 +1193,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & 0xFF000000);
 				if (listType == LIST_TYPE.ARRAY) {
-					return (float)((IDynamicAccessor<double>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return (float)((IDynamicAccessor<double>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return (float)((IDynamicAccessor<double>)this).GetMember(index.ToString(), ref crc);
@@ -1213,7 +1213,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & 0xFF000000);
 				if (listType == LIST_TYPE.ARRAY) {
-					return (float)((IDynamicAccessor<double>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return (float)((IDynamicAccessor<double>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return (float)((IDynamicAccessor<double>)this).GetMember(index.ToString(), ref crc);

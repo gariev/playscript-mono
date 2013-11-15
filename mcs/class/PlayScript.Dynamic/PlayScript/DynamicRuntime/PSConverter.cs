@@ -20,18 +20,30 @@ using System.Collections;
 
 namespace PlayScript.DynamicRuntime
 {
+	//
+	// This class performs conversions and casting of value types at runtime.
+	// There are two distinct types of casts that need to be handled.
+	//  1) The explicit casts:  i = int(obj); n = Number(obj); b = Boolean(obj); t = IInterface(obj)
+	//  2) The "as" casts:  i = obj as int; n = obj as Number; t = obj as IInterface;
+	//
+	// The explicit casts are more forceful, they will do string parsing, will return NaNs on failure, 
+	//  will not range check values, and will throw if class/interface not assignable. The explicit cast of null or undefined to a string
+	//  will result in the string "null" or "undefined".
+	// The "as" casts are more gentle, they will not do string parsing, will never return NaN,
+	//  and will only return a value if it is fully representable in the target type. 
+	//  If a cast fails, the result is zero or null. 
+	//  For example:  (5 as uint) == 5;  (-5 as uint) == 0;  (2.0 as int) == 2; (2.5 as int) == 0.0
+	//
+	// To support both casting rules we expose ToInt and AsInt as seperate functions. They can be overloaded with the source value type
+	// to reduce the amount of type checking. One version must accept an "object" to handle dynamic casts.
+	//
+
 	public static class PSConverter
 	{
 		// deprecated, but we'll keep these around for awhile...
-		public static bool 		ConvertToBool(object o) { return ToBool(o); }
-		public static int 		ConvertToInt(object o) { return ToInt(o); }
-		public static uint 		ConvertToUInt(object o) { return ToUInt(o); }
-		public static float 	ConvertToFloat(object o) { return ToFloat(o); }
-		public static double 	ConvertToDouble(object o) { return ToDouble(o); }
 		public static string 	ConvertToString(object o) { return ToString(o); }
-
 		//
-		// casting conversions from string to value type
+		// casting conversions from string to value type, with parsing of decimal or hex 
 		//
 
 		private static bool IsHexString(string s)
