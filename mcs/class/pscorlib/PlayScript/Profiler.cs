@@ -774,14 +774,20 @@ namespace PlayScript
 				Telemetry.Session.SendRecordingOverNetwork(recording);
 			}
 
+			// print report to string
+			var sb = new StringWriter();
+			PrintReport(sb, false);
+			string reportData = sb.ToString();
+
+			// get report id
+			string id = DateTime.Now.ToString("u").Replace(' ', '-').Replace(':', '-');
+			string fileName = "profile-" + id + ".log";
+
 			var profileLogDir = GetProfileLogDir();
 			if (profileLogDir != null) {
-				string id = DateTime.Now.ToString("u").Replace(' ', '-').Replace(':', '-');
-				var path = Path.Combine(profileLogDir, "profile-" + id + ".log");
+				var path = Path.Combine(profileLogDir, fileName);
 				Console.WriteLine("Writing profiling report to: {0}", path);
-				using (var sw = new StreamWriter(path)) {
-					PrintReport(sw, true);
-				}
+				System.IO.File.WriteAllText(path, reportData);
 
 				if (recording != null)	{
 					// write telemetry data to file
@@ -792,7 +798,13 @@ namespace PlayScript
 			}
 
 			// print to console (not the full version though)
-			PrintReport(System.Console.Out, false);
+			Console.WriteLine(reportData);
+
+			// send to gist
+			if (PlayScript.Player.GistEnabled) {
+				string desc = string.Format("Profile {0} {1}", sReportName, DateTime.Now);
+				PlayScript.Player.GistUpload(desc, fileName, reportData, false);
+			}
 
 			InvokeReportDelegate ();
 		}

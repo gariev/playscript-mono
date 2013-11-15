@@ -19,6 +19,8 @@ using System.Drawing;
 using System.Reflection;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Web;
 
 using flash.display;
 using flash.utils;
@@ -75,6 +77,13 @@ namespace PlayScript
 
 		// time to sleep between frames if no present occurs
 		public static int SleepTimeBetweenFrames = 1;
+
+		// gist configuration
+		// go to https://github-ca.<your-company>/settings/applications and create a Personal Access Token for use as the GistAuthCode
+		public static bool   GistEnabled = false;
+		public static bool   GistIsPublic = false;
+		public static string GistUrl = null;
+		public static string GistAuthCode = null;
 
 		static Player()
 		{
@@ -912,6 +921,58 @@ namespace PlayScript
 				response.position = 0;
 			}
 		}
+
+		public static void GistUpload(string description, string fileName, string fileData, bool async)
+		{
+			if (!GistEnabled) {
+				return;
+			}
+
+			var files = new System.Collections.Generic.Dictionary<string, string>();
+			files[fileName] = fileData;
+			GistUpload(description, files, async);
+		}
+
+		public static void GistUpload(string description, IDictionary<string, string> files, bool async)
+		{
+			if (!GistEnabled) {
+				return;
+			}
+
+			if (string.IsNullOrEmpty(GistUrl) || string.IsNullOrEmpty(GistAuthCode)) {
+				Console.WriteLine("Gist not configured properly. Set GistUrl and GistAuth before invoking");
+				return;
+			}
+
+			try {
+				// build json object to send
+				var dict = new Dictionary();
+				dict["description"] =  description;
+				dict["public"] =  GistIsPublic;
+				dict["files"] =  files;
+
+				// convert to json
+				string json = MiniJson.Json.Stringify(dict);
+
+				Console.WriteLine("Gist: Uploading {0}", description);
+
+				// open web client
+				using (var wb = new WebClient())
+				{
+					// setup headers
+					wb.Credentials = new NetworkCredential(GistAuthCode, "x-oauth-basic");
+					wb.Headers["Content-Type"] = "application/json";
+					// upload data
+					if (async) {
+						wb.UploadStringAsync(new Uri(GistUrl), "POST", json);
+					} else {
+						wb.UploadString(GistUrl, "POST", json);
+					}
+				}
+			} catch {
+			}
+		}
+
 
 
 		private flash.display.Stage    mStage;
