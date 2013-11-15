@@ -5040,8 +5040,10 @@ namespace Mono.CSharp {
 				//
 				// Use implicit conversion in all modes to return same candidates when the expression
 				// is used as argument or delegate conversion
-				//
-				if (!Convert.ImplicitConversionExists (ec, argument.Expr, parameter)) {
+
+				// set upconvert only based on the flag set in the argument, this is to better handle ambiguous overloading cases
+				bool upconvertOnly = (ec.FileType == SourceFileType.PlayScript) && argument.UpconvertOnly;
+				if (!Convert.ImplicitConversionExists (ec, argument.Expr, parameter, upconvertOnly)) {
 					return parameter.IsDelegate && argument.Expr is AnonymousMethodExpression ? 2 : 3;
 				}
 			}

@@ -1846,10 +1846,8 @@ namespace Mono.CSharp
 				// Special case for as check with strings in PlayScript, since there is an implicit
 				// conversion from everything to string.
 				if (isPlayScript && type.BuiltinType == BuiltinTypeSpec.Type.String) {
-					var arguments = new Arguments (2);
-					arguments.Add (new Argument (expr));
-					arguments.Add (new Argument (new TypeOf (new TypeExpression (ec.BuiltinTypes.String, expr.Location), expr.Location)));
-					return new Invocation (new MemberAccess (new MemberAccess (new SimpleName ("PlayScript", loc), "Support", loc), "DynamicAs", loc), arguments).Resolve (ec);
+					// simply do "expr as string"
+					return this;
 				}
 
 				Expression e = Convert.ImplicitConversionStandard (ec, expr, type, loc);
@@ -1872,25 +1870,10 @@ namespace Mono.CSharp
 
 			} else {
 
-				// Do PlayScript AS cast..
-
-				bool eIsRefType = TypeSpec.IsReferenceType (etype) || etype.IsNullableType;
-
-				if (eIsRefType) {
-
-					// Copy ref expression to a temporary.. do conditional.
-					var local = TemporaryVariableReference.Create (etype, ec.CurrentBlock, expr.Location);
-					var comp_exp = new Binary(Binary.Operator.Equality, new CompilerAssign(local, expr, expr.Location), new NullLiteral(expr.Location));
-					var def_const = New.Constantify(type, expr.Location, ec.FileType);
-					var cast_exp = new Cast(new TypeExpression(type, expr.Location), local, expr.Location);
-
-					return new Conditional(comp_exp, def_const, cast_exp, expr.Location).Resolve(ec);
-
-				} else {
-
-					// Just do normal cast if not a ref type.
-					return new Cast(new TypeExpression(type, expr.Location), expr, expr.Location).Resolve (ec);
-				}
+				// create a dynamic conversion that performs the as using a PSConverter.As<type> method
+				Arguments args = new Arguments (1);
+				args.Add (new Argument (expr));
+				return new DynamicConversion (type, 0, args, expr.Location, true).Resolve (ec);
 			}
 
 			ec.Report.Error (39, loc, "Cannot convert type `{0}' to `{1}' via a built-in conversion",

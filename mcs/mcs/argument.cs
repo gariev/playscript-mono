@@ -45,6 +45,10 @@ namespace Mono.CSharp
 		public AsArrayInitializer InferArrayInitializer;
 		public AsObjectInitializer InferObjInitializer;
 
+		// if this is true, then implicit casts for this argument will only be allowed to upconvert to get better overload matching
+		// this is necessary because the playscript casts to bool/string break function overloading and make it ambiguous
+		public bool UpconvertOnly = false;
+
 		public Argument (Expression expr, AType type)
 		{
 			this.Expr = expr;

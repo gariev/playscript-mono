@@ -823,13 +823,16 @@ namespace Mono.CSharp
 
 	class DynamicConversion : DynamicExpressionStatement, IDynamicBinder
 	{
-		public DynamicConversion (TypeSpec targetType, CSharpBinderFlags flags, Arguments args, Location loc)
+		public DynamicConversion (TypeSpec targetType, CSharpBinderFlags flags, Arguments args, Location loc, bool operatorAs = false)
 			: base (null, args, loc)
 		{
 			type = targetType;
+			this.operatorAs = operatorAs;
 			base.flags = flags;
 			base.binder = this;
 		}
+
+		protected bool operatorAs;
 
 
 		protected override Expression DoResolve(ResolveContext rc)
@@ -838,16 +841,19 @@ namespace Mono.CSharp
 			var expr = this.Arguments[0].Expr;
 
 			if (rc.Module.PredefinedTypes.IsPlayScriptAotMode && rc.Module.Compiler.Settings.NewDynamicRuntime_ConvertReturnType) {
-				// encourage dynamic expression to resolve to our type to avoid this conversion
-				expr = expr.ResolveWithTypeHint(rc, this.Type);
-				if (expr.Type == this.type) {
-					// skip dynamic conversions
-					return expr;
+				// unfortunately we can't use type hints when doing 'as' because it will do a normal cast and not a proper 'as' cast
+				if (!operatorAs) {
+					// encourage dynamic expression to resolve to our type to avoid this conversion
+					expr = expr.ResolveWithTypeHint(rc, this.Type);
+					if (expr.Type == this.type) {
+						// skip dynamic conversions
+						return expr;
+					}
 				}
 			}
 
 			if (rc.Module.PredefinedTypes.IsPlayScriptAotMode && rc.Module.Compiler.Settings.NewDynamicRuntime_Convert) {
-				var conversion = CreateDynamicConversion (rc, expr.Resolve (rc), this.Type);
+				var conversion = CreateDynamicConversion (rc, expr.Resolve (rc), this.Type, operatorAs);
 				if (conversion != null)
 					return conversion.Resolve (rc);
 			}
@@ -855,9 +861,30 @@ namespace Mono.CSharp
 			return base.DoResolve(rc);
 		}
 
+		private static string GetDynamicConversionTypeName(TypeSpec type)
+		{
+			switch (type.BuiltinType){
+				case BuiltinTypeSpec.Type.Bool:
+					return "Bool";
+				case BuiltinTypeSpec.Type.Int:
+					return "Int";
+				case BuiltinTypeSpec.Type.UInt:
+					return "UInt";
+				case BuiltinTypeSpec.Type.Double:
+					return "Double";
+				case BuiltinTypeSpec.Type.Float:
+					return "Float";
+				case BuiltinTypeSpec.Type.String:
+					return "String";
+				default:
+					return null;
+			}
+		}
+
+
 		#region IDynamicCallSite implementation
 
-		public static Expression CreateDynamicConversion(ResolveContext rc, Expression expr, TypeSpec target_type)
+		public static Expression CreateDynamicConversion(ResolveContext rc, Expression expr, TypeSpec target_type, bool operatorAs)
 		{
 			var expr_type = expr.Type;
 
@@ -878,7 +905,8 @@ namespace Mono.CSharp
 				if ((expr.Type.IsAsUntyped || TypeManager.IsAsUndefined (expr.Type, rc)) && !target_type.IsAsUntyped) {
 					var args = new Arguments (1);
 					args.Add (new Argument (EmptyCast.RemoveDynamic (rc, expr)));
-					var function = new MemberAccess (new TypeExpression (rc.Module.PredefinedTypes.PsConverter.Resolve (), expr.Location), "ConvertToObj", expr.Location);
+					args[0].UpconvertOnly = true;
+					var function = new MemberAccess (new TypeExpression (rc.Module.PredefinedTypes.PsConverter.Resolve (), expr.Location), "UntypedToObject", expr.Location);
 					return new Invocation (function, args);
 				}
 
@@ -892,37 +920,20 @@ namespace Mono.CSharp
 
 			TypeSpec converter = rc.Module.PredefinedTypes.PsConverter.Resolve();
 
-			// perform numeric or other type conversion
-			string converterMethod = null;
-
-			switch (target_type.BuiltinType) {
-				case BuiltinTypeSpec.Type.UInt:
-					converterMethod = "ConvertToUInt";
-					break;
-				case BuiltinTypeSpec.Type.Double:
-					converterMethod = "ConvertToDouble";
-					break;
-				case BuiltinTypeSpec.Type.Float:
-					converterMethod = "ConvertToFloat";
-					break;
-				case BuiltinTypeSpec.Type.Int:
-					converterMethod = "ConvertToInt";
-					break;
-				case BuiltinTypeSpec.Type.String:
-					converterMethod = "ConvertToString";
-					break;
-				case BuiltinTypeSpec.Type.Bool:
-					converterMethod = "ConvertToBool";
-					break;
-				default:
-//					throw new InvalidOperationException("Unhandled convert to: " + target_type.GetSignatureForError());
-					return EmptyCast.Create(expr, target_type, rc);
-//					converterMethod = "ConvertTo" + target_type.Name.ToString();
-//					break;
+			// get target type name
+			string typeName = GetDynamicConversionTypeName(target_type);
+			if (typeName == null) {
+				// unhandled cast, just use empty cast
+				return EmptyCast.Create(expr, target_type, rc);
 			}
+
+			// build converter method name
+			// different conversion method for "as" vs normal casts
+			string converterMethod = operatorAs ? ("As"+typeName) : ("To"+typeName);
 
 			var cast_args = new Arguments(1);
 			cast_args.Add(new Argument(EmptyCast.RemoveDynamic(rc, expr)));
+			cast_args[0].UpconvertOnly = true;	// do not impicitly down convert values, to allow for proper method overloading
 			return new Invocation(new MemberAccess(new TypeExpression(converter, expr.Location), converterMethod, expr.Location), cast_args);
 		}
 
