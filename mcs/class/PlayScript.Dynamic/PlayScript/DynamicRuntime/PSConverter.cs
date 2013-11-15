@@ -42,6 +42,8 @@ namespace PlayScript.DynamicRuntime
 		// Boolean(string)
 		public static bool ToBool (string s)
 		{
+			Stats.Increment(StatsCounter.ConvertToInvoked);
+
 			// note: we were wrong before, only the empty or null string produces false
 			return !string.IsNullOrEmpty(s);
 		}
@@ -49,6 +51,8 @@ namespace PlayScript.DynamicRuntime
 		// int(string)
 		public static int ToInt (string s)
 		{
+			Stats.Increment(StatsCounter.ConvertToInvoked);
+
 			if (IsHexString(s)) {
 				return (int)Convert.ToUInt32(s, 16);
 			} else {
@@ -64,6 +68,8 @@ namespace PlayScript.DynamicRuntime
 		// uint(string)
 		public static uint ToUInt (string s)
 		{
+			Stats.Increment(StatsCounter.ConvertToInvoked);
+
 			if (IsHexString(s)) {
 				return (uint)Convert.ToUInt32(s, 16);
 			} else {
@@ -79,6 +85,8 @@ namespace PlayScript.DynamicRuntime
 		// float(string)
 		public static float ToFloat (string s)
 		{
+			Stats.Increment(StatsCounter.ConvertToInvoked);
+
 			if (IsHexString(s)) {
 				return (float)Convert.ToUInt32(s, 16);
 			} else {
@@ -94,6 +102,8 @@ namespace PlayScript.DynamicRuntime
 		// Number(string)
 		public static double ToDouble (string s)
 		{
+			Stats.Increment(StatsCounter.ConvertToInvoked);
+
 			if (IsHexString(s)) {
 				return (double)Convert.ToUInt32(s, 16);
 			} else {
@@ -112,8 +122,8 @@ namespace PlayScript.DynamicRuntime
 
 		public static bool ToBool(object o)
 		{
-			Stats.Increment(StatsCounter.ConvertBinderInvoked);
-			// handle most common cases first
+			Stats.Increment(StatsCounter.ConvertToInvoked);
+
 			if (o == null) {
 				return false;
 			}
@@ -162,10 +172,14 @@ namespace PlayScript.DynamicRuntime
 			return false;
 		}
 
+		public static uint ToUInt(double d)
+		{
+			return (uint)d;
+		}
 
 		public static uint ToUInt(object o)
 		{
-			Stats.Increment(StatsCounter.ConvertBinderInvoked);
+			Stats.Increment(StatsCounter.ConvertToInvoked);
 
 			if (o == null) return 0u;
 
@@ -202,9 +216,14 @@ namespace PlayScript.DynamicRuntime
 			}
 		}
 
+		public static int ToInt(double d)
+		{
+			return (int)d;
+		}
+
 		public static int ToInt(object o)
 		{
-			Stats.Increment(StatsCounter.ConvertBinderInvoked);
+			Stats.Increment(StatsCounter.ConvertToInvoked);
 
 			if (o == null) return 0;
 
@@ -243,7 +262,7 @@ namespace PlayScript.DynamicRuntime
 
 		public static float ToFloat(object o)
 		{
-			Stats.Increment(StatsCounter.ConvertBinderInvoked);
+			Stats.Increment(StatsCounter.ConvertToInvoked);
 
 			if (o == null) return 0.0f;
 			if (o == PlayScript.Undefined._undefined) return float.NaN;
@@ -286,9 +305,14 @@ namespace PlayScript.DynamicRuntime
 			return (double)i;
 		}
 
+		public static double ToDouble(uint u)
+		{
+			return (double)u;
+		}
+
 		public static double ToDouble(object o)
 		{
-			Stats.Increment(StatsCounter.ConvertBinderInvoked);
+			Stats.Increment(StatsCounter.ConvertToInvoked);
 
 			if (o == null) return 0.0;
 			if (o == PlayScript.Undefined._undefined) return double.NaN;
@@ -328,7 +352,7 @@ namespace PlayScript.DynamicRuntime
 
 		public static string ToString(object o)
 		{
-			Stats.Increment(StatsCounter.ConvertBinderInvoked);
+			Stats.Increment(StatsCounter.ConvertToInvoked);
 
 			if (o is string) {
 				return (string)o;
@@ -345,7 +369,7 @@ namespace PlayScript.DynamicRuntime
 		// this specifically converts a * to an Object
 		public static object UntypedToObject (object o)
 		{
-			Stats.Increment(StatsCounter.ConvertBinderInvoked);
+			Stats.Increment(StatsCounter.ConvertUntypedInvoked);
 
 			if (o == PlayScript.Undefined._undefined) {
 				return null; // only type "*" can be undefined
@@ -390,6 +414,8 @@ namespace PlayScript.DynamicRuntime
 
 		public static bool AsBool(object o)
 		{
+			Stats.Increment(StatsCounter.ConvertAsInvoked);
+
 			if (o is bool) {
 				return (bool)o;
 			}
@@ -412,6 +438,7 @@ namespace PlayScript.DynamicRuntime
 
 		public static int AsInt(uint u)
 		{
+			Stats.Increment(StatsCounter.ConvertAsInvoked);
 			if (u > int.MaxValue) {
 				// value could not be represented
 				return 0;
@@ -423,6 +450,7 @@ namespace PlayScript.DynamicRuntime
 
 		public static int AsInt(double d)
 		{
+			Stats.Increment(StatsCounter.ConvertAsInvoked);
 			// cast to target type
 			int value = (int)d;
 			// if the value is preserved then it can successfully be cast using as
@@ -441,6 +469,7 @@ namespace PlayScript.DynamicRuntime
 
 		public static int AsInt(object o)
 		{
+			Stats.Increment(StatsCounter.ConvertAsInvoked);
 			if (o is int) {
 				return (int)o;
 			}
@@ -464,6 +493,8 @@ namespace PlayScript.DynamicRuntime
 
 		public static uint AsUInt(int i)
 		{
+			Stats.Increment(StatsCounter.ConvertAsInvoked);
+
 			if (i < uint.MinValue) {
 				// value could not be represented, return zero
 				return 0u;
@@ -480,6 +511,8 @@ namespace PlayScript.DynamicRuntime
 
 		public static uint AsUInt(double d)
 		{
+			Stats.Increment(StatsCounter.ConvertAsInvoked);
+
 			// cast to target type
 			uint value = (uint)d;
 			// if the value is preserved then it can successfully be cast using as
@@ -498,6 +531,8 @@ namespace PlayScript.DynamicRuntime
 
 		public static uint AsUInt(object o)
 		{
+			Stats.Increment(StatsCounter.ConvertAsInvoked);
+
 			if (o is uint) {
 				return (uint)o;
 			}
@@ -542,6 +577,8 @@ namespace PlayScript.DynamicRuntime
 
 		public static double AsDouble(object o)
 		{
+			Stats.Increment(StatsCounter.ConvertAsInvoked);
+
 			if (o is double) {
 				return (double)o;
 			}
@@ -564,6 +601,8 @@ namespace PlayScript.DynamicRuntime
 		
 		public static float AsFloat(object o)
 		{
+			Stats.Increment(StatsCounter.ConvertAsInvoked);
+
 			if (o is float) {
 				return (float)o;
 			}
