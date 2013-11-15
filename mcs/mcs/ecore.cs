@@ -2591,6 +2591,16 @@ namespace Mono.CSharp {
 				return;
 			}
 
+			if (this.Location.SourceFile.FileType == SourceFileType.PlayScript) {
+				var nc = ctx as NamespaceContainer;
+				if (nc != null) {
+					// if we are inside of a namespace then suppress missing import errors
+					if (nc.SuppressImportErrors) {
+						return;
+					}
+				}
+			}
+
 			var ns_candidates = ctx.Module.GlobalRootNamespace.FindTypeNamespaces (ctx, Name, Arity);
 			if (ns_candidates != null) {
 				if (ctx is UsingAliasNamespace.AliasContext) {

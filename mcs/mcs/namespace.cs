@@ -835,6 +835,8 @@ namespace Mono.CSharp {
 		// Used by parsed to check for parser errors
 		public bool DeclarationFound;
 
+		public bool SuppressImportErrors;
+
 		Namespace[] namespace_using_table;
 		Tuple<TypeExpr,TypeSpec>[] type_using_table; /* AS SUPPORT */
 		Dictionary<string, UsingAliasNamespace> aliases;
@@ -1365,6 +1367,9 @@ namespace Mono.CSharp {
 			namespace_using_table = empty_namespaces;
 			type_using_table = empty_types; /* AS SUPPORT */
 
+			// in playscript we suppress any errors due to missing imports
+			SuppressImportErrors = (this.Location.SourceFile.FileType == SourceFileType.PlayScript) ? true : false;
+
 			if (clauses != null) {
 				var ns_list = new List<Namespace> (clauses.Count);
 				var t_list = new List<Tuple<TypeExpr,TypeSpec>> (clauses.Count); /* AS SUPPORT */
@@ -1459,6 +1464,8 @@ namespace Mono.CSharp {
 					}
 				}
 			}
+
+			SuppressImportErrors = false;
 		}
 
 		public void EnableRedefinition ()
