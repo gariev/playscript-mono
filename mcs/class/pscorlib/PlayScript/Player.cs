@@ -928,12 +928,14 @@ namespace PlayScript
 				return;
 			}
 
-			var files = new System.Collections.Generic.Dictionary<string, string>();
-			files[fileName] = fileData;
+			var files = new System.Collections.Generic.Dictionary<string, object>();
+			var file = new Dictionary();
+			file["content"] = fileData;
+			files[fileName] = file;
 			GistUpload(description, files, async);
 		}
 
-		public static void GistUpload(string description, IDictionary<string, string> files, bool async)
+		public static void GistUpload(string description, IDictionary<string, object> files, bool async)
 		{
 			if (!GistEnabled) {
 				return;
@@ -966,7 +968,7 @@ namespace PlayScript
 					if (async) {
 						wb.UploadStringAsync(new Uri(GistUrl), "POST", json);
 					} else {
-						wb.UploadString(GistUrl, "POST", json);
+						string result = wb.UploadString(new Uri(GistUrl), "POST", json);
 					}
 				}
 			} catch {
