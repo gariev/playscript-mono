@@ -22,6 +22,12 @@ using OpenTK.Graphics.ES20;
 #elif PLATFORM_MONODROID
 using OpenTK.Graphics;
 using OpenTK.Graphics.ES20;
+using Android.Views;
+using Android.Content;
+using Android.Graphics;
+using Android.Util;
+using Android.Runtime;
+using Android.OS;
 #endif
 
 namespace PlayScript
@@ -248,7 +254,7 @@ namespace PlayScript
 				Console.WriteLine("Loading milestone {0} {1}", name, sGlobalTimer.Elapsed);
 
 				// end profiling session for loading
-				if ((LoadingEndMilestone!=null) && name.Contains(LoadingEndMilestone)) {
+				if ((LoadingEndMilestone!=null) && name.Contains(LoadingEndMilestone) && sReportName == "Loading") {
 					EndSession();
 				}
 			}
@@ -650,6 +656,21 @@ namespace PlayScript
 			tw.WriteLine("SystemVersion: {0}", UIDevice.CurrentDevice.SystemVersion);
 			tw.WriteLine("Screen Size:   {0}", UIScreen.MainScreen.Bounds);
 			tw.WriteLine("Screen Scale:  {0}", UIScreen.MainScreen.Scale);
+			#elif PLATFORM_MONODROID
+			// Note: stock Android does not provide a way to set the device's name,
+			// so won't be as meaningful as iOS.
+			tw.WriteLine("Device:        {0}", Build.Display);
+			tw.WriteLine("Model:         {0}", Build.Model);
+			tw.WriteLine("SystemVersion: {0}", Build.VERSION.Release);
+
+			Context ctx = Android.App.Application.Context;
+			IWindowManager wm = ctx.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
+			Display display = wm.DefaultDisplay;
+			DisplayMetrics metrics = new DisplayMetrics();
+			display.GetMetrics(metrics);
+
+			tw.WriteLine("Screen Size:   {0}x{1}", metrics.WidthPixels, metrics.HeightPixels);
+			tw.WriteLine("Screen Scale:  {0}", metrics.ScaledDensity);
 			#endif
 			tw.WriteLine("************* Loading *************");
 			PrintLoading(tw);
@@ -681,6 +702,7 @@ namespace PlayScript
 #endif
 
 			if (SessionData != null) {
+				tw.WriteLine("********* Session Settings ********");
 				// write extra data about session
 				foreach (var kvp in SessionData) {
 					tw.WriteLine("{0}:  {1}", kvp.Key, kvp.Value);
@@ -776,7 +798,7 @@ namespace PlayScript
 			var profileLogDir = GetProfileLogDir();
 			if (profileLogDir != null) {
 				string id = DateTime.Now.ToString("u").Replace(' ', '-').Replace(':', '-');
-				var path = Path.Combine(profileLogDir, "profile-" + id + ".log");
+				var path = System.IO.Path.Combine(profileLogDir, "profile-" + id + ".log");
 				Console.WriteLine("Writing profiling report to: {0}", path);
 				using (var sw = new StreamWriter(path)) {
 					PrintReport(sw, true);
@@ -784,7 +806,7 @@ namespace PlayScript
 
 				if (recording != null)	{
 					// write telemetry data to file
-					var telemetryPath = Path.Combine(profileLogDir, "telemetry-" + id + ".flm");
+					var telemetryPath = System.IO.Path.Combine(profileLogDir, "telemetry-" + id + ".flm");
 					Telemetry.Session.SaveRecordingToFile(recording, telemetryPath);
 //					Telemetry.Parser.ParseFile(telemetryPath, telemetryPath + ".txt");
 				}
