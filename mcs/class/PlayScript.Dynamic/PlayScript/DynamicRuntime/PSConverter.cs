@@ -22,20 +22,26 @@ namespace PlayScript.DynamicRuntime
 {
 	//
 	// This class performs conversions and casting of value types at runtime.
-	// There are two distinct types of casts that need to be handled.
+	// There are three distinct types of casts that need to be handled.
 	//  1) The explicit casts:  i = int(obj); n = Number(obj); b = Boolean(obj); t = IInterface(obj)
-	//  2) The "as" casts:  i = obj as int; n = obj as Number; t = obj as IInterface;
+	//  2) The implicit casts:  var i:int = obj; var n:Number = obj; var b:Boolean = obj; var s:String = obj;
+	//  3) The "as" casts:  i = obj as int; n = obj as Number; t = obj as IInterface;
 	//
 	// The explicit casts are more forceful, they will do string parsing, will return NaNs on failure, 
 	//  will not range check values, and will throw if class/interface not assignable. The explicit cast of null or undefined to a string
 	//  will result in the string "null" or "undefined".
+	// The implicit casts work like the explicit ones. Except for one known case: the explicit cast to string will always return a string no matter
+	//  what, and will convert a null to "null" and a undefined to "undefined".
 	// The "as" casts are more gentle, they will not do string parsing, will never return NaN,
 	//  and will only return a value if it is fully representable in the target type. 
-	//  If a cast fails, the result is zero or null. 
+	//  If an "as" cast fails, the result is zero or null. 
 	//  For example:  (5 as uint) == 5;  (-5 as uint) == 0;  (2.0 as int) == 2; (2.5 as int) == 0.0
 	//
 	// To support both casting rules we expose ToInt and AsInt as seperate functions. They can be overloaded with the source value type
 	// to reduce the amount of type checking. One version must accept an "object" to handle dynamic casts.
+	// The compiler automatically generates calls into this class using the naming scheme:
+	// 		target-type		<source-type><cast-type><target-type>(source-type value);
+	// For simplicity, the source-type is omitted from the method name if overloading can be used.
 	//
 
 	public static class PSConverter
