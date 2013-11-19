@@ -912,6 +912,15 @@ namespace Mono.CSharp
 			//
 
 			string sourceTypeName = GetDynamicConversionTypeName(rc, expr.Type);
+
+			// a little hacky, but if the source type is an enum just try to convert it now to the target type
+			if (sourceTypeName == "Enum") {
+				expr = Convert.ExplicitConversion(rc, expr, target_type, expr.Location).Resolve(rc);
+				expr_type = expr.Type;
+				sourceTypeName = GetDynamicConversionTypeName(rc, expr.Type);
+			}
+
+
 			string targetTypeName = GetDynamicConversionTypeName(rc, target_type);
 			if (sourceTypeName == null || targetTypeName == null) {
 				// failure
@@ -924,13 +933,6 @@ namespace Mono.CSharp
 			if (rc.FileType != SourceFileType.PlayScript) {
 				if (sourceTypeName == "Untyped" && target_type.IsDynamic) 
 					return EmptyCast.Create(expr, target_type, rc).Resolve(rc);
-			}
-
-			// a little hacky
-			if (sourceTypeName == "Enum") {
-				expr = Convert.ExplicitConversion(rc, expr, rc.BuiltinTypes.Int, expr.Location).Resolve(rc);
-				expr_type = expr.Type;
-				sourceTypeName = "Int";
 			}
 
 			//
