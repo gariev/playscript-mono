@@ -405,17 +405,10 @@ namespace Mono.CSharp {
 					// test against null
 					return new Binary(Binary.Operator.Inequality, expr, new NullLiteral(expr.Location)).Resolve(opt_ec);
 				} else {
-					// PlayScript: Call the "Boolean()" static method to convert a dynamic to a bool.  EXPENSIVE, but hey..
+					// create an implicit dynamic conversion
 					Arguments args = new Arguments (1);
-					if (BuiltinTypeSpec.IsPrimitiveType (expr_type))
-						args.Add (new Argument (new BoxedCast (expr, target_type)));
-					else
-						args.Add (new Argument(EmptyCast.Create(expr, opt_ec.BuiltinTypes.Object, opt_ec)));
-
-					var function = new MemberAccess (new MemberAccess (
-						new SimpleName (PsConsts.PsRootNamespace, expr.Location), "Boolean_fn", expr.Location), "Boolean", expr.Location);
-
-					return new Invocation (function, args).Resolve (opt_ec);
+					args.Add (new Argument (expr));
+					return new DynamicConversion (target_type, 0, args, expr.Location, Expression.CastType.Implicit).Resolve (opt_ec);
 				}
 			}
 			
@@ -426,24 +419,10 @@ namespace Mono.CSharp {
 					return expr;
 				}
 
+				// create an implicit dynamic conversion
 				Arguments args = new Arguments (1);
-
-				// Use a dynamic conversion where possible to take advantage of type hints
-				if (expr_type.IsDynamic) {
-					args.Add (new Argument (expr));
-					return new DynamicConversion (target_type, 0, args, expr.Location).Resolve (opt_ec);
-				}
-
-				// PlayScript: Call the "CastToString()" static method to convert a dynamic to a string.  EXPENSIVE, but hey..
-				if (BuiltinTypeSpec.IsPrimitiveType (expr_type))
-					args.Add (new Argument (new BoxedCast (expr, target_type)));
-				else
-					args.Add (new Argument(EmptyCast.Create(expr, opt_ec.BuiltinTypes.Object, opt_ec)));
-
-				var function = new MemberAccess (new MemberAccess (
-					new SimpleName (PsConsts.PsRootNamespace, expr.Location), "String_fn", expr.Location), "CastToString", expr.Location);
-
-				return new Invocation (function, args).Resolve (opt_ec);
+				args.Add (new Argument (expr));
+				return new DynamicConversion (target_type, 0, args, expr.Location, Expression.CastType.Implicit).Resolve (opt_ec);
 			}
 
 			// Can always cast between Object (Dynamic) and * (AsUntyped)
@@ -453,7 +432,7 @@ namespace Mono.CSharp {
 
 				Arguments args = new Arguments (1);
 				args.Add (new Argument (expr));
-				return new DynamicConversion (target_type, 0, args, expr.Location).Resolve (opt_ec);
+				return new DynamicConversion (target_type, 0, args, expr.Location, Expression.CastType.Implicit).Resolve (opt_ec);
 			}
 
 			return null;
@@ -472,6 +451,10 @@ namespace Mono.CSharp {
 				return true;
 
 			if (opt_ec.FileType != SourceFileType.PlayScript || upconvert_only)
+				return false;
+
+			// don't allow conversion of user defined structs (such as variant)
+			if (expr_type.IsStruct && !BuiltinTypeSpec.IsPrimitiveType(expr_type)) 
 				return false;
 
 			//

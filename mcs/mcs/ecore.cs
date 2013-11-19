@@ -240,6 +240,14 @@ namespace Mono.CSharp {
 			return null;
 		}
 
+		// casting type (PlayScript distinguishes between a few types of casts)
+		public enum CastType 
+		{
+			Explicit,		// explicit cast, eg var str:String = String(o);
+			Implicit,		// implicit cast, eg var str:String = o;
+			As				// 'as' cast,     eg var str:String = o as String;
+		};
+
 		//
 		// This is used to do a resolve but provides a typespec as a 'hint'
 		// The hint is used to coerce the resolving code to produce an expression of that type.
@@ -248,18 +256,18 @@ namespace Mono.CSharp {
 		// a Boolean is required then dont do expensive coalescing)
 		// Expressions should override DoResolveWithTypeHint below
 		//
-		public Expression ResolveWithTypeHint (ResolveContext rc, TypeSpec typeHint)
+		public Expression ResolveWithTypeHint (ResolveContext rc, TypeSpec typeHint, CastType typeHintCast)
 		{
 			if ((rc.FileType == SourceFileType.PlayScript) && rc.Module.Compiler.Settings.NewDynamicRuntime_TypeHint && (typeHint != null)) {
 				// resolve with type hint
-				return this.DoResolveWithTypeHint(rc, typeHint);
+				return this.DoResolveWithTypeHint(rc, typeHint, typeHintCast);
 			} else {
 				// dont use the type hint
 				return this.Resolve(rc);
 			}
 		}
 
-		protected virtual Expression DoResolveWithTypeHint (ResolveContext rc, TypeSpec typeHint)
+		protected virtual Expression DoResolveWithTypeHint (ResolveContext rc, TypeSpec typeHint, CastType typeHintCast)
 		{
 			// by default most expressions ignore the type hint
 			return this.Resolve(rc);

@@ -285,6 +285,8 @@ namespace Mono.CSharp
 
 		protected bool useDelegateInvoke;
 
+		protected CastType  castType;
+
 		public DynamicExpressionStatement (IDynamicBinder binder, Arguments args, Location loc)
 		{
 			this.binder = binder;
@@ -823,37 +825,33 @@ namespace Mono.CSharp
 
 	class DynamicConversion : DynamicExpressionStatement, IDynamicBinder
 	{
-		public DynamicConversion (TypeSpec targetType, CSharpBinderFlags flags, Arguments args, Location loc, bool operatorAs = false)
+		public DynamicConversion (TypeSpec targetType, CSharpBinderFlags flags, Arguments args, Location loc, CastType castType = CastType.Explicit)
 			: base (null, args, loc)
 		{
 			type = targetType;
-			this.operatorAs = operatorAs;
+			this.castType = castType;
 			base.flags = flags;
 			base.binder = this;
 		}
-
-		protected bool operatorAs;
-
 
 		protected override Expression DoResolve(ResolveContext rc)
 		{
 			// get expresion we're converting
 			var expr = this.Arguments[0].Expr;
+			if (expr.Type == this.Type)
+				return expr; // nothing to do
 
 			if (rc.Module.PredefinedTypes.IsPlayScriptAotMode && rc.Module.Compiler.Settings.NewDynamicRuntime_ConvertReturnType) {
-				// unfortunately we can't use type hints when doing 'as' because it will do a normal cast and not a proper 'as' cast
-				if (!operatorAs) {
-					// encourage dynamic expression to resolve to our type to avoid this conversion
-					expr = expr.ResolveWithTypeHint(rc, this.Type);
-					if (expr.Type == this.type) {
-						// skip dynamic conversions
-						return expr;
-					}
+				// encourage dynamic expression to resolve to our type to avoid this conversion
+				expr = expr.ResolveWithTypeHint(rc, this.Type, this.castType);
+				if (expr.Type == this.type) {
+					// skip dynamic conversions
+					return expr;
 				}
 			}
 
 			if (rc.Module.PredefinedTypes.IsPlayScriptAotMode && rc.Module.Compiler.Settings.NewDynamicRuntime_Convert) {
-				var conversion = CreateDynamicConversion (rc, expr.Resolve (rc), this.Type, operatorAs);
+				var conversion = CreateDynamicConversion (rc, expr.Resolve (rc), this.Type, this.castType);
 				if (conversion != null)
 					return conversion.Resolve (rc);
 			}
@@ -861,22 +859,41 @@ namespace Mono.CSharp
 			return base.DoResolve(rc);
 		}
 
-		private static string GetDynamicConversionTypeName(TypeSpec type)
+		private static string GetDynamicConversionSourceTypeName(ResolveContext rc, TypeSpec type)
 		{
+//			if (type.IsAsUntyped || TypeManager.IsAsUndefined (type, rc)) {
+//				return "Untyped";
+//			}
+			return ""; // rely on overloading
+		}
+
+		private static string GetDynamicConversionTargetTypeName(ResolveContext rc, TypeSpec type)
+		{
+			if (type.IsAsUntyped || TypeManager.IsAsUndefined (type, rc)) {
+				return "Untyped";
+			}
+			if (type.IsDynamic) {
+				return "Object";
+			}
 			switch (type.BuiltinType){
 				case BuiltinTypeSpec.Type.Bool:
-					return "Bool";
+					return "Boolean";
 				case BuiltinTypeSpec.Type.Int:
 					return "Int";
 				case BuiltinTypeSpec.Type.UInt:
 					return "UInt";
 				case BuiltinTypeSpec.Type.Double:
-					return "Double";
+					return "Number";
 				case BuiltinTypeSpec.Type.Float:
 					return "Float";
 				case BuiltinTypeSpec.Type.String:
 					return "String";
+				case BuiltinTypeSpec.Type.Object:
+					return "Object";
 				default:
+					if (type.IsStruct) {
+						return type.Name;
+					}
 					return null;
 			}
 		}
@@ -884,7 +901,7 @@ namespace Mono.CSharp
 
 		#region IDynamicCallSite implementation
 
-		public static Expression CreateDynamicConversion(ResolveContext rc, Expression expr, TypeSpec target_type, bool operatorAs)
+		public static Expression CreateDynamicConversion(ResolveContext rc, Expression expr, TypeSpec target_type, CastType castType)
 		{
 			var expr_type = expr.Type;
 
@@ -892,49 +909,59 @@ namespace Mono.CSharp
 			if (target_type.BuiltinType == BuiltinTypeSpec.Type.Object)
 				return EmptyCast.Create(expr, target_type, rc);
 
-			// casts between Object (Dynamic) and * (AsUntyped), and vice versa
-			if ((expr_type.IsDynamic || TypeManager.IsAsUndefined (expr_type, rc)) && target_type.IsDynamic) {
-				if (expr_type == target_type)
-					return expr; // nothing to do
-
-				// in C#, allow dynamic to hold undefined
-				if (rc.FileType != SourceFileType.PlayScript)
-					return EmptyCast.Create (expr, target_type, rc).Resolve (rc);
-
+			// if casting to dynamic, or a class, or interface (but not to string or struct) then do a simple cast
+			if ((target_type.IsDynamic || target_type.IsClass || target_type.IsInterface) && (target_type.BuiltinType != BuiltinTypeSpec.Type.String && !target_type.IsStruct)) {
 				// cast from * (AsUntyped) to Object (Dynamic)
-				if ((expr.Type.IsAsUntyped || TypeManager.IsAsUndefined (expr.Type, rc)) && !target_type.IsAsUntyped) {
+				if ((rc.FileType == SourceFileType.PlayScript) && (expr.Type.IsAsUntyped || TypeManager.IsAsUndefined (expr.Type, rc)) && !target_type.IsAsUntyped) {
 					var args = new Arguments (1);
 					args.Add (new Argument (EmptyCast.RemoveDynamic (rc, expr)));
 					args[0].UpconvertOnly = true;
 					var function = new MemberAccess (new TypeExpression (rc.Module.PredefinedTypes.PsConverter.Resolve (), expr.Location), "UntypedToObject", expr.Location);
-					return new Invocation (function, args);
-				}
+					// cast to Object first (this returns null if undefined)
+					expr = new Invocation (function, args).Resolve(rc);
+				} 
 
-				// cast from Object (Dynamic) to * (AsUntyped)
-				return EmptyCast.Create (expr, target_type, rc).Resolve (rc);
-			}
-
-			// other class types must be type checked - fall back to the slow path
-			if ((target_type.IsClass || target_type.IsInterface) && target_type.BuiltinType != BuiltinTypeSpec.Type.String)
-				return null;
-
-			TypeSpec converter = rc.Module.PredefinedTypes.PsConverter.Resolve();
-
-			// get target type name
-			string typeName = GetDynamicConversionTypeName(target_type);
-			if (typeName == null) {
-				// unhandled cast, just use empty cast
+				// cast to class or interface or * (AsUntyped)
 				return EmptyCast.Create(expr, target_type, rc);
 			}
 
-			// build converter method name
-			// different conversion method for "as" vs normal casts
-			string converterMethod = operatorAs ? ("As"+typeName) : ("To"+typeName);
+			TypeSpec converter = rc.Module.PredefinedTypes.PsConverter.Resolve();
 
-			var cast_args = new Arguments(1);
-			cast_args.Add(new Argument(EmptyCast.RemoveDynamic(rc, expr)));
-			cast_args[0].UpconvertOnly = true;	// do not impicitly down convert values, to allow for proper method overloading
-			return new Invocation(new MemberAccess(new TypeExpression(converter, expr.Location), converterMethod, expr.Location), cast_args);
+			// get source and target target type name
+			string sourceTypeName = GetDynamicConversionSourceTypeName(rc, expr.Type);
+			string targetTypeName = GetDynamicConversionTargetTypeName(rc, target_type);
+			if (sourceTypeName == null || targetTypeName == null) {
+				rc.Report.Error (39, expr.Location, "Cannot convert type `{0}' to `{1}' via a dynamic {2} conversion",
+				                 expr.Type.GetSignatureForError (), target_type.GetSignatureForError (), castType.ToString());
+				return null;
+			}
+
+			// build converter method name depending on casting type
+			string converterMethod;
+			switch (castType)
+			{
+				case CastType.As: 
+					converterMethod = sourceTypeName + "As" + targetTypeName;
+					break;
+				case CastType.Explicit:
+					converterMethod = sourceTypeName + "To" + targetTypeName;
+					break;
+				case CastType.Implicit:
+					converterMethod = sourceTypeName + "ImplicitTo" + targetTypeName;
+					break;
+				default:
+					throw new Exception("Unknown cast type in DynamicConversion" + castType);
+			}
+
+			if (expr.Type.IsStruct && !BuiltinTypeSpec.IsPrimitiveType(expr.Type)) {
+				// just invoke converter directly on the struct (to handle variants)
+				return new Invocation(new MemberAccess(expr, converterMethod, expr.Location), new Arguments(0));
+			}  else {
+				var cast_args = new Arguments(1);
+				cast_args.Add(new Argument(EmptyCast.RemoveDynamic(rc, expr)));
+				cast_args[0].UpconvertOnly = true;	// do not impicitly down convert values, to allow for proper method overloading
+				return new Invocation(new MemberAccess(new TypeExpression(converter, expr.Location), converterMethod, expr.Location), cast_args);
+			}
 		}
 
 		#endregion
@@ -1216,17 +1243,19 @@ namespace Mono.CSharp
 					TypeSpec converter = rc.Module.PredefinedTypes.PsConverter.Resolve();
 					var site_args = new Arguments(1);
 					site_args.Add(new Argument(EmptyCast.RemoveDynamic(rc, Arguments[0].Expr.Resolve(rc))));
-					return new Invocation(new MemberAccess(new TypeExpression(converter, Location), "ConvertToString", Location), site_args).Resolve(rc);
+					return new Invocation(new MemberAccess(new TypeExpression(converter, Location), "InvokeToString", Location), site_args).Resolve(rc);
 				}
 			}
 
 			return base.DoResolve(rc);
 		}
 
-		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec t) {
-			if (IsMemberAccess)
+		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec t, CastType typeHintCast) {
+			// we dont support "as" style casts yet
+			if (IsMemberAccess && (typeHintCast != CastType.As))
 			{
 				this.Type = t;
+				this.castType = typeHintCast;
 			}
 			return this.Resolve(rc);
 		}
@@ -1479,8 +1508,12 @@ namespace Mono.CSharp
 			base.binder = this;
 		}
 
-		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec t) {
-			this.Type = t;
+		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec t, CastType typeHintCast) {
+			// we dont support 'as' style type casts yet
+			if (typeHintCast != CastType.As) {
+				this.Type = t;
+				this.castType = typeHintCast;
+			}
 			return this.Resolve(rc);
 		}
 
@@ -1604,6 +1637,9 @@ namespace Mono.CSharp
 				case BuiltinTypeSpec.Type.UInt:
 					return "UInt";
 				default:
+					if (type.IsStruct) {
+						return type.Name;
+					}
 					return "Object";
 			}
 		}
@@ -1710,6 +1746,9 @@ namespace Mono.CSharp
 				case BuiltinTypeSpec.Type.UInt:
 					return "UInt";
 				default:
+					if (type.IsStruct) {
+						return type.Name;
+					}
 					return "Obj";
 			}
 		}
@@ -1820,6 +1859,10 @@ namespace Mono.CSharp
 
 			// append to binary method instead of using overloads
 			binaryMethod += leftType + rightType;
+
+			// disable upconversion for arguments
+			Arguments[0].UpconvertOnly = true;
+			Arguments[1].UpconvertOnly = true;
 
 			var ret = new Invocation (new MemberAccess (new TypeExpression (binary, loc), binaryMethod, loc), Arguments).Resolve (rc);
 			if (ret.Type == rc.BuiltinTypes.Object) {

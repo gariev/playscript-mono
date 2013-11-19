@@ -27,21 +27,6 @@ namespace _root
 
 	public static class String_fn
 	{
-		public static string CastToString (object o)
-		{
-			if (o is string) {
-				return (string)o;
-			}
-			if (o == null) {
-				return "null";
-			}
-			if (o == PlayScript.Undefined._undefined) {
-				return "undefined";
-			}
-
-			return o.ToString();
-		}
-
 		public static string String (object o)
 		{
 			return o.ToString();
@@ -69,7 +54,7 @@ namespace _root
 
 		public static string String (bool b)
 		{
-			return b.ToString ();
+			return PSConverter.ToString(b);
 		}
 
 	}
@@ -79,12 +64,12 @@ namespace _root
 		// Inlineable method
 		public static double Number (string s)
 		{
-			return PSConverter.ToDouble(s);
+			return PSConverter.ToNumber(s);
 		}
 
 		public static double Number (object o)
 		{
-			return PSConverter.ToDouble(o);
+			return PSConverter.ToNumber(o);
 		}
 	}
 
@@ -125,7 +110,7 @@ namespace _root
 		// Not inlinable.. but required to get correct results in flash.
 		public static bool Boolean (object d)
 		{
-			return PSConverter.ToBool(d);
+			return PSConverter.ToBoolean(d);
 		}
 	}
 

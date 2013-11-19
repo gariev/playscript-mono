@@ -42,6 +42,35 @@ namespace PlayScript.DynamicRuntime
 	{
 		// deprecated, but we'll keep these around for awhile...
 		public static string 	ConvertToString(object o) { return ToString(o); }
+
+		//
+		// this is the implicit cast to string method
+		// this is called when implicity casting from any reference type to string (but NOT when using function style casts)
+		// note that this converts null and undefined to null
+		//
+		public static string ImplicitToString (object o)
+		{
+			if (o is string) {
+				return (string)o;
+			}
+			if (o == null) {
+				return null;
+			}
+			if (o == PlayScript.Undefined._undefined) {
+				return null;
+			}
+			if (o is bool) {
+				return PSConverter.ToString((bool)o);
+			}
+			return o.ToString();
+		}
+
+		// this is called when the toString method is called on a dynamic object
+		public static string InvokeToString (object o)
+		{
+			return ToString(o);
+		}
+
 		//
 		// casting conversions from string to value type, with parsing of decimal or hex 
 		//
@@ -52,7 +81,7 @@ namespace PlayScript.DynamicRuntime
 		}
 
 		// Boolean(string)
-		public static bool ToBool (string s)
+		public static bool ToBoolean (string s)
 		{
 			Stats.Increment(StatsCounter.ConvertToInvoked);
 
@@ -112,7 +141,7 @@ namespace PlayScript.DynamicRuntime
 		}
 
 		// Number(string)
-		public static double ToDouble (string s)
+		public static double ToNumber (string s)
 		{
 			Stats.Increment(StatsCounter.ConvertToInvoked);
 
@@ -132,7 +161,27 @@ namespace PlayScript.DynamicRuntime
 		// casting conversions
 		// 
 
-		public static bool ToBool(object o)
+		public static bool ToBoolean(bool b)
+		{
+			return b;
+		}
+
+		public static bool ToBoolean(int i)
+		{
+			return i != 0;
+		}
+
+		public static bool ToBoolean(uint u)
+		{
+			return u != 0;
+		}
+
+		public static bool ToBoolean(double d)
+		{
+			return d != 0.0;
+		}
+
+		public static bool ToBoolean(object o)
 		{
 			Stats.Increment(StatsCounter.ConvertToInvoked);
 
@@ -175,13 +224,58 @@ namespace PlayScript.DynamicRuntime
 			case TypeCode.Decimal:
 				return (decimal)o != 0;
 			case TypeCode.String:
-				return ToBool((string)o);
+				return ToBoolean((string)o);
 			case TypeCode.Empty:
 				return false;
 			case TypeCode.Object:
 				return (o != null);
 			}
 			return false;
+		}
+
+		public static bool ImplicitToBoolean(bool b)
+		{
+			return b;
+		}
+
+		public static bool ImplicitToBoolean(int i)
+		{
+			return i != 0;
+		}
+
+		public static bool ImplicitToBoolean(uint u)
+		{
+			return u != 0;
+		}
+
+		public static bool ImplicitToBoolean(double d)
+		{
+			return d != 0.0;
+		}
+
+		public static bool ImplicitToBoolean(string s)
+		{
+			return ToBoolean(s);
+		}
+
+		public static bool ImplicitToBoolean(object o)
+		{
+			return ToBoolean(o);
+		}
+
+		public static uint ToUInt(bool b)
+		{
+			return b ? 1u : 0u;
+		}
+
+		public static uint ToUInt(int i)
+		{
+			return (uint)i;
+		}
+
+		public static uint ToUInt(uint u)
+		{
+			return u;
 		}
 
 		public static uint ToUInt(double d)
@@ -226,6 +320,21 @@ namespace PlayScript.DynamicRuntime
 			default:
 				return 0u;
 			}
+		}
+
+		public static int ToInt(bool b)
+		{
+			return b ? 1 : 0;
+		}
+
+		public static int ToInt(int i)
+		{
+			return i;
+		}
+
+		public static int ToInt(uint u)
+		{
+			return (int)u;
 		}
 
 		public static int ToInt(double d)
@@ -312,17 +421,32 @@ namespace PlayScript.DynamicRuntime
 			}
 		}
 
-		public static double ToDouble(int i)
+		public static double ToNumber(bool b)
+		{
+			return b ? 1.0 : 0.0;
+		}
+
+		public static double ToNumber(int i)
 		{
 			return (double)i;
 		}
 
-		public static double ToDouble(uint u)
+		public static double ToNumber(uint u)
 		{
 			return (double)u;
 		}
 
-		public static double ToDouble(object o)
+		public static double ToNumber(double d)
+		{
+			return d;
+		}
+
+		public static double ToNumber(float f)
+		{
+			return (double)f;
+		}
+
+		public static double ToNumber(object o)
 		{
 			Stats.Increment(StatsCounter.ConvertToInvoked);
 
@@ -356,12 +480,35 @@ namespace PlayScript.DynamicRuntime
 			case TypeCode.Decimal:
 				return (double)(decimal)o;
 			case TypeCode.String:
-				return ToDouble((string)o);
+				return ToNumber((string)o);
 			default:
 				return double.NaN;
 			}
 		}
 
+		public static string ToString(bool b)
+		{
+			return b ? "true" : "false";
+		}
+
+		public static string ToString(int i)
+		{
+			return i.ToString();
+		}
+
+		public static string ToString(uint u)
+		{
+			return u.ToString();
+		}
+
+		public static string ToString(double d)
+		{
+			return d.ToString();
+		}
+
+		// this is the explicit string conversion method:
+		//   var str:String = String(o);
+		// note that this converts null and undefined to their string counterparts
 		public static string ToString(object o)
 		{
 			Stats.Increment(StatsCounter.ConvertToInvoked);
@@ -369,14 +516,20 @@ namespace PlayScript.DynamicRuntime
 			if (o is string) {
 				return (string)o;
 			}
-			if (Dynamic.IsNullOrUndefined(o)) {
-				return null;
+			if (o == null) {
+				return "null";
+			}
+			if (o == PlayScript.Undefined._undefined) {
+				return "undefined";
+			}
+			if (o is bool) {
+				return ToString((bool)o);
 			}
 			return o.ToString();
 		}
 
 		// this specifically converts a * to an Object
-		public static object UntypedToObject (object o)
+		public static dynamic UntypedToObject (object o)
 		{
 			Stats.Increment(StatsCounter.ConvertUntypedInvoked);
 
@@ -387,6 +540,11 @@ namespace PlayScript.DynamicRuntime
 			return o;
 		}
 
+		// this converts a * to a Variant
+		public static Variant ToVariant(object o)
+		{
+			return Variant.FromAnyType(o);
+		}
 
 		//
 		// "as" operator conversion functions, these have different semantics from a normal cast
@@ -396,32 +554,32 @@ namespace PlayScript.DynamicRuntime
 		// as bool
 		//
 
-		public static bool AsBool(bool b)
+		public static bool AsBoolean(bool b)
 		{
 			return b;
 		}
 
-		public static bool AsBool(int i)
+		public static bool AsBoolean(int i)
 		{
 			return false;
 		}
 
-		public static bool AsBool(uint u)
+		public static bool AsBoolean(uint u)
 		{
 			return false;
 		}
 
-		public static bool AsBool(double d)
+		public static bool AsBoolean(double d)
 		{
 			return false;
 		}
 
-		public static bool AsBool(string s)
+		public static bool AsBoolean(string s)
 		{
 			return false;
 		}
 
-		public static bool AsBool(object o)
+		public static bool AsBoolean(object o)
 		{
 			Stats.Increment(StatsCounter.ConvertAsInvoked);
 
@@ -495,9 +653,9 @@ namespace PlayScript.DynamicRuntime
 		// as uint
 		//
 
-		public static bool AsUInt(bool b)
+		public static uint AsUInt(bool b)
 		{
-			return false;
+			return 0u;
 		}
 
 		public static uint AsUInt(int i)
@@ -559,32 +717,32 @@ namespace PlayScript.DynamicRuntime
 		// as double 
 		//
 
-		public static double AsDouble(bool b)
+		public static double AsNumber(bool b)
 		{
 			return 0.0;
 		}
 
-		public static double AsDouble(int i)
+		public static double AsNumber(int i)
 		{
 			return (double)i;
 		}
 
-		public static double AsDouble(uint u)
+		public static double AsNumber(uint u)
 		{
 			return (double)u;
 		}
 
-		public static double AsDouble(double d)
+		public static double AsNumber(double d)
 		{
 			return d;
 		}
 
-		public static double AsDouble(string s)
+		public static double AsNumber(string s)
 		{
 			return 0.0;
 		}
 
-		public static double AsDouble(object o)
+		public static double AsNumber(object o)
 		{
 			Stats.Increment(StatsCounter.ConvertAsInvoked);
 
@@ -608,6 +766,31 @@ namespace PlayScript.DynamicRuntime
 		//
 
 		
+		public static float AsFloat(bool b)
+		{
+			return 0.0f;
+		}
+
+		public static float AsFloat(int i)
+		{
+			return (float)i;
+		}
+
+		public static float AsFloat(uint u)
+		{
+			return (float)u;
+		}
+
+		public static float AsFloat(double d)
+		{
+			return (float)d;
+		}
+
+		public static float AsFloat(string s)
+		{
+			return 0.0f;
+		}
+		
 		public static float AsFloat(object o)
 		{
 			Stats.Increment(StatsCounter.ConvertAsInvoked);
@@ -626,6 +809,41 @@ namespace PlayScript.DynamicRuntime
 			}
 			return 0.0f;
 		}
+
+		//
+		// as string
+		//
+
+		public static string AsString(bool b)
+		{
+			return null;
+		}
+
+		public static string AsString(int i)
+		{
+			return null;
+		}
+
+		public static string AsString(uint u)
+		{
+			return null;
+		}
+
+		public static string AsString(double d)
+		{
+			return null;
+		}
+
+		public static string AsString(string s)
+		{
+			return s;
+		}
+
+		public static string AsString(object o)
+		{
+			return o as string;
+		}
+
 
 	}
 

@@ -104,16 +104,18 @@ namespace Mono.CSharp
 		}
 
 		private TypeSpec typeHint;
-		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec typeHint)
+		private CastType typeHintCast;
+		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec typeHint, CastType typeHintCast)
 		{
 			// store type hint
 			this.typeHint = typeHint;
+			this.typeHintCast = typeHintCast;
 			return this.Resolve(rc);
 		}
 
 		protected override Expression DoResolve (ResolveContext ec)
 		{
-			var res = expr.ResolveWithTypeHint (ec, typeHint);
+			var res = expr.ResolveWithTypeHint (ec, typeHint, typeHintCast);
 			var constant = res as Constant;
 			if (constant != null && constant.IsLiteral)
 				return Constant.CreateConstantFromValue (res.Type, constant.GetValue (), expr.Location);
@@ -1846,8 +1848,15 @@ namespace Mono.CSharp
 				// Special case for as check with strings in PlayScript, since there is an implicit
 				// conversion from everything to string.
 				if (isPlayScript && type.BuiltinType == BuiltinTypeSpec.Type.String) {
-					// simply do "expr as string"
-					return this;
+					if (!etype.IsStruct) {
+						// simply do "expr as string"
+						return this;
+					} else {
+						// create a dynamic conversion that performs the as using a PSConverter.As<type> method
+						Arguments args = new Arguments (1);
+						args.Add (new Argument (expr));
+						return new DynamicConversion (type, 0, args, expr.Location, CastType.As).Resolve (ec);
+					}
 				}
 
 				Expression e = Convert.ImplicitConversionStandard (ec, expr, type, loc);
@@ -1870,10 +1879,12 @@ namespace Mono.CSharp
 
 			} else {
 
-				// create a dynamic conversion that performs the as using a PSConverter.As<type> method
-				Arguments args = new Arguments (1);
-				args.Add (new Argument (expr));
-				return new DynamicConversion (type, 0, args, expr.Location, true).Resolve (ec);
+				if (isPlayScript) {
+					// create a dynamic conversion that performs the as using a PSConverter.As<type> method
+					Arguments args = new Arguments (1);
+					args.Add (new Argument (expr));
+					return new DynamicConversion (type, 0, args, expr.Location, CastType.As).Resolve (ec);
+				}
 			}
 
 			ec.Report.Error (39, loc, "Cannot convert type `{0}' to `{1}' via a built-in conversion",
@@ -3552,10 +3563,12 @@ namespace Mono.CSharp
 		}
 
 		private TypeSpec typeHint;
-		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec typeHint)
+		private CastType typeHintCast;
+		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec typeHint, CastType typeHintCast)
 		{
 			// store type hint
 			this.typeHint = typeHint;
+			this.typeHintCast = typeHintCast;
 			return this.Resolve(rc);
 		}
 
@@ -3632,7 +3645,7 @@ namespace Mono.CSharp
 					return null;
 				}
 			} else
-				left = left.ResolveWithTypeHint (ec, typeHint);
+				left = left.ResolveWithTypeHint (ec, typeHint, typeHintCast);
 
 			if (left == null)
 				return null;
@@ -3658,7 +3671,7 @@ namespace Mono.CSharp
 				return left;
 			}
 
-			right = right.ResolveWithTypeHint (ec, typeHint);
+			right = right.ResolveWithTypeHint (ec, typeHint, typeHintCast);
 			if (right == null)
 				return null;
 
@@ -5756,7 +5769,7 @@ namespace Mono.CSharp
 			// a type that implements operator true
 
 			// resolve with a hint to resolve to a boolean type to avoid unnecessary conversion
-			expr = expr.ResolveWithTypeHint(ec, ec.BuiltinTypes.Bool);
+			expr = expr.ResolveWithTypeHint(ec, ec.BuiltinTypes.Bool, CastType.Explicit);
 
 			if (expr == null)
 				return null;
@@ -6873,13 +6886,11 @@ namespace Mono.CSharp
 					// this cast supports the Vector.<T>([1,2,3]) syntax with Arguments[0] being an AsArrayInitializer
 					var cast_expr = Arguments [0].Expr.Resolve (ec);
 					// In PlayScript, the string value of null is "null"
-					if (cast_expr.IsNull && member_expr.Type != null && member_expr.Type.BuiltinType == BuiltinTypeSpec.Type.String) {
-						// invoke CastToString so the app can decide the appropriate return value
+					if (member_expr.Type != null && member_expr.Type.BuiltinType == BuiltinTypeSpec.Type.String) {
+						// force an explicit conversion for strings
 						var args = new Arguments (1);
 						args.Add (new Argument (cast_expr));
-						var function = new MemberAccess (new MemberAccess (
-							new SimpleName (PsConsts.PsRootNamespace, expr.Location), "String_fn", expr.Location), "CastToString", expr.Location);
-						return new Invocation (function, args).Resolve (ec);
+						return new DynamicConversion (member_expr.Type, 0, args, cast_expr.Location, Expression.CastType.Explicit).Resolve (ec);
 					}
 					return (new Cast (member_expr, cast_expr, loc)).Resolve (ec);
 				} 

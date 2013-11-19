@@ -914,12 +914,12 @@ namespace PlayScript
 
 		class ConverterThenInvokerStringToDouble : ConverterThenInvoker<string, double>
 		{
-			public override void ConvertThenInvoke(string value) { mActionTo(PSConverter.ToDouble(value)); }
+			public override void ConvertThenInvoke(string value) { mActionTo(PSConverter.ToNumber(value)); }
 		}
 
 		class InvokerThenConverterStringToDouble : InvokerThenConverter<string, double>
 		{
-			public override double InvokeThenConvert() { return PSConverter.ToDouble(mFuncFrom()); }
+			public override double InvokeThenConvert() { return PSConverter.ToNumber(mFuncFrom()); }
 		}
 
 		class ConverterStringToDouble : ParamConverter<string, double>
@@ -931,18 +931,18 @@ namespace PlayScript
 
 			public static double Convert(string value)
 			{
-				return PSConverter.ToDouble(value);
+				return PSConverter.ToNumber(value);
 			}
 		}
 
 		class ConverterThenInvokerStringToBool : ConverterThenInvoker<string, bool>
 		{
-			public override void ConvertThenInvoke(string value) { mActionTo(PSConverter.ToBool(value)); }
+			public override void ConvertThenInvoke(string value) { mActionTo(PSConverter.ToBoolean(value)); }
 		}
 
 		class InvokerThenConverterStringToBool : InvokerThenConverter<string, bool>
 		{
-			public override bool InvokeThenConvert() { return PSConverter.ToBool(mFuncFrom()); }
+			public override bool InvokeThenConvert() { return PSConverter.ToBoolean(mFuncFrom()); }
 		}
 
 		class ConverterStringToBool : ParamConverter<string, bool>
@@ -954,7 +954,7 @@ namespace PlayScript
 
 			public static bool Convert(string value)
 			{
-				return PSConverter.ToBool(value);
+				return PSConverter.ToBoolean(value);
 			}
 		}
 
@@ -1048,7 +1048,7 @@ namespace PlayScript
 
 			public static double Convert(object value)
 			{
-				return PSConverter.ToDouble(value);
+				return PSConverter.ToNumber(value);
 			}
 		}
 
@@ -1079,7 +1079,7 @@ namespace PlayScript
 
 			public static bool Convert(object value)
 			{
-				return PSConverter.ToBool(value);
+				return PSConverter.ToBoolean(value);
 			}
 		}
 
@@ -1488,12 +1488,12 @@ namespace PlayScript
 
 		double IConverter<string, double>.Convert(string value)
 		{
-			return PSConverter.ToDouble(value);
+			return PSConverter.ToNumber(value);
 		}
 
 		bool IConverter<string, bool>.Convert(string value)
 		{
-			return PSConverter.ToBool(value);
+			return PSConverter.ToBoolean(value);
 		}
 
 		string IConverter<string, string>.Convert(string value)
@@ -1513,12 +1513,12 @@ namespace PlayScript
 
 		double IConverter<double>.ConvertFromObject(object value)
 		{
-			return PSConverter.ToDouble(value);
+			return PSConverter.ToNumber(value);
 		}
 
 		bool IConverter<bool>.ConvertFromObject(object value)
 		{
-			return PSConverter.ToBool(value);
+			return PSConverter.ToBoolean(value);
 		}
 
 		string IConverter<string>.ConvertFromObject(object value)
