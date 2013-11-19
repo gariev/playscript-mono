@@ -13,10 +13,6 @@
 //      See the License for the specific language governing permissions and
 //      limitations under the License.
 
-#if PLATFORM_MONOTOUCH || PLATFORM_MONODROID
-#define ALIGN32
-#endif
-
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -28,12 +24,10 @@ namespace PlayScript
 {
 	// this struct can hold any playscript value 
 	// this is used to prevent unnecessary boxing of value types (bool/int/number etc)
-#if ALIGN32
-	[StructLayout(LayoutKind.Explicit, Size=16)]
-#else
-	[StructLayout(LayoutKind.Explicit, Size=24)]
+	[DebuggerDisplay("{Type} {Value.IntValue} {Value.NumberValue} {Reference}")]
+#if PLATFORM_MONOTOUCH || PLATFORM_MONODROID
+	[StructLayout(LayoutKind.Sequential, Size=16)]
 #endif
-	[DebuggerDisplay("{mType} {mIntValue} {mNumberValue} {mObject}")]
 	public struct Variant : IEquatable<Variant>
 	{
 		// type code for variant
@@ -49,33 +43,27 @@ namespace PlayScript
 			Object
 		};
 
-// depending on alignment requirements and reference size we have to layout the structure differently
-#if ALIGN32
-		[FieldOffset(0)]
-		private TypeCode 	mType;
-		[FieldOffset(4)]
-		private object 		mObject;	
-		[FieldOffset(8)]
-		private double 		mNumberValue;
-		[FieldOffset(8)]
-		private int 		mIntValue;
-		[FieldOffset(8)]
-		private bool 		mBoolValue;
-#else
-		[FieldOffset(0)]
-		private TypeCode 	mType;
-		[FieldOffset(8)]
-		private object 		mObject;	
-		[FieldOffset(16)]
-		private double 		mNumberValue;
-		[FieldOffset(16)]
-		private int 		mIntValue;
-		[FieldOffset(16)]
-		private bool 		mBoolValue;
-#endif
+		// union containing value data
+		[StructLayout(LayoutKind.Explicit, Size=8)]
+		public struct ValueData
+		{
+			[FieldOffset(0)]
+			public double		NumberValue;
+			[FieldOffset(0)]
+			public int			IntValue;
+			[FieldOffset(0)]
+			public uint			UIntValue;
+			[FieldOffset(0)]
+			public bool			BoolValue;
+		}
 
-		// helper cast
-		private uint   UIntValue   {get {return (uint)mIntValue;}}
+		// depending on alignment requirements and reference size we may have to layout the structure differently
+		public readonly TypeCode 	Type;
+		public object 				Reference;	
+		public ValueData			Value;
+
+		// property returning the string reference
+		public string 				StringReference 	{get {return (string)Reference;}}
 
 		//
 		// constructors for different types
@@ -88,79 +76,80 @@ namespace PlayScript
 		// null value
 		public static Variant Null = new Variant(TypeCode.Null);
 
-		private Variant(TypeCode type)
+		public Variant(TypeCode type)
 		{
-			mType = type;
-			mObject = null;
-			mBoolValue = false;
-			mNumberValue = 0.0;
-			mIntValue = 0;
+			Type = type;
+			Reference = null;
+			Value = new ValueData();
+		}
+
+		public Variant(TypeCode type, object reference, ValueData data)
+		{
+			Type = type;
+			Reference = reference;
+			Value = data;
 		}
 
 		public Variant(bool value)
 		{
-			mType = TypeCode.Boolean;
-			mObject = value ? sBoolTrue : sBoolFalse;
-			mNumberValue = 0.0;
-			mIntValue = 0;
-			mBoolValue = value;
+			Type = TypeCode.Boolean;
+			Reference = value ? sBoolTrue : sBoolFalse;
+			Value = new ValueData();
+			Value.BoolValue = value;
 		}
 
 		public Variant(int value, object boxedValue = null)
 		{
-			mType = TypeCode.Int;
-			mObject = boxedValue;
-			mBoolValue = false;
-			mNumberValue = 0.0;
-			mIntValue = value;
+			Type = TypeCode.Int;
+			Reference = boxedValue;
+			Value = new ValueData();
+			Value.IntValue = value;
 		}
 
 		public Variant(uint value, object boxedValue = null)
 		{
-			mType = TypeCode.UInt;
-			mObject = boxedValue;
-			mBoolValue = false;
-			mNumberValue = 0.0;
-			mIntValue = (int)value;
+			Type = TypeCode.UInt;
+			Reference = boxedValue;
+			Value = new ValueData();
+			Value.UIntValue = value;
 		}
 
 		public Variant(double value, object boxedValue = null)
 		{
-			mType = TypeCode.Number;
-			mObject = boxedValue;
-			mBoolValue = false;
-			mIntValue = 0;
-			mNumberValue = value;
+			Type = TypeCode.Number;
+			Reference = boxedValue;
+			Value = new ValueData();
+			Value.NumberValue = value;
 		}
 
 		public Variant(string value)
 		{
-			mType = TypeCode.String;
-			mObject = value;
-			mBoolValue = false;
-			mNumberValue = 0.0;
-			mIntValue = 0;
+			Type = TypeCode.String;
+			Reference = value;
+			Value = new ValueData();
 		}
 
 		public Variant(object value)
 		{
-			mType = TypeCode.Object;
-			mObject = value;
-			mBoolValue = false;
-			mNumberValue = 0.0;
-			mIntValue = 0;
+			Type = TypeCode.Object;
+			Reference = value;
+			Value = new ValueData();
 		}
 
-		public TypeCode Type
-		{
-			get {return mType;}
-		}
 
 		public bool IsDefined
 		{
 			get
 			{
-				return mType != TypeCode.Undefined;
+				return Type != TypeCode.Undefined;
+			}
+		}
+
+		public bool IsUndefined
+		{
+			get
+			{
+				return Type == TypeCode.Undefined;
 			}
 		}
 
@@ -168,7 +157,7 @@ namespace PlayScript
 		{
 			get
 			{
-				return mType == TypeCode.Null;
+				return Type == TypeCode.Null;
 			}
 		}
 
@@ -176,7 +165,31 @@ namespace PlayScript
 		{
 			get
 			{
-				return mType == TypeCode.Boolean;
+				return Type == TypeCode.Boolean;
+			}
+		}
+
+		public bool IsInt
+		{
+			get
+			{
+				return Type == TypeCode.Int;
+			}
+		}
+
+		public bool IsUInt
+		{
+			get
+			{
+				return Type == TypeCode.UInt;
+			}
+		}
+
+		public bool IsNumber
+		{
+			get
+			{
+				return Type == TypeCode.Number;
 			}
 		}
 
@@ -184,7 +197,7 @@ namespace PlayScript
 		{
 			get
 			{
-				return mType == TypeCode.String;
+				return Type == TypeCode.String;
 			}
 		}
 
@@ -192,7 +205,15 @@ namespace PlayScript
 		{
 			get
 			{
-				return mType == TypeCode.Int || mType == TypeCode.UInt || mType == TypeCode.Number;
+				return Type == TypeCode.Int || Type == TypeCode.UInt || Type == TypeCode.Number;
+			}
+		}
+
+		public bool IsReference
+		{
+			get 
+			{
+				return Reference != null;
 			}
 		}
 
@@ -200,7 +221,7 @@ namespace PlayScript
 		{
 			get 
 			{
-				return mObject != null;
+				return (Type < TypeCode.String) && (Reference != null);
 			}
 		}
 
@@ -209,23 +230,23 @@ namespace PlayScript
 		{
 			get 
 			{
-				switch (mType) {
+				switch (Type) {
 				case TypeCode.Undefined:
 					return true; 
 				case TypeCode.Null:
 					return true;
 				case TypeCode.Boolean:
-					return mBoolValue == false;
+					return Value.BoolValue == false;
 				case TypeCode.Int:
-					return mIntValue == 0;
+					return Value.IntValue == 0;
 				case TypeCode.UInt:
-					return UIntValue == 0;
+					return Value.UIntValue == 0;
 				case TypeCode.Number:
-					return mNumberValue == 0.0;
+					return Value.NumberValue == 0.0;
 				case TypeCode.String:
-					return mObject == null;
+					return Reference == null;
 				case TypeCode.Object:
-					return mObject == null;
+					return Reference == null;
 				default:
 					throw new InvalidCastException();
 				}
@@ -234,25 +255,25 @@ namespace PlayScript
 
 		public override string ToString()
 		{
-			switch (mType) {
+			switch (Type) {
 			case TypeCode.Undefined:
 				return "<undefined>";
 			case TypeCode.Null:
 				return "<null>";
 			case TypeCode.Boolean:
-				return mBoolValue ? "true" : "false";
+				return Value.BoolValue ? "true" : "false";
 			case TypeCode.Int:
-				return mIntValue.ToString();
+				return Value.IntValue.ToString();
 			case TypeCode.UInt:
-				return UIntValue.ToString();
+				return Value.UIntValue.ToString();
 			case TypeCode.Number:
-				return mNumberValue.ToString();
+				return Value.NumberValue.ToString();
 			case TypeCode.String:
-				return (string)mObject;
+				return StringReference;
 			case TypeCode.Object:
-				return mObject.ToString();
+				return Reference.ToString();
 			default:
-				return "Type: " + this.mType.ToString();
+				return "Type: " + this.Type.ToString();
 			}
 		}
 
@@ -270,7 +291,7 @@ namespace PlayScript
 		[return: AsUntyped]
 		public object ToUntyped()
 		{
-			if (mType == TypeCode.Undefined) {
+			if (Type == TypeCode.Undefined) {
 				return PlayScript.Undefined._undefined;
 			} else {
 				return ToObject();
@@ -282,12 +303,12 @@ namespace PlayScript
 		public object ToObject(object defaultValue = null)
 		{
 			// return referenced or boxed object if we have it
-			if (mObject != null) {
-				return mObject;
+			if (Reference != null) {
+				return Reference;
 			}
 
 			// box value types to number and cache boxed object in our reference
-			switch (mType) {
+			switch (Type) {
 			case TypeCode.Undefined:
 				// return default value (do not cache it)
 				return defaultValue;
@@ -295,33 +316,34 @@ namespace PlayScript
 				// return null (do not return default value)
 				return null;
 			case TypeCode.Boolean:
-				mObject = mBoolValue ? sBoolTrue : sBoolFalse;
+				Reference = Value.BoolValue ? sBoolTrue : sBoolFalse;
 				break;
 			case TypeCode.Int:
-				if (mIntValue == 0) mObject = sIntZero; else 
-				if (mIntValue == 1) mObject = sIntOne; else 
-				if (mIntValue ==-1) mObject = sIntNegOne; else
-					mObject = (object)mIntValue;	// box integer
+				if (Value.IntValue == 0) Reference = sIntZero; else 
+				if (Value.IntValue == 1) Reference = sIntOne; else 
+				if (Value.IntValue ==-1) Reference = sIntNegOne; else
+					Reference = (object)Value.IntValue;	// box integer
 				break;
 			case TypeCode.UInt:
-				if (UIntValue == 0u) mObject = sUIntZero; else 
-				if (UIntValue == 1u) mObject = sUIntOne; else
-					mObject = (object)UIntValue;	// box integer
+				if (Value.UIntValue == 0u) Reference = sUIntZero; else 
+				if (Value.UIntValue == 1u) Reference = sUIntOne; else
+					Reference = (object)Value.UIntValue;	// box integer
 				break;
 			case TypeCode.Number:
-				if (mNumberValue == 0.0) mObject = sNumberZero; else
-				if (mNumberValue == 1.0) mObject = sNumberOne; else 
-					mObject = (object)mNumberValue; // box number
+				if (Value.NumberValue == 0.0) Reference = sNumberZero; else
+				if (Value.NumberValue == 1.0) Reference = sNumberOne; else 
+					Reference = (object)Value.NumberValue; // box number
 				break;
 			}
 
-			return mObject;
+			return Reference;
 		}
+
 
 		public int ToInt(int defaultValue)
 		{
 			// return default value only in the undefined case
-			if (mType == TypeCode.Undefined) {
+			if (Type == TypeCode.Undefined) {
 				return defaultValue;
 			} else {
 				return ToInt();
@@ -330,25 +352,25 @@ namespace PlayScript
 
 		public int ToInt()
 		{
-			if (mType == TypeCode.Int) {
-				return mIntValue;
+			if (Type == TypeCode.Int) {
+				return Value.IntValue;
 			}
 
-			switch (mType) {
+			switch (Type) {
 			case TypeCode.Undefined:
 				return 0;
 			case TypeCode.Null:
 				return 0;
 			case TypeCode.Boolean:
-				return mBoolValue ? 1 : 0;
+				return Value.BoolValue ? 1 : 0;
 			case TypeCode.Int:
-				return mIntValue;
+				return Value.IntValue;
 			case TypeCode.UInt:
-				return (int)UIntValue;
+				return (int)Value.UIntValue;
 			case TypeCode.Number:
-				return (int)mNumberValue;
+				return (int)Value.NumberValue;
 			case TypeCode.String:
-				return PSConverter.ToInt((string)mObject);
+				return PSConverter.ToInt(StringReference);
 			case TypeCode.Object:
 				return 0;
 			default:
@@ -358,14 +380,14 @@ namespace PlayScript
 
 		public int AsInt()
 		{
-			if (mType == TypeCode.Int) {
-				return mIntValue;
+			if (Type == TypeCode.Int) {
+				return Value.IntValue;
 			}
-			if (mType == TypeCode.Number) {
-				return PSConverter.AsInt(mNumberValue);
+			if (Type == TypeCode.Number) {
+				return PSConverter.AsInt(Value.NumberValue);
 			}
-			if (mType == TypeCode.UInt) {
-				return PSConverter.AsInt(UIntValue);
+			if (Type == TypeCode.UInt) {
+				return PSConverter.AsInt(Value.UIntValue);
 			}
 			return 0;
 		}
@@ -373,7 +395,7 @@ namespace PlayScript
 		public uint ToUInt(uint defaultValue)
 		{
 			// return default value only in the undefined case
-			if (mType == TypeCode.Undefined) {
+			if (Type == TypeCode.Undefined) {
 				return defaultValue;
 			} else {
 				return ToUInt();
@@ -382,24 +404,24 @@ namespace PlayScript
 
 		public uint ToUInt()
 		{
-			if (mType == TypeCode.UInt) {
-				return UIntValue;
+			if (Type == TypeCode.UInt) {
+				return Value.UIntValue;
 			}
-			switch (mType) {
+			switch (Type) {
 			case TypeCode.Undefined:
 				return 0u;
 			case TypeCode.Null:
 				return 0u;
 			case TypeCode.Boolean:
-				return mBoolValue ? 1u : 0u;
+				return Value.BoolValue ? 1u : 0u;
 			case TypeCode.Int:
-				return (uint)mIntValue;
+				return (uint)Value.IntValue;
 			case TypeCode.UInt:
-				return UIntValue;
+				return Value.UIntValue;
 			case TypeCode.Number:
-				return (uint)mNumberValue;
+				return (uint)Value.NumberValue;
 			case TypeCode.String:
-				return PSConverter.ToUInt((string)mObject);
+				return PSConverter.ToUInt(StringReference);
 			case TypeCode.Object:
 				return 0u;
 			default:
@@ -409,14 +431,14 @@ namespace PlayScript
 
 		public uint AsUInt()
 		{
-			if (mType == TypeCode.UInt) {
-				return UIntValue;
+			if (Type == TypeCode.UInt) {
+				return Value.UIntValue;
 			}
-			if (mType == TypeCode.Int) {
-				return PSConverter.AsUInt(mIntValue);
+			if (Type == TypeCode.Int) {
+				return PSConverter.AsUInt(Value.IntValue);
 			}
-			if (mType == TypeCode.Number) {
-				return PSConverter.AsUInt(mNumberValue);
+			if (Type == TypeCode.Number) {
+				return PSConverter.AsUInt(Value.NumberValue);
 			}
 			return 0u;
 		}
@@ -424,7 +446,7 @@ namespace PlayScript
 		public bool ToBoolean(bool defaultValue)
 		{
 			// return default value only in the undefined case
-			if (mType == TypeCode.Undefined) {
+			if (Type == TypeCode.Undefined) {
 				return defaultValue;
 			} else {
 				return ToBoolean();
@@ -433,26 +455,26 @@ namespace PlayScript
 
 		public bool ToBoolean()
 		{
-			if (mType == TypeCode.Boolean) {
-				return mBoolValue;
+			if (Type == TypeCode.Boolean) {
+				return Value.BoolValue;
 			}
-			switch (mType) {
+			switch (Type) {
 			case TypeCode.Undefined:
 				return false;
 			case TypeCode.Null:
 				return false;
 			case TypeCode.Boolean:
-				return mBoolValue;
+				return Value.BoolValue;
 			case TypeCode.Int:
-				return mIntValue != 0;
+				return Value.IntValue != 0;
 			case TypeCode.UInt:
-				return UIntValue != 0u;
+				return Value.UIntValue != 0u;
 			case TypeCode.Number:
-				return mNumberValue != 0.0;
+				return Value.NumberValue != 0.0;
 			case TypeCode.String:
-				return PSConverter.ToBoolean((string)mObject);
+				return PSConverter.ToBoolean(StringReference);
 			case TypeCode.Object:
-				return mObject != null;
+				return Reference != null;
 			default:
 				throw new InvalidCastException("Cannot cast to UInt");
 			}
@@ -460,8 +482,8 @@ namespace PlayScript
 
 		public bool AsBoolean()
 		{
-			if (mType == TypeCode.Boolean) {
-				return mBoolValue;
+			if (Type == TypeCode.Boolean) {
+				return Value.BoolValue;
 			} else {
 				return false;
 			}
@@ -470,7 +492,7 @@ namespace PlayScript
 		public double ToNumber(double defaultValue)
 		{
 			// return default value only in the undefined case
-			if (mType == TypeCode.Undefined) {
+			if (Type == TypeCode.Undefined) {
 				return defaultValue;
 			} else {
 				return ToNumber();
@@ -479,24 +501,24 @@ namespace PlayScript
 
 		public double ToNumber()
 		{
-			if (mType == TypeCode.Number) {
-				return (double)mNumberValue;
+			if (Type == TypeCode.Number) {
+				return (double)Value.NumberValue;
 			}
-			switch (mType) {
+			switch (Type) {
 			case TypeCode.Undefined:
 				return double.NaN;
 			case TypeCode.Null:
 				return 0.0;
 			case TypeCode.Boolean:
-				return mBoolValue ? 1.0 : 0.0;
+				return Value.BoolValue ? 1.0 : 0.0;
 			case TypeCode.Int:
-				return (double)mIntValue;
+				return (double)Value.IntValue;
 			case TypeCode.UInt:
-				return (double)UIntValue;
+				return (double)Value.UIntValue;
 			case TypeCode.Number:
-				return mNumberValue;
+				return Value.NumberValue;
 			case TypeCode.String:
-				return PSConverter.ToNumber((string)mObject);
+				return PSConverter.ToNumber(StringReference);
 			case TypeCode.Object:
 				return double.NaN;
 			default:
@@ -506,14 +528,14 @@ namespace PlayScript
 
 		public double AsNumber()
 		{
-			if (mType == TypeCode.Number) {
-				return (double)mNumberValue;
+			if (Type == TypeCode.Number) {
+				return (double)Value.NumberValue;
 			}
-			if (mType == TypeCode.Int) {
-				return (double)mIntValue;
+			if (Type == TypeCode.Int) {
+				return (double)Value.IntValue;
 			}
-			if (mType == TypeCode.UInt) {
-				return (double)UIntValue;
+			if (Type == TypeCode.UInt) {
+				return (double)Value.UIntValue;
 			}
 			return 0.0f;
 		}
@@ -521,7 +543,7 @@ namespace PlayScript
 		public float ToFloat(float defaultValue)
 		{
 			// return default value only in the undefined case
-			if (mType == TypeCode.Undefined) {
+			if (Type == TypeCode.Undefined) {
 				return defaultValue;
 			} else {
 				return ToFloat();
@@ -530,24 +552,24 @@ namespace PlayScript
 
 		public float ToFloat()
 		{
-			if (mType == TypeCode.Number) {
-				return (float)mNumberValue;
+			if (Type == TypeCode.Number) {
+				return (float)Value.NumberValue;
 			}
-			switch (mType) {
+			switch (Type) {
 			case TypeCode.Undefined:
 				return float.NaN;
 			case TypeCode.Null:
 				return 0.0f;
 			case TypeCode.Boolean:
-				return mBoolValue ? 1.0f : 0.0f;
+				return Value.BoolValue ? 1.0f : 0.0f;
 			case TypeCode.Int:
-				return (float)mIntValue;
+				return (float)Value.IntValue;
 			case TypeCode.UInt:
-				return (float)UIntValue;
+				return (float)Value.UIntValue;
 			case TypeCode.Number:
-				return (float)mNumberValue;
+				return (float)Value.NumberValue;
 			case TypeCode.String:
-				return (float)PSConverter.ToNumber((string)mObject);
+				return (float)PSConverter.ToNumber(StringReference);
 			case TypeCode.Object:
 				return float.NaN;
 			default:
@@ -557,40 +579,40 @@ namespace PlayScript
 
 		public float AsFloat()
 		{
-			if (mType == TypeCode.Number) {
-				return (float)mNumberValue;
+			if (Type == TypeCode.Number) {
+				return (float)Value.NumberValue;
 			}
-			if (mType == TypeCode.Int) {
-				return (float)mIntValue;
+			if (Type == TypeCode.Int) {
+				return (float)Value.IntValue;
 			}
-			if (mType == TypeCode.UInt) {
-				return (float)UIntValue;
+			if (Type == TypeCode.UInt) {
+				return (float)Value.UIntValue;
 			}
 			return 0.0f;
 		}
 
 		public string ToString(string defaultValue = null)
 		{
-			if (mType == TypeCode.String) {
-				return (string)mObject;
+			if (Type == TypeCode.String) {
+				return StringReference;
 			}
-			switch (mType) {
+			switch (Type) {
 			case TypeCode.Undefined:
 				return defaultValue;
 			case TypeCode.Null:
 				return null;
 			case TypeCode.Boolean:
-				return mBoolValue ? "true" : "false";
+				return Value.BoolValue ? "true" : "false";
 			case TypeCode.Int:
-				return mIntValue.ToString();
+				return Value.IntValue.ToString();
 			case TypeCode.UInt:
-				return UIntValue.ToString();
+				return Value.UIntValue.ToString();
 			case TypeCode.Number:
-				return mNumberValue.ToString();
+				return Value.NumberValue.ToString();
 			case TypeCode.String:
-				return (string)mObject;
+				return StringReference;
 			case TypeCode.Object:
-				return mObject.ToString();
+				return Reference.ToString();
 			default:
 				throw new InvalidCastException("Cannot cast to String");
 			}
@@ -598,7 +620,7 @@ namespace PlayScript
 
 		public string AsString()
 		{
-			return mObject as string;
+			return Reference as string;
 		}
 
 		public object ToType(System.Type type)
@@ -703,10 +725,36 @@ namespace PlayScript
 			}
 		}
 
+		// creates a variant from a reference type of T
+		// no checks for primitive types needed
+		public static Variant FromReference<T>(T o) where T:class
+		{
+			return new Variant((object)o);
+		}
+
+		// casts to a reference type of T, throws if cast fails
+		public T ToReference<T>() where T:class
+		{
+			return (T)Reference;
+		}
+
+		// casts to a reference type of T, returns null if cast fails
+		public T AsReference<T>() where T:class
+		{
+			return Reference as T;
+		}
+
+		// casts true if variant is to a reference type of T
+		public bool IsReference<T>() where T:class
+		{
+			return Reference is T;
+		}
+
+
 		#region IEquatable implementation
 		public bool Equals(Variant other)
 		{
-			if (this.mType != other.mType) {
+			if (this.Type != other.Type) {
 				// compare numeric values by promoting them
 				if (this.IsNumeric && other.IsNumeric) {
 					return this.ToNumber() == other.ToNumber();
@@ -717,25 +765,25 @@ namespace PlayScript
 			}
 
 			// they are both the same type
-			switch (mType) {
+			switch (Type) {
 			case TypeCode.Undefined:
 				return false;
 			case TypeCode.Null:
 				return true;
 			case TypeCode.Boolean:
-				return this.mBoolValue == other.mBoolValue;
+				return this.Value.BoolValue == other.Value.BoolValue;
 			case TypeCode.Int:
-				return this.mIntValue == other.mIntValue;
+				return this.Value.IntValue == other.Value.IntValue;
 			case TypeCode.UInt:
-				return this.UIntValue == other.UIntValue;
+				return this.Value.UIntValue == other.Value.UIntValue;
 			case TypeCode.Number:
-				return this.mNumberValue == other.mNumberValue;
+				return this.Value.NumberValue == other.Value.NumberValue;
 			case TypeCode.String:
-				return ((string)mObject) == ((string)other.mObject);
+				return (StringReference) == ((string)other.Reference);
 			case TypeCode.Object:
-				return mObject.Equals(other.mObject);
+				return Reference.Equals(other.Reference);
 			default:
-				throw new InvalidCastException(mType.ToString());
+				throw new InvalidCastException(Type.ToString());
 			}
 
 		}
