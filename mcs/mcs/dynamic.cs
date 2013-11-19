@@ -852,22 +852,16 @@ namespace Mono.CSharp
 
 			if (rc.Module.PredefinedTypes.IsPlayScriptAotMode && rc.Module.Compiler.Settings.NewDynamicRuntime_Convert) {
 				var conversion = CreateDynamicConversion (rc, expr.Resolve (rc), this.Type, this.castType);
-				if (conversion != null)
+				if (conversion != null) 
 					return conversion.Resolve (rc);
+				else 
+					return null;
 			}
 
 			return base.DoResolve(rc);
 		}
 
-		private static string GetDynamicConversionSourceTypeName(ResolveContext rc, TypeSpec type)
-		{
-//			if (type.IsAsUntyped || TypeManager.IsAsUndefined (type, rc)) {
-//				return "Untyped";
-//			}
-			return ""; // rely on overloading
-		}
-
-		private static string GetDynamicConversionTargetTypeName(ResolveContext rc, TypeSpec type)
+		public static string GetDynamicConversionTypeName(ResolveContext rc, TypeSpec type)
 		{
 			if (type.IsAsUntyped || TypeManager.IsAsUndefined (type, rc)) {
 				return "Untyped";
@@ -888,11 +882,16 @@ namespace Mono.CSharp
 					return "Float";
 				case BuiltinTypeSpec.Type.String:
 					return "String";
-				case BuiltinTypeSpec.Type.Object:
-					return "Object";
 				default:
 					if (type.IsStruct) {
 						return type.Name;
+					}
+					if (TypeSpec.IsReferenceType(type)) {
+						return "Object";
+					}
+
+					if (type.IsEnum) {
+						return "Enum";
 					}
 					return null;
 			}
@@ -905,63 +904,91 @@ namespace Mono.CSharp
 		{
 			var expr_type = expr.Type;
 
-			// object can hold any value
-			if (target_type.BuiltinType == BuiltinTypeSpec.Type.Object)
-				return EmptyCast.Create(expr, target_type, rc);
+			if (expr_type == target_type)
+				return expr; // nothing to do
 
-			// if casting to dynamic, or a class, or interface (but not to string or struct) then do a simple cast
-			if ((target_type.IsDynamic || target_type.IsClass || target_type.IsInterface) && (target_type.BuiltinType != BuiltinTypeSpec.Type.String && !target_type.IsStruct)) {
-				// cast from * (AsUntyped) to Object (Dynamic)
-				if ((rc.FileType == SourceFileType.PlayScript) && (expr.Type.IsAsUntyped || TypeManager.IsAsUndefined (expr.Type, rc)) && !target_type.IsAsUntyped) {
-					var args = new Arguments (1);
-					args.Add (new Argument (EmptyCast.RemoveDynamic (rc, expr)));
-					args[0].UpconvertOnly = true;
-					var function = new MemberAccess (new TypeExpression (rc.Module.PredefinedTypes.PsConverter.Resolve (), expr.Location), "UntypedToObject", expr.Location);
-					// cast to Object first (this returns null if undefined)
-					expr = new Invocation (function, args).Resolve(rc);
-				} 
-
-				// cast to class or interface or * (AsUntyped)
-				return EmptyCast.Create(expr, target_type, rc);
-			}
-
-			TypeSpec converter = rc.Module.PredefinedTypes.PsConverter.Resolve();
-
+			//
 			// get source and target target type name
-			string sourceTypeName = GetDynamicConversionSourceTypeName(rc, expr.Type);
-			string targetTypeName = GetDynamicConversionTargetTypeName(rc, target_type);
+			//
+
+			string sourceTypeName = GetDynamicConversionTypeName(rc, expr.Type);
+			string targetTypeName = GetDynamicConversionTypeName(rc, target_type);
 			if (sourceTypeName == null || targetTypeName == null) {
+				// failure
 				rc.Report.Error (39, expr.Location, "Cannot convert type `{0}' to `{1}' via a dynamic {2} conversion",
 				                 expr.Type.GetSignatureForError (), target_type.GetSignatureForError (), castType.ToString());
 				return null;
 			}
 
-			// build converter method name depending on casting type
-			string converterMethod;
-			switch (castType)
-			{
-				case CastType.As: 
-					converterMethod = sourceTypeName + "As" + targetTypeName;
-					break;
-				case CastType.Explicit:
-					converterMethod = sourceTypeName + "To" + targetTypeName;
-					break;
-				case CastType.Implicit:
-					converterMethod = sourceTypeName + "ImplicitTo" + targetTypeName;
-					break;
-				default:
-					throw new Exception("Unknown cast type in DynamicConversion" + castType);
+			// in C#, allow dynamic to hold undefined
+			if (rc.FileType != SourceFileType.PlayScript) {
+				if (sourceTypeName == "Untyped" && target_type.IsDynamic) 
+					return EmptyCast.Create(expr, target_type, rc).Resolve(rc);
 			}
 
-			if (expr.Type.IsStruct && !BuiltinTypeSpec.IsPrimitiveType(expr.Type)) {
-				// just invoke converter directly on the struct (to handle variants)
-				return new Invocation(new MemberAccess(expr, converterMethod, expr.Location), new Arguments(0));
-			}  else {
-				var cast_args = new Arguments(1);
-				cast_args.Add(new Argument(EmptyCast.RemoveDynamic(rc, expr)));
-				cast_args[0].UpconvertOnly = true;	// do not impicitly down convert values, to allow for proper method overloading
-				return new Invocation(new MemberAccess(new TypeExpression(converter, expr.Location), converterMethod, expr.Location), cast_args);
+			// a little hacky
+			if (sourceTypeName == "Enum") {
+				expr = Convert.ExplicitConversion(rc, expr, rc.BuiltinTypes.Int, expr.Location).Resolve(rc);
+				expr_type = expr.Type;
+				sourceTypeName = "Int";
 			}
+
+			//
+			// apply conversion functions
+			//
+
+			// do we need to invoke a conversion function?
+			// only do this if the types are different
+			if (sourceTypeName != targetTypeName) {
+				if (targetTypeName != "Object" && targetTypeName != "Untyped") {
+					// simplify converter, just use overloading for these
+					sourceTypeName = "";
+				}
+
+				// build converter method name depending on casting type
+				string converterMethod;
+				switch (castType)
+				{
+					case CastType.As: 
+						converterMethod = sourceTypeName + "As" + targetTypeName;
+						break;
+					case CastType.Explicit:
+						converterMethod = sourceTypeName + "To" + targetTypeName;
+						break;
+					case CastType.Implicit:
+						converterMethod = sourceTypeName + "ImplicitTo" + targetTypeName;
+						break;
+					default:
+						throw new NotImplementedException("Cast type: " + castType);
+				}
+
+				if (expr.Type.IsStruct && !BuiltinTypeSpec.IsPrimitiveType(expr.Type)) {
+					// just invoke converter directly on the struct (to handle variants)
+					expr = new Invocation(new MemberAccess(expr, converterMethod, expr.Location), new Arguments(0)).Resolve(rc);
+				}  else {
+					TypeSpec converter = rc.Module.PredefinedTypes.PsConverter.Resolve();
+					var cast_args = new Arguments(1);
+					cast_args.Add(new Argument(EmptyCast.RemoveDynamic(rc, expr)));
+					cast_args[0].UpconvertOnly = true;	// do not impicitly down convert values, to allow for proper method overloading
+					expr = new Invocation(new MemberAccess(new TypeExpression(converter, expr.Location), converterMethod, expr.Location), cast_args).Resolve(rc);
+				}
+			}
+
+			//
+			// apply a final cast if necessary
+			//
+
+			if (target_type.IsDynamic || target_type.BuiltinType == BuiltinTypeSpec.Type.Object) {
+				// cast to dynamic or object
+				return EmptyCast.Create(expr, target_type, rc).Resolve(rc);
+			} 
+
+			if (expr.Type != target_type) {
+				// perfom explicit conversion
+				return Convert.ExplicitConversion(rc, EmptyCast.RemoveDynamic(rc, expr), target_type, expr.Location).Resolve(rc);
+			}
+
+			return expr;
 		}
 
 		#endregion
@@ -1741,6 +1768,8 @@ namespace Mono.CSharp
 					return "Int";
 				case BuiltinTypeSpec.Type.Double:
 					return "Double";
+				case BuiltinTypeSpec.Type.Float:
+					return "Float";	
 				case BuiltinTypeSpec.Type.String:
 					return "String";
 				case BuiltinTypeSpec.Type.UInt:

@@ -71,90 +71,10 @@ namespace PlayScript.DynamicRuntime
 			return ToString(o);
 		}
 
-		//
-		// casting conversions from string to value type, with parsing of decimal or hex 
-		//
-
-		private static bool IsHexString(string s)
+		// returns true if the string is possible hex (starts with 0x or 0X)
+		public static bool IsHexString(string s)
 		{
 			return (s.Length > 2) && (s[0] == '0') && (s[1] == 'x' || s[1] == 'X');
-		}
-
-		// Boolean(string)
-		public static bool ToBoolean (string s)
-		{
-			Stats.Increment(StatsCounter.ConvertToInvoked);
-
-			// note: we were wrong before, only the empty or null string produces false
-			return !string.IsNullOrEmpty(s);
-		}
-
-		// int(string)
-		public static int ToInt (string s)
-		{
-			Stats.Increment(StatsCounter.ConvertToInvoked);
-
-			if (IsHexString(s)) {
-				return (int)Convert.ToUInt32(s, 16);
-			} else {
-				int value;
-				if (int.TryParse(s, out value)) {
-					return value;
-				} else {
-					return 0;
-				}
-			}
-		}
-
-		// uint(string)
-		public static uint ToUInt (string s)
-		{
-			Stats.Increment(StatsCounter.ConvertToInvoked);
-
-			if (IsHexString(s)) {
-				return (uint)Convert.ToUInt32(s, 16);
-			} else {
-				uint value;
-				if (uint.TryParse(s, out value)) {
-					return value;
-				} else {
-					return 0u;
-				}
-			}
-		}
-
-		// float(string)
-		public static float ToFloat (string s)
-		{
-			Stats.Increment(StatsCounter.ConvertToInvoked);
-
-			if (IsHexString(s)) {
-				return (float)Convert.ToUInt32(s, 16);
-			} else {
-				float value;
-				if (float.TryParse(s, out value)) {
-					return value;
-				} else {
-					return float.NaN; // return NaN on failure
-				}
-			}
-		}
-
-		// Number(string)
-		public static double ToNumber (string s)
-		{
-			Stats.Increment(StatsCounter.ConvertToInvoked);
-
-			if (IsHexString(s)) {
-				return (double)Convert.ToUInt32(s, 16);
-			} else {
-				double value;
-				if (double.TryParse(s, out value)) {
-					return value;
-				} else {
-					return double.NaN; // return NaN on failure
-				}
-			}
 		}
 
 		//
@@ -179,6 +99,13 @@ namespace PlayScript.DynamicRuntime
 		public static bool ToBoolean(double d)
 		{
 			return d != 0.0;
+		}
+
+		// Boolean(string)
+		public static bool ToBoolean (string s)
+		{
+			// note: we were wrong before, only the empty or null string produces false
+			return !string.IsNullOrEmpty(s);
 		}
 
 		public static bool ToBoolean(object o)
@@ -263,6 +190,82 @@ namespace PlayScript.DynamicRuntime
 			return ToBoolean(o);
 		}
 
+		public static int ToInt(bool b)
+		{
+			return b ? 1 : 0;
+		}
+
+		public static int ToInt(int i)
+		{
+			return i;
+		}
+
+		public static int ToInt(uint u)
+		{
+			return (int)u;
+		}
+
+		public static int ToInt(double d)
+		{
+			return (int)d;
+		}
+
+		// int(string)
+		public static int ToInt (string s)
+		{
+			Stats.Increment(StatsCounter.ConvertToInvoked);
+
+			if (IsHexString(s)) {
+				return (int)Convert.ToUInt32(s, 16);
+			} else {
+				int value;
+				if (int.TryParse(s, out value)) {
+					return value;
+				} else {
+					return 0;
+				}
+			}
+		}
+
+		public static int ToInt(object o)
+		{
+			Stats.Increment(StatsCounter.ConvertToInvoked);
+
+			if (o == null) return 0;
+
+			TypeCode tc = Type.GetTypeCode(o.GetType());
+			switch (tc) {
+			case TypeCode.Boolean:
+				return (bool)o ? 1 : 0;
+			case TypeCode.SByte:
+				return (sbyte)o;
+			case TypeCode.Byte:
+				return (byte)o;
+			case TypeCode.Int16:
+				return (short)o;
+			case TypeCode.UInt16:
+				return (ushort)o;
+			case TypeCode.Int32:
+				return (int)o;
+			case TypeCode.UInt32:
+				return (int)(uint)o;
+			case TypeCode.Int64:
+				return (int)(long)o;
+			case TypeCode.UInt64:
+				return (int)(ulong)o;
+			case TypeCode.Single:
+				return (int)(float)o;
+			case TypeCode.Double:
+				return (int)(double)o;
+			case TypeCode.Decimal:
+				return (int)(decimal)o;
+			case TypeCode.String:
+				return ToInt((string)o);
+			default:
+				return 0;
+			}
+		}
+
 		public static uint ToUInt(bool b)
 		{
 			return b ? 1u : 0u;
@@ -281,6 +284,23 @@ namespace PlayScript.DynamicRuntime
 		public static uint ToUInt(double d)
 		{
 			return (uint)d;
+		}
+
+		// uint(string)
+		public static uint ToUInt (string s)
+		{
+			Stats.Increment(StatsCounter.ConvertToInvoked);
+
+			if (IsHexString(s)) {
+				return (uint)Convert.ToUInt32(s, 16);
+			} else {
+				uint value;
+				if (uint.TryParse(s, out value)) {
+					return value;
+				} else {
+					return 0u;
+				}
+			}
 		}
 
 		public static uint ToUInt(object o)
@@ -322,62 +342,22 @@ namespace PlayScript.DynamicRuntime
 			}
 		}
 
-		public static int ToInt(bool b)
-		{
-			return b ? 1 : 0;
-		}
 
-		public static int ToInt(int i)
-		{
-			return i;
-		}
-
-		public static int ToInt(uint u)
-		{
-			return (int)u;
-		}
-
-		public static int ToInt(double d)
-		{
-			return (int)d;
-		}
-
-		public static int ToInt(object o)
+		
+		// float(string)
+		public static float ToFloat (string s)
 		{
 			Stats.Increment(StatsCounter.ConvertToInvoked);
 
-			if (o == null) return 0;
-
-			TypeCode tc = Type.GetTypeCode(o.GetType());
-			switch (tc) {
-			case TypeCode.Boolean:
-				return (bool)o ? 1 : 0;
-			case TypeCode.SByte:
-				return (sbyte)o;
-			case TypeCode.Byte:
-				return (byte)o;
-			case TypeCode.Int16:
-				return (short)o;
-			case TypeCode.UInt16:
-				return (ushort)o;
-			case TypeCode.Int32:
-				return (int)o;
-			case TypeCode.UInt32:
-				return (int)(uint)o;
-			case TypeCode.Int64:
-				return (int)(long)o;
-			case TypeCode.UInt64:
-				return (int)(ulong)o;
-			case TypeCode.Single:
-				return (int)(float)o;
-			case TypeCode.Double:
-				return (int)(double)o;
-			case TypeCode.Decimal:
-				return (int)(decimal)o;
-			case TypeCode.String:
-				return ToInt((string)o);
-			default:
-				return 0;
+			if (IsHexString(s)) {
+				return (float)Convert.ToUInt32(s, 16);
+			} else {
+				float value;
+				if (float.TryParse(s, out value)) {
+					return value;
+				} else {
+					return float.NaN; // return NaN on failure
+				}
 			}
 		}
 
@@ -444,6 +424,23 @@ namespace PlayScript.DynamicRuntime
 		public static double ToNumber(float f)
 		{
 			return (double)f;
+		}
+		
+		// Number(string)
+		public static double ToNumber (string s)
+		{
+			Stats.Increment(StatsCounter.ConvertToInvoked);
+
+			if (IsHexString(s)) {
+				return (double)Convert.ToUInt32(s, 16);
+			} else {
+				double value;
+				if (double.TryParse(s, out value)) {
+					return value;
+				} else {
+					return double.NaN; // return NaN on failure
+				}
+			}
 		}
 
 		public static double ToNumber(object o)
@@ -528,7 +525,7 @@ namespace PlayScript.DynamicRuntime
 			return o.ToString();
 		}
 
-		// this specifically converts a * to an Object
+		// this explicitly converts a * to an Object
 		public static dynamic UntypedToObject (object o)
 		{
 			Stats.Increment(StatsCounter.ConvertUntypedInvoked);
@@ -537,6 +534,47 @@ namespace PlayScript.DynamicRuntime
 				return null; // only type "*" can be undefined
 			}
 
+			return o;
+		}
+
+		// this implicitly converts a * to an Object
+		public static dynamic UntypedImplicitToObject (object o)
+		{
+			Stats.Increment(StatsCounter.ConvertUntypedInvoked);
+
+			if (o == PlayScript.Undefined._undefined) {
+				return null; // only type "*" can be undefined
+			}
+
+			return o;
+		}
+
+		// this converts a * to an Object with "as"
+		public static dynamic UntypedAsObject (object o)
+		{
+			Stats.Increment(StatsCounter.ConvertUntypedInvoked);
+
+			if (o == PlayScript.Undefined._undefined) {
+				return null; // only type "*" can be undefined
+			}
+
+			return o;
+		}
+
+		[return: AsUntyped]
+		public static dynamic ObjectImplicitToUntyped (object o)
+		{
+			return o;
+		}
+
+		public static dynamic ToObject (object o)
+		{
+			return o;
+		}
+
+		[return: AsUntyped]
+		public static dynamic ToUntyped (object o)
+		{
 			return o;
 		}
 
