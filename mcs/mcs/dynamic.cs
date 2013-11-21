@@ -897,6 +897,21 @@ namespace Mono.CSharp
 			}
 		}
 
+		public static string GetDynamicCastName(CastType castType)
+		{
+			switch (castType)
+			{
+				case CastType.As: 
+					return "As";
+				case CastType.Explicit:
+					return "To";
+				case CastType.Implicit:
+					return "ImplicitTo";
+				default:
+					throw new NotImplementedException("Cast type: " + castType);
+			}
+		}
+
 
 		#region IDynamicCallSite implementation
 
@@ -948,21 +963,7 @@ namespace Mono.CSharp
 				}
 
 				// build converter method name depending on casting type
-				string converterMethod;
-				switch (castType)
-				{
-					case CastType.As: 
-						converterMethod = sourceTypeName + "As" + targetTypeName;
-						break;
-					case CastType.Explicit:
-						converterMethod = sourceTypeName + "To" + targetTypeName;
-						break;
-					case CastType.Implicit:
-						converterMethod = sourceTypeName + "ImplicitTo" + targetTypeName;
-						break;
-					default:
-						throw new NotImplementedException("Cast type: " + castType);
-				}
+				string converterMethod = sourceTypeName + GetDynamicCastName(castType) + targetTypeName;
 
 				if (expr.Type.IsStruct && !BuiltinTypeSpec.IsPrimitiveType(expr.Type)) {
 					// just invoke converter directly on the struct (to handle variants)
@@ -1090,6 +1091,15 @@ namespace Mono.CSharp
 			: this (args, loc)
 		{
 			base.flags = flags;
+		}
+
+		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec t, CastType typeHintCast) {
+			// we dont support 'as' style type casts yet for indexers
+			if (typeHintCast != CastType.As) {
+				this.Type = t;
+				this.castType = typeHintCast;
+			}
+			return this.Resolve(rc);
 		}
 
 		protected override Expression DoResolve (ResolveContext ec)
@@ -1424,6 +1434,13 @@ namespace Mono.CSharp
 			base.flags = flags;
 		}
 
+		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec t, CastType typeHintCast) {
+			this.Type = t;
+			this.castType = typeHintCast;
+			return this.Resolve(rc);
+		}
+
+
 		#region IDynamicCallSite implementation
 
 		public override bool UseCallSite(ResolveContext ec, Arguments args)
@@ -1450,6 +1467,11 @@ namespace Mono.CSharp
 			);
 		}
 
+		private static bool NeedsGenericMethod(TypeSpec t)
+		{
+			return (t.IsClass || t.IsInterface || t.IsDelegate) && (t.BuiltinType != BuiltinTypeSpec.Type.String) && (t.BuiltinType != BuiltinTypeSpec.Type.Object);
+		}
+
 		public override Expression InvokeCallSite(ResolveContext rc, Expression site, Arguments args, TypeSpec returnType, bool isStatement)
 		{
 			var obj = args[0].Expr;
@@ -1457,39 +1479,47 @@ namespace Mono.CSharp
 			bool isSet = IsSetter(site);
 			isSet |= (flags & CSharpBinderFlags.ValueFromCompoundAssignment) != 0;
 			if (!isSet) {
-				if (NeedsCastToObject(returnType)) {
+				if (!NeedsGenericMethod(returnType)) {
+					// build get method (example: GetMemberToInt, GetMemberAsString, etc)
+					string methodName = "GetMember" + DynamicConversion.GetDynamicCastName(this.castType) + DynamicConversion.GetDynamicConversionTypeName(rc, returnType);
+
 					var site_args = new Arguments(1);
 					site_args.Add(new Argument(obj));
-					if (returnType != null && returnType.IsAsUntyped)
-						return new Invocation(new MemberAccess(site, "GetMemberAsUntyped"), site_args);
-					else
-						return new Invocation(new MemberAccess(site, "GetMemberAsObject"), site_args);
+					return new Invocation(new MemberAccess(site, methodName), site_args);
 				} else {
+					string methodName = "GetMember" + DynamicConversion.GetDynamicCastName(this.castType) + "Reference";
+
 					var site_args = new Arguments(1);
 					site_args.Add(new Argument(obj));
 
 					var type_args = new TypeArguments();
 					type_args.Add(new TypeExpression(returnType, loc));
-					return new Invocation(new MemberAccess(site, "GetMember", type_args, loc), site_args);
+					return new Invocation(new MemberAccess(site, methodName, type_args, loc), site_args);
 				}
 			} else {
 				var setVal = args[1].Expr;
 
-				if (NeedsCastToObject(setVal.Type)) {
-					var site_args = new Arguments(3);
-					site_args.Add(new Argument(obj));
-					site_args.Add(new Argument(new Cast(new TypeExpression(rc.BuiltinTypes.Object, loc), setVal, loc)));
-					site_args.Add(new Argument(new BoolLiteral(rc.BuiltinTypes, false, loc)));
-					// TODO: AsUntyped parameters aren't yet supported, so there is no SetMemberAsUntyped
-					return new Invocation(new MemberAccess(site, "SetMemberAsObject"), site_args);
-				} else {
+				if (!NeedsGenericMethod(setVal.Type)) {
+					string methodName = "SetMemberTo" + DynamicConversion.GetDynamicConversionTypeName(rc, setVal.Type);
+
 					var site_args = new Arguments(2);
 					site_args.Add(new Argument(obj));
-					site_args.Add(new Argument(setVal));
+					site_args.Add(new Argument(EmptyCast.RemoveDynamic(rc, setVal)));
+					site_args[0].UpconvertOnly = true;
+					site_args[1].UpconvertOnly = true;
+					return new Invocation(new MemberAccess(site, methodName), site_args);
+				} else {
+					string methodName = "SetMemberToReference";
+
+					var site_args = new Arguments(2);
+					site_args.Add(new Argument(obj));
+					site_args.Add(new Argument(EmptyCast.RemoveDynamic(rc, setVal)));
+					site_args[0].UpconvertOnly = true;
+					site_args[1].UpconvertOnly = true;
 
 					var type_args = new TypeArguments();
 					type_args.Add(new TypeExpression(setVal.Type, loc));
-					return new Invocation(new MemberAccess(site, "SetMember", type_args, loc), site_args);
+					return new Invocation(new MemberAccess(site, methodName, type_args, loc), site_args);
 				}
 			}
 		}
@@ -1535,15 +1565,6 @@ namespace Mono.CSharp
 			: base (null, args, loc)
 		{
 			base.binder = this;
-		}
-
-		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec t, CastType typeHintCast) {
-			// we dont support 'as' style type casts yet
-			if (typeHintCast != CastType.As) {
-				this.Type = t;
-				this.castType = typeHintCast;
-			}
-			return this.Resolve(rc);
 		}
 
 		public Expression CreateCallSiteBinder (ResolveContext ec, Arguments args)

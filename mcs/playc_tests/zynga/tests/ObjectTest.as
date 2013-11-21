@@ -41,6 +41,39 @@ package
 			obj.dA = dA;
 			obj.dB = dB;
 			obj.dC = dC;
+			obj.dnull = null;
+
+			// read missing values with explicit casts
+			test(Boolean(obj.missing) == false);
+			test(int(obj.missing) == 0);
+			test(uint(obj.missing) == 0);
+			test(isNaN(Number(obj.missing)));
+			test(String(obj.missing) == "undefined");
+			test(Object(obj.missing) == null);
+
+			// read null values with explicit casts
+			test(Boolean(obj.dnull) == false);
+			test(int(obj.dnull) == 0);
+			test(uint(obj.dnull) == 0);
+			test(Number(obj.dnull) == 0.0);
+			test(String(obj.dnull) == "null");
+			test(Object(obj.dnull) == null);
+
+			// read missing values with as casts
+			test((obj.missing as Boolean) == false);
+			test((obj.missing as int) == 0);
+			test((obj.missing as uint) == 0);
+			test((obj.missing as Number) == 0.0);
+			test((obj.missing as String) == null);
+			test((obj.missing as Object) == null);
+
+			// read null values with as casts
+			test((obj.dnull as Boolean) == false);
+			test((obj.dnull as int) == 0);
+			test((obj.dnull as uint) == 0);
+			test((obj.dnull as Number) == 0.0);
+			test((obj.dnull as String) == null);
+			test((obj.dnull as Object) == null);
 
 			// read values out of object
 			var e0:Boolean = obj.d0;

@@ -1812,12 +1812,6 @@ namespace Mono.CSharp
 
 			bool isRefType = TypeSpec.IsReferenceType (type) || type.IsNullableType;
 
-			// Always "Object" for dynamic type when evaluating PlayScript AS operator (not dynamic CONV call).
-			if (isPlayScript && etype.BuiltinType == BuiltinTypeSpec.Type.Dynamic) {
-				expr = new Cast(new TypeExpression(ec.BuiltinTypes.Object, expr.Location), expr, expr.Location).Resolve(ec);
-				etype = ec.BuiltinTypes.Object;
-			}
-
 			// Fail if conv type is not ref type or nullable (but allow if PlayScript)
 			if (!isPlayScript && !isRefType) {
 				if (TypeManager.IsGenericParameter (type)) {

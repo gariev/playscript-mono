@@ -253,31 +253,6 @@ namespace PlayScript
 			}
 		}
 
-		public override string ToString()
-		{
-			switch (Type) {
-			case TypeCode.Undefined:
-				return "<undefined>";
-			case TypeCode.Null:
-				return "<null>";
-			case TypeCode.Boolean:
-				return Value.BoolValue ? "true" : "false";
-			case TypeCode.Int:
-				return Value.IntValue.ToString();
-			case TypeCode.UInt:
-				return Value.UIntValue.ToString();
-			case TypeCode.Number:
-				return Value.NumberValue.ToString();
-			case TypeCode.String:
-				return StringReference;
-			case TypeCode.Object:
-				return Reference.ToString();
-			default:
-				return "Type: " + this.Type.ToString();
-			}
-		}
-
-
 		//
 		// conversion operators (variant -> system types)
 		//
@@ -591,16 +566,26 @@ namespace PlayScript
 			return 0.0f;
 		}
 
-		public string ToString(string defaultValue = null)
+		public string ToString(string defaultValue)
+		{
+			// return default value only in the undefined case
+			if (Type == TypeCode.Undefined) {
+				return defaultValue;
+			} else {
+				return ToString();
+			}
+		}
+
+		public override string ToString()
 		{
 			if (Type == TypeCode.String) {
 				return StringReference;
 			}
 			switch (Type) {
 			case TypeCode.Undefined:
-				return defaultValue;
+				return "undefined";
 			case TypeCode.Null:
-				return null;
+				return "null";
 			case TypeCode.Boolean:
 				return Value.BoolValue ? "true" : "false";
 			case TypeCode.Int:
@@ -779,9 +764,9 @@ namespace PlayScript
 			case TypeCode.Number:
 				return this.Value.NumberValue == other.Value.NumberValue;
 			case TypeCode.String:
-				return (StringReference) == ((string)other.Reference);
+				return this.StringReference == other.StringReference;
 			case TypeCode.Object:
-				return Reference.Equals(other.Reference);
+				return this.Reference.Equals(other.Reference);
 			default:
 				throw new InvalidCastException(Type.ToString());
 			}

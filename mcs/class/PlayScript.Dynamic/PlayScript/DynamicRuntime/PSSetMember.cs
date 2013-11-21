@@ -29,7 +29,7 @@ namespace PlayScript.DynamicRuntime
 			mName = name;
 		}
 
-		public void SetNamedMember<T>( object o, string name, T value)
+		public void SetName(string name) 
 		{
 			// if name has changed then invalidate type
 			if (mName != name)
@@ -38,16 +38,149 @@ namespace PlayScript.DynamicRuntime
 				mNameHint = 0; // invalidate name hint when name changes
 				mType = null;
 			}
-
-			SetMember<T>(o, value, typeof(T) != typeof(System.Object) );
 		}
 
-		public object SetMemberAsObject(object o, object value, bool valueTypeIsConstant)
+		public void SetNamedMember<T>( object o, string name, T value)
 		{
-			return SetMember<object>(o, value, valueTypeIsConstant);
+			SetName(name);
+			SetMemberInternal<T>(o, value);
 		}
 
-		public T SetMember<T>(object o, T value, bool valueTypeIsConstant = false)
+		public bool SetMemberToBoolean(object o, bool value)
+		{
+			// get typed accessor
+			var accessor = o as IDynamicAccessorTyped;
+			if (accessor != null) {
+				accessor.SetMemberBool(mName, ref mNameHint, value);
+				return value;
+			}
+
+			// fallback
+			SetMemberInternal<bool>(o, value);
+			return value;
+		}
+
+		public int SetMemberToInt(object o, int value)
+		{
+			// get typed accessor
+			var accessor = o as IDynamicAccessorTyped;
+			if (accessor != null) {
+				accessor.SetMemberInt(mName, ref mNameHint, value);
+				return value;
+			}
+
+			// fallback
+			SetMemberInternal<int>(o, value);		
+			return value;
+		}
+
+		public System.Int64 SetMemberToInt64(object o, System.Int64 value)
+		{
+			SetMemberToInt(o, (int)value);
+			return value;
+		}
+
+		public uint SetMemberToUInt(object o, uint value)
+		{
+			// get typed accessor
+			var accessor = o as IDynamicAccessorTyped;
+			if (accessor != null) {
+				accessor.SetMemberUInt(mName, ref mNameHint, value);
+				return value;
+			}
+
+			// fallback
+			SetMemberInternal<uint>(o, value);
+			return value;
+		}
+
+		public float SetMemberToFloat(object o, float value)
+		{
+			// get typed accessor
+			var accessor = o as IDynamicAccessorTyped;
+			if (accessor != null) {
+				accessor.SetMemberNumber(mName, ref mNameHint, (double)value);
+				return value;
+			}
+
+			// fallback
+			SetMemberInternal<double>(o, (double)value);
+			return value;
+		}
+
+		public double SetMemberToNumber(object o, double value)
+		{
+			// get typed accessor
+			var accessor = o as IDynamicAccessorTyped;
+			if (accessor != null) {
+				accessor.SetMemberNumber(mName, ref mNameHint, value);
+				return value;
+			}
+
+			// fallback
+			SetMemberInternal<double>(o, value);
+			return value;
+		}
+
+		public string SetMemberToString(object o, string value)
+		{
+			// get typed accessor
+			var accessor = o as IDynamicAccessorTyped;
+			if (accessor != null) {
+				accessor.SetMemberString(mName, ref mNameHint, value);
+				return value;
+			}
+
+			// fallback
+			SetMemberInternal<string>(o, value);
+			return value;
+		}
+
+		public dynamic SetMemberToObject(object o, object value)
+		{
+			// get typed accessor
+			var accessor = o as IDynamicAccessorTyped;
+			if (accessor != null) {
+				accessor.SetMemberObject(mName, ref mNameHint, value);
+				return value;
+			}
+
+			// fallback
+			SetMemberInternal<object>(o, value);
+			return value;
+		}
+
+		[return: AsUntyped]
+		public dynamic SetMemberToUntyped(object o, [AsUntyped]object value)
+		{
+			// get typed accessor
+			var accessor = o as IDynamicAccessorTyped;
+			if (accessor != null) {
+				accessor.SetMemberUntyped(mName, ref mNameHint, value);
+				return value;
+			}
+
+			// fallback
+			SetMemberInternal<object>(o, value);
+			return value;
+		}
+
+		public T SetMemberToReference<T>(object o, T value)
+		{
+			// get untyped accessor
+			var accessor = o as IDynamicAccessorTyped;
+			if (accessor != null) {
+				accessor.SetMemberUntyped(mName, ref mNameHint, (object)value);
+				return value;
+			}
+
+			// fallback
+			SetMemberInternal<T>(o, value);
+			return value;
+		}
+
+
+		private void SetMemberInternal<T>(object o, T value)
 		{
 			Stats.Increment(StatsCounter.SetMemberBinderInvoked);
 
@@ -57,14 +190,14 @@ namespace PlayScript.DynamicRuntime
 			var accessor = o as IDynamicAccessor<T>;
 			if (accessor != null) {
 				accessor.SetMember(mName, ref mNameHint, value);
-				return value;
+				return;
 			}
 
 			// fallback on untyped accessor
 			var untypedAccessor = o as IDynamicAccessorUntyped;
 			if (untypedAccessor != null) {
 				untypedAccessor.SetMember(mName, ref mNameHint, (object)value);
-				return value;
+				return;
 			}
 
 			// resolve as dictionary 
@@ -73,7 +206,7 @@ namespace PlayScript.DynamicRuntime
 			{
 				// special case this since it happens so much in object initialization
 				dict[mName] = value;
-				return value;
+				return;
 			}
 
 			// determine if this is a instance member or a static member
@@ -103,19 +236,20 @@ namespace PlayScript.DynamicRuntime
 						mPreviousTarget = o;
 					}
 					action(value);
-					return value;
+					return;
 				}
 
 				// use cached resolve
 				if (mProperty != null) {
+					if (mArgs == null)  mArgs = new object[1];
 					mArgs[0] = value;
 					mPropertySetter.Invoke(o, BindingFlags.SuppressChangeType, null, mArgs, null);
-					return value;
+					return;
 				}
 
 				if (mField != null) {
 					mField.SetValue(o, value);
-					return value;
+					return;
 				}
 
 				// resolve as dynamic class
@@ -123,7 +257,7 @@ namespace PlayScript.DynamicRuntime
 				if (dc != null) 
 				{
 					dc.__SetDynamicValue(mName, value);
-					return value;
+					return;
 				}
 
 				throw new System.InvalidOperationException("Unhandled member type in PSSetMemberBinder");
@@ -150,9 +284,10 @@ namespace PlayScript.DynamicRuntime
 					mPreviousAction = null;
 					mPreviousTarget = null;
 
+					if (mArgs == null)  mArgs = new object[1];
 					mArgs[0] = PlayScript.Dynamic.ConvertValue(value, property.PropertyType);
 					mPropertySetter.Invoke(o, mArgs);
-					return value;
+					return;
 				}
 			}
 
@@ -174,7 +309,7 @@ namespace PlayScript.DynamicRuntime
 					// resolve conversion function
 					object newValue = PlayScript.Dynamic.ConvertValue(value, mField.FieldType);
 					mField.SetValue(o, newValue);
-					return value;
+					return;
 				}
 			}
 
@@ -187,11 +322,11 @@ namespace PlayScript.DynamicRuntime
 				mPreviousAction = null;
 				mPreviousTarget = null;
 				((IDynamicClass)o).__SetDynamicValue(mName, value);
-				return value;
+				return;
 			}		
 
 			// failed
-			return default(T);
+			return;
 		}
 
 
@@ -202,7 +337,7 @@ namespace PlayScript.DynamicRuntime
 		private PropertyInfo	mProperty;
 		private FieldInfo		mField;
 		private MethodInfo		mPropertySetter;
-		private object[]		mArgs = new object[1];
+		private object[]		mArgs;
 		object					mPreviousTarget;
 		object					mPreviousAction;
 	};
