@@ -356,6 +356,11 @@ namespace playscript.utils {
 			this.list = list;
 		}
 
+		public override string toString() 
+		{
+			return "[object Object]";
+		}
+
 		internal int ListCount {
 			get { return (int)(*(uint*)(list + 4) & 0xFFFFFF); }
 		}
@@ -746,14 +751,14 @@ namespace playscript.utils {
 		{
 			switch (elemType) {
 			case DATA_TYPE.STRING:
-				byte* ptr = data + dataElem->offset;
-				short stridx = *(short*)ptr;
+				int stridx = (int)dataElem->offset;
 				if (stridx >= 0) {
-					string s = Marshal.PtrToStringAnsi (new IntPtr(ptr + 2), stridx);
+					byte* ptr = data + dataElem->offset;
+					string s = Marshal.PtrToStringAnsi (new IntPtr(ptr));
 					var stringCache = doc.valueStringCache;
 					stringCache.push (s);
 					doc.valueStringCacheArray = stringCache._GetInnerArray ();
-					*(short*)ptr = (short)-(stringCache.length - 1);
+					dataElem->offset = (uint)-((int)stringCache.length - 1);
 					return s;
 				} else {
 					return doc.valueStringCacheArray [-stridx];
@@ -771,22 +776,21 @@ namespace playscript.utils {
 				case DATA_TYPE.NULL:
 				return null;
 				case DATA_TYPE.OBJARRAY:
-				throw new NotImplementedException ();
+				return GetValueObject(elemType, data, dataElem).ToString();
 			}
 			return null;
 		}
 
 		internal int GetValueInt(DATA_TYPE elemType, byte* data, DataElem* dataElem)
 		{
-			int i;
 			switch (elemType) {
 			case DATA_TYPE.STRING:
+				int i;
 				string s = GetValueString (elemType, data, dataElem);
-				if (s.Length > 2 && s [0] == '0' && s [1] == 'x') {
+				if (s.Length > 2 && s [0] == '0' && s [1] == 'x')
 					i = Convert.ToInt32 (s, 16);
-				} else {
+				else
 					int.TryParse (s, out i);
-				}
 				return i;
 				case DATA_TYPE.INT:
 				return dataElem->intValue;
@@ -806,15 +810,14 @@ namespace playscript.utils {
 
 		internal uint GetValueUInt(DATA_TYPE elemType, byte* data, DataElem* dataElem)
 		{
-			uint i;
 			switch (elemType) {
 				case DATA_TYPE.STRING:
+				uint i = 0u;
 				string s = GetValueString (elemType, data, dataElem);
-				if (s.Length > 2 && s [0] == '0' && s [1] == 'x') {
+				if (s.Length > 2 && s [0] == '0' && s [1] == 'x')
 					i = Convert.ToUInt32 (s, 16);
-				} else {
+				else
 					uint.TryParse (s, out i);
-				}
 				return i;
 				case DATA_TYPE.INT:
 				return dataElem->offset;
@@ -834,10 +837,15 @@ namespace playscript.utils {
 
 		internal double GetValueDouble(DATA_TYPE elemType, byte* data, DataElem* dataElem)
 		{
-			double d;
 			switch (elemType) {
-				case DATA_TYPE.STRING:
-				double.TryParse (GetValueString (elemType, data, dataElem), out d);
+			case DATA_TYPE.STRING:
+				double d = double.NaN;
+				string s = GetValueString (elemType, data, dataElem);
+				if (s.Length > 2 && s [0] == '0' && s [1] == 'x')
+					return Convert.ToUInt32 (s, 16);
+				else if (s.Length == 0)
+					return 0.0;
+				double.TryParse (s, out d);
 				return d;
 				case DATA_TYPE.INT:
 				return (double)dataElem->intValue;
@@ -850,6 +858,7 @@ namespace playscript.utils {
 				case DATA_TYPE.FALSE:
 				return 0.0;
 				case DATA_TYPE.NULL:
+				return 0.0;
 				case DATA_TYPE.OBJARRAY:
 				return double.NaN;
 			}
@@ -861,22 +870,23 @@ namespace playscript.utils {
 			switch (elemType) {
 				case DATA_TYPE.STRING:
 				string s = GetValueString (elemType, data, dataElem);
-				if (s == "1" || s == "true")
-					return true;
-				return false;
+				return s.Length > 0;
 				case DATA_TYPE.INT:
 				return dataElem->intValue != 0;
 				case DATA_TYPE.FLOAT:
-				return dataElem->floatValue != 0.0f;
+				float f = dataElem->floatValue;
+				return f != 0.0f && !float.IsNaN(f);
 				case DATA_TYPE.DOUBLE:
-				return *(double*)(data + dataElem->offset) != 0.0;
+				double d = *(double*)(data + dataElem->offset);
+				return d != 0.0 && !double.IsNaN(d);
 				case DATA_TYPE.TRUE:
 				return true;
 				case DATA_TYPE.FALSE:
 				return false;
 				case DATA_TYPE.NULL:
-				case DATA_TYPE.OBJARRAY:
 				return false;
+				case DATA_TYPE.OBJARRAY:
+				return true;
 			}
 			return false;
 		}
@@ -3324,17 +3334,8 @@ namespace playscript.utils {
 				char* src = json;
 				char* srcEnd = end;
 
-				// Align to even address
-				if (((uint)tempDataPtr & 0x1) != 0) {
-					if (tempDataPtr + 1 >= tempDataEnd)
-						ExpandTempData ();
-					*tempDataPtr++ = 0;
-				}
-
-				// Get the initial string and set the length to 0
+				// Get starting pos
 				uint strPtr = (uint)(tempDataPtr - tempData);
-				*(short*)tempDataPtr = 0;
-				tempDataPtr += 2;
 
 				// ditch opening quote
 				src++;
@@ -3411,12 +3412,13 @@ namespace playscript.utils {
 					*tempDataPtr++ = d;
 				}
 
+				// Add null terminator
+				if (tempDataPtr + 1 >= tempDataEnd)
+					ExpandTempData ();
+				*tempDataPtr++ = 0;
+
 				// Advance parse position
 				json = src;
-
-				// Set final string length
-				short len = (short)(tempDataPtr - (int)(tempData + strPtr) - 2);
-				*(short*)(tempData + strPtr) = len;
 
 				return (ushort)(strPtr - parentDataStart);
 			}
