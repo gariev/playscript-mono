@@ -1095,10 +1095,10 @@ namespace Mono.CSharp
 
 		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec t, CastType typeHintCast) {
 			// we dont support 'as' style type casts yet for indexers
-			if (typeHintCast != CastType.As) {
+//			if (typeHintCast != CastType.As) {
 				this.Type = t;
 				this.castType = typeHintCast;
-			}
+//			}
 			return this.Resolve(rc);
 		}
 
@@ -1131,59 +1131,89 @@ namespace Mono.CSharp
 			);
 		}
 
+
 		public override Expression InvokeCallSite(ResolveContext rc, Expression site, Arguments args, TypeSpec returnType, bool isStatement)
 		{
 			// get object and index
 			var obj = args[0].Expr;
 			var index = args[1].Expr;
 
+			// convert index into something more compatible with 
+			switch (index.Type.BuiltinType)
+			{
+				case BuiltinTypeSpec.Type.Int:
+				case BuiltinTypeSpec.Type.String:
+				case BuiltinTypeSpec.Type.Object:
+					break;
+				default:
+					if (!TypeSpec.IsReferenceType(index.Type)) {
+						var site_args = new Arguments(2);
+						site_args.Add(new Argument(obj));
+						site_args.Add(new Argument(index));
+						site_args[0].UpconvertOnly = true;
+						site_args[1].UpconvertOnly = true;
+						index = new Invocation(new MemberAccess(site, "ConvertIndex"), site_args).Resolve(rc);
+					}
+					break;
+			}
+
+
 			bool isSet = IsSetter(site);
 			isSet |= (flags & CSharpBinderFlags.ValueFromCompoundAssignment) != 0;
 			if (!isSet) {
-				if (NeedsCastToObject(returnType)) {
-					var site_args = new Arguments(2);
-					site_args.Add(new Argument(obj));
-					site_args.Add(new Argument(index));
+				if (!NeedsGenericMethod(returnType)) {
+					// build get method (example: GetIndexToInt, GetIndexAsString, etc)
+					string methodName = "GetIndex" + DynamicConversion.GetDynamicCastName(this.castType) + DynamicConversion.GetDynamicConversionTypeName(rc, returnType);
 
-					// get as an object
-					if (returnType != null && returnType.IsAsUntyped)
-						return new Invocation(new MemberAccess(site, "GetIndexAsUntyped"), site_args);
-					else
-						return new Invocation(new MemberAccess(site, "GetIndexAsObject"), site_args);
-				} else {
 					var site_args = new Arguments(2);
 					site_args.Add(new Argument(obj));
 					site_args.Add(new Argument(index));
+					site_args[0].UpconvertOnly = true;
+					site_args[1].UpconvertOnly = true;
+					return new Invocation(new MemberAccess(site, methodName), site_args);
+				} else {
+					string methodName = "GetIndex" + DynamicConversion.GetDynamicCastName(this.castType) + "Reference";
+
+					var site_args = new Arguments(2);
+					site_args.Add(new Argument(obj));
+					site_args.Add(new Argument(index));
+					site_args[0].UpconvertOnly = true;
+					site_args[1].UpconvertOnly = true;
 
 					// get as a T
 					var type_args = new TypeArguments();
 					type_args.Add(new TypeExpression(returnType, loc));
-					return new Invocation(new MemberAccess(site, "GetIndexAs", type_args, loc), site_args);
+					return new Invocation(new MemberAccess(site, methodName, type_args, loc), site_args);
 				}
 			} else {
 				var setVal = args[2].Expr;
 
-				if (NeedsCastToObject(setVal.Type)) {
+				if (!NeedsGenericMethod(setVal.Type)) {
+					string methodName = "SetIndexTo" + DynamicConversion.GetDynamicConversionTypeName(rc, setVal.Type);
+
 					var site_args = new Arguments(3);
 					site_args.Add(new Argument(obj));
 					site_args.Add(new Argument(index));
-					site_args.Add(new Argument(new Cast(new TypeExpression(rc.BuiltinTypes.Object, loc), setVal, loc)));
-						
-					// set as an object
-					var type_args = new TypeArguments();
-					type_args.Add(new TypeExpression(rc.BuiltinTypes.Object, loc));
-					// TODO: AsUntyped parameters aren't yet supported, so there is no SetIndexAsUntyped
-					return new Invocation(new MemberAccess(site, "SetIndexAs", type_args, loc), site_args);
+					site_args.Add(new Argument(EmptyCast.RemoveDynamic(rc, setVal)));
+					site_args[0].UpconvertOnly = true;
+					site_args[1].UpconvertOnly = true;
+					site_args[2].UpconvertOnly = true;
+					return new Invocation(new MemberAccess(site, methodName, loc), site_args);
 				} else {
+					string methodName = "SetIndexToReference";
+
 					var site_args = new Arguments(3);
 					site_args.Add(new Argument(obj));
 					site_args.Add(new Argument(index));
-					site_args.Add(new Argument(setVal));
+					site_args.Add(new Argument(EmptyCast.RemoveDynamic(rc, setVal)));
+					site_args[0].UpconvertOnly = true;
+					site_args[1].UpconvertOnly = true;
+					site_args[2].UpconvertOnly = true;
 
 					// set as a T
 					var type_args = new TypeArguments();
 					type_args.Add(new TypeExpression(setVal.Type, loc));
-					return new Invocation(new MemberAccess(site, "SetIndexAs", type_args, loc), site_args);
+					return new Invocation(new MemberAccess(site, methodName, type_args, loc), site_args);
 				}
 			}
 		}
@@ -1467,11 +1497,6 @@ namespace Mono.CSharp
 			);
 		}
 
-		private static bool NeedsGenericMethod(TypeSpec t)
-		{
-			return (t.IsClass || t.IsInterface || t.IsDelegate) && (t.BuiltinType != BuiltinTypeSpec.Type.String) && (t.BuiltinType != BuiltinTypeSpec.Type.Object);
-		}
-
 		public override Expression InvokeCallSite(ResolveContext rc, Expression site, Arguments args, TypeSpec returnType, bool isStatement)
 		{
 			var obj = args[0].Expr;
@@ -1580,9 +1605,9 @@ namespace Mono.CSharp
 			return expr.Type.Name.Contains("Set") && !expr.Type.Name.Contains("Get");
 		}
 
-		protected bool NeedsCastToObject(TypeSpec t)
+		protected static bool NeedsGenericMethod(TypeSpec t)
 		{
-			return (t == null) || (t.Kind == MemberKind.InternalCompilerType) || (t.BuiltinType == BuiltinTypeSpec.Type.Dynamic);
+			return (t.IsClass || t.IsInterface || t.IsDelegate) && (t.BuiltinType != BuiltinTypeSpec.Type.String) && (t.BuiltinType != BuiltinTypeSpec.Type.Object);
 		}
 
 		protected abstract Expression CreateCallSiteBinder (ResolveContext ec, Arguments args, bool isSet);
