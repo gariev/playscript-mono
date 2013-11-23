@@ -156,7 +156,7 @@ namespace PlayScript.DynamicRuntime
 			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
-				return accessor.GetMemberString(Dynamic.ConvertKey(index), ref mNameHint, "undefined");
+				return accessor.GetMemberString(Dynamic.ConvertKey(index), ref mNameHint, null);
 			}
 			#endif
 			var untypedAccessor = o as IDynamicAccessorUntyped;
@@ -375,12 +375,6 @@ namespace PlayScript.DynamicRuntime
 
 		public string GetIndexImplicitToString(object o, int index)
 		{
-			#if USE_DYNAMIC_ACCESSOR_T
-			var accessor = o as IDynamicAccessor<string>;
-			if (accessor != null) {
-				return accessor.GetIndex(index);
-			}
-			#endif
 			var untypedAccessor = o as IDynamicAccessorUntyped;
 			if (untypedAccessor != null) {
 				return PSConverter.ImplicitToString(untypedAccessor.GetIndex(index));
@@ -554,15 +548,9 @@ namespace PlayScript.DynamicRuntime
 
 		public string GetIndexImplicitToString(object o, object index)
 		{
-			#if USE_DYNAMIC_ACCESSOR_T
-			var accessor = o as IDynamicAccessor<string>;
-			if (accessor != null) {
-				return accessor.GetIndex(index);
-			}
-			#endif
 			var untypedAccessor = o as IDynamicAccessorUntyped;
 			if (untypedAccessor != null) {
-				return PSConverter.ToString(untypedAccessor.GetIndex(index));
+				return PSConverter.ImplicitToString(untypedAccessor.GetIndex(index));
 			}
 			return InternalGetIndexTo<string>(o, index);
 		}
