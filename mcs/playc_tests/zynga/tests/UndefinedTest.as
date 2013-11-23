@@ -147,6 +147,31 @@ package
 			if (n === null || !isNaN(n))
 				return 37;
 
+			var o7:Object = {};
+			o7.undef = undefined;
+			// * should be undefined
+			value = o7["undef"];
+			if (value !== undefined)
+				return 38;
+			value = o7.undef;
+			if (value !== undefined)
+				return 39;
+
+			var count:int = 0;
+			for (var prop:String in o7) {
+				if (prop !== "undef") 
+					return 40;
+				count++;
+			}
+			if (count != 1) return 41;
+			count = 0;
+			for each (var value:* in o7) {
+				if (value !==  undefined) 
+					return 42;
+				count++;
+			}
+			if (count != 1) return 43;
+
 			return 0;
 		}
 	}

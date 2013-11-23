@@ -209,7 +209,7 @@ namespace PlayScript.DynamicRuntime
 			#endif
 			var untypedAccessor = o as IDynamicAccessorUntyped;
 			if (untypedAccessor != null) {
-				return PSConverter.UntypedToObject(untypedAccessor.GetIndex(index));
+				return untypedAccessor.GetIndex(index);
 			}
 			return InternalGetIndexTo<object>(o, index);
 		}
