@@ -19,6 +19,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Diagnostics;
 using PlayScript.DynamicRuntime;
+using System.Runtime.CompilerServices;
 
 namespace PlayScript
 {
@@ -86,19 +87,44 @@ namespace PlayScript
 		public Variant(TypeCode type, object reference, ValueData data)
 		{
 			Type = type;
-			Reference = reference;
 			Value = data;
+			// this check avoids write barrier updating
+			if (reference == null) {
+				Reference = null;
+			} else {
+				Reference = reference;
+			}
+		}
+
+		public Variant(Variant other)
+		{
+			this.Type = other.Type;
+			this.Value = other.Value;
+			// this check avoids write barrier updating
+			if (other.Reference == null) {
+				this.Reference = null;
+			} else {
+				this.Reference = other.Reference;
+			}
 		}
 
 		public Variant(bool value)
 		{
 			Type = TypeCode.Boolean;
-			Reference = value ? sBoolTrue : sBoolFalse;
+			Reference = null;
 			Value = new ValueData();
 			Value.BoolValue = value;
 		}
 
-		public Variant(int value, object boxedValue = null)
+		public Variant(int value)
+		{
+			Type = TypeCode.Int;
+			Reference = null;
+			Value = new ValueData();
+			Value.IntValue = value;
+		}
+
+		public Variant(int value, object boxedValue)
 		{
 			Type = TypeCode.Int;
 			Reference = boxedValue;
@@ -106,7 +132,15 @@ namespace PlayScript
 			Value.IntValue = value;
 		}
 
-		public Variant(uint value, object boxedValue = null)
+		public Variant(uint value)
+		{
+			Type = TypeCode.UInt;
+			Reference = null;
+			Value = new ValueData();
+			Value.UIntValue = value;
+		}
+
+		public Variant(uint value, object boxedValue)
 		{
 			Type = TypeCode.UInt;
 			Reference = boxedValue;
@@ -114,7 +148,15 @@ namespace PlayScript
 			Value.UIntValue = value;
 		}
 
-		public Variant(double value, object boxedValue = null)
+		public Variant(double value)
+		{
+			Type = TypeCode.Number;
+			Reference = null;
+			Value = new ValueData();
+			Value.NumberValue = value;
+		}
+
+		public Variant(double value, object boxedValue)
 		{
 			Type = TypeCode.Number;
 			Reference = boxedValue;
@@ -124,15 +166,25 @@ namespace PlayScript
 
 		public Variant(string value)
 		{
-			Type = TypeCode.String;
-			Reference = value;
+			if (value == null) {
+				Type = TypeCode.Null;
+				Reference = null;
+			} else {
+				Type = TypeCode.String;
+				Reference = value;
+			}
 			Value = new ValueData();
 		}
 
 		public Variant(object value)
 		{
-			Type = TypeCode.Object;
-			Reference = value;
+			if (value == null) {
+				Type = TypeCode.Null;
+				Reference = null;
+			} else {
+				Type = TypeCode.Object;
+				Reference = value;
+			}
 			Value = new ValueData();
 		}
 
@@ -262,37 +314,53 @@ namespace PlayScript
 			return (dynamic)ToObject();
 		}
 
-		// returns an object or a reference to undefined
 		[return: AsUntyped]
-		public object ToUntyped()
+		public dynamic ToUntyped(object defaultValue)
 		{
-			if (Type == TypeCode.Undefined) {
-				return PlayScript.Undefined._undefined;
-			} else {
-				return ToObject();
-			}
+			if (Type == TypeCode.Undefined) 
+				return defaultValue;
+			return ToObject();
 		}
 
-		// returns a boxed object
-		// will return null if undefined
-		public object ToObject(object defaultValue = null)
+		// returns an object or a reference to undefined
+		[return: AsUntyped]
+		public dynamic ToUntyped()
+		{
+			if (Type == TypeCode.Undefined) 
+				return PlayScript.Undefined._undefined;
+			return ToObject();
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public object ToObject(object defaultValue)
+		{
+			if (Type == TypeCode.Undefined) 
+				return defaultValue;
+			return ToObject();
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public object ToObject()
 		{
 			// return referenced or boxed object if we have it
 			if (Reference != null) {
 				return Reference;
 			}
+			return ToObjectFull();
+		}
 
+		// returns a boxed object
+		// will return null if undefined
+		private object ToObjectFull()
+		{
 			// box value types to number and cache boxed object in our reference
 			switch (Type) {
 			case TypeCode.Undefined:
-				// return default value (do not cache it)
-				return defaultValue;
+				return null;
 			case TypeCode.Null:
-				// return null (do not return default value)
 				return null;
 			case TypeCode.Boolean:
-				Reference = Value.BoolValue ? sBoolTrue : sBoolFalse;
-				break;
+				return Value.BoolValue ? sBoolTrue : sBoolFalse;
 			case TypeCode.Int:
 				if (Value.IntValue == 0) Reference = sIntZero; else 
 				if (Value.IntValue == 1) Reference = sIntOne; else 
@@ -314,23 +382,28 @@ namespace PlayScript
 			return Reference;
 		}
 
-
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public int ToInt(int defaultValue)
 		{
 			// return default value only in the undefined case
-			if (Type == TypeCode.Undefined) {
+			if (Type == TypeCode.Undefined) 
 				return defaultValue;
-			} else {
-				return ToInt();
-			}
+			if (Type == TypeCode.Int) 
+				return Value.IntValue;
+			return ToIntFull();
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public int ToInt()
 		{
-			if (Type == TypeCode.Int) {
+			if (Type == TypeCode.Int) 
 				return Value.IntValue;
-			}
+			return ToIntFull();
+		}
 
+		// this method is not inlined intentially
+		private int ToIntFull()
+		{
 			switch (Type) {
 			case TypeCode.Undefined:
 				return 0;
@@ -367,21 +440,28 @@ namespace PlayScript
 			return 0;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public uint ToUInt(uint defaultValue)
 		{
 			// return default value only in the undefined case
-			if (Type == TypeCode.Undefined) {
+			if (Type == TypeCode.Undefined) 
 				return defaultValue;
-			} else {
-				return ToUInt();
-			}
+			if (Type == TypeCode.UInt) 
+				return Value.UIntValue;
+			return ToUIntFull();
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public uint ToUInt()
 		{
-			if (Type == TypeCode.UInt) {
+			if (Type == TypeCode.UInt) 
 				return Value.UIntValue;
-			}
+			return ToUIntFull();
+		}
+
+		// this method is not inlined intentially
+		private uint ToUIntFull()
+		{
 			switch (Type) {
 			case TypeCode.Undefined:
 				return 0u;
@@ -418,21 +498,27 @@ namespace PlayScript
 			return 0u;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool ToBoolean(bool defaultValue)
 		{
 			// return default value only in the undefined case
-			if (Type == TypeCode.Undefined) {
+			if (Type == TypeCode.Undefined)
 				return defaultValue;
-			} else {
-				return ToBoolean();
-			}
+			if (Type == TypeCode.Boolean) 
+				return Value.BoolValue;
+			return ToBoolean();
 		}
-
+		
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool ToBoolean()
 		{
-			if (Type == TypeCode.Boolean) {
+			if (Type == TypeCode.Boolean) 
 				return Value.BoolValue;
-			}
+			return ToBooleanFull();
+		}
+
+		public bool ToBooleanFull()
+		{
 			switch (Type) {
 			case TypeCode.Undefined:
 				return false;
@@ -464,21 +550,27 @@ namespace PlayScript
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public double ToNumber(double defaultValue)
 		{
 			// return default value only in the undefined case
-			if (Type == TypeCode.Undefined) {
+			if (Type == TypeCode.Undefined) 
 				return defaultValue;
-			} else {
-				return ToNumber();
-			}
+			if (Type == TypeCode.Number) 
+				return (double)Value.NumberValue;
+			return ToNumberFull();
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public double ToNumber()
 		{
-			if (Type == TypeCode.Number) {
+			if (Type == TypeCode.Number) 
 				return (double)Value.NumberValue;
-			}
+			return ToNumberFull();
+		}
+
+		private double ToNumberFull()
+		{
 			switch (Type) {
 			case TypeCode.Undefined:
 				return double.NaN;
@@ -566,21 +658,27 @@ namespace PlayScript
 			return 0.0f;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public string ToString(string defaultValue)
 		{
 			// return default value only in the undefined case
-			if (Type == TypeCode.Undefined) {
+			if (Type == TypeCode.Undefined) 
 				return defaultValue;
-			} else {
-				return ToString();
-			}
+			if (Type == TypeCode.String) 
+				return StringReference;
+			return ToStringFull();
 		}
 
-		public override string ToString()
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public new string ToString()
 		{
-			if (Type == TypeCode.String) {
+			if (Type == TypeCode.String) 
 				return StringReference;
-			}
+			return ToStringFull();
+		}
+
+		private string ToStringFull()
+		{
 			switch (Type) {
 			case TypeCode.Undefined:
 				return "undefined";

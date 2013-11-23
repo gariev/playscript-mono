@@ -111,11 +111,16 @@ namespace Amf
 			traitTable.Capacity = traitTableCapacity;
 		}
 
+		private void ThrowEndOfStream()
+		{
+			throw new EndOfStreamException();
+		}
+
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private byte ReadByte()
 		{
 			if (mPosition >= mLength) {
-				throw new EndOfStreamException();
+				ThrowEndOfStream();
 			}
 
 			return mData[mPosition++];
@@ -193,34 +198,37 @@ namespace Amf
 
 		// this read the next object into a value structure
 		// this avoids unnecessary boxing/unboxing of value types and speeds up deserialization
-		public void ReadNextObject(ref Variant value)
+		public void ReadNextVariant(out Variant value)
         {
 			byte b = ReadByte();
 			Amf3TypeCode type = (Amf3TypeCode) b;
             switch (type) {
             case Amf3TypeCode.Undefined:
-				value = Variant.Undefined;
-				return;
+				value = new Variant(Variant.TypeCode.Undefined);
+				break;
+
             case Amf3TypeCode.Null:
-				value = Variant.Null;
-				return;
+				value = new Variant(Variant.TypeCode.Null);
+				break;
+
 			case Amf3TypeCode.False:
-				value = false;
-				return;
+				value = new Variant(false);
+				break;
+
 			case Amf3TypeCode.True:
-				value = true;
-				return;
+				value = new Variant(true);
+				break;
 
             case Amf3TypeCode.Integer:
-                value = ReadInteger();
+				value = new Variant(ReadInteger());
 				break;
 
             case Amf3TypeCode.Number:
-                value = ReadNumber();
+				value = new Variant(ReadNumber());
 				break;
 
             case Amf3TypeCode.String:
-				value = ReadString();
+				value = new Variant(ReadString());
 				break;
 
             case Amf3TypeCode.Date:
@@ -619,15 +627,16 @@ namespace Amf
 				// read all properties into object
 				int count = classDef.Properties.Length;
 				for(int i=0; i < count; i++) {
-					ReadNextObject(ref obj.Values[i]);
+					ReadNextVariant(out obj.Values[i]);
 				}
 				
 				// read dynamic properties
 				if (classDef.Dynamic) {
 					string key = ReadString();
 					while (key != "") {
-						var value  = ReadNextObject();
-						obj.SetPropertyValueAsObject(key, value);
+						Variant value; 
+						ReadNextVariant(out value);
+						obj.SetPropertyValue(key, value);
 						key = ReadString();
 					}
 				}

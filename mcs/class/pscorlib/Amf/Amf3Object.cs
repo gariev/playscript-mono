@@ -120,6 +120,66 @@ namespace Amf
 			return Variant.Undefined;
 		}
 
+		[return: AsUntyped]
+		public object GetPropertyValueToUntyped(string key)
+		{
+			return GetPropertyValueToUntyped(key, PlayScript.Undefined._undefined);
+		}
+
+		[return: AsUntyped]
+		public object GetPropertyValueToUntyped(string key, object defaultValue)
+		{
+			// lookup index of value from class definition
+			int index = ClassDef.GetPropertyIndex(key);
+			// does value exist in the class?
+			if (index >= 0) {
+				// return value from class property
+				return Values[index].ToUntyped(defaultValue);
+			} 
+
+			// lookup value from dynamic properties 
+			if (DynamicProperties != null) {
+				Variant dynamicValue;
+				if (DynamicProperties.TryGetValue(key, out dynamicValue)) {
+					// return value from dynamic properties if we have them
+					return dynamicValue.ToUntyped(defaultValue);
+				}
+			}
+
+			// not found, return default value
+			return defaultValue;
+		}
+
+		public object GetPropertyValueToObject(string key)
+		{
+			return GetPropertyValueToObject(key, null);
+		}
+
+		public object GetPropertyValueToObject(string key, object defaultValue)
+		{
+			// lookup index of value from class definition
+			int index = ClassDef.GetPropertyIndex(key);
+			// does value exist in the class?
+			if (index >= 0) {
+				// return value from class property
+				return Values[index].ToObject(defaultValue);
+			} 
+
+			// lookup value from dynamic properties 
+			if (DynamicProperties != null) {
+				Variant dynamicValue;
+				if (DynamicProperties.TryGetValue(key, out dynamicValue)) {
+					// return value from dynamic properties if we have them
+					return dynamicValue.ToObject(defaultValue);
+				}
+			}
+
+			// not found, return default value
+			return defaultValue;
+		}
+
+
+
 		public bool TryGetPropertyValue(string key, out Variant value)
 		{
 			// lookup index of value from class definition
@@ -174,13 +234,13 @@ namespace Amf
 			DynamicProperties[key] = value;
 		}
 
-		public void SetPropertyValueAsObject(string key, object value)
+		public void SetPropertyValueToObject(string key, object value)
 		{
 			SetPropertyValue(key, Variant.FromAnyType(value));
 		}
 
 		// untyped means that the value could be undefined
-		public void SetPropertyValueAsUntyped(string key, object value)
+		public void SetPropertyValueToUntyped(string key, object value)
 		{
 			SetPropertyValue(key, Variant.FromAnyType(value));
 		}
@@ -197,6 +257,11 @@ namespace Amf
 				SetPropertyValue(key, value);
 			}
         }
+
+		public Amf3Object()
+			: this(Amf3ClassDef.Anonymous)
+		{
+		}
 
 		public Amf3Object(Amf3ClassDef classDef)
         {
@@ -225,7 +290,7 @@ namespace Amf
 
 			// write class properties
 			for (int i=0; i < Values.Length; i++) {
-				writer.Write(Values[i]);
+				writer.Write(ref Values[i]);
 			}
 
 			if (ClassDef.Dynamic) {
@@ -294,12 +359,12 @@ namespace Amf
 			if (DynamicProperties != null) {
 				// return all dynamic values
 				foreach (var value in DynamicProperties.Values) {
-					yield return value;
+					yield return value.ToUntyped();
 				}
 			} 
 			// we must box all objects unfortunately
 			for (int i=0; i < Values.Length; i++) {
-				yield return Values[i].ToObject();
+				yield return Values[i].ToUntyped();
 			}
 		}
 
@@ -325,13 +390,13 @@ namespace Amf
 			// return dynamic kvps
 			if (DynamicProperties != null)  {
 				foreach (var kvp in this.DynamicProperties) {
-					yield return new KeyValuePair<string, object>(kvp.Key, kvp.Value.ToObject());
+					yield return new KeyValuePair<string, object>(kvp.Key, kvp.Value.ToUntyped());
 				}
 			}
 
 			// return class kvps
 			for (int i=0; i < Values.Length; i++) {
-				yield return new KeyValuePair<string, object>(this.ClassDef.Properties[i], this.Values[i].ToObject());
+				yield return new KeyValuePair<string, object>(this.ClassDef.Properties[i], this.Values[i].ToUntyped());
 			}
 		}
 
@@ -339,49 +404,54 @@ namespace Amf
 
 		#region IDynamicAccessorUntyped implementation
 
+		[return: AsUntyped]
 		object IDynamicAccessorUntyped.GetMember(string name, ref uint hint)
 		{
-			return GetPropertyValue(name).ToUntyped();
+			return GetPropertyValueToUntyped(name);
 		}
 
-		object IDynamicAccessorUntyped.GetMemberOrDefault(string name, ref uint hint, object defaultValue)
+		[return: AsUntyped]
+		object IDynamicAccessorUntyped.GetMemberOrDefault(string name, ref uint hint, [AsUntyped]object defaultValue)
 		{
-			return GetPropertyValue(name).ToObject(defaultValue);
+			return GetPropertyValueToUntyped(name, defaultValue);
 		}
 
-		void IDynamicAccessorUntyped.SetMember(string name, ref uint hint, object value)
+		void IDynamicAccessorUntyped.SetMember(string name, ref uint hint, [AsUntyped]object value)
 		{
-			SetPropertyValueAsUntyped(name, value);
+			SetPropertyValueToUntyped(name, value);
 		}
 
+		[return: AsUntyped]
 		object IDynamicAccessorUntyped.GetIndex(string key)
 		{
-			return GetPropertyValue(key).ToUntyped();
+			return GetPropertyValueToUntyped(key);
 		}
 
 		void IDynamicAccessorUntyped.SetIndex(string key, object value)
 		{
-			SetPropertyValueAsUntyped(key, value);
+			SetPropertyValueToUntyped(key, value);
 		}
 
+		[return: AsUntyped]
 		object IDynamicAccessorUntyped.GetIndex(int key)
 		{
-			return GetPropertyValue(key).ToUntyped();
+			return GetPropertyValueToUntyped(Dynamic.ConvertKey(key));
 		}
 
-		void IDynamicAccessorUntyped.SetIndex(int key, object value)
+		void IDynamicAccessorUntyped.SetIndex(int key, [AsUntyped]object value)
 		{
-			SetPropertyValueAsUntyped(Dynamic.ConvertKey(key), value);
+			SetPropertyValueToUntyped(Dynamic.ConvertKey(key), value);
 		}
 
+		[return: AsUntyped]
 		object IDynamicAccessorUntyped.GetIndex(object key)
 		{
-			return GetPropertyValue(key).ToUntyped();
+			return GetPropertyValueToUntyped(Dynamic.ConvertKey(key));
 		}
 
 		void IDynamicAccessorUntyped.SetIndex(object key, object value)
 		{
-			SetPropertyValueAsUntyped(Dynamic.ConvertKey(key), value);
+			SetPropertyValueToUntyped(Dynamic.ConvertKey(key), value);
 		}
 
 		bool IDynamicAccessorUntyped.HasMember(string name)
@@ -425,17 +495,17 @@ namespace Amf
 
 		object IDynamicAccessor<object>.GetMember(string name, ref uint hint)
 		{
-			return GetPropertyValue(name).ToObject();
+			return GetPropertyValueToObject(name);
 		}
 
 		object IDynamicAccessor<object>.GetMemberOrDefault(string name, ref uint hint, object defaultValue)
 		{
-			return GetPropertyValue(name).ToObject(defaultValue);
+			return GetPropertyValueToObject(name, defaultValue);
 		}
 
 		void IDynamicAccessor<object>.SetMember(string name, ref uint hint, object value)
 		{
-			SetPropertyValueAsObject(name, value);
+			SetPropertyValueToObject(name, value);
 		}
 
 		object IDynamicAccessor<object>.GetIndex(string key)
@@ -445,7 +515,7 @@ namespace Amf
 
 		void IDynamicAccessor<object>.SetIndex(string key, object value)
 		{
-			SetPropertyValueAsObject(key, value);
+			SetPropertyValueToObject(key, value);
 		}
 
 		object IDynamicAccessor<object>.GetIndex(int key)
@@ -455,7 +525,7 @@ namespace Amf
 
 		void IDynamicAccessor<object>.SetIndex(int key, object value)
 		{
-			SetPropertyValueAsObject(Dynamic.ConvertKey(key), value);
+			SetPropertyValueToObject(Dynamic.ConvertKey(key), value);
 		}
 
 		object IDynamicAccessor<object>.GetIndex(object key)
@@ -465,7 +535,7 @@ namespace Amf
 
 		void IDynamicAccessor<object>.SetIndex(object key, object value)
 		{
-			SetPropertyValueAsObject(Dynamic.ConvertKey(key), value);
+			SetPropertyValueToObject(Dynamic.ConvertKey(key), value);
 		}
 
 		#endregion
@@ -942,7 +1012,7 @@ namespace Amf
 		[return: AsUntyped]
 		object IDynamicAccessorTyped.GetMemberUntyped(string key, ref uint hint, [AsUntyped] object defaultValue)
 		{
-			return GetPropertyValue (key).ToObject(defaultValue);
+			return GetPropertyValueToUntyped(key, defaultValue);
 		}
 
 		void IDynamicAccessorTyped.SetMemberUntyped (string key, ref uint hint, [AsUntyped] object value)

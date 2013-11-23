@@ -265,6 +265,14 @@ namespace Amf
 			return mValues[index].ToObject(defaultValue);
 		}
 
+		// read next property as untyped (object or undefined)
+		public object ReadUntyped()
+		{
+			int index = mRemapTable[mReadIndex++];
+			if (index < 0) return PlayScript.Undefined._undefined;
+			return mValues[index].ToUntyped();
+		}
+
 		// read next property as T
 		public T ReadObjectAs<T>(T defaultValue = null) where T:class
 		{
@@ -301,11 +309,11 @@ namespace Amf
 			// note that mValues[0] is reserved for undefined, any missing properties will be mapped there
 			int count = mStreamClassDef.Properties.Length;
 			for (int i=0; i < count; i++){
-				mParser.ReadNextObject(ref mValues[i + 1]);
+				mParser.ReadNextVariant(out mValues[i + 1]);
 			}
 
 			// force value[0] to undefined to elegantly handle missing properties as index 0
-			mValues[0]	= Variant.Undefined;
+			mValues[0]	= new Variant(Variant.TypeCode.Undefined);
 		}
 
 		internal void EndRead()

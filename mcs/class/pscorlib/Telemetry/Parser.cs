@@ -59,8 +59,8 @@ namespace Telemetry
 			int enterTime = 0;
 
 			while (stream.Position < stream.Length ) {
-				Variant v = new Variant();
-				parser.ReadNextObject(ref v);
+				Variant v;
+				parser.ReadNextVariant(out v);
 				if (!v.IsDefined)
 					break;
 

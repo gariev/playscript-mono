@@ -446,7 +446,8 @@ namespace flash.utils {
 		}
  	 	
 		public void writeObject(object obj) {
-			throw new NotImplementedException();
+			var writer = new Amf.Amf3Writer(this.getRawStream());
+			writer.Write(obj);
 		}
  	 	
 		public void writeShort(int value) {
