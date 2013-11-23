@@ -14,6 +14,9 @@
 //      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //      See the License for the specific language governing permissions and
 //      limitations under the License.
+#define USE_DYNAMIC_ACCESSOR_TYPED
+#define USE_DYNAMIC_ACCESSOR_T
+#define USE_IDICTIONARY
 
 #if !DYNAMIC_SUPPORT
 using System;
@@ -48,12 +51,14 @@ namespace PlayScript.DynamicRuntime
 
 		public bool SetMemberToBoolean(object o, bool value)
 		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			// get typed accessor
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				accessor.SetMemberBool(mName, ref mNameHint, value);
 				return value;
 			}
+			#endif
 
 			// fallback
 			SetMemberInternal<bool>(o, value);
@@ -62,12 +67,13 @@ namespace PlayScript.DynamicRuntime
 
 		public int SetMemberToInt(object o, int value)
 		{
-			// get typed accessor
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				accessor.SetMemberInt(mName, ref mNameHint, value);
 				return value;
 			}
+			#endif
 
 			// fallback
 			SetMemberInternal<int>(o, value);		
@@ -82,12 +88,13 @@ namespace PlayScript.DynamicRuntime
 
 		public uint SetMemberToUInt(object o, uint value)
 		{
-			// get typed accessor
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				accessor.SetMemberUInt(mName, ref mNameHint, value);
 				return value;
 			}
+			#endif
 
 			// fallback
 			SetMemberInternal<uint>(o, value);
@@ -96,12 +103,13 @@ namespace PlayScript.DynamicRuntime
 
 		public float SetMemberToFloat(object o, float value)
 		{
-			// get typed accessor
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				accessor.SetMemberNumber(mName, ref mNameHint, (double)value);
 				return value;
 			}
+			#endif
 
 			// fallback
 			SetMemberInternal<double>(o, (double)value);
@@ -110,12 +118,13 @@ namespace PlayScript.DynamicRuntime
 
 		public double SetMemberToNumber(object o, double value)
 		{
-			// get typed accessor
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				accessor.SetMemberNumber(mName, ref mNameHint, value);
 				return value;
 			}
+			#endif
 
 			// fallback
 			SetMemberInternal<double>(o, value);
@@ -124,12 +133,13 @@ namespace PlayScript.DynamicRuntime
 
 		public string SetMemberToString(object o, string value)
 		{
-			// get typed accessor
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				accessor.SetMemberString(mName, ref mNameHint, value);
 				return value;
 			}
+			#endif
 
 			// fallback
 			SetMemberInternal<string>(o, value);
@@ -138,12 +148,13 @@ namespace PlayScript.DynamicRuntime
 
 		public dynamic SetMemberToObject(object o, object value)
 		{
-			// get typed accessor
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				accessor.SetMemberObject(mName, ref mNameHint, value);
 				return value;
 			}
+			#endif
 
 			// fallback
 			SetMemberInternal<object>(o, value);
@@ -153,12 +164,13 @@ namespace PlayScript.DynamicRuntime
 		[return: AsUntyped]
 		public dynamic SetMemberToUntyped(object o, [AsUntyped]object value)
 		{
-			// get typed accessor
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				accessor.SetMemberUntyped(mName, ref mNameHint, value);
 				return value;
 			}
+			#endif
 
 			// fallback
 			SetMemberInternal<object>(o, value);
@@ -167,12 +179,13 @@ namespace PlayScript.DynamicRuntime
 
 		public T SetMemberToReference<T>(object o, T value)
 		{
-			// get untyped accessor
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				accessor.SetMemberUntyped(mName, ref mNameHint, (object)value);
 				return value;
 			}
+			#endif
 
 			// fallback
 			SetMemberInternal<T>(o, value);
@@ -187,11 +200,13 @@ namespace PlayScript.DynamicRuntime
 			TypeLogger.LogType(o);
 
 			// get accessor for value type T
+			#if USE_DYNAMIC_ACCESSOR_T
 			var accessor = o as IDynamicAccessor<T>;
 			if (accessor != null) {
 				accessor.SetMember(mName, ref mNameHint, value);
 				return;
 			}
+			#endif
 
 			// fallback on untyped accessor
 			var untypedAccessor = o as IDynamicAccessorUntyped;
@@ -201,6 +216,7 @@ namespace PlayScript.DynamicRuntime
 			}
 
 			// resolve as dictionary 
+			#if USE_IDICTIONARY
 			var dict = o as IDictionary;
 			if (dict != null) 
 			{
@@ -208,6 +224,7 @@ namespace PlayScript.DynamicRuntime
 				dict[mName] = value;
 				return;
 			}
+			#endif
 
 			// determine if this is a instance member or a static member
 			bool isStatic;

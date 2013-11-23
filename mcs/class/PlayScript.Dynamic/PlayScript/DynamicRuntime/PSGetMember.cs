@@ -14,6 +14,9 @@
 //      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //      See the License for the specific language governing permissions and
 //      limitations under the License.
+#define USE_DYNAMIC_ACCESSOR_TYPED
+#define USE_DYNAMIC_ACCESSOR_T
+#define USE_IDICTIONARY_STRING_OBJECT
 
 #if !DYNAMIC_SUPPORT
 using System;
@@ -59,10 +62,12 @@ namespace PlayScript.DynamicRuntime
 
 		public bool GetMemberToBoolean(object o)
 		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				return accessor.GetMemberBool(mName, ref mNameHint, false);
 			}
+			#endif
 			var untypedAccessor = o as IDynamicAccessorUntyped;
 			if (untypedAccessor != null) {
 				return PSConverter.ToBoolean(untypedAccessor.GetMember(mName, ref mNameHint));
@@ -72,10 +77,12 @@ namespace PlayScript.DynamicRuntime
 
 		public int GetMemberToInt(object o)
 		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				return accessor.GetMemberInt(mName, ref mNameHint, 0);
 			}
+			#endif
 			var untypedAccessor = o as IDynamicAccessorUntyped;
 			if (untypedAccessor != null) {
 				return PSConverter.ToInt(untypedAccessor.GetMember(mName, ref mNameHint));
@@ -85,10 +92,12 @@ namespace PlayScript.DynamicRuntime
 
 		public uint GetMemberToUInt(object o)
 		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				return accessor.GetMemberUInt(mName, ref mNameHint, 0u);
 			}
+			#endif
 			var untypedAccessor = o as IDynamicAccessorUntyped;
 			if (untypedAccessor != null) {
 				return PSConverter.ToUInt(untypedAccessor.GetMember(mName, ref mNameHint));
@@ -98,10 +107,12 @@ namespace PlayScript.DynamicRuntime
 
 		public float GetMemberToFloat(object o)
 		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				return (float)accessor.GetMemberNumber(mName, ref mNameHint, double.NaN);
 			}
+			#endif
 			var untypedAccessor = o as IDynamicAccessorUntyped;
 			if (untypedAccessor != null) {
 				return PSConverter.ToFloat(untypedAccessor.GetMember(mName, ref mNameHint));
@@ -111,10 +122,12 @@ namespace PlayScript.DynamicRuntime
 
 		public double GetMemberToNumber(object o)
 		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				return accessor.GetMemberNumber(mName, ref mNameHint, double.NaN);
 			}
+			#endif
 			var untypedAccessor = o as IDynamicAccessorUntyped;
 			if (untypedAccessor != null) {
 				return PSConverter.ToNumber(untypedAccessor.GetMember(mName, ref mNameHint));
@@ -124,10 +137,12 @@ namespace PlayScript.DynamicRuntime
 
 		public string GetMemberToString(object o)
 		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				return accessor.GetMemberString(mName, ref mNameHint, "undefined");
 			}
+			#endif
 			var untypedAccessor = o as IDynamicAccessorUntyped;
 			if (untypedAccessor != null) {
 				return PSConverter.ToString(untypedAccessor.GetMember(mName, ref mNameHint));
@@ -137,10 +152,12 @@ namespace PlayScript.DynamicRuntime
 
 		public dynamic GetMemberToObject(object o)
 		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				return accessor.GetMemberObject(mName, ref mNameHint, null);
 			}
+			#endif
 			var untypedAccessor = o as IDynamicAccessorUntyped;
 			if (untypedAccessor != null) {
 				return untypedAccessor.GetMemberOrDefault(mName, ref mNameHint, null);
@@ -151,10 +168,12 @@ namespace PlayScript.DynamicRuntime
 		[return: AsUntyped]
 		public dynamic GetMemberToUntyped(object o)
 		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				return accessor.GetMemberUntyped(mName, ref mNameHint, PlayScript.Undefined._undefined);
 			}
+			#endif
 			var untypedAccessor = o as IDynamicAccessorUntyped;
 			if (untypedAccessor != null) {
 				return untypedAccessor.GetMember(mName, ref mNameHint);
@@ -164,11 +183,13 @@ namespace PlayScript.DynamicRuntime
 
 		public T GetMemberToReference<T>(object o) where T:class
 		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			// get untyped accessor
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				return (T)accessor.GetMemberObject(mName, ref mNameHint, null);
 			}
+			#endif
 			var untypedAccessor = o as IDynamicAccessorUntyped;
 			if (untypedAccessor != null) {
 				return (T)untypedAccessor.GetMemberOrDefault(mName, ref mNameHint, null);
@@ -275,10 +296,12 @@ namespace PlayScript.DynamicRuntime
 
 		public bool GetMemberImplicitToBoolean(object o)
 		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				return accessor.GetMemberBool(mName, ref mNameHint, false);
 			}
+			#endif
 			var untypedAccessor = o as IDynamicAccessorUntyped;
 			if (untypedAccessor != null) {
 				return PSConverter.ImplicitToBoolean(untypedAccessor.GetMember(mName, ref mNameHint));
@@ -288,10 +311,12 @@ namespace PlayScript.DynamicRuntime
 
 		public string GetMemberImplicitToString(object o)
 		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				return accessor.GetMemberString(mName, ref mNameHint, null);
 			}
+			#endif
 			var untypedAccessor = o as IDynamicAccessorUntyped;
 			if (untypedAccessor != null) {
 				return PSConverter.ImplicitToString(untypedAccessor.GetMember(mName, ref mNameHint));
@@ -301,10 +326,12 @@ namespace PlayScript.DynamicRuntime
 
 		public object GetMemberImplicitToObject(object o)
 		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				return accessor.GetMemberObject(mName, ref mNameHint, null);
 			}
+			#endif
 			var untypedAccessor = o as IDynamicAccessorUntyped;
 			if (untypedAccessor != null) {
 				return untypedAccessor.GetMemberOrDefault(mName, ref mNameHint, null);
@@ -314,11 +341,12 @@ namespace PlayScript.DynamicRuntime
 
 		public T GetMemberImplicitToReference<T>(object o) where T:class
 		{
-			// get untyped accessor
+			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
 				return (T)accessor.GetMemberObject(mName, ref mNameHint, null);
 			}
+			#endif
 			var untypedAccessor = o as IDynamicAccessorUntyped;
 			if (untypedAccessor != null) {
 				return (T)untypedAccessor.GetMemberOrDefault(mName, ref mNameHint, null);
@@ -337,12 +365,15 @@ namespace PlayScript.DynamicRuntime
 
 			TypeLogger.LogType(o);
 
+			#if USE_DYNAMIC_ACCESSOR_T
 			// get accessor for value type T
 			var accessor = o as IDynamicAccessor<T>;
 			if (accessor != null) {
 				return accessor.GetMember(mName, ref mNameHint);
 			}
+			#endif
 
+			#if USE_IDICTIONARY_STRING_OBJECT
 			// resolve as dictionary (this is usually an expando)
 			var dict = o as IDictionary<string, object>;
 			if (dict != null) 
@@ -363,6 +394,7 @@ namespace PlayScript.DynamicRuntime
 				// key not found
 				return Dynamic.GetUndefinedValue<T>();
 			}
+			#endif
 
 			if (PlayScript.Dynamic.IsNullOrUndefined(o)) {
 				return Dynamic.GetUndefinedValue<T>();

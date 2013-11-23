@@ -11,6 +11,12 @@
 //      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //      See the License for the specific language governing permissions and
 //      limitations under the License.
+#define USE_DYNAMIC_ACCESSOR_T
+#define USE_ILIST_T
+#define USE_ILIST
+#define USE_IDICTIONARY_T
+#define USE_IDICTIONARY
+
 #if !DYNAMIC_SUPPORT
 
 using System;
@@ -202,11 +208,13 @@ namespace PlayScript.DynamicRuntime
 			TypeLogger.LogType(o);
 
 			// get accessor for value type T
+			#if USE_DYNAMIC_ACCESSOR_T
 			var accessor = o as IDynamicAccessor<T>;
 			if (accessor != null) {
 				accessor.SetIndex(index, value);
 				return;
 			}
+			#endif
 
 			// fallback on untyped accessor
 			var untypedAccessor = o as IDynamicAccessorUntyped;
@@ -215,13 +223,17 @@ namespace PlayScript.DynamicRuntime
 				return;
 			}
 
+
+			#if USE_ILIST_T
 			var l = o as IList<T>;
 			if (l != null) {
 				l [index] = value;
 				return;
 			} 
+			#endif
 
 
+			#if USE_ILIST
 			var l2 = o as IList;
 			if (l2 != null) {
 				int count = l2.Count;
@@ -237,18 +249,23 @@ namespace PlayScript.DynamicRuntime
 				}
 				return;
 			} 
+			#endif
 
+			#if USE_IDICTIONARY_T
 			var d = o as IDictionary<int,T>;
 			if (d != null) {
 				d[index] = value;
 				return;
 			} 
+			#endif
 
+			#if USE_IDICTIONARY
 			var d2 = o as IDictionary;
 			if (d2 != null) {
 				d2[index] = value;
 				return;
 			}
+			#endif
 		}
 
 		private void SetIndexTo<T> (object o, string key, T value)
@@ -257,11 +274,13 @@ namespace PlayScript.DynamicRuntime
 			Stats.Increment(StatsCounter.SetIndexBinder_Key_Invoked);
 
 			// get accessor for value type T
+			#if USE_DYNAMIC_ACCESSOR_T
 			var accessor = o as IDynamicAccessor<T>;
 			if (accessor != null) {
 				accessor.SetIndex(key, value);
 				return;
 			}
+			#endif
 
 			// fallback on untyped accessor
 			var untypedAccessor = o as IDynamicAccessorUntyped;
@@ -270,6 +289,7 @@ namespace PlayScript.DynamicRuntime
 				return;
 			}
 
+			#if USE_IDICTIONARY
 			// handle dictionaries
 			var dict = o as IDictionary;
 			if (dict != null) {
@@ -278,6 +298,7 @@ namespace PlayScript.DynamicRuntime
 				dict[key] = (object)value;
 				return;
 			} 
+			#endif
 
 			// fallback on setmemberbinder to do the hard work 
 			Stats.Increment(StatsCounter.SetIndexBinder_Key_Property_Invoked);
