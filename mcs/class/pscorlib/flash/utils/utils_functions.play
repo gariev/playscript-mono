@@ -119,11 +119,11 @@ package flash.utils {
 	}
 	
 	public function setInterval(closure:Function, delay:Number, ... arguments):uint {
-		return Timer.setInterval(closure, delay, arguments);
+		return Timer.setInterval(closure, delay, arguments as Array);
 	}
 	
 	public function setTimeout(closure:Function, delay:Number, ... arguments):uint {
-		return Timer.setTimeout(closure, delay, arguments);
+		return Timer.setTimeout(closure, delay, arguments as Array);
 	}
 	
 	public function unescapeMultiByte(value:String):String {
