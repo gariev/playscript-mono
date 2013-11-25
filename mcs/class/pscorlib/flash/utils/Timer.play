@@ -22,6 +22,7 @@ package flash.utils {
 	public class Timer extends EventDispatcher {
 
 		private static const MAX_TIMER_DELTA:Number = 1000.0;
+		private static const REPORT_TIMER_OVER_MS:Number = 5.0;
 	
 		//
 		// Properties
@@ -32,9 +33,9 @@ package flash.utils {
 			get { return mCurrentCount; } 
 		}
 
- 	 	public property delay : Number { get; set; }
- 	 	public property repeatCount : int { get; set; }
- 	 	public property running : Boolean { get { return mRunning; } }
+		public property delay : Number { get; set; }
+		public property repeatCount : int { get; set; }
+		public property running : Boolean { get { return mRunning; } }
 
 		// We can actually have a static version of these are timers dispatches are not reentrant.
 		private static var _timerEventTimer:TimerEvent = new TimerEvent(TimerEvent.TIMER);
@@ -102,9 +103,15 @@ package flash.utils {
 				if (!mRunning)
 				{
 					// dispatch timer complete event
-					this.dispatchEvent(_timerEventTimerComplete);
+					dispatchEvent(_timerEventTimerComplete);
 				}
 			}
+		}
+
+		private function reportOverBudgetTimer(timingInMs:Number):void
+		{
+			System.Console.WriteLine("Timer took {0} ms. List of listeners:", timingInMs);
+			reportEventToDispatch(_timerEventTimer.type);
 		}
 		
         // advances all active Timer objects by the delta time specified
@@ -114,14 +121,25 @@ package flash.utils {
 			// iterate through all timers and advance their time
 			// note that we clone the active timers here to deal with timers that add timers or timers that must be removed
 			// (and note that timers can be added from other threads too).
-			for each (var timer:Timer in ActiveTimers())
+			var activeTimers:List.<Timer> = ActiveTimers();
+			for each (var timer:Timer in activeTimers)
 			{
 				// advance time
+				var beforeTimerMS:Number = sUtilsTimer.ElapsedMilliseconds;
 				timer.advanceTime(deltaTimeMS);
 				if (!timer.running)
 				{
 					// remove this timer from the active list 
 					RemoveFromActiveTimerList(timer);
+				}
+				else
+				{
+					var afterTimerMS:Number = sUtilsTimer.ElapsedMilliseconds;
+					if (afterTimerMS - beforeTimerMS >= REPORT_TIMER_OVER_MS)
+					{
+						// Report any timer that consistently takes more than N ms
+						timer.reportOverBudgetTimer(afterTimerMS - beforeTimerMS);
+					}
 				}
 			}
 		}

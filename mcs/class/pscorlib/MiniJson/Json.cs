@@ -545,6 +545,8 @@ namespace MiniJson {
 			{
 				string key = kvp.Key;
 				object value = kvp.Value;
+				if (PlayScript.Dynamic.IsUndefined(value)) 
+					continue;
 
 				if( !first )
 				{
@@ -597,6 +599,8 @@ namespace MiniJson {
 			{
 				string key = e.Key.ToString();
 				object value = e.Value;
+				if (PlayScript.Dynamic.IsUndefined(value)) 
+					continue;
 
 				if( !first )
 				{

@@ -240,6 +240,14 @@ namespace Mono.CSharp {
 			return null;
 		}
 
+		// casting type (PlayScript distinguishes between a few types of casts)
+		public enum CastType 
+		{
+			Explicit,		// explicit cast, eg var str:String = String(o);
+			Implicit,		// implicit cast, eg var str:String = o;
+			As				// 'as' cast,     eg var str:String = o as String;
+		};
+
 		//
 		// This is used to do a resolve but provides a typespec as a 'hint'
 		// The hint is used to coerce the resolving code to produce an expression of that type.
@@ -248,18 +256,18 @@ namespace Mono.CSharp {
 		// a Boolean is required then dont do expensive coalescing)
 		// Expressions should override DoResolveWithTypeHint below
 		//
-		public Expression ResolveWithTypeHint (ResolveContext rc, TypeSpec typeHint)
+		public Expression ResolveWithTypeHint (ResolveContext rc, TypeSpec typeHint, CastType typeHintCast)
 		{
 			if ((rc.FileType == SourceFileType.PlayScript) && rc.Module.Compiler.Settings.NewDynamicRuntime_TypeHint && (typeHint != null)) {
 				// resolve with type hint
-				return this.DoResolveWithTypeHint(rc, typeHint);
+				return this.DoResolveWithTypeHint(rc, typeHint, typeHintCast);
 			} else {
 				// dont use the type hint
 				return this.Resolve(rc);
 			}
 		}
 
-		protected virtual Expression DoResolveWithTypeHint (ResolveContext rc, TypeSpec typeHint)
+		protected virtual Expression DoResolveWithTypeHint (ResolveContext rc, TypeSpec typeHint, CastType typeHintCast)
 		{
 			// by default most expressions ignore the type hint
 			return this.Resolve(rc);
@@ -5040,8 +5048,10 @@ namespace Mono.CSharp {
 				//
 				// Use implicit conversion in all modes to return same candidates when the expression
 				// is used as argument or delegate conversion
-				//
-				if (!Convert.ImplicitConversionExists (ec, argument.Expr, parameter)) {
+
+				// set upconvert only based on the flag set in the argument, this is to better handle ambiguous overloading cases
+				bool upconvertOnly = (ec.FileType == SourceFileType.PlayScript) && argument.UpconvertOnly;
+				if (!Convert.ImplicitConversionExists (ec, argument.Expr, parameter, upconvertOnly)) {
 					return parameter.IsDelegate && argument.Expr is AnonymousMethodExpression ? 2 : 3;
 				}
 			}

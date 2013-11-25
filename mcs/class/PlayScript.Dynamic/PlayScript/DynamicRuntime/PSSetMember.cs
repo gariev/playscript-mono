@@ -14,6 +14,9 @@
 //      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //      See the License for the specific language governing permissions and
 //      limitations under the License.
+#define USE_DYNAMIC_ACCESSOR_TYPED
+#define USE_DYNAMIC_ACCESSOR_T
+#define USE_IDICTIONARY
 
 #if !DYNAMIC_SUPPORT
 using System;
@@ -29,7 +32,7 @@ namespace PlayScript.DynamicRuntime
 			mName = name;
 		}
 
-		public void SetNamedMember<T>( object o, string name, T value)
+		public void SetName(string name) 
 		{
 			// if name has changed then invalidate type
 			if (mName != name)
@@ -38,43 +41,190 @@ namespace PlayScript.DynamicRuntime
 				mNameHint = 0; // invalidate name hint when name changes
 				mType = null;
 			}
-
-			SetMember<T>(o, value, typeof(T) != typeof(System.Object) );
 		}
 
-		public object SetMemberAsObject(object o, object value, bool valueTypeIsConstant)
+		public void SetNamedMember<T>( object o, string name, T value)
 		{
-			return SetMember<object>(o, value, valueTypeIsConstant);
+			SetName(name);
+			SetMemberInternal<T>(o, value);
 		}
 
-		public T SetMember<T>(object o, T value, bool valueTypeIsConstant = false)
+		public bool SetMemberToBoolean(object o, bool value)
+		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
+			// get typed accessor
+			var accessor = o as IDynamicAccessorTyped;
+			if (accessor != null) {
+				accessor.SetMemberBool(mName, ref mNameHint, value);
+				return value;
+			}
+			#endif
+
+			// fallback
+			SetMemberInternal<bool>(o, value);
+			return value;
+		}
+
+		public int SetMemberToInt(object o, int value)
+		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
+			var accessor = o as IDynamicAccessorTyped;
+			if (accessor != null) {
+				accessor.SetMemberInt(mName, ref mNameHint, value);
+				return value;
+			}
+			#endif
+
+			// fallback
+			SetMemberInternal<int>(o, value);		
+			return value;
+		}
+
+		public System.Int64 SetMemberToInt64(object o, System.Int64 value)
+		{
+			SetMemberToInt(o, (int)value);
+			return value;
+		}
+
+		public uint SetMemberToUInt(object o, uint value)
+		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
+			var accessor = o as IDynamicAccessorTyped;
+			if (accessor != null) {
+				accessor.SetMemberUInt(mName, ref mNameHint, value);
+				return value;
+			}
+			#endif
+
+			// fallback
+			SetMemberInternal<uint>(o, value);
+			return value;
+		}
+
+		public float SetMemberToFloat(object o, float value)
+		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
+			var accessor = o as IDynamicAccessorTyped;
+			if (accessor != null) {
+				accessor.SetMemberNumber(mName, ref mNameHint, (double)value);
+				return value;
+			}
+			#endif
+
+			// fallback
+			SetMemberInternal<double>(o, (double)value);
+			return value;
+		}
+
+		public double SetMemberToNumber(object o, double value)
+		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
+			var accessor = o as IDynamicAccessorTyped;
+			if (accessor != null) {
+				accessor.SetMemberNumber(mName, ref mNameHint, value);
+				return value;
+			}
+			#endif
+
+			// fallback
+			SetMemberInternal<double>(o, value);
+			return value;
+		}
+
+		public string SetMemberToString(object o, string value)
+		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
+			var accessor = o as IDynamicAccessorTyped;
+			if (accessor != null) {
+				accessor.SetMemberString(mName, ref mNameHint, value);
+				return value;
+			}
+			#endif
+
+			// fallback
+			SetMemberInternal<string>(o, value);
+			return value;
+		}
+
+		public dynamic SetMemberToObject(object o, object value)
+		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
+			var accessor = o as IDynamicAccessorTyped;
+			if (accessor != null) {
+				accessor.SetMemberObject(mName, ref mNameHint, value);
+				return value;
+			}
+			#endif
+
+			// fallback
+			SetMemberInternal<object>(o, value);
+			return value;
+		}
+
+		[return: AsUntyped]
+		public dynamic SetMemberToUntyped(object o, [AsUntyped]object value)
+		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
+			var accessor = o as IDynamicAccessorTyped;
+			if (accessor != null) {
+				accessor.SetMemberUntyped(mName, ref mNameHint, value);
+				return value;
+			}
+			#endif
+
+			// fallback
+			SetMemberInternal<object>(o, value);
+			return value;
+		}
+
+		public T SetMemberToReference<T>(object o, T value)
+		{
+			#if USE_DYNAMIC_ACCESSOR_TYPED
+			var accessor = o as IDynamicAccessorTyped;
+			if (accessor != null) {
+				accessor.SetMemberUntyped(mName, ref mNameHint, (object)value);
+				return value;
+			}
+			#endif
+
+			// fallback
+			SetMemberInternal<T>(o, value);
+			return value;
+		}
+
+
+		private void SetMemberInternal<T>(object o, T value)
 		{
 			Stats.Increment(StatsCounter.SetMemberBinderInvoked);
 
 			TypeLogger.LogType(o);
 
 			// get accessor for value type T
+			#if USE_DYNAMIC_ACCESSOR_T
 			var accessor = o as IDynamicAccessor<T>;
 			if (accessor != null) {
 				accessor.SetMember(mName, ref mNameHint, value);
-				return value;
+				return;
 			}
+			#endif
 
 			// fallback on untyped accessor
 			var untypedAccessor = o as IDynamicAccessorUntyped;
 			if (untypedAccessor != null) {
 				untypedAccessor.SetMember(mName, ref mNameHint, (object)value);
-				return value;
+				return;
 			}
 
 			// resolve as dictionary 
+			#if USE_IDICTIONARY
 			var dict = o as IDictionary;
 			if (dict != null) 
 			{
 				// special case this since it happens so much in object initialization
 				dict[mName] = value;
-				return value;
+				return;
 			}
+			#endif
 
 			// determine if this is a instance member or a static member
 			bool isStatic;
@@ -103,19 +253,20 @@ namespace PlayScript.DynamicRuntime
 						mPreviousTarget = o;
 					}
 					action(value);
-					return value;
+					return;
 				}
 
 				// use cached resolve
 				if (mProperty != null) {
+					if (mArgs == null)  mArgs = new object[1];
 					mArgs[0] = value;
 					mPropertySetter.Invoke(o, BindingFlags.SuppressChangeType, null, mArgs, null);
-					return value;
+					return;
 				}
 
 				if (mField != null) {
 					mField.SetValue(o, value);
-					return value;
+					return;
 				}
 
 				// resolve as dynamic class
@@ -123,7 +274,7 @@ namespace PlayScript.DynamicRuntime
 				if (dc != null) 
 				{
 					dc.__SetDynamicValue(mName, value);
-					return value;
+					return;
 				}
 
 				throw new System.InvalidOperationException("Unhandled member type in PSSetMemberBinder");
@@ -131,7 +282,6 @@ namespace PlayScript.DynamicRuntime
 
 			// resolve name
 			Stats.Increment(StatsCounter.SetMemberBinder_Resolve_Invoked);
-			Stats.Start(StatsCounter.SetMemberBinder_Resolve_Time);
 
 			// resolve as property
 			// TODO: we allow access to non-public properties for simplicity,
@@ -151,10 +301,10 @@ namespace PlayScript.DynamicRuntime
 					mPreviousAction = null;
 					mPreviousTarget = null;
 
+					if (mArgs == null)  mArgs = new object[1];
 					mArgs[0] = PlayScript.Dynamic.ConvertValue(value, property.PropertyType);
 					mPropertySetter.Invoke(o, mArgs);
-					Stats.Stop(StatsCounter.SetMemberBinder_Resolve_Time);
-					return value;
+					return;
 				}
 			}
 
@@ -176,8 +326,7 @@ namespace PlayScript.DynamicRuntime
 					// resolve conversion function
 					object newValue = PlayScript.Dynamic.ConvertValue(value, mField.FieldType);
 					mField.SetValue(o, newValue);
-					Stats.Stop(StatsCounter.SetMemberBinder_Resolve_Time);
-					return value;
+					return;
 				}
 			}
 
@@ -190,14 +339,11 @@ namespace PlayScript.DynamicRuntime
 				mPreviousAction = null;
 				mPreviousTarget = null;
 				((IDynamicClass)o).__SetDynamicValue(mName, value);
-				Stats.Stop(StatsCounter.SetMemberBinder_Resolve_Time);
-				return value;
+				return;
 			}		
 
-			Stats.Stop(StatsCounter.SetMemberBinder_Resolve_Time);
-
 			// failed
-			return default(T);
+			return;
 		}
 
 
@@ -208,7 +354,7 @@ namespace PlayScript.DynamicRuntime
 		private PropertyInfo	mProperty;
 		private FieldInfo		mField;
 		private MethodInfo		mPropertySetter;
-		private object[]		mArgs = new object[1];
+		private object[]		mArgs;
 		object					mPreviousTarget;
 		object					mPreviousAction;
 	};

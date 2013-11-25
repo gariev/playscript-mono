@@ -285,6 +285,8 @@ namespace Mono.CSharp
 
 		protected bool useDelegateInvoke;
 
+		protected CastType  castType;
+
 		public DynamicExpressionStatement (IDynamicBinder binder, Arguments args, Location loc)
 		{
 			this.binder = binder;
@@ -823,23 +825,25 @@ namespace Mono.CSharp
 
 	class DynamicConversion : DynamicExpressionStatement, IDynamicBinder
 	{
-		public DynamicConversion (TypeSpec targetType, CSharpBinderFlags flags, Arguments args, Location loc)
+		public DynamicConversion (TypeSpec targetType, CSharpBinderFlags flags, Arguments args, Location loc, CastType castType = CastType.Explicit)
 			: base (null, args, loc)
 		{
 			type = targetType;
+			this.castType = castType;
 			base.flags = flags;
 			base.binder = this;
 		}
-
 
 		protected override Expression DoResolve(ResolveContext rc)
 		{
 			// get expresion we're converting
 			var expr = this.Arguments[0].Expr;
+			if (expr.Type == this.Type)
+				return expr; // nothing to do
 
 			if (rc.Module.PredefinedTypes.IsPlayScriptAotMode && rc.Module.Compiler.Settings.NewDynamicRuntime_ConvertReturnType) {
 				// encourage dynamic expression to resolve to our type to avoid this conversion
-				expr = expr.ResolveWithTypeHint(rc, this.Type);
+				expr = expr.ResolveWithTypeHint(rc, this.Type, this.castType);
 				if (expr.Type == this.type) {
 					// skip dynamic conversions
 					return expr;
@@ -847,83 +851,147 @@ namespace Mono.CSharp
 			}
 
 			if (rc.Module.PredefinedTypes.IsPlayScriptAotMode && rc.Module.Compiler.Settings.NewDynamicRuntime_Convert) {
-				var conversion = CreateDynamicConversion (rc, expr.Resolve (rc), this.Type);
-				if (conversion != null)
+				var conversion = CreateDynamicConversion (rc, expr.Resolve (rc), this.Type, this.castType);
+				if (conversion != null) 
 					return conversion.Resolve (rc);
+				else 
+					return null;
 			}
 
 			return base.DoResolve(rc);
 		}
 
+		public static string GetDynamicConversionTypeName(ResolveContext rc, TypeSpec type)
+		{
+			if (type.IsAsUntyped || TypeManager.IsAsUndefined (type, rc)) {
+				return "Untyped";
+			}
+			if (type.IsDynamic) {
+				return "Object";
+			}
+			switch (type.BuiltinType){
+				case BuiltinTypeSpec.Type.Bool:
+					return "Boolean";
+				case BuiltinTypeSpec.Type.Int:
+					return "Int";
+				case BuiltinTypeSpec.Type.UInt:
+					return "UInt";
+				case BuiltinTypeSpec.Type.Double:
+					return "Number";
+				case BuiltinTypeSpec.Type.Float:
+					return "Float";
+				case BuiltinTypeSpec.Type.String:
+					return "String";
+				default:
+					if (type.IsStruct) {
+						return type.Name;
+					}
+					if (TypeSpec.IsReferenceType(type)) {
+						return "Object";
+					}
+
+					if (type.IsEnum) {
+						return "Enum";
+					}
+					return null;
+			}
+		}
+
+		public static string GetDynamicCastName(CastType castType)
+		{
+			switch (castType)
+			{
+				case CastType.As: 
+					return "As";
+				case CastType.Explicit:
+					return "To";
+				case CastType.Implicit:
+					return "ImplicitTo";
+				default:
+					throw new NotImplementedException("Cast type: " + castType);
+			}
+		}
+
+
 		#region IDynamicCallSite implementation
 
-		public static Expression CreateDynamicConversion(ResolveContext rc, Expression expr, TypeSpec target_type)
+		public static Expression CreateDynamicConversion(ResolveContext rc, Expression expr, TypeSpec target_type, CastType castType)
 		{
 			var expr_type = expr.Type;
 
-			// object can hold any value
-			if (target_type.BuiltinType == BuiltinTypeSpec.Type.Object)
-				return EmptyCast.Create(expr, target_type, rc);
+			if (expr_type == target_type)
+				return expr; // nothing to do
 
-			// casts between Object (Dynamic) and * (AsUntyped), and vice versa
-			if ((expr_type.IsDynamic || TypeManager.IsAsUndefined (expr_type, rc)) && target_type.IsDynamic) {
-				if (expr_type == target_type)
-					return expr; // nothing to do
+			//
+			// get source and target target type name
+			//
 
-				// in C#, allow dynamic to hold undefined
-				if (rc.FileType != SourceFileType.PlayScript)
-					return EmptyCast.Create (expr, target_type, rc).Resolve (rc);
+			string sourceTypeName = GetDynamicConversionTypeName(rc, expr.Type);
 
-				// cast from * (AsUntyped) to Object (Dynamic)
-				if ((expr.Type.IsAsUntyped || TypeManager.IsAsUndefined (expr.Type, rc)) && !target_type.IsAsUntyped) {
-					var args = new Arguments (1);
-					args.Add (new Argument (EmptyCast.RemoveDynamic (rc, expr)));
-					var function = new MemberAccess (new TypeExpression (rc.Module.PredefinedTypes.PsConverter.Resolve (), expr.Location), "ConvertToObj", expr.Location);
-					return new Invocation (function, args);
+			// a little hacky, but if the source type is an enum just try to convert it now to the target type
+			if (sourceTypeName == "Enum") {
+				expr = Convert.ExplicitConversion(rc, expr, target_type, expr.Location).Resolve(rc);
+				expr_type = expr.Type;
+				sourceTypeName = GetDynamicConversionTypeName(rc, expr.Type);
+			}
+
+
+			string targetTypeName = GetDynamicConversionTypeName(rc, target_type);
+			if (sourceTypeName == null || targetTypeName == null) {
+				// failure
+				rc.Report.Error (39, expr.Location, "Cannot convert type `{0}' to `{1}' via a dynamic {2} conversion",
+				                 expr.Type.GetSignatureForError (), target_type.GetSignatureForError (), castType.ToString());
+				return null;
+			}
+
+			// in C#, allow dynamic to hold undefined
+			if (rc.FileType != SourceFileType.PlayScript) {
+				if (sourceTypeName == "Untyped" && target_type.IsDynamic) 
+					return EmptyCast.Create(expr, target_type, rc).Resolve(rc);
+			}
+
+			//
+			// apply conversion functions
+			//
+
+			// do we need to invoke a conversion function?
+			// only do this if the types are different
+			if (sourceTypeName != targetTypeName) {
+				if (targetTypeName != "Object" && targetTypeName != "Untyped") {
+					// simplify converter, just use overloading for these
+					sourceTypeName = "";
 				}
 
-				// cast from Object (Dynamic) to * (AsUntyped)
-				return EmptyCast.Create (expr, target_type, rc).Resolve (rc);
+				// build converter method name depending on casting type
+				string converterMethod = sourceTypeName + GetDynamicCastName(castType) + targetTypeName;
+
+				if (expr.Type.IsStruct && !BuiltinTypeSpec.IsPrimitiveType(expr.Type)) {
+					// just invoke converter directly on the struct (to handle variants)
+					expr = new Invocation(new MemberAccess(expr, converterMethod, expr.Location), new Arguments(0)).Resolve(rc);
+				}  else {
+					TypeSpec converter = rc.Module.PredefinedTypes.PsConverter.Resolve();
+					var cast_args = new Arguments(1);
+					cast_args.Add(new Argument(EmptyCast.RemoveDynamic(rc, expr)));
+					cast_args[0].UpconvertOnly = true;	// do not impicitly down convert values, to allow for proper method overloading
+					expr = new Invocation(new MemberAccess(new TypeExpression(converter, expr.Location), converterMethod, expr.Location), cast_args).Resolve(rc);
+				}
 			}
 
-			// other class types must be type checked - fall back to the slow path
-			if ((target_type.IsClass || target_type.IsInterface) && target_type.BuiltinType != BuiltinTypeSpec.Type.String)
-				return null;
+			//
+			// apply a final cast if necessary
+			//
 
-			TypeSpec converter = rc.Module.PredefinedTypes.PsConverter.Resolve();
+			if (target_type.IsDynamic || target_type.BuiltinType == BuiltinTypeSpec.Type.Object) {
+				// cast to dynamic or object
+				return EmptyCast.Create(expr, target_type, rc).Resolve(rc);
+			} 
 
-			// perform numeric or other type conversion
-			string converterMethod = null;
-
-			switch (target_type.BuiltinType) {
-				case BuiltinTypeSpec.Type.UInt:
-					converterMethod = "ConvertToUInt";
-					break;
-				case BuiltinTypeSpec.Type.Double:
-					converterMethod = "ConvertToDouble";
-					break;
-				case BuiltinTypeSpec.Type.Float:
-					converterMethod = "ConvertToFloat";
-					break;
-				case BuiltinTypeSpec.Type.Int:
-					converterMethod = "ConvertToInt";
-					break;
-				case BuiltinTypeSpec.Type.String:
-					converterMethod = "ConvertToString";
-					break;
-				case BuiltinTypeSpec.Type.Bool:
-					converterMethod = "ConvertToBool";
-					break;
-				default:
-//					throw new InvalidOperationException("Unhandled convert to: " + target_type.GetSignatureForError());
-					return EmptyCast.Create(expr, target_type, rc);
-//					converterMethod = "ConvertTo" + target_type.Name.ToString();
-//					break;
+			if (expr.Type != target_type) {
+				// perfom explicit conversion
+				return Convert.ExplicitConversion(rc, EmptyCast.RemoveDynamic(rc, expr), target_type, expr.Location).Resolve(rc);
 			}
 
-			var cast_args = new Arguments(1);
-			cast_args.Add(new Argument(EmptyCast.RemoveDynamic(rc, expr)));
-			return new Invocation(new MemberAccess(new TypeExpression(converter, expr.Location), converterMethod, expr.Location), cast_args);
+			return expr;
 		}
 
 		#endregion
@@ -1025,6 +1093,15 @@ namespace Mono.CSharp
 			base.flags = flags;
 		}
 
+		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec t, CastType typeHintCast) {
+			// we dont support 'as' style type casts yet for indexers
+//			if (typeHintCast != CastType.As) {
+				this.Type = t;
+				this.castType = typeHintCast;
+//			}
+			return this.Resolve(rc);
+		}
+
 		protected override Expression DoResolve (ResolveContext ec)
 		{
 			can_be_mutator = true;
@@ -1054,59 +1131,89 @@ namespace Mono.CSharp
 			);
 		}
 
+
 		public override Expression InvokeCallSite(ResolveContext rc, Expression site, Arguments args, TypeSpec returnType, bool isStatement)
 		{
 			// get object and index
 			var obj = args[0].Expr;
 			var index = args[1].Expr;
 
+			// convert index into something more compatible with 
+			switch (index.Type.BuiltinType)
+			{
+				case BuiltinTypeSpec.Type.Int:
+				case BuiltinTypeSpec.Type.String:
+				case BuiltinTypeSpec.Type.Object:
+					break;
+				default:
+					if (!TypeSpec.IsReferenceType(index.Type)) {
+						var site_args = new Arguments(2);
+						site_args.Add(new Argument(obj));
+						site_args.Add(new Argument(index));
+						site_args[0].UpconvertOnly = true;
+						site_args[1].UpconvertOnly = true;
+						index = new Invocation(new MemberAccess(site, "ConvertIndex"), site_args).Resolve(rc);
+					}
+					break;
+			}
+
+
 			bool isSet = IsSetter(site);
 			isSet |= (flags & CSharpBinderFlags.ValueFromCompoundAssignment) != 0;
 			if (!isSet) {
-				if (NeedsCastToObject(returnType)) {
-					var site_args = new Arguments(2);
-					site_args.Add(new Argument(obj));
-					site_args.Add(new Argument(index));
+				if (!NeedsGenericMethod(returnType)) {
+					// build get method (example: GetIndexToInt, GetIndexAsString, etc)
+					string methodName = "GetIndex" + DynamicConversion.GetDynamicCastName(this.castType) + DynamicConversion.GetDynamicConversionTypeName(rc, returnType);
 
-					// get as an object
-					if (returnType != null && returnType.IsAsUntyped)
-						return new Invocation(new MemberAccess(site, "GetIndexAsUntyped"), site_args);
-					else
-						return new Invocation(new MemberAccess(site, "GetIndexAsObject"), site_args);
-				} else {
 					var site_args = new Arguments(2);
 					site_args.Add(new Argument(obj));
 					site_args.Add(new Argument(index));
+					site_args[0].UpconvertOnly = true;
+					site_args[1].UpconvertOnly = true;
+					return new Invocation(new MemberAccess(site, methodName), site_args);
+				} else {
+					string methodName = "GetIndex" + DynamicConversion.GetDynamicCastName(this.castType) + "Reference";
+
+					var site_args = new Arguments(2);
+					site_args.Add(new Argument(obj));
+					site_args.Add(new Argument(index));
+					site_args[0].UpconvertOnly = true;
+					site_args[1].UpconvertOnly = true;
 
 					// get as a T
 					var type_args = new TypeArguments();
 					type_args.Add(new TypeExpression(returnType, loc));
-					return new Invocation(new MemberAccess(site, "GetIndexAs", type_args, loc), site_args);
+					return new Invocation(new MemberAccess(site, methodName, type_args, loc), site_args);
 				}
 			} else {
 				var setVal = args[2].Expr;
 
-				if (NeedsCastToObject(setVal.Type)) {
+				if (!NeedsGenericMethod(setVal.Type)) {
+					string methodName = "SetIndexTo" + DynamicConversion.GetDynamicConversionTypeName(rc, setVal.Type);
+
 					var site_args = new Arguments(3);
 					site_args.Add(new Argument(obj));
 					site_args.Add(new Argument(index));
-					site_args.Add(new Argument(new Cast(new TypeExpression(rc.BuiltinTypes.Object, loc), setVal, loc)));
-						
-					// set as an object
-					var type_args = new TypeArguments();
-					type_args.Add(new TypeExpression(rc.BuiltinTypes.Object, loc));
-					// TODO: AsUntyped parameters aren't yet supported, so there is no SetIndexAsUntyped
-					return new Invocation(new MemberAccess(site, "SetIndexAs", type_args, loc), site_args);
+					site_args.Add(new Argument(EmptyCast.RemoveDynamic(rc, setVal)));
+					site_args[0].UpconvertOnly = true;
+					site_args[1].UpconvertOnly = true;
+					site_args[2].UpconvertOnly = true;
+					return new Invocation(new MemberAccess(site, methodName, loc), site_args);
 				} else {
+					string methodName = "SetIndexToReference";
+
 					var site_args = new Arguments(3);
 					site_args.Add(new Argument(obj));
 					site_args.Add(new Argument(index));
-					site_args.Add(new Argument(setVal));
+					site_args.Add(new Argument(EmptyCast.RemoveDynamic(rc, setVal)));
+					site_args[0].UpconvertOnly = true;
+					site_args[1].UpconvertOnly = true;
+					site_args[2].UpconvertOnly = true;
 
 					// set as a T
 					var type_args = new TypeArguments();
 					type_args.Add(new TypeExpression(setVal.Type, loc));
-					return new Invocation(new MemberAccess(site, "SetIndexAs", type_args, loc), site_args);
+					return new Invocation(new MemberAccess(site, methodName, type_args, loc), site_args);
 				}
 			}
 		}
@@ -1205,17 +1312,19 @@ namespace Mono.CSharp
 					TypeSpec converter = rc.Module.PredefinedTypes.PsConverter.Resolve();
 					var site_args = new Arguments(1);
 					site_args.Add(new Argument(EmptyCast.RemoveDynamic(rc, Arguments[0].Expr.Resolve(rc))));
-					return new Invocation(new MemberAccess(new TypeExpression(converter, Location), "ConvertToString", Location), site_args).Resolve(rc);
+					return new Invocation(new MemberAccess(new TypeExpression(converter, Location), "InvokeToString", Location), site_args).Resolve(rc);
 				}
 			}
 
 			return base.DoResolve(rc);
 		}
 
-		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec t) {
-			if (IsMemberAccess)
+		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec t, CastType typeHintCast) {
+			// we dont support "as" style casts yet
+			if (IsMemberAccess && (typeHintCast != CastType.As))
 			{
 				this.Type = t;
+				this.castType = typeHintCast;
 			}
 			return this.Resolve(rc);
 		}
@@ -1355,6 +1464,13 @@ namespace Mono.CSharp
 			base.flags = flags;
 		}
 
+		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec t, CastType typeHintCast) {
+			this.Type = t;
+			this.castType = typeHintCast;
+			return this.Resolve(rc);
+		}
+
+
 		#region IDynamicCallSite implementation
 
 		public override bool UseCallSite(ResolveContext ec, Arguments args)
@@ -1388,39 +1504,47 @@ namespace Mono.CSharp
 			bool isSet = IsSetter(site);
 			isSet |= (flags & CSharpBinderFlags.ValueFromCompoundAssignment) != 0;
 			if (!isSet) {
-				if (NeedsCastToObject(returnType)) {
+				if (!NeedsGenericMethod(returnType)) {
+					// build get method (example: GetMemberToInt, GetMemberAsString, etc)
+					string methodName = "GetMember" + DynamicConversion.GetDynamicCastName(this.castType) + DynamicConversion.GetDynamicConversionTypeName(rc, returnType);
+
 					var site_args = new Arguments(1);
 					site_args.Add(new Argument(obj));
-					if (returnType != null && returnType.IsAsUntyped)
-						return new Invocation(new MemberAccess(site, "GetMemberAsUntyped"), site_args);
-					else
-						return new Invocation(new MemberAccess(site, "GetMemberAsObject"), site_args);
+					return new Invocation(new MemberAccess(site, methodName), site_args);
 				} else {
+					string methodName = "GetMember" + DynamicConversion.GetDynamicCastName(this.castType) + "Reference";
+
 					var site_args = new Arguments(1);
 					site_args.Add(new Argument(obj));
 
 					var type_args = new TypeArguments();
 					type_args.Add(new TypeExpression(returnType, loc));
-					return new Invocation(new MemberAccess(site, "GetMember", type_args, loc), site_args);
+					return new Invocation(new MemberAccess(site, methodName, type_args, loc), site_args);
 				}
 			} else {
 				var setVal = args[1].Expr;
 
-				if (NeedsCastToObject(setVal.Type)) {
-					var site_args = new Arguments(3);
-					site_args.Add(new Argument(obj));
-					site_args.Add(new Argument(new Cast(new TypeExpression(rc.BuiltinTypes.Object, loc), setVal, loc)));
-					site_args.Add(new Argument(new BoolLiteral(rc.BuiltinTypes, false, loc)));
-					// TODO: AsUntyped parameters aren't yet supported, so there is no SetMemberAsUntyped
-					return new Invocation(new MemberAccess(site, "SetMemberAsObject"), site_args);
-				} else {
+				if (!NeedsGenericMethod(setVal.Type)) {
+					string methodName = "SetMemberTo" + DynamicConversion.GetDynamicConversionTypeName(rc, setVal.Type);
+
 					var site_args = new Arguments(2);
 					site_args.Add(new Argument(obj));
-					site_args.Add(new Argument(setVal));
+					site_args.Add(new Argument(EmptyCast.RemoveDynamic(rc, setVal)));
+					site_args[0].UpconvertOnly = true;
+					site_args[1].UpconvertOnly = true;
+					return new Invocation(new MemberAccess(site, methodName), site_args);
+				} else {
+					string methodName = "SetMemberToReference";
+
+					var site_args = new Arguments(2);
+					site_args.Add(new Argument(obj));
+					site_args.Add(new Argument(EmptyCast.RemoveDynamic(rc, setVal)));
+					site_args[0].UpconvertOnly = true;
+					site_args[1].UpconvertOnly = true;
 
 					var type_args = new TypeArguments();
 					type_args.Add(new TypeExpression(setVal.Type, loc));
-					return new Invocation(new MemberAccess(site, "SetMember", type_args, loc), site_args);
+					return new Invocation(new MemberAccess(site, methodName, type_args, loc), site_args);
 				}
 			}
 		}
@@ -1468,11 +1592,6 @@ namespace Mono.CSharp
 			base.binder = this;
 		}
 
-		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec t) {
-			this.Type = t;
-			return this.Resolve(rc);
-		}
-
 		public Expression CreateCallSiteBinder (ResolveContext ec, Arguments args)
 		{
 			//
@@ -1486,9 +1605,9 @@ namespace Mono.CSharp
 			return expr.Type.Name.Contains("Set") && !expr.Type.Name.Contains("Get");
 		}
 
-		protected bool NeedsCastToObject(TypeSpec t)
+		protected static bool NeedsGenericMethod(TypeSpec t)
 		{
-			return (t == null) || (t.Kind == MemberKind.InternalCompilerType) || (t.BuiltinType == BuiltinTypeSpec.Type.Dynamic);
+			return (t.IsClass || t.IsInterface || t.IsDelegate) && (t.BuiltinType != BuiltinTypeSpec.Type.String) && (t.BuiltinType != BuiltinTypeSpec.Type.Object);
 		}
 
 		protected abstract Expression CreateCallSiteBinder (ResolveContext ec, Arguments args, bool isSet);
@@ -1593,6 +1712,9 @@ namespace Mono.CSharp
 				case BuiltinTypeSpec.Type.UInt:
 					return "UInt";
 				default:
+					if (type.IsStruct) {
+						return type.Name;
+					}
 					return "Object";
 			}
 		}
@@ -1694,11 +1816,16 @@ namespace Mono.CSharp
 					return "Int";
 				case BuiltinTypeSpec.Type.Double:
 					return "Double";
+				case BuiltinTypeSpec.Type.Float:
+					return "Float";	
 				case BuiltinTypeSpec.Type.String:
 					return "String";
 				case BuiltinTypeSpec.Type.UInt:
 					return "UInt";
 				default:
+					if (type.IsStruct) {
+						return type.Name;
+					}
 					return "Obj";
 			}
 		}
@@ -1809,6 +1936,10 @@ namespace Mono.CSharp
 
 			// append to binary method instead of using overloads
 			binaryMethod += leftType + rightType;
+
+			// disable upconversion for arguments
+			Arguments[0].UpconvertOnly = true;
+			Arguments[1].UpconvertOnly = true;
 
 			var ret = new Invocation (new MemberAccess (new TypeExpression (binary, loc), binaryMethod, loc), Arguments).Resolve (rc);
 			if (ret.Type == rc.BuiltinTypes.Object) {

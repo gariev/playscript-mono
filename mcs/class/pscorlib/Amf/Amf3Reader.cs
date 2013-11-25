@@ -134,7 +134,7 @@ namespace Amf
 		{
 			int index = mRemapTable[mReadIndex++];
 			if (index < 0) return;
-			value = mValues[index].AsBoolean();
+			value = mValues[index].ToBoolean();
 		}
 
 		// read next property as integer
@@ -142,7 +142,7 @@ namespace Amf
 		{
 			int index = mRemapTable[mReadIndex++];
 			if (index < 0) return;
-			value = mValues[index].AsInt();
+			value = mValues[index].ToInt();
 		}
 
 		// read next property as unsigned integer
@@ -150,7 +150,7 @@ namespace Amf
 		{
 			int index = mRemapTable[mReadIndex++];
 			if (index < 0) return;
-			value = mValues[index].AsUInt();
+			value = mValues[index].ToUInt();
 		}
 
 		// read next property as double
@@ -158,7 +158,7 @@ namespace Amf
 		{
 			int index = mRemapTable[mReadIndex++];
 			if (index < 0) return;
-			value = mValues[index].AsNumber();
+			value = mValues[index].ToNumber();
 		}
 
 		// read next property as float
@@ -166,7 +166,7 @@ namespace Amf
 		{
 			int index = mRemapTable[mReadIndex++];
 			if (index < 0) return;
-			value = mValues[index].AsFloat();
+			value = mValues[index].ToFloat();
 		}
 
 		// read next property as string
@@ -174,7 +174,7 @@ namespace Amf
 		{
 			int index = mRemapTable[mReadIndex++];
 			if (index < 0) return;
-			value = mValues[index].AsString();
+			value = mValues[index].ToString();
 		}
 
 		// read next property as object
@@ -182,7 +182,7 @@ namespace Amf
 		{
 			int index = mRemapTable[mReadIndex++];
 			if (index < 0) return;
-			value = mValues[index].AsObject();
+			value = mValues[index].ToObject();
 		}
 
 		// read next property as object
@@ -190,7 +190,7 @@ namespace Amf
 		{
 			int index = mRemapTable[mReadIndex++];
 			if (index < 0) return;
-			value = mValues[index].AsObject() as T;
+			value = mValues[index].ToObject() as T;
 		}
 
 		// read next property as variant (any type)
@@ -210,71 +210,79 @@ namespace Amf
 		//
 
 		// read next property as boolean
-		public bool ReadAsBoolean(bool defaultValue = false)
+		public bool ReadBoolean(bool defaultValue = false)
 		{
 			int index = mRemapTable[mReadIndex++];
 			if (index < 0) return defaultValue;
-			return mValues[index].AsBoolean();
+			return mValues[index].ToBoolean(defaultValue);
 		}
 
 		// read next property as integer
-		public int ReadAsInt(int defaultValue = 0)
+		public int ReadInt(int defaultValue = 0)
 		{
 			int index = mRemapTable[mReadIndex++];
 			if (index < 0) return defaultValue;
-			return mValues[index].AsInt();
+			return mValues[index].ToInt(defaultValue);
 		}
 
 		// read next property as unsigned integer
-		public uint ReadAsUInt(uint defaultValue = 0)
+		public uint ReadUInt(uint defaultValue = 0)
 		{
 			int index = mRemapTable[mReadIndex++];
 			if (index < 0) return defaultValue;
-			return mValues[index].AsUInt();
+			return mValues[index].ToUInt(defaultValue);
 		}
 
 		// read next property as number
-		public double ReadAsNumber(double defaultValue = 0.0)
+		public double ReadNumber(double defaultValue = 0.0)
 		{
 			int index = mRemapTable[mReadIndex++];
 			if (index < 0) return defaultValue;
-			return mValues[index].AsNumber();
+			return mValues[index].ToNumber(defaultValue);
 		}
 
 		// read next property as float
-		public float ReadAsFloat(float defaultValue = 0.0f)
+		public float ReadFloat(float defaultValue = 0.0f)
 		{
 			int index = mRemapTable[mReadIndex++];
 			if (index < 0) return defaultValue;
-			return mValues[index].AsFloat();
+			return mValues[index].ToFloat(defaultValue);
 		}
 
 		// read next property as string
-		public string ReadAsString(string defaultValue = null)
+		public string ReadString(string defaultValue = null)
 		{
 			int index = mRemapTable[mReadIndex++];
 			if (index < 0) return defaultValue;
-			return mValues[index].AsString();
+			return mValues[index].ToString(defaultValue);
 		}
 
 		// read next property as object
-		public object ReadAsObject(object defaultValue = null)
+		public object ReadObject(object defaultValue = null)
 		{
 			int index = mRemapTable[mReadIndex++];
 			if (index < 0) return null;
-			return mValues[index].AsObject();
+			return mValues[index].ToObject(defaultValue);
+		}
+
+		// read next property as untyped (object or undefined)
+		public object ReadUntyped()
+		{
+			int index = mRemapTable[mReadIndex++];
+			if (index < 0) return PlayScript.Undefined._undefined;
+			return mValues[index].ToUntyped();
 		}
 
 		// read next property as T
-		public T ReadAs<T>(T defaultValue = null) where T:class
+		public T ReadObjectAs<T>(T defaultValue = null) where T:class
 		{
 			int index = mRemapTable[mReadIndex++];
 			if (index < 0) return defaultValue;
-			return mValues[index].AsObject() as T;
+			return mValues[index].ToObject(defaultValue) as T;
 		}
 
 		// read next property as variant
-		public Variant ReadAsVariant()
+		public Variant ReadVariant()
 		{
 			int index = mRemapTable[mReadIndex++];
 			if (index < 0) return Variant.Undefined;
@@ -301,11 +309,11 @@ namespace Amf
 			// note that mValues[0] is reserved for undefined, any missing properties will be mapped there
 			int count = mStreamClassDef.Properties.Length;
 			for (int i=0; i < count; i++){
-				mParser.ReadNextObject(ref mValues[i + 1]);
+				mParser.ReadNextVariant(out mValues[i + 1]);
 			}
 
 			// force value[0] to undefined to elegantly handle missing properties as index 0
-			mValues[0]	= Variant.Undefined;
+			mValues[0]	= new Variant(Variant.TypeCode.Undefined);
 		}
 
 		internal void EndRead()

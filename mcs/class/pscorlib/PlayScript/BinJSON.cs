@@ -950,7 +950,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & BinJSON.OBJ_TYPE_MASK);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<string>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<string>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<string>)this).GetMemberOrDefault(PlayScript.Dynamic.ConvertKey(index), ref crc, null);
@@ -972,7 +972,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & BinJSON.OBJ_TYPE_MASK);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<string>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<string>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<string>)this).GetMemberOrDefault(PlayScript.Dynamic.ConvertKey(index), ref crc, null);
@@ -1019,7 +1019,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & BinJSON.OBJ_TYPE_MASK);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<int>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<int>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<int>)this).GetMember(PlayScript.Dynamic.ConvertKey(index), ref crc);
@@ -1041,7 +1041,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & BinJSON.OBJ_TYPE_MASK);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<int>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<int>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<int>)this).GetMember(PlayScript.Dynamic.ConvertKey(index), ref crc);
@@ -1088,7 +1088,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & BinJSON.OBJ_TYPE_MASK);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<double>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<double>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<double>)this).GetMember(PlayScript.Dynamic.ConvertKey(index), ref crc);
@@ -1110,7 +1110,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & BinJSON.OBJ_TYPE_MASK);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<double>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<double>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<double>)this).GetMember(PlayScript.Dynamic.ConvertKey(index), ref crc);
@@ -1157,7 +1157,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & BinJSON.OBJ_TYPE_MASK);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<uint>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<uint>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<uint>)this).GetMember(PlayScript.Dynamic.ConvertKey(index), ref crc);
@@ -1179,7 +1179,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & BinJSON.OBJ_TYPE_MASK);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<uint>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<uint>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<uint>)this).GetMember(PlayScript.Dynamic.ConvertKey(index), ref crc);
@@ -1226,7 +1226,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & BinJSON.OBJ_TYPE_MASK);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<bool>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<bool>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<bool>)this).GetMember(PlayScript.Dynamic.ConvertKey(index), ref crc);
@@ -1248,7 +1248,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & BinJSON.OBJ_TYPE_MASK);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<bool>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<bool>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<bool>)this).GetMember(PlayScript.Dynamic.ConvertKey(index), ref crc);
@@ -1295,7 +1295,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & BinJSON.OBJ_TYPE_MASK);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<object>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<object>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<object>)this).GetMember(PlayScript.Dynamic.ConvertKey(index), ref crc);
@@ -1317,7 +1317,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & BinJSON.OBJ_TYPE_MASK);
 				if (listType == LIST_TYPE.ARRAY) {
-					return ((IDynamicAccessor<object>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return ((IDynamicAccessor<object>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return ((IDynamicAccessor<object>)this).GetMember(PlayScript.Dynamic.ConvertKey(index), ref crc);
@@ -1353,7 +1353,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & BinJSON.OBJ_TYPE_MASK);
 				if (listType == LIST_TYPE.ARRAY) {
-					return (float)((IDynamicAccessor<double>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return (float)((IDynamicAccessor<double>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return (float)((IDynamicAccessor<double>)this).GetMember(PlayScript.Dynamic.ConvertKey(index), ref crc);
@@ -1375,7 +1375,7 @@ namespace playscript.utils {
 				uint len = *(uint*)(list + 4);
 				LIST_TYPE listType = (LIST_TYPE)(len & BinJSON.OBJ_TYPE_MASK);
 				if (listType == LIST_TYPE.ARRAY) {
-					return (float)((IDynamicAccessor<double>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ConvertToInt(index));
+					return (float)((IDynamicAccessor<double>)this).GetIndex(PlayScript.DynamicRuntime.PSConverter.ToInt(index));
 				} else {
 					uint crc = 0;
 					return (float)((IDynamicAccessor<double>)this).GetMember(PlayScript.Dynamic.ConvertKey(index), ref crc);

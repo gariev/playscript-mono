@@ -110,18 +110,18 @@ namespace Amf
 			// read all fields using reflection
 			foreach (var field in mFieldList){
 				// read value
-				Variant value = reader.ReadAsVariant();
+				Variant value = reader.ReadVariant();
 				if (value.IsDefined) {
-					field.SetValue(obj, value.AsType(field.FieldType));
+					field.SetValue(obj, value.ToType(field.FieldType));
 				}
 			}
 
 			// read all properties using reflection
 			foreach (var property in mPropertyList){
 				// read value
-				Variant value = reader.ReadAsVariant();
+				Variant value = reader.ReadVariant();
 				if (value.IsDefined) {
-					property.SetValue(obj, value.AsType(property.PropertyType), null);
+					property.SetValue(obj, value.ToType(property.PropertyType), null);
 				}
 			}
 		}

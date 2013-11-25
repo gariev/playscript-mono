@@ -20,10 +20,16 @@ namespace flash.net {
 	partial class URLLoader {
 
 		// We use a partial C# class to mix C# with PlayScript
-		private static void DoWithResponse(WebRequest request, Action<HttpWebResponse> responseAction)
+		private void AsyncSendAndResponse(Action<HttpWebResponse> responseAction)
 		{
 			Action wrapperAction = () =>
 			{
+				// We send the request from another thread (as it can be blocking if there is no Wifi connection)
+				WebRequest request = sendRequest();		// Note that we need to make sure sendRequest() and other PlayScript methods are thread safe
+				if (request == null)
+				{
+					return;
+				}
 				request.BeginGetResponse(new AsyncCallback((iar) =>
 				{
 					try {
@@ -39,7 +45,15 @@ namespace flash.net {
 			wrapperAction.BeginInvoke(new AsyncCallback((iar) =>
 			                                            {
 				var action = (Action)iar.AsyncState;
-				action.EndInvoke(iar);
+				try
+				{
+					action.EndInvoke(iar);
+				}
+				catch
+				{
+					// This can happen if we could not send the message (or get the response)
+					// We have to figure out if we want to retry later or show a message box to the end user.
+				}
 			}), wrapperAction);
 		}
 

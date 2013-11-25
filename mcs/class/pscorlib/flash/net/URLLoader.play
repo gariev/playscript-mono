@@ -188,13 +188,9 @@ package flash.net {
 		}
 
 		private function doHttpLoadAsynchronous():void {
-			// Note that data might not be sent asynchronously...
-			var request:WebRequest = sendRequest();
-			if (request) {
-				// We are going to wait the response in another thread
-				// And the complete event will be added in a delayed timer, so the event is dispatched in the main thread
-				DoWithResponse(request, responseActionWithDelayedEvent);
-			}
+			// We are going send and wait the response in another thread
+			// And the complete event will be added in a delayed timer, so the event is dispatched in the main thread
+			AsyncSendAndResponse(responseActionWithDelayedEvent);
 		}
 
 		private function doLoadFromOfflineCache():void {

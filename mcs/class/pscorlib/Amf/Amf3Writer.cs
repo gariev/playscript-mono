@@ -28,6 +28,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using _root;
+using PlayScript;
 using PlayScript.Expando;
 
 namespace Amf
@@ -135,6 +136,40 @@ namespace Amf
 			serializer.WriteObject(this, defaultInstance);
 		}
 
+		public void Write(ref Variant v)
+		{
+			switch (v.Type)
+			{
+			case Variant.TypeCode.Undefined:
+				Write(Amf3TypeCode.Undefined);
+				break;
+			case Variant.TypeCode.Null:
+				Write(Amf3TypeCode.Null);
+				break;
+			case Variant.TypeCode.Boolean:
+				Write(v.ToBoolean());
+				break;
+			case Variant.TypeCode.Int:
+				Write(v.ToInt());
+				break;
+			case Variant.TypeCode.UInt:
+				Write(v.ToUInt());
+				break;
+			case Variant.TypeCode.Number:
+				Write(v.ToNumber());
+				break;
+			case Variant.TypeCode.String:
+				Write(v.ToString());
+				break;
+			case Variant.TypeCode.Object:
+				Write(v.ToObject());
+				break;
+			default:
+				throw new Exception();
+			}
+		}
+
+
         public void Write(object obj)
         {
             if (obj == null) {
@@ -157,6 +192,11 @@ namespace Amf
 			var expando = obj as ExpandoObject;
 			if (expando != null) {
 				Write(expando);
+				return;
+			}
+
+			if (obj == PlayScript.Undefined._undefined) {
+				Write(Amf3TypeCode.Undefined);
 				return;
 			}
 
@@ -828,13 +868,15 @@ namespace Amf
 			StoreObject(obj);
 
 			foreach (string i in classDef.Properties) {
-				Write(obj[i]);
+				Write((object)obj[i]);
 			}
 
 			if (classDef.Dynamic) {
 				foreach (var kvp in obj) {
-					TypelessWrite(kvp.Key);
-					Write(kvp.Value);
+					if (classDef.GetPropertyIndex(kvp.Key) < 0) { 
+						TypelessWrite(kvp.Key);
+						Write(kvp.Value);
+					}
 				}
 
 				TypelessWrite("");

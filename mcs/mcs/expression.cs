@@ -104,16 +104,18 @@ namespace Mono.CSharp
 		}
 
 		private TypeSpec typeHint;
-		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec typeHint)
+		private CastType typeHintCast;
+		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec typeHint, CastType typeHintCast)
 		{
 			// store type hint
 			this.typeHint = typeHint;
+			this.typeHintCast = typeHintCast;
 			return this.Resolve(rc);
 		}
 
 		protected override Expression DoResolve (ResolveContext ec)
 		{
-			var res = expr.ResolveWithTypeHint (ec, typeHint);
+			var res = expr.ResolveWithTypeHint (ec, typeHint, typeHintCast);
 			var constant = res as Constant;
 			if (constant != null && constant.IsLiteral)
 				return Constant.CreateConstantFromValue (res.Type, constant.GetValue (), expr.Location);
@@ -500,11 +502,10 @@ namespace Mono.CSharp
 
 			if (Expr.Type.BuiltinType == BuiltinTypeSpec.Type.Dynamic) {
 				if (ec.FileType == SourceFileType.PlayScript && Oper == Operator.LogicalNot) {
-					// PlayScript: Call the "Boolean()" static method to convert a dynamic to a bool.  EXPENSIVE, but hey..
+					// Use a dynamic conversion where possible to take advantage of type hints
 					Arguments args = new Arguments (1);
-					args.Add (new Argument(EmptyCast.RemoveDynamic(ec, Expr)));
-//					ec.Report.Warning (7164, 1, loc, "Expensive reference conversion to bool");
-					Expr = new Invocation(new MemberAccess(new MemberAccess(new SimpleName(PsConsts.PsRootNamespace, loc), "Boolean_fn", loc), "Boolean", loc), args).Resolve (ec);
+					args.Add (new Argument (Expr));
+					Expr = new DynamicConversion (ec.BuiltinTypes.Bool, 0, args, loc, CastType.Implicit).Resolve (ec);
 				} else {
 					Arguments args = new Arguments (1);
 					args.Add (new Argument (Expr));
@@ -1811,12 +1812,6 @@ namespace Mono.CSharp
 
 			bool isRefType = TypeSpec.IsReferenceType (type) || type.IsNullableType;
 
-			// Always "Object" for dynamic type when evaluating PlayScript AS operator (not dynamic CONV call).
-			if (isPlayScript && etype.BuiltinType == BuiltinTypeSpec.Type.Dynamic) {
-				expr = new Cast(new TypeExpression(ec.BuiltinTypes.Object, expr.Location), expr, expr.Location).Resolve(ec);
-				etype = ec.BuiltinTypes.Object;
-			}
-
 			// Fail if conv type is not ref type or nullable (but allow if PlayScript)
 			if (!isPlayScript && !isRefType) {
 				if (TypeManager.IsGenericParameter (type)) {
@@ -1846,10 +1841,15 @@ namespace Mono.CSharp
 				// Special case for as check with strings in PlayScript, since there is an implicit
 				// conversion from everything to string.
 				if (isPlayScript && type.BuiltinType == BuiltinTypeSpec.Type.String) {
-					var arguments = new Arguments (2);
-					arguments.Add (new Argument (expr));
-					arguments.Add (new Argument (new TypeOf (new TypeExpression (ec.BuiltinTypes.String, expr.Location), expr.Location)));
-					return new Invocation (new MemberAccess (new MemberAccess (new SimpleName ("PlayScript", loc), "Support", loc), "DynamicAs", loc), arguments).Resolve (ec);
+					if (!etype.IsStruct) {
+						// simply do "expr as string"
+						return this;
+					} else {
+						// create a dynamic conversion that performs the as using a PSConverter.As<type> method
+						Arguments args = new Arguments (1);
+						args.Add (new Argument (expr));
+						return new DynamicConversion (type, 0, args, expr.Location, CastType.As).Resolve (ec);
+					}
 				}
 
 				Expression e = Convert.ImplicitConversionStandard (ec, expr, type, loc);
@@ -1872,24 +1872,11 @@ namespace Mono.CSharp
 
 			} else {
 
-				// Do PlayScript AS cast..
-
-				bool eIsRefType = TypeSpec.IsReferenceType (etype) || etype.IsNullableType;
-
-				if (eIsRefType) {
-
-					// Copy ref expression to a temporary.. do conditional.
-					var local = TemporaryVariableReference.Create (etype, ec.CurrentBlock, expr.Location);
-					var comp_exp = new Binary(Binary.Operator.Equality, new CompilerAssign(local, expr, expr.Location), new NullLiteral(expr.Location));
-					var def_const = New.Constantify(type, expr.Location, ec.FileType);
-					var cast_exp = new Cast(new TypeExpression(type, expr.Location), local, expr.Location);
-
-					return new Conditional(comp_exp, def_const, cast_exp, expr.Location).Resolve(ec);
-
-				} else {
-
-					// Just do normal cast if not a ref type.
-					return new Cast(new TypeExpression(type, expr.Location), expr, expr.Location).Resolve (ec);
+				if (isPlayScript) {
+					// create a dynamic conversion that performs the as using a PSConverter.As<type> method
+					Arguments args = new Arguments (1);
+					args.Add (new Argument (expr));
+					return new DynamicConversion (type, 0, args, expr.Location, CastType.As).Resolve (ec);
 				}
 			}
 
@@ -3569,10 +3556,12 @@ namespace Mono.CSharp
 		}
 
 		private TypeSpec typeHint;
-		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec typeHint)
+		private CastType typeHintCast;
+		protected override Expression DoResolveWithTypeHint(ResolveContext rc, TypeSpec typeHint, CastType typeHintCast)
 		{
 			// store type hint
 			this.typeHint = typeHint;
+			this.typeHintCast = typeHintCast;
 			return this.Resolve(rc);
 		}
 
@@ -3649,7 +3638,7 @@ namespace Mono.CSharp
 					return null;
 				}
 			} else
-				left = left.ResolveWithTypeHint (ec, typeHint);
+				left = left.ResolveWithTypeHint (ec, typeHint, typeHintCast);
 
 			if (left == null)
 				return null;
@@ -3675,7 +3664,7 @@ namespace Mono.CSharp
 				return left;
 			}
 
-			right = right.ResolveWithTypeHint (ec, typeHint);
+			right = right.ResolveWithTypeHint (ec, typeHint, typeHintCast);
 			if (right == null)
 				return null;
 
@@ -5773,7 +5762,7 @@ namespace Mono.CSharp
 			// a type that implements operator true
 
 			// resolve with a hint to resolve to a boolean type to avoid unnecessary conversion
-			expr = expr.ResolveWithTypeHint(ec, ec.BuiltinTypes.Bool);
+			expr = expr.ResolveWithTypeHint(ec, ec.BuiltinTypes.Bool, CastType.Explicit);
 
 			if (expr == null)
 				return null;
@@ -5789,10 +5778,10 @@ namespace Mono.CSharp
 
 			if (expr.Type.BuiltinType == BuiltinTypeSpec.Type.Dynamic) {
 				if (ec.FileType == SourceFileType.PlayScript) {
-					// PlayScript: Call the "Boolean()" static method to convert a dynamic to a bool.  EXPENSIVE, but hey..
+					// Use a dynamic conversion where possible to take advantage of type hints
 					Arguments args = new Arguments (1);
-					args.Add (new Argument(EmptyCast.RemoveDynamic(ec, expr)));
-					expr = new Invocation(new MemberAccess(new MemberAccess(new SimpleName(PsConsts.PsRootNamespace, loc), "Boolean_fn", loc), "Boolean", loc), args).Resolve (ec);
+					args.Add (new Argument (expr));
+					return new DynamicConversion (ec.BuiltinTypes.Bool, 0, args, expr.Location, CastType.Explicit).Resolve (ec);
 				} else {
 					Arguments args = new Arguments (1);
 					args.Add (new Argument (expr));
@@ -6819,12 +6808,6 @@ namespace Mono.CSharp
 
 					var ct = arguments [0].Expr.Type;
 					var cbt = ct.BuiltinType;
-					if (cbt == BuiltinTypeSpec.Type.Dynamic) {
-						arguments [0].Expr = EmptyCast.RemoveDynamic(ec, arguments[0].Expr);
-						dynamic_arg = false;
-						ct = ec.BuiltinTypes.Object;
-						cbt = BuiltinTypeSpec.Type.Object;
-					}
 					switch (castType) {
 					case BuiltinTypeSpec.Type.Int:
 						if (cbt == BuiltinTypeSpec.Type.String ||
@@ -6889,11 +6872,13 @@ namespace Mono.CSharp
 					// note its important to resolve argument 0 or else the cast will fail
 					// this cast supports the Vector.<T>([1,2,3]) syntax with Arguments[0] being an AsArrayInitializer
 					var cast_expr = Arguments [0].Expr.Resolve (ec);
-#if !DISABLE_AS3_NULL_STRINGS
 					// In PlayScript, the string value of null is "null"
-					if (cast_expr.IsNull && member_expr.Type != null && member_expr.Type.BuiltinType == BuiltinTypeSpec.Type.String)
-						return new StringConstant (ec.BuiltinTypes, "null", loc);
-#endif
+					if (member_expr.Type != null && member_expr.Type.BuiltinType == BuiltinTypeSpec.Type.String) {
+						// force an explicit conversion for strings
+						var args = new Arguments (1);
+						args.Add (new Argument (cast_expr));
+						return new DynamicConversion (member_expr.Type, 0, args, cast_expr.Location, Expression.CastType.Explicit).Resolve (ec);
+					}
 					return (new Cast (member_expr, cast_expr, loc)).Resolve (ec);
 				} 
 			}
