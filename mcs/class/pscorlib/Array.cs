@@ -1703,7 +1703,7 @@ namespace _root
 					if (cloneChild == null)
 						return null;
 					newArray [i] = cloneChild;
-				} else if (!(value == null || value is string || value.GetType ().IsPrimitive)) {
+				} else if (!(value == null || value == PlayScript.Undefined._undefined || value is string || value.GetType ().IsPrimitive)) {
 					return null;
 				}
 			}

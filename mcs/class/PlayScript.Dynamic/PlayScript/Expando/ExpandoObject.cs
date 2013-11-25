@@ -1,4 +1,4 @@
-﻿/* ****************************************************************************
+/* ****************************************************************************
  *
  * Copyright (c) Microsoft Corporation. 
  *
@@ -2962,10 +2962,10 @@ namespace PlayScript.Expando {
 					if (cloneChild == null)
 						return null;
 					newExpando [key] = cloneChild;
-				} else if (value == null || value is String || value.GetType ().IsPrimitive) {
-					newExpando [key] = value;
-				} else {
+				} else if (!(value == null || value == PlayScript.Undefined._undefined || value is string || value.GetType ().IsPrimitive)) {
 					return null;
+				} else {
+					newExpando [key] = value;
 				}
 			}
 			return newExpando;
