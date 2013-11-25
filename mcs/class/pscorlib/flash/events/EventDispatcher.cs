@@ -379,13 +379,25 @@ namespace flash.events
 			if (_traceEventDispatch)
 			{
 				string debugName = invoker.GetDebugName();
-				System.Console.WriteLine("    " + debugName);
+				System.Console.WriteLine("Event: " + debugName);
 			}
 		}
 
 		[Conditional("DEBUG")]
 		private void TraceEventDispatchAfter(PlayScript.InvokerBase invoker)
 		{
+		}
+
+		public void reportEventToDispatch(string eventType)
+		{
+			var evList = getListenersForEventType(eventType);
+			if (evList != null) {
+				for (var i = 0; i < evList.Count; i++) {
+					EventListener listener = evList[i];
+					string debugName = listener.invoker.GetDebugName();
+					System.Console.WriteLine("    " + debugName);
+				}
+			}
 		}
 
 		private static readonly Amf.Amf3String sNameAsEvent = new Amf.Amf3String(".as.event");
