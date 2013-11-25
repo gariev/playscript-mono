@@ -1516,7 +1516,8 @@ namespace PlayScript.Expando {
 	[Serializable]
 	[DebuggerDisplay ("Count = {Count}")]
 	[DebuggerTypeProxy (typeof (ExpandoDebugView))]
-	public class ExpandoObject : IDictionary<string, object>, IDictionary, ISerializable, IDeserializationCallback, IDynamicClass, IKeyEnumerable, IDynamicAccessor<object>, IDynamicAccessorUntyped
+	public class ExpandoObject : IDictionary<string, object>, IDictionary, ISerializable, IDeserializationCallback, IDynamicClass, 
+		IKeyEnumerable, IDynamicAccessor<object>, IDynamicAccessorUntyped, IDeepClonable
 #if NET_4_5
 		, IReadOnlyDictionary<string, object>
 #endif
@@ -2944,6 +2945,30 @@ namespace PlayScript.Expando {
 		bool IDynamicAccessorUntyped.DeleteIndex(object key)
 		{
 			return this.Remove(Dynamic.ConvertKey(key));
+		}
+
+		#endregion
+
+		#region IDeepClonable implementation
+
+		public object TryDeepClone() {
+			var newExpando = new PlayScript.Expando.ExpandoObject ();
+			IDictionary<string, object> expandoDict = (IDictionary<string,object>)this;
+			foreach (var pair in expandoDict) {
+				var key = pair.Key;
+				var value = pair.Value;
+				if (value is IDeepClonable) {
+					object cloneChild = ((IDeepClonable)value).TryDeepClone ();
+					if (cloneChild == null)
+						return null;
+					newExpando [key] = cloneChild;
+				} else if (value == null || value is String || value.GetType ().IsPrimitive) {
+					newExpando [key] = value;
+				} else {
+					return null;
+				}
+			}
+			return newExpando;
 		}
 
 		#endregion

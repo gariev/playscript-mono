@@ -964,6 +964,9 @@
     <Compile Include="..\pscorlib\PlayScript\BinJSON.cs">
       <Link>PlayScript\BinJSON.cs</Link>
     </Compile>
+    <Compile Include="..\pscorlib\PlayScript\IConvertibleImmutable.cs">
+      <Link>PlayScript\IConvertibleImmutable.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlayScript.Dynamic_aot\PlayScript.Dynamic_aot-monodroid.csproj">

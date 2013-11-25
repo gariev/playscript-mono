@@ -69,7 +69,7 @@ namespace _root
 	[DynamicClass]
 	[DebuggerDisplay("length = {length}")]
 	[DebuggerTypeProxy(typeof(ArrayDebugView))]
-	public sealed class Array : _root.Object, IList, PlayScript.IDynamicClass, PlayScript.IKeyEnumerable
+	public sealed class Array : _root.Object, IList, IDynamicClass, IKeyEnumerable, IDeepClonable, IConvertibleImmutable
 	{
 		#region IList implementation
 
@@ -296,16 +296,35 @@ namespace _root
 			mImmutableArray = staticArray;
 		}
 
-		private void ConvertToMutable () {
-			if (mImmutableArray == null)
-				throw new InvalidOperationException ();
-			uint len = mImmutableArray.length;
-			mArray = new object[len];
-			for (uint i = 0; i < len; i++) {
-				mArray [i] = mImmutableArray.getObjectAt (i);
+
+		public bool IsImmutable {
+			get { 
+				return mImmutableArray != null;
 			}
-			this.mCount = len;
-			mImmutableArray = null;
+		}
+
+		public IConvertibleImmutable ConvertibleImmutableParent { 
+			get {
+				if (mImmutableArray is IConvertibleImmutable) {
+					return ((IConvertibleImmutable)mImmutableArray).ConvertibleImmutableParent;
+				}
+				return null;
+			}
+		}
+
+		public void ConvertToMutable () 
+		{
+			if (mImmutableArray != null) {
+				uint len = mImmutableArray.length;
+				mArray = new object[len];
+				for (uint i = 0; i < len; i++) {
+					mArray [i] = mImmutableArray.getObjectAt (i);
+				}
+				this.mCount = len;
+				if (this.ConvertibleImmutableParent != null)
+					this.ConvertibleImmutableParent.ConvertToMutable ();
+				mImmutableArray = null;
+			}
 		}
 
 		public dynamic this[int i]
@@ -1131,7 +1150,7 @@ namespace _root
 				if (mDelegate != null)
 					return mDelegate (x, y);
 				else
-					return (int)mFunc(x, y);
+					return (int)(object)mFunc(x, y);
 			}
 
 			private Func<object,object,int> mDelegate;
@@ -1667,6 +1686,28 @@ namespace _root
 				return __dynamicProps.__GetDynamicNames();
 			}
 			return null;
+		}
+
+		#endregion
+
+		#region IDeepClonable implementation
+
+		public object TryDeepClone()
+		{
+			var newArray = this.clone ();
+			int len = (int)newArray.length;
+			for (var i = 0; i < len; i++) {
+				object value = newArray [i];
+				if (value is IDeepClonable) {
+					object cloneChild = ((IDeepClonable)value).TryDeepClone ();
+					if (cloneChild == null)
+						return null;
+					newArray [i] = cloneChild;
+				} else if (!(value == null || value is string || value.GetType ().IsPrimitive)) {
+					return null;
+				}
+			}
+			return newArray;
 		}
 
 		#endregion

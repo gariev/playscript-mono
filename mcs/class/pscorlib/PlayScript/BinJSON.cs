@@ -179,7 +179,7 @@ namespace playscript.utils {
 
 		public BinJsonObject GetRootObject()
 		{
-			return new BinJsonObject (this, this.data + *(uint*)(this.data + 12));
+			return new BinJsonObject (null, this, this.data + *(uint*)(this.data + 12));
 		}
 
 		public int Size {
@@ -341,8 +341,9 @@ namespace playscript.utils {
 	[DebuggerDisplay ("Count = {Count}")]
 	[DebuggerTypeProxy (typeof (BinJsonObjectDebugView))]
 	public unsafe class BinJsonObject : _root.Object, IDynamicObject, IDynamicAccessorTyped, 
-		IDictionary<string,object>, IDictionary, IDynamicClass
+		IDictionary<string,object>, IDictionary, IDynamicClass, IDeepClonable, IConvertibleImmutable
 	{
+		protected BinJsonObject parent;
 		protected BinJsonDocument doc;
 		protected byte* list;
 		protected KeyCrcPairs keyPairs;
@@ -351,7 +352,8 @@ namespace playscript.utils {
 		internal static string _lastKeyString;
 		internal static uint _lastCrc;
 
-		public BinJsonObject(BinJsonDocument doc, byte* list) {
+		public BinJsonObject(BinJsonObject parent, BinJsonDocument doc, byte* list) {
+			this.parent = parent;
 			this.doc = doc;
 			this.list = list;
 		}
@@ -454,53 +456,6 @@ namespace playscript.utils {
 			return values;
 		}
 
-		public object Clone() {
-			if (expando == null) {
-				return new BinJsonObject (doc, list);
-			} else {
-				return RecursivelyCloneExpando (expando);
-			}
-		}
-
-		private PlayScript.Expando.ExpandoObject RecursivelyCloneExpando (PlayScript.Expando.ExpandoObject expando) {
-			var newExpando = new PlayScript.Expando.ExpandoObject ();
-			IDictionary<string, object> expandoDict = (IDictionary<string,object>)expando;
-			foreach (var pair in expandoDict) {
-				var key = pair.Key;
-				var value = pair.Value;
-				if (value is _root.Array) {
-					newExpando [key] = RecursivelyCloneArray ((_root.Array)value);
-				} else if (value is PlayScript.Expando.ExpandoObject) {
-					newExpando [key] = RecursivelyCloneExpando ((PlayScript.Expando.ExpandoObject)value);
-				} else if (value is BinJsonObject) {
-					var binJsonObj = (BinJsonObject)value;
-					newExpando [key] = new BinJsonObject (binJsonObj.doc, binJsonObj.list);
-				} else {
-					newExpando [key] = value;
-				}
-			}
-			return newExpando;
-		}
-
-		private _root.Array RecursivelyCloneArray (_root.Array array) {
-			var newArray = array.clone ();
-			int len = (int)newArray.length;
-			for (var i = 0; i < len; i++) {
-				var value = newArray [i];
-				if (value is _root.Array) {
-					newArray [i] = RecursivelyCloneArray ((_root.Array)value);
-				} else if (value is PlayScript.Expando.ExpandoObject) {
-					newArray [i] = RecursivelyCloneExpando ((PlayScript.Expando.ExpandoObject)value);
-				} else if (value is BinJsonObject) {
-					var binJsonObj = (BinJsonObject)value;
-					newArray [i] = new BinJsonObject (binJsonObj.doc, binJsonObj.list);
-				} else {
-					newArray [i] = value;
-				}
-			}
-			return newArray;
-		}
-
 		public PlayScript.Expando.ExpandoObject CloneToExpando() {
 			var newExpando = new PlayScript.Expando.ExpandoObject ();
 			KeyCrcPairs keyPairs = this.KeyPairs;
@@ -514,9 +469,41 @@ namespace playscript.utils {
 			return newExpando;
 		}
 
-		public void CloneToInnerExpando() {
-			expando = CloneToExpando ();
+		#region IConvertibleImmutable implementation
+
+		public virtual bool IsImmutable {
+			get {
+				return expando == null; 
+			}
 		}
+
+		public IConvertibleImmutable ConvertibleImmutableParent { 
+			get {
+				return parent;
+			}
+		}
+
+		public virtual void ConvertToMutable() {
+			if (expando == null) {
+				expando = CloneToExpando ();
+				if (parent != null)
+					parent.ConvertToMutable ();
+			}
+		}
+
+		#endregion
+
+		#region IDeepClonable implementation
+
+		public object TryDeepClone() {
+			if (expando != null) {
+				return expando.TryDeepClone ();
+			} else {
+				return new BinJsonObject (null, doc, list);
+			}
+		}
+
+		#endregion
 
 		#region IKeyEnumerable implementation
 
@@ -916,9 +903,12 @@ namespace playscript.utils {
 				LIST_TYPE listType = (LIST_TYPE)(*(uint*)(list + 4) & BinJSON.OBJ_TYPE_MASK);
 				switch (listType) {
 				case LIST_TYPE.OBJECT:
-					return new BinJsonObject (doc, list);
+					return new BinJsonObject (this, doc, list);
 				case LIST_TYPE.ARRAY:
-					return new _root.Array ((IImmutableArray)new BinJsonArray (doc, list));
+					var arrayObj = new BinJsonArray (this, doc, list);
+					_root.Array array = new _root.Array ((IImmutableArray)arrayObj);
+					arrayObj.SetArray (array);
+					return array;
 				}
 				return null;
 			}
@@ -950,7 +940,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<string>.SetIndex(int index, string value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [PlayScript.Dynamic.ConvertKey(index)] = value;
 		}
 
@@ -972,7 +962,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<string>.SetIndex(object index, string value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [PlayScript.Dynamic.ConvertKey(index)] = value;
 		}
 
@@ -994,7 +984,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<string>.SetIndex(string index, string value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [index] = value;
 		}
 
@@ -1019,7 +1009,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<int>.SetIndex(int index, int value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [PlayScript.Dynamic.ConvertKey(index)] = value;
 		}
 
@@ -1041,7 +1031,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<int>.SetIndex(object index, int value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [PlayScript.Dynamic.ConvertKey(index)] = value;
 		}
 
@@ -1063,7 +1053,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<int>.SetIndex(string index, int value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [index] = value;
 		}
 
@@ -1088,7 +1078,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<double>.SetIndex(int index, double value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [PlayScript.Dynamic.ConvertKey(index)] = value;
 		}
 
@@ -1110,7 +1100,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<double>.SetIndex(object index, double value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [PlayScript.Dynamic.ConvertKey(index)] = value;
 		}
 
@@ -1132,7 +1122,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<double>.SetIndex(string index, double value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [index] = value;
 		}
 
@@ -1157,7 +1147,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<uint>.SetIndex(int index, uint value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [PlayScript.Dynamic.ConvertKey(index)] = value;
 		}
 
@@ -1179,7 +1169,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<uint>.SetIndex(object index, uint value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [PlayScript.Dynamic.ConvertKey(index)] = value;
 		}
 
@@ -1201,7 +1191,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<uint>.SetIndex(string index, uint value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [index] = value;
 		}
 
@@ -1226,7 +1216,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<bool>.SetIndex(int index, bool value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [PlayScript.Dynamic.ConvertKey(index)] = value;
 		}
 
@@ -1248,7 +1238,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<bool>.SetIndex(object index, bool value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [PlayScript.Dynamic.ConvertKey(index)] = value;
 		}
 
@@ -1270,7 +1260,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<bool>.SetIndex(string index, bool value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [index] = value;
 		}
 
@@ -1295,7 +1285,7 @@ namespace playscript.utils {
 		public void SetIndex(int index, object value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [PlayScript.Dynamic.ConvertKey(index)] = value;
 		}
 
@@ -1317,7 +1307,7 @@ namespace playscript.utils {
 		public void SetIndex(object index, object value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [PlayScript.Dynamic.ConvertKey(index)] = value;
 		}
 
@@ -1339,7 +1329,7 @@ namespace playscript.utils {
 		public void SetIndex(string index, object value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [index] = value;
 		}
 
@@ -1353,7 +1343,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<float>.SetIndex(int index, float value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [PlayScript.Dynamic.ConvertKey(index)] = value;
 		}
 
@@ -1375,7 +1365,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<float>.SetIndex(object index, float value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [PlayScript.Dynamic.ConvertKey(index)] = value;
 		}
 
@@ -1397,7 +1387,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<float>.SetIndex(string index, float value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [index] = value;
 		}
 
@@ -1464,7 +1454,7 @@ namespace playscript.utils {
 		public bool DeleteMember(string key)
 		{
 			if (expando != null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			return expando.Remove (key);
 		}
 
@@ -1551,7 +1541,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<string>.SetMember(string key, ref uint crc, string value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [key] = value;
 		}
 
@@ -1614,7 +1604,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<int>.SetMember(string key, ref uint crc, int value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [key] = value;
 		}
 
@@ -1677,7 +1667,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<double>.SetMember(string key, ref uint crc, double value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [key] = value;
 		}
 
@@ -1740,7 +1730,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<uint>.SetMember(string key, ref uint crc, uint value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [key] = value;
 		}
 
@@ -1803,7 +1793,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<bool>.SetMember(string key, ref uint crc, bool value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [key] = value;
 		}
 
@@ -1866,7 +1856,7 @@ namespace playscript.utils {
 		public void SetMember(string key, ref uint crc, object value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [key] = value;
 		}
 
@@ -1931,7 +1921,7 @@ namespace playscript.utils {
 		void IDynamicAccessorUntyped.SetMember(string key, ref uint crc, [AsUntyped] object value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [key] = value;
 		}
 
@@ -1951,7 +1941,7 @@ namespace playscript.utils {
 		void IDynamicAccessor<float>.SetMember(string key, ref uint crc, float value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [key] = value;
 		}
 
@@ -1967,7 +1957,7 @@ namespace playscript.utils {
 		public void SetMemberObject (string key, ref uint hint, object value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [key] = value;
 		}
 
@@ -1980,7 +1970,7 @@ namespace playscript.utils {
 		public void SetMemberUntyped (string key, ref uint hint, [AsUntyped] object value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [key] = value;
 		}
 
@@ -1992,7 +1982,7 @@ namespace playscript.utils {
 		public void SetMemberString (string key, ref uint hint, string value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [key] = value;
 		}
 
@@ -2004,7 +1994,7 @@ namespace playscript.utils {
 		public void SetMemberInt (string key, ref uint hint, int value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [key] = value;
 		}
 
@@ -2016,7 +2006,7 @@ namespace playscript.utils {
 		public void SetMemberUInt (string key, ref uint hint, uint value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [key] = value;
 		}
 
@@ -2028,7 +2018,7 @@ namespace playscript.utils {
 		public void SetMemberNumber (string key, ref uint hint, double value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [key] = value;
 		}
 
@@ -2040,7 +2030,7 @@ namespace playscript.utils {
 		public void SetMemberBool (string key, ref uint hint, bool value)
 		{
 			if (expando == null)
-				CloneToInnerExpando ();
+				ConvertToMutable ();
 			expando [key] = value;
 		}
 
@@ -2365,8 +2355,34 @@ namespace playscript.utils {
 
 	internal unsafe class BinJsonArray : BinJsonObject, IEnumerable, IImmutableArray
 	{
-		public BinJsonArray(BinJsonDocument doc, byte* list) : base(doc, list) {
+		// The wrapper 'Array' object this BinJsonArray is enclosed in.  MUST be set to a valid array.
+		private _root.Array array;
+
+		public BinJsonArray(BinJsonObject parent, BinJsonDocument doc, byte* list) : base(parent, doc, list) {
 		}
+
+		// **Must** be called to set the array for this object after the wrapper 'Array' is created. 
+		public void SetArray(_root.Array array)
+		{
+			this.array = array;
+		}
+
+		#region IConvertibleImmutable implementation
+
+		public override bool IsImmutable {
+			get {
+				return ((IConvertibleImmutable)array).IsImmutable; 
+			}
+		}
+
+		public override void ConvertToMutable() 
+		{
+			if (((IConvertibleImmutable)array).IsImmutable) {
+				((IConvertibleImmutable)array).ConvertToMutable ();
+			}
+		}
+
+		#endregion
 
 		#region IImmutableArray implementation
 
