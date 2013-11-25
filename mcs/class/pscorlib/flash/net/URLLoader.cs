@@ -25,36 +25,26 @@ namespace flash.net {
 			Action wrapperAction = () =>
 			{
 				// We send the request from another thread (as it can be blocking if there is no Wifi connection)
-				WebRequest request = sendRequest();		// Note that we need to make sure sendRequest() and other PlayScript methods are thread safe
-				if (request == null)
-				{
-					return;
-				}
-				request.BeginGetResponse(new AsyncCallback((iar) =>
-				{
-					try {
-						var response = (HttpWebResponse)((WebRequest)iar.AsyncState).EndGetResponse(iar);
-						responseAction(response);
-					} catch(System.Net.WebException e)
-					{
-						Console.WriteLine(e.Message + " Method:"  + request.Method + " RequestUri:" + request.RequestUri);
-						throw e;
-					}
-				}), request);
-			};
-			wrapperAction.BeginInvoke(new AsyncCallback((iar) =>
-			                                            {
-				var action = (Action)iar.AsyncState;
 				try
 				{
-					action.EndInvoke(iar);
+					WebRequest request = sendRequest();		// Note that we need to make sure sendRequest() and other PlayScript methods are thread safe
+					if (request == null)
+					{
+						enqueueAction(dispatchErrorEvent);
+						return;
+					}
+
+					HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+					responseAction(response);
 				}
-				catch
+				catch(System.Net.WebException e)
 				{
-					// This can happen if we could not send the message (or get the response)
-					// We have to figure out if we want to retry later or show a message box to the end user.
+					// TODO: Figure out if we want to send this in production build. If not, which define to use.
+					Console.WriteLine(e.Message + " Method:"  + mRequest.method + " RequestUri:" + mRequest.url);
+					enqueueAction(dispatchErrorEvent);
 				}
-			}), wrapperAction);
+			};
+			wrapperAction.BeginInvoke(null, null);
 		}
 
 		[Conditional("TRACE_ACCURATE_METRICS")]
