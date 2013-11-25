@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
+using System.IO;
 using Mono.CSharp;
 
 namespace Mono.PlayScript.Tooling
@@ -120,9 +122,9 @@ namespace Mono.PlayScript.Tooling
 		public Method AddWrapperMethod;
 		public Method RemoveAtWrapperMethod;
 		public Method SetWrapperMethod;
-		public Method InsertMethod;
-		public Method IndexOfMethod;
-		public Method InitializeMethod;
+		public Method InsertWrapperMethod;
+		public Method IndexOfWrapperMethod;
+		public Method InitializeWrapperMethod;
 
 		public int ElementParam;
 		public TypeSpec ElementType;
@@ -499,6 +501,10 @@ namespace Mono.PlayScript.Tooling
 
 			foreach (var type in AssetTypes) {
 
+				//
+				// Convert fields to properties.
+				//
+
 				foreach (var field in type.Fields) {
 					if (field is FieldFieldInfo) {
 						if (field is FieldFieldInfo) {
@@ -682,7 +688,7 @@ namespace Mono.PlayScript.Tooling
 					}
 				}
 
-					os.Write (@"
+				os.Write (@"
 				}}
 			}}
 ");
@@ -774,6 +780,9 @@ namespace Mono.PlayScript.Tooling
 
 	}
 
+	}
+
 
 }
+
 
