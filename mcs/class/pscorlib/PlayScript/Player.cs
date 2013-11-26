@@ -791,6 +791,9 @@ namespace PlayScript
 			while (!mDidPresent)
 			{
 				OnFrame(bounds);
+				if (mDidPresent) {
+					break;		// No need to sleep if present occured
+				}
 
 				// dont let us run too long waiting for a present
 				if (timer.ElapsedMilliseconds > MaxRunTimeUntilPresent) {
