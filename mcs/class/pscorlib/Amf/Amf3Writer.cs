@@ -102,6 +102,9 @@ namespace Amf
 			IAmf3Serializer serializer;
 			if (!typeToSerializer.TryGetValue(type, out serializer)) {
 				var alias = Amf3ClassDef.GetAliasFromType(type);
+				if (alias == null) {
+					alias = type.FullName;
+				}
 				if (alias != null) {
 					serializer = Amf3ClassDef.GetSerializerFromAlias(alias);
 					if (serializer == null) {
