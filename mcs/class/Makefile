@@ -253,9 +253,7 @@ net_4_5_dirs := \
 	System.Windows \
 	System.Xml.Serialization \
 	Mono.PlayScript \
-	PlayScript.Dynamic \
 	PlayScript.Dynamic_aot \
-	pscorlib \
 	pscorlib_aot \
 	Facades
 	

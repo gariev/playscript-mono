@@ -38,7 +38,7 @@ namespace _root
 		object getObjectAt (uint index);
 	}
 
-#if PERFORMANCE_MODE
+#if !USE_OLD_ARRAY
 
 	// this class is used to display a custom view of the vector values to the debugger
 	// TODO: we need to make these elements editable 

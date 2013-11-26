@@ -36,6 +36,7 @@ namespace PlayScript.DynamicRuntime
 		private PSGetMember			  mGetMember;
 		#if USE_DYNAMIC_ACCESSOR_TYPED
 		private uint mNameHint;
+		private string mNameHintStr;
 		#endif
 
 		//
@@ -49,6 +50,10 @@ namespace PlayScript.DynamicRuntime
 			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
+				if (mNameHintStr != index) {
+					mNameHint = 0;
+				}
+				mNameHintStr = index;
 				return accessor.GetMemberBool(Dynamic.ConvertKey(index), ref mNameHint, false);
 			}
 			#endif
@@ -64,6 +69,10 @@ namespace PlayScript.DynamicRuntime
 			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
+				if (mNameHintStr != index) {
+					mNameHint = 0;
+				}
+				mNameHintStr = index;
 				return accessor.GetMemberBool(Dynamic.ConvertKey(index), ref mNameHint, false);
 			}
 			#endif
@@ -79,6 +88,10 @@ namespace PlayScript.DynamicRuntime
 			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
+				if (mNameHintStr != index) {
+					mNameHint = 0;
+				}
+				mNameHintStr = index;
 				return accessor.GetMemberInt(Dynamic.ConvertKey(index), ref mNameHint, 0);
 			}
 			#endif
@@ -94,6 +107,10 @@ namespace PlayScript.DynamicRuntime
 			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
+				if (mNameHintStr != index) {
+					mNameHint = 0;
+				}
+				mNameHintStr = index;
 				return accessor.GetMemberUInt(Dynamic.ConvertKey(index), ref mNameHint, 0u);
 			}
 			#endif
@@ -109,6 +126,10 @@ namespace PlayScript.DynamicRuntime
 			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
+				if (mNameHintStr != index) {
+					mNameHint = 0;
+				}
+				mNameHintStr = index;
 				return accessor.GetMemberNumber(Dynamic.ConvertKey(index), ref mNameHint, double.NaN);
 			}
 			#endif
@@ -124,6 +145,10 @@ namespace PlayScript.DynamicRuntime
 			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
+				if (mNameHintStr != index) {
+					mNameHint = 0;
+				}
+				mNameHintStr = index;
 				return (float)accessor.GetMemberNumber(Dynamic.ConvertKey(index), ref mNameHint, double.NaN);
 			}
 			#endif
@@ -140,6 +165,10 @@ namespace PlayScript.DynamicRuntime
 			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
+				if (mNameHintStr != index) {
+					mNameHint = 0;
+				}
+				mNameHintStr = index;
 				return accessor.GetMemberString(Dynamic.ConvertKey(index), ref mNameHint, "undefined");
 			}
 			#endif
@@ -156,6 +185,10 @@ namespace PlayScript.DynamicRuntime
 			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
+				if (mNameHintStr != index) {
+					mNameHint = 0;
+				}
+				mNameHintStr = index;
 				return accessor.GetMemberString(Dynamic.ConvertKey(index), ref mNameHint, null);
 			}
 			#endif
@@ -172,6 +205,10 @@ namespace PlayScript.DynamicRuntime
 			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
+				if (mNameHintStr != index) {
+					mNameHint = 0;
+				}
+				mNameHintStr = index;
 				return accessor.GetMemberObject(Dynamic.ConvertKey(index), ref mNameHint, null);
 			}
 			#endif
@@ -187,6 +224,10 @@ namespace PlayScript.DynamicRuntime
 			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
+				if (mNameHintStr != index) {
+					mNameHint = 0;
+				}
+				mNameHintStr = index;
 				return accessor.GetMemberObject(Dynamic.ConvertKey(index), ref mNameHint, null);
 			}
 			#endif
@@ -204,6 +245,10 @@ namespace PlayScript.DynamicRuntime
 			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
+				if (mNameHintStr != index) {
+					mNameHint = 0;
+				}
+				mNameHintStr = index;
 				return accessor.GetMemberUntyped(Dynamic.ConvertKey(index), ref mNameHint, PlayScript.Undefined._undefined);
 			}
 			#endif
@@ -220,6 +265,10 @@ namespace PlayScript.DynamicRuntime
 			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
+				if (mNameHintStr != index) {
+					mNameHint = 0;
+				}
+				mNameHintStr = index;
 				return (T)accessor.GetMemberObject(Dynamic.ConvertKey(index), ref mNameHint, null);
 			}
 			#endif
@@ -235,6 +284,10 @@ namespace PlayScript.DynamicRuntime
 			#if USE_DYNAMIC_ACCESSOR_TYPED
 			var accessor = o as IDynamicAccessorTyped;
 			if (accessor != null) {
+				if (mNameHintStr != index) {
+					mNameHint = 0;
+				}
+				mNameHintStr = index;
 				return (T)accessor.GetMemberObject(Dynamic.ConvertKey(index), ref mNameHint, null);
 			}
 			#endif

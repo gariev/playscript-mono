@@ -1,3 +1,5 @@
+$(error The non-AOT version of PlayScript.Dynamic is no longer supported.  Please use PlayScript.Dynamic_aot.)
+
 thisdir = class/PlayScript.Dynamic
 include ../../build/rules.make
 

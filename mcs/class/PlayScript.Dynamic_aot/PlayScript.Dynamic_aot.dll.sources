@@ -31,6 +31,7 @@
 ../PlayScript.Dynamic/PlayScript/Expando/TypeUtils.cs
 ../PlayScript.Dynamic/PlayScript/ExpressionType.cs
 ../PlayScript.Dynamic/PlayScript/ExtensionAttribute.cs
+../PlayScript.Dynamic/PlayScript/IDeepClonable.cs
 ../PlayScript.Dynamic/PlayScript/IDynamicClass.cs
 ../PlayScript.Dynamic/PlayScript/IKeyEnumerable.cs
 ../PlayScript.Dynamic/PlayScript/Invoker.cs

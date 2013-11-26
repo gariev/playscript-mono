@@ -211,6 +211,9 @@
     <Compile Include="..\PlayScript.Dynamic\PlayScript\DynamicRuntime\PSBinaryComparison.cs">
       <DependentUpon>PSBinaryComparison.tt</DependentUpon>
     </Compile>
+    <Compile Include="..\PlayScript.Dynamic\PlayScript\IDeepClonable.cs">
+      <Link>PlayScript\IDeepClonable.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

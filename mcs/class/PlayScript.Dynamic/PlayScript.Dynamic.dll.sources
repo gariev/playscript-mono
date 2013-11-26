@@ -30,6 +30,7 @@
 ./PlayScript/Expando/TypeUtils.cs
 ./PlayScript/ExpressionType.cs
 ./PlayScript/ExtensionAttribute.cs
+./PlayScript/IDeepClonable.cs
 ./PlayScript/IDynamicClass.cs
 ./PlayScript/IKeyEnumerable.cs
 ./PlayScript/Invoker.cs

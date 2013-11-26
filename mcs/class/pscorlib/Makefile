@@ -1,3 +1,5 @@
+$(error The non-AOT version of pscorlib is no longer supported.  Please use pscorlib_aot.)
+
 thisdir = class/pscorlib
 include ../../build/rules.make
 

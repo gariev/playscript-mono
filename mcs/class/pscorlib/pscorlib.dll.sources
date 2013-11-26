@@ -270,6 +270,7 @@
 ./PlayScript/BinJSON.cs
 ./PlayScript/EmbedLoader.cs
 ./PlayScript/Hardware.cs
+./PlayScript/IConvertibleImmutable.cs
 ./PlayScript/ParamsDelegateTypes.cs
 ./PlayScript/Player.cs
 ./PlayScript/Profiler.cs

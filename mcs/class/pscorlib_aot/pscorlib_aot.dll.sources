@@ -270,6 +270,7 @@
 ../pscorlib/PlayScript/BinJSON.cs
 ../pscorlib/PlayScript/EmbedLoader.cs
 ../pscorlib/PlayScript/Hardware.cs
+../pscorlib/PlayScript/IConvertibleImmutable.cs
 ../pscorlib/PlayScript/ParamsDelegateTypes.cs
 ../pscorlib/PlayScript/Player.cs
 ../pscorlib/PlayScript/Profiler.cs

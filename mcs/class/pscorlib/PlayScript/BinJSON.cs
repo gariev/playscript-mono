@@ -129,13 +129,6 @@ namespace playscript.utils {
 		public uint offset;
 	}
 
-	// Stores a pair of string and crc
-	public class KeyCrcPairs {
-		public int length;
-		public string[] keys;
-		public uint[] crcs;
-	}
-
 	// Type of list - ARRAY or OBJECT.  Used in the LIST header for objects/arrays to indicate what type of 
 	// DataElem array this will be.   Each LIST has a two uint header, the first uint of which is the relative pointer
 	// to the lists data, and the second of which is an 8 bit list type plus a 24 bit list length.  The actual
@@ -158,14 +151,18 @@ namespace playscript.utils {
 	}
 
 	// Document object for binary json documents.  Stores the C# string cache for the document, plus data pointer.
-	public unsafe class BinJsonDocument
+	public unsafe class BinJsonDocument : IDisposable
 	{
-		internal byte* data;							// The static data buffer
+		internal byte* data;							// The static data buffer (NOTE: This is only freed if Dispose() is called!)
+		internal object root;							// The root object (NOTE: this does not hold strong refs to any child object)
 		internal StringTableElem* keyStringTable;		// Pointer to the stringtable offset array in the static data buffer
 		internal Dictionary<uint, string> keyStringsByCrc; // Strings by crc hash
 
 		internal Vector<string> valueStringCache;
 		internal string[] valueStringCacheArray;
+
+		internal Dictionary<uint, WeakReference> weakCache = new Dictionary<uint, WeakReference>();
+		internal int weakSweepCount;
 
 		public BinJsonDocument(byte* data)
 		{
@@ -177,9 +174,84 @@ namespace playscript.utils {
 			this.keyStringTable = (StringTableElem*)(data + *(uint*)(data + 16));
 		}
 
-		public BinJsonObject GetRootObject()
+		public BinJsonDocument(BinJsonDocument oldDoc)
 		{
-			return new BinJsonObject (null, this, this.data + *(uint*)(this.data + 12));
+			// Our weak cache and root are both unique.. we share everything else from the parent document
+			data = oldDoc.data;
+			keyStringTable = oldDoc.keyStringTable;
+			keyStringsByCrc = oldDoc.keyStringsByCrc;
+			valueStringCache = oldDoc.valueStringCache;
+			valueStringCacheArray = oldDoc.valueStringCacheArray;
+		}
+
+		// Must be called to free the BINJson data buffer.
+		public void Dispose()
+		{
+			Marshal.FreeHGlobal (new IntPtr(data));
+		}
+
+		public object GetRootObject()
+		{
+			// If we have a root object, return it
+			if (root != null)
+				return root;
+
+			// Create the root object if it doesn't exist already
+			uint offset = *(uint*)(this.data + 12);
+			byte* list = data + offset;
+			LIST_TYPE listType = (LIST_TYPE)(*(uint*)(list + 4) & BinJSON.OBJ_TYPE_MASK);
+			switch (listType) {
+			case LIST_TYPE.OBJECT:
+				BinJsonObject obj = new BinJsonObject (null, this, list);
+				root = obj;
+				return obj;
+			case LIST_TYPE.ARRAY:
+				BinJsonArray arrayObj = new BinJsonArray (null, this, list);
+				_root.Array array = new _root.Array ((IImmutableArray)arrayObj);
+				arrayObj.SetArray (array);
+				AddObjectToCache (offset, array);
+				root = array;
+				return array;
+			}
+
+			throw new InvalidOperationException ();
+		}
+
+		private void SweepCache()
+		{
+			var toDelete = new List<uint> ();
+
+			foreach (var pair in weakCache) {
+				if (!pair.Value.IsAlive) {
+					toDelete.Add (pair.Key);
+				}
+			}
+
+			foreach (var key in toDelete) {
+				weakCache.Remove (key);
+			}
+
+			weakSweepCount = 0;
+		}
+
+		public object GetObjectFromCache(uint offset)
+		{
+			if (weakSweepCount == 1000) {
+				SweepCache ();
+			}
+			weakSweepCount++;
+
+			WeakReference weakRef = null;
+			if (weakCache.TryGetValue (offset, out weakRef)) {
+				return weakRef.Target;
+			}
+
+			return null;
+		}
+
+		public void AddObjectToCache(uint offset, object obj)
+		{
+			weakCache[offset] = new WeakReference (obj);
 		}
 
 		public int Size {
@@ -346,7 +418,8 @@ namespace playscript.utils {
 		protected BinJsonObject parent;
 		protected BinJsonDocument doc;
 		protected byte* list;
-		protected KeyCrcPairs keyPairs;
+		protected int count;
+
 		protected PlayScript.Expando.ExpandoObject expando;
 
 		internal static string _lastKeyString;
@@ -356,6 +429,7 @@ namespace playscript.utils {
 			this.parent = parent;
 			this.doc = doc;
 			this.list = list;
+			this.count = -1;
 		}
 
 		public override string toString() 
@@ -379,21 +453,20 @@ namespace playscript.utils {
 			get {
 				if (expando != null)
 					return expando.Count;
-
-				if (keyPairs != null)
-					return keyPairs.length;
-
-				// Count up non empty slots (this 
-				int listCount = this.ListCount;
-				int len = 0;
-				DataElem* dataElem = this.List;
-				for (var i = 0; i < listCount; i++) {
-					uint id = dataElem->id;
-					if (id != 0)
-						len++;
-					dataElem++;
+				if (count < 0) {
+					// Quickly count the number of non empty items (emtpy items are there to support
+					// hash lookup.
+					count = 0;
+					int listCount = this.ListCount;
+					DataElem* dataElem = this.List;
+					for (var i = 0; i < listCount; i++) {
+						uint id = dataElem->id;
+						if (id != 0)
+							count++;
+						dataElem++;
+					}
 				}
-				return len;
+				return count;
 			}
 		}
 
@@ -401,70 +474,42 @@ namespace playscript.utils {
 			get { return doc; }
 		}
 
-		internal KeyCrcPairs KeyPairs {
-			get {
-				KeyCrcPairs pairs = keyPairs;
-				if (pairs == null) {
-					int i;
-					int count = this.Count;
-					int listCount = this.ListCount;
-					pairs = new KeyCrcPairs ();
-					pairs.length = count;
-					string[] keyArray = new string[count];
-					pairs.keys = keyArray;
-					uint[] crcArray = new uint[count];
-					pairs.crcs = crcArray;
-					Dictionary<uint,string> crcStrTable = doc.KeyTable;
-					DataElem* dataElem = this.List;
-					int pos = 0;
-					for (i = 0; i < listCount; i++) {
-						uint crc = dataElem->id & BinJSON.ID_MASK;
-						if (crc != 0) {
-							string key = crcStrTable [crc];
-							keyArray [pos] = key;
-							crcArray [pos] = crc;
-							pos++;
-						}
-						dataElem++;
-					}
-					if (keyPairs == null)
-						keyPairs = pairs;
-					else 
-						keyPairs = pairs;
-				}
-				return pairs;
-			}
-		}
-
 		internal ICollection<string> GetKeys()
 		{
-			if (expando != null)
-				return ((IDictionary<string,object>)expando).Keys;
-			else
-				return KeyPairs.keys;
+			if (expando != null) {
+				return ((IDictionary<string,object>)expando).Keys as string[];
+			} else {
+				string[] keys = new string[this.Count];
+				var enumerator = ((IKeyEnumerable)this).GetKeyEnumerator();
+				int i = 0;
+				while (enumerator.MoveNext()) {
+					keys [i] = (string)enumerator.Current;
+					i++;
+				}
+				return keys;
+			}
 		}
 
-		internal object[] GetValues()
+		internal ICollection<object> GetValues()
 		{
-			object[] values = new object[this.Count];
-			var enumerator = ((IEnumerator<KeyValuePair<string,object>>)this);
-			int i = 0;
-			while (enumerator.MoveNext()) {
-				values [i] = enumerator.Current.Value;
-				i++;
+			if (expando != null) {
+				return ((IDictionary<string,object>)expando).Values;
+			} else {
+				object[] values = new object[this.Count];
+				var enumerator = ((IEnumerable<KeyValuePair<string,object>>)this).GetEnumerator();
+				int i = 0;
+				while (enumerator.MoveNext()) {
+					values [i] = enumerator.Current.Value;
+					i++;
+				}
+				return values;
 			}
-			return values;
 		}
 
 		public PlayScript.Expando.ExpandoObject CloneToExpando() {
 			var newExpando = new PlayScript.Expando.ExpandoObject ();
-			KeyCrcPairs keyPairs = this.KeyPairs;
-			int len = keyPairs.length;
-			IDynamicAccessor<object> getMemProv = (IDynamicAccessor<object>)this;
-			for (var i = 0; i < len; i++) {
-				string key = keyPairs.keys [i];
-				uint crc = keyPairs.crcs [i];
-				newExpando.Add (key, getMemProv.GetMemberOrDefault (key, ref crc, null));
+			foreach (var pair in this) {
+				newExpando [pair.Key] = pair.Value;
 			}
 			return newExpando;
 		}
@@ -499,7 +544,7 @@ namespace playscript.utils {
 			if (expando != null) {
 				return expando.TryDeepClone ();
 			} else {
-				return new BinJsonObject (null, doc, list);
+				return new BinJsonObject (null, new BinJsonDocument(doc), list);
 			}
 		}
 
@@ -899,15 +944,22 @@ namespace playscript.utils {
 				case DATA_TYPE.NULL:
 				return null;
 				case DATA_TYPE.OBJARRAY:
-				byte* list = doc.data + *(uint*)(data + dataElem->offset);
+				uint offset = *(uint*)(data + dataElem->offset);
+				object cachedObj = doc.GetObjectFromCache (offset);
+				if (cachedObj != null)
+					return cachedObj;
+				byte* list = doc.data + offset;
 				LIST_TYPE listType = (LIST_TYPE)(*(uint*)(list + 4) & BinJSON.OBJ_TYPE_MASK);
 				switch (listType) {
 				case LIST_TYPE.OBJECT:
-					return new BinJsonObject (this, doc, list);
+					BinJsonObject obj = new BinJsonObject (this, doc, list);
+					doc.AddObjectToCache (offset, obj);
+					return obj;
 				case LIST_TYPE.ARRAY:
-					var arrayObj = new BinJsonArray (this, doc, list);
+					BinJsonArray arrayObj = new BinJsonArray (this, doc, list);
 					_root.Array array = new _root.Array ((IImmutableArray)arrayObj);
 					arrayObj.SetArray (array);
+					doc.AddObjectToCache (offset, array);
 					return array;
 				}
 				return null;
@@ -2250,13 +2302,13 @@ namespace playscript.utils {
 
 		ICollection IDictionary.Keys {
 			get {
-				return this.KeyPairs.keys;
+				return (ICollection)GetKeys ();
 			}
 		}
 
 		ICollection IDictionary.Values {
 			get {
-				return GetValues ();
+				return (ICollection)GetValues ();
 			}
 		}
 
@@ -2342,7 +2394,7 @@ namespace playscript.utils {
 
 		IEnumerable IDynamicClass.__GetDynamicNames ()
 		{
-			return this.KeyPairs.keys;
+			return this.GetKeys();
 		}
 
 		#endregion
