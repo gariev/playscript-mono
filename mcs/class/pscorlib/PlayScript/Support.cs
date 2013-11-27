@@ -48,20 +48,14 @@ namespace PlayScript
 			}
 			string keyStr = key as string;
 			if (keyStr != null) {
-				var dyn = value as IDynamicClass;
-				if (dyn != null) {
-					return dyn.__HasDynamicValue (keyStr);
+				return PlayScript.Dynamic.hasOwnProperty (value, keyStr);
+			} else {
+				var dict2 = value as IDictionary<object, object>;
+				if (dict2 != null) {
+					return dict2.ContainsKey (value);
 				}
-				var dict1 = value as IDictionary<string, object>;
-				if (dict1 != null) {
-					return dict1.ContainsKey (keyStr);
-				}
+				return false;
 			}
-			var dict2 = value as IDictionary<object, object>;
-			if (dict2 != null) {
-				return dict2.ContainsKey (value);
-			}
-			return false;
 		}
 
 
